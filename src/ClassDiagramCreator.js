@@ -8,11 +8,24 @@ $(document).ready(function() {
             if(command != "") {
                 insertOnCommandHistory(command);
 
+                switch(command.toLowerCase()) {
+                    case "clear":
+                        clearCommandHandler();
+                        break;
+
+                    default:
+                        insertOnCommandHistory("Undefined command!")
+                }
+            }
 
             this.value = "";
         }
     });
 });
+
+function clearCommandHandler () {
+    $('#CommandHistory').val("");
+}
 
 function insertOnCommandHistory (text) {
     if($('#CommandHistory').val() != "") {
