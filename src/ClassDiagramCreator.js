@@ -27,7 +27,7 @@ $(document).ready(function() {
                         break;
 
                     default:
-                        insertIntoCommandHistory("Undefined command!")
+                        insertIntoCommandHistory("Undefined command!");
                 }
             }
 
