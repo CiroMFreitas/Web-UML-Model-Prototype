@@ -8,7 +8,7 @@ $(document).ready(function() {
             const command = this.value;
 
             if(command != "") {
-                insertOnCommandHistory(command);
+                insertIntoCommandHistory(command);
                 const commandArguments = command.trimEnd().split(" ");
 
                 switch(commandArguments[0].toLowerCase()) {
@@ -47,12 +47,12 @@ function createCommandHandler (command) {
 }
 
 //Clear handler
-function clearCommandHandler () {
+function clearCommandHandler() {
     $('#CommandHistory').val("");
 }
 
 //Insert into history h
-function insertIntoCommandHistory (text) {
+function insertIntoCommandHistory(text) {
     $('#CommandHistory').val($('#CommandHistory').val() + text);
     $('#CommandHistory').scrollTop(9999999999);
 }
