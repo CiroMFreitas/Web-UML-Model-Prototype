@@ -5,18 +5,19 @@ $(document).ready(function() {
     //Get command
     $('#CommandConsole').keyup(function (event) {
         if (event.keyCode == ENTER_KEY) {
-            const command = this.value.trim();
+            const command = this.value;
 
             if(command != "") {
                 insertOnCommandHistory(command);
+                const commandArguments = command.trimEnd().split(" ");
 
-                switch(command.toLowerCase()) {
+                switch(commandArguments[0].toLowerCase()) {
                     case "clear":
                         clearCommandHandler();
                         break;
 
                     case "create":
-                        createCommandHandler(command);
+                        createCommandHandler(commandArguments);
                         break;
 
                     default:
