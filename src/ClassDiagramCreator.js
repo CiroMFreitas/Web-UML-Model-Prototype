@@ -36,7 +36,7 @@ $(document).ready(function() {
 });
 
 //Creation handlers
-function createCommandHandler (creationArguments) {
+function createCommandHandler(creationArguments) {
     try {
         if((creationArguments.length < 2) ||
         (creationArguments[1].toLowerCase() != "class")) {
@@ -48,29 +48,70 @@ function createCommandHandler (creationArguments) {
         !(/^[A-Za-z]*$/.test(creationArguments[2].toLowerCase()))) {
             throw CLASS_NAME_MISSING;
         }
+        const className = creationArguments[2];
 
         //Get methods
         const methods = argumentsHandler(creationArguments.indexOf("-m"), creationArguments);
 
         //Get attributes
         const attributes = argumentsHandler(creationArguments.indexOf("-a"), creationArguments);
+    
+        //Create Class table
+        $('#ClassDiagramCanvas').append(`
+            <div id="${className}Class" class="ClassModel">
+                <div id="${className}ClassNameRow" class="ClassModelRow">
+                    <div id="${className}ClassTitle">Class</div>
+                    <div id="${className}ClassName">${className}</div>
+                </div>
+                <div id="${className}ClassAttributesRow" class="ClassModelRow">
+                    <div id="${className}ClassAttributeTitle">Attributes</div>
+                </div>
+                <div id="${className}ClassMethodsRow" class="ClassModelRow">
+                    <div id="${className}ClassMethodsTitle">Methods</div>
+                </div>
+            </div>
+        `);
+    
+        //Create attributes row
+        if(attributes) {
+            attributes.forEach((attribute) => {
+                $('#'+className+'ClassAttributesRow').append(`
+                    <div id="${className}Class${attribute[2]}Row">
+                        <div id="${className}Class${attribute[2]}AttributeVisibility" class="FloatRow">${attribute[0]}&nbsp</div>
+                        <div id="${className}Class${attribute[2]}AttributeType" class="FloatRow">${attribute[1]}:&nbsp</div>
+                        <div id="${className}Class${attribute[2]}AttributeName">${attribute[2]}</div>
+                    </div>
+                `);
+            });
+        } else {
+            $('#'+className+'ClassAttributesRow').append(`
+                <div id="${className}ClassEmptyAttributeRow">
+                    -
+                </div>
+            `);
+        }
+    
+        //Create methods row
+        if(methods) {
+            methods.forEach((method) => {
+                $('#'+className+'ClassMethodsRow').append(`
+                    <div id="${className}Class${method[2]}Row">
+                        <div id="${className}Class${method[2]}MethodVisibility" class="FloatRow">${method[0]}&nbsp</div>
+                        <div id="${className}Class${method[2]}MethodType" class="FloatRow">${method[1]}:&nbsp</div>
+                        <div id="${className}Class${method[2]}MethodName">${method[2]}</div>
+                    </div>
+                `);
+            });
+        } else {
+            $('#'+className+'ClassMethodsRow').append(`
+                <div id="${className}ClassEmptyMethodRow">
+                    -
+                </div>
+            `);
+        }
     } catch (error) {
         insertIntoCommandHistory(error)
     }
-    
-    /*$('#ClassDiagramCanvas').append(`
-        <table id="ClassModel">
-            <tr>
-                <th>${creationArgumnts[2]}</th>
-            </tr>
-            <tr>
-                <th>Class Attributes</th>
-            </tr>
-            <tr>
-                <th>Class Methods</th>
-            </tr>
-        </table>
-    `);*/
 }
 
 //Clear handler
@@ -98,7 +139,7 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
             }
         }
         
-        let arguments = creationArgumnts.slice(startArgumentPosition + 1, lastArgumentPosition+ 1);
+        let arguments = creationArgumnts.slice(startArgumentPosition + 1, lastArgumentPosition + 1);
         if((creationArgumnts.length < startArgumentPosition + 1) ||
         (creationArgumnts[firstArgumentPosition][0] != "(") ||
         (creationArgumnts[lastArgumentPosition].lastIndexOf(")") == -1)) {
@@ -106,8 +147,8 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
         }
 
         //Remove ()
-        creationArgumnts[firstArgumentPosition] = creationArgumnts[firstArgumentPosition].replace("(", "");
-        creationArgumnts[lastArgumentPosition] = creationArgumnts[lastArgumentPosition].replace(")", "");
+        arguments[0] = creationArgumnts[firstArgumentPosition].replace("(", "");
+        arguments[arguments.length - 1] = creationArgumnts[lastArgumentPosition].replace(")", "");
 
         if(creationArgumnts[firstArgumentPosition] == "") {
             throw ARGUMENTS_ERROR;

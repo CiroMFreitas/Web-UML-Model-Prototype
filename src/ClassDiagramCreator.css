@@ -16,6 +16,16 @@
     border: 1px solid black;
 }
 
-#ClassModel, th {
+.ClassModel {
     border: 1px solid black;
+    width: fit-content;
+}
+
+.ClassModelRow {
+    border: 1px solid black;
+    text-align: center;
+}
+
+.FloatRow {
+    float: left;
 }
