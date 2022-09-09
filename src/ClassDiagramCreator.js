@@ -1,8 +1,7 @@
 //Errors
 const CREATE_TYPE_UNDEFINED = "Type chosen for creation is undefined!";
 const CLASS_NAME_MISSING = "Class name is missing or invalid on creation!";
-const METHODS_ERROR = "Methods are missing or invalid!"
-const METHODS_ARGUMENT_ERROR = "Methods arguments are missing or invalid!"
+const ARGUMENTS_ERROR = "Arguments are missing or invalid!"
 
 $(document).ready(function() {
     //Key's codes
@@ -37,51 +36,24 @@ $(document).ready(function() {
 });
 
 //Creation handlers
-function createCommandHandler (creationArgumnts) {
+function createCommandHandler (creationArguments) {
     try {
-        if((creationArgumnts.length < 2) ||
-        (creationArgumnts[1].toLowerCase() != "class")) {
+        if((creationArguments.length < 2) ||
+        (creationArguments[1].toLowerCase() != "class")) {
             throw CREATE_TYPE_UNDEFINED;
         }
 
         //Class name must exist and be alphabetic character only
-        if((creationArgumnts.length < 3) ||
-        !(/^[A-Za-z]*$/.test(creationArgumnts[2].toLowerCase()))) {
+        if((creationArguments.length < 3) ||
+        !(/^[A-Za-z]*$/.test(creationArguments[2].toLowerCase()))) {
             throw CLASS_NAME_MISSING;
         }
 
-        //Method treatement
-        const methodsArgumentPosition = creationArgumnts.indexOf("-m");
-        const firstMethodArgument = methodsArgumentPosition + 1;
+        //Get methods
+        const methods = argumentsHandler(creationArguments.indexOf("-m"), creationArguments);
 
-        //Get last method argument position
-        var lastMethodArgument = creationArgumnts.length;
-        for(let i = methodsArgumentPosition + 1; i < lastMethodArgument; i++) {
-            if(creationArgumnts[i].lastIndexOf(")") != -1) {
-                lastMethodArgument = i;
-            }
-        }
-
-        //Method argument must be present, methods must be surrouded by () and must follow Visibility:Type:Name format, although visibility may be omitted and defaulted to private
-        if(methodsArgumentPosition != -1) {
-            if((creationArgumnts.length < methodsArgumentPosition + 1) ||
-            (creationArgumnts[firstMethodArgument][0] != "(") ||
-            (creationArgumnts[lastMethodArgument].lastIndexOf(")") == -1)) {
-                throw METHODS_ERROR;
-            }
-
-            //Remove ()
-            creationArgumnts[firstMethodArgument] = creationArgumnts[firstMethodArgument].replace("(", "");
-            creationArgumnts[lastMethodArgument] = creationArgumnts[lastMethodArgument].replace(")", "");
-
-            if(creationArgumnts[firstMethodArgument] == "") {
-                throw METHODS_ARGUMENT_ERROR;
-            }
-
-            //Get methods
-            const methods = argumentsHandler(creationArgumnts.slice(methodsArgumentPosition + 1, lastMethodArgument+ 1));
-            console.log(methods);
-        }
+        //Get attributes
+        const attributes = argumentsHandler(creationArguments.indexOf("-a"), creationArguments);
     } catch (error) {
         insertIntoCommandHistory(error)
     }
@@ -114,31 +86,58 @@ function insertIntoCommandHistory(text) {
 
 
 //Handle arguments for methods and attributes
-function argumentsHandler(arguments) {
-    for(let i = 0; i < arguments.length; i++) {
-        arguments[i] = arguments[i].replace(",", "").split(":");
-
-        switch(arguments[i][0].toLowerCase()) {
-            case "private":
-                arguments[i][0] = "-";
-                break;
-
-            case "public":
-                arguments[i][0] = "+";
-                break;
-
-            case "protected":
-                arguments[i][0] = "~";
-                break;
-
-            default:
-                if(arguments[i].length == 2){
-                    arguments[i].unshift("-");
-                } else {
-                    throw METHODS_ARGUMENT_ERROR;
-                }
+function argumentsHandler(startArgumentPosition, creationArgumnts) {
+    //Arguments must be present, surrouded by () and must follow the Visibility:Type:Name format, although visibility may be omitted and defaulted to private
+    if(startArgumentPosition != -1) {
+        //Get arguments first and last positions
+        const firstArgumentPosition = startArgumentPosition + 1;
+        var lastArgumentPosition = creationArgumnts.length;
+        for(let i = startArgumentPosition + 1; i < lastArgumentPosition; i++) {
+            if(creationArgumnts[i].lastIndexOf(")") != -1) {
+                lastArgumentPosition = i;
+            }
         }
-    };
+        
+        let arguments = creationArgumnts.slice(startArgumentPosition + 1, lastArgumentPosition+ 1);
+        if((creationArgumnts.length < startArgumentPosition + 1) ||
+        (creationArgumnts[firstArgumentPosition][0] != "(") ||
+        (creationArgumnts[lastArgumentPosition].lastIndexOf(")") == -1)) {
+            throw ARGUMENTS_ERROR;
+        }
 
-    return arguments;
+        //Remove ()
+        creationArgumnts[firstArgumentPosition] = creationArgumnts[firstArgumentPosition].replace("(", "");
+        creationArgumnts[lastArgumentPosition] = creationArgumnts[lastArgumentPosition].replace(")", "");
+
+        if(creationArgumnts[firstArgumentPosition] == "") {
+            throw ARGUMENTS_ERROR;
+        }
+
+        for(let i = 0; i < arguments.length; i++) {
+            arguments[i] = arguments[i].replace(",", "").split(":");
+    
+            switch(arguments[i][0].toLowerCase()) {
+                case "private":
+                    arguments[i][0] = "-";
+                    break;
+    
+                case "public":
+                    arguments[i][0] = "+";
+                    break;
+    
+                case "protected":
+                    arguments[i][0] = "~";
+                    break;
+    
+                default:
+                    if(arguments[i].length == 2){
+                        arguments[i].unshift("-");
+                    } else {
+                        throw ARGUMENTS_ERROR;
+                    }
+            }
+        };
+    
+        return arguments;
+    }
 }
