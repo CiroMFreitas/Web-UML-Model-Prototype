@@ -92,7 +92,7 @@ function createCommandHandler (creationArgumnts) {
                 <th>${creationArgumnts[2]}</th>
             </tr>
             <tr>
-                <th>Class Atributtes</th>
+                <th>Class Attributes</th>
             </tr>
             <tr>
                 <th>Class Methods</th>
