@@ -1,5 +1,6 @@
 //Errors
 const CREATE_TYPE_UNDEFINED = "Type chosen for creation is undefined!";
+const CLASS_NAME_MISSING = "Class name is missing or invalid on creation!";
 
 $(document).ready(function() {
     //Key's codes
@@ -33,13 +34,15 @@ $(document).ready(function() {
     });
 });
 
-function createCommandHandler (command) {
-    $('#ClassDiagramCanvas').append(`
 //Creation handlers
 function createCommandHandler (creationArgumnts) {
     try {
         if((creationArgumnts.length < 2) || (creationArgumnts[1].toLowerCase() != "class")) {
             throw CREATE_TYPE_UNDEFINED;
+        }
+        
+        if((creationArgumnts.length < 3) || !(/^[A-Za-z]*$/.test(creationArgumnts[2].toLowerCase()))) {
+            throw CLASS_NAME_MISSING;
         }
     } catch (error) {
         insertIntoCommandHistory(error)
