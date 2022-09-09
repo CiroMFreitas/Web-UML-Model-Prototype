@@ -79,33 +79,7 @@ function createCommandHandler (creationArgumnts) {
             }
 
             //Get methods
-            var methods = [];
-            for(let i = firstMethodArgument; i < lastMethodArgument + 1; i++) {
-                let currentMethod = creationArgumnts[i].split(":");
-
-                switch(currentMethod[0].toLowerCase()) {
-                    case "private":
-                        currentMethod[0] = "-";
-                        break;
-
-                    case "public":
-                        currentMethod[0] = "+";
-                        break;
-
-                    case "protected":
-                        currentMethod[0] = "~";
-                        break;
-
-                    default:
-                        if(currentMethod.length == 2){
-                            currentMethod.unshift("-");
-                        } else {
-                            throw METHODS_ARGUMENT_ERROR;
-                        }
-                }
-                methods.push(currentMethod);
-            }
-
+            const methods = argumentsHandler(creationArgumnts.slice(methodsArgumentPosition + 1, lastMethodArgument+ 1));
             console.log(methods);
         }
     } catch (error) {
@@ -136,4 +110,35 @@ function clearCommandHandler() {
 function insertIntoCommandHistory(text) {
     $('#CommandHistory').val($('#CommandHistory').val() + text + "\n");
     $('#CommandHistory').scrollTop(9999999999);
+}
+
+
+//Handle arguments for methods and attributes
+function argumentsHandler(arguments) {
+    for(let i = 0; i < arguments.length; i++) {
+        arguments[i] = arguments[i].replace(",", "").split(":");
+
+        switch(arguments[i][0].toLowerCase()) {
+            case "private":
+                arguments[i][0] = "-";
+                break;
+
+            case "public":
+                arguments[i][0] = "+";
+                break;
+
+            case "protected":
+                arguments[i][0] = "~";
+                break;
+
+            default:
+                if(arguments[i].length == 2){
+                    arguments[i].unshift("-");
+                } else {
+                    throw METHODS_ARGUMENT_ERROR;
+                }
+        }
+    };
+
+    return arguments;
 }
