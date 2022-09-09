@@ -11,7 +11,7 @@ $(document).ready(function() {
     //Get command
     $('#CommandConsole').keyup(function (event) {
         if (event.keyCode == ENTER_KEY) {
-            const command = this.value.trimEnd();
+            const command = this.value.replace("\n", "");
 
             if(command != "") {
                 insertIntoCommandHistory(command);
