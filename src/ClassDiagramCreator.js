@@ -42,6 +42,7 @@ function createCommandHandler (creationArgumnts) {
             throw CREATE_TYPE_UNDEFINED;
         }
 
+        //Class name must exist and be alphabetic character only
         if((creationArgumnts.length < 3) ||
         !(/^[A-Za-z]*$/.test(creationArgumnts[2].toLowerCase()))) {
             throw CLASS_NAME_MISSING;
