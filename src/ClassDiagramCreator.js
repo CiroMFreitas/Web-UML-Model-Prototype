@@ -1,3 +1,6 @@
+//Errors
+const CREATE_TYPE_UNDEFINED = "Type chosen for creation is undefined!";
+
 $(document).ready(function() {
     //Key's codes
     const ENTER_KEY = 13;
@@ -32,9 +35,20 @@ $(document).ready(function() {
 
 function createCommandHandler (command) {
     $('#ClassDiagramCanvas').append(`
+//Creation handlers
+function createCommandHandler (creationArgumnts) {
+    try {
+        if((creationArgumnts.length < 2) || (creationArgumnts[1].toLowerCase() != "class")) {
+            throw CREATE_TYPE_UNDEFINED;
+        }
+    } catch (error) {
+        insertIntoCommandHistory(error)
+    }
+    
+    /*$('#ClassDiagramCanvas').append(`
         <table id="ClassModel">
             <tr>
-                <th>Class Name</th>
+                <th>${creationArgumnts[2]}</th>
             </tr>
             <tr>
                 <th>Class Atributtes</th>
@@ -43,7 +57,7 @@ function createCommandHandler (command) {
                 <th>Class Methods</th>
             </tr>
         </table>
-    `)
+    `);*/
 }
 
 //Clear handler
