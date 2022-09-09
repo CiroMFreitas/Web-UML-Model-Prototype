@@ -18,7 +18,7 @@ $(document).ready(function() {
                         break;
 
                     default:
-                        insertOnCommandHistory("Undefined command!")
+                        insertIntoCommandHistory("Undefined command!\n")
                 }
             }
 
@@ -47,11 +47,7 @@ function clearCommandHandler () {
     $('#CommandHistory').val("");
 }
 
-function insertOnCommandHistory (text) {
-    if($('#CommandHistory').val() != "") {
-        $('#CommandHistory').val( $('#CommandHistory').val() + "\n" + text);
-    } else {
-        $('#CommandHistory').val($('#CommandHistory').val() + text);
-    }
+function insertIntoCommandHistory (text) {
+    $('#CommandHistory').val($('#CommandHistory').val() + text);
     $('#CommandHistory').scrollTop(9999999999);
 }
