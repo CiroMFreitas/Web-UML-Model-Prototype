@@ -5,11 +5,11 @@ $(document).ready(function() {
     //Get command
     $('#CommandConsole').keyup(function (event) {
         if (event.keyCode == ENTER_KEY) {
-            const command = this.value;
+            const command = this.value.trimEnd();
 
             if(command != "") {
                 insertIntoCommandHistory(command);
-                const commandArguments = command.trimEnd().split(" ");
+                const commandArguments = command.split(" ");
 
                 switch(commandArguments[0].toLowerCase()) {
                     case "clear":
@@ -21,7 +21,7 @@ $(document).ready(function() {
                         break;
 
                     default:
-                        insertIntoCommandHistory("Undefined command!\n")
+                        insertIntoCommandHistory("Undefined command!")
                 }
             }
 
@@ -53,6 +53,6 @@ function clearCommandHandler() {
 
 //Insert into history h
 function insertIntoCommandHistory(text) {
-    $('#CommandHistory').val($('#CommandHistory').val() + text);
+    $('#CommandHistory').val($('#CommandHistory').val() + text + "\n");
     $('#CommandHistory').scrollTop(9999999999);
 }
