@@ -13,6 +13,10 @@ $(document).ready(function() {
                         clearCommandHandler();
                         break;
 
+                    case "create":
+                        createCommandHandler(command);
+                        break;
+
                     default:
                         insertOnCommandHistory("Undefined command!")
                 }
@@ -22,6 +26,22 @@ $(document).ready(function() {
         }
     });
 });
+
+function createCommandHandler (command) {
+    $('#ClassDiagramCanvas').append(`
+        <table id="ClassModel">
+            <tr>
+                <th>Class Name</th>
+            </tr>
+            <tr>
+                <th>Class Atributtes</th>
+            </tr>
+            <tr>
+                <th>Class Methods</th>
+            </tr>
+        </table>
+    `)
+}
 
 function clearCommandHandler () {
     $('#CommandHistory').val("");
