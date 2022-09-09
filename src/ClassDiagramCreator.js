@@ -37,11 +37,13 @@ $(document).ready(function() {
 //Creation handlers
 function createCommandHandler (creationArgumnts) {
     try {
-        if((creationArgumnts.length < 2) || (creationArgumnts[1].toLowerCase() != "class")) {
+        if((creationArgumnts.length < 2) ||
+        (creationArgumnts[1].toLowerCase() != "class")) {
             throw CREATE_TYPE_UNDEFINED;
         }
-        
-        if((creationArgumnts.length < 3) || !(/^[A-Za-z]*$/.test(creationArgumnts[2].toLowerCase()))) {
+
+        if((creationArgumnts.length < 3) ||
+        !(/^[A-Za-z]*$/.test(creationArgumnts[2].toLowerCase()))) {
             throw CLASS_NAME_MISSING;
         }
     } catch (error) {
