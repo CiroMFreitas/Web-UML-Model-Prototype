@@ -46,10 +46,10 @@ $(document).ready(function() {
 //Creation handlers
 //Command syntax:
 //create MODELTYPE NAME ?-a (*VISIBILITY*:TYPE:NAME, .., *VISIBILITY*:TYPE:NAME)? ?-m (*VISIBILITY*:TYPE:NAME, .., *VISIBILITY*:TYPE:NAME)?
+//Sorrounded by * is defaulted to private if omitted
+//Surrounded by ? may be omitted
 //Supported MODELTYPEs: class
 //Supported VISIBILITY: private, protected, public
-//Surrounded by ? may be omitted
-//Sorrounded by * is defaulted to private if omitted
 function createCommandHandler(creationArguments) {
     try {
         //Validade minimum arguments
