@@ -87,42 +87,10 @@ function createCommandHandler(creationArguments) {
         `);
     
         //Create attributes row
-        if(attributes) {
-            attributes.forEach((attribute) => {
-                $('#'+className+'ClassAttributesRow').append(`
-                    <div id="${className}Class${attribute[2]}Row">
-                        <div id="${className}Class${attribute[2]}AttributeVisibility" class="FloatRow">${attribute[0]}&nbsp</div>
-                        <div id="${className}Class${attribute[2]}AttributeType" class="FloatRow">${attribute[1]}:&nbsp</div>
-                        <div id="${className}Class${attribute[2]}AttributeName">${attribute[2]}</div>
-                    </div>
-                `);
-            });
-        } else {
-            $('#'+className+'ClassAttributesRow').append(`
-                <div id="${className}ClassEmptyAttributeRow">
-                    -
-                </div>
-            `);
-        }
+        addToModelHandler(className, "class", attributes, "attribute");
     
         //Create methods row
-        if(methods) {
-            methods.forEach((method) => {
-                $('#'+className+'ClassMethodsRow').append(`
-                    <div id="${className}Class${method[2]}Row">
-                        <div id="${className}Class${method[2]}MethodVisibility" class="FloatRow">${method[0]}&nbsp</div>
-                        <div id="${className}Class${method[2]}MethodType" class="FloatRow">${method[1]}:&nbsp</div>
-                        <div id="${className}Class${method[2]}MethodName">${method[2]}</div>
-                    </div>
-                `);
-            });
-        } else {
-            $('#'+className+'ClassMethodsRow').append(`
-                <div id="${className}ClassEmptyMethodRow">
-                    -
-                </div>
-            `);
-        }
+        addToModelHandler(className, "class", methods, "method");
     } catch (error) {
         insertIntoCommandHistory(error)
     }
@@ -319,4 +287,20 @@ function modelNameChangeHandler(commandArguments, className) {
     }
 
     return newName;
+}
+
+function addToModelHandler(modelName, modelType, arguments, argumentType) {
+    //Uppercase firstletter
+    modelType = modelType.charAt(0).toUpperCase() + modelType.slice(1);
+    argumentType = argumentType.charAt(0).toUpperCase() + argumentType.slice(1);
+
+    arguments.forEach((argument) => {
+        $('#'+modelName+modelType+argumentType+'sRow').append(`
+            <div id="${modelName}${modelType}${argument[2]}Row">
+                <div id="${modelName}${modelType}${argument[2]}${argumentType}Visibility" class="FloatRow">${argument[0]}&nbsp</div>
+                <div id="${modelName}${modelType}${argument[2]}${argumentType}Type" class="FloatRow">${argument[1]}:&nbsp</div>
+                <div id="${modelName}${modelType}${argument[2]}${argumentType}Name">${argument[2]}</div>
+            </div>
+        `);
+    });
 }
