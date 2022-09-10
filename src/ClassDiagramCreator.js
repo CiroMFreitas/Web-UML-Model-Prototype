@@ -44,6 +44,12 @@ $(document).ready(function() {
 });
 
 //Creation handlers
+//Command syntax:
+//create MODELTYPE NAME ?-a (*VISIBILITY*:TYPE:NAME, .., *VISIBILITY*:TYPE:NAME)? ?-m (*VISIBILITY*:TYPE:NAME, .., *VISIBILITY*:TYPE:NAME)?
+//Supported MODELTYPEs: class
+//Supported VISIBILITY: private, protected, public
+//Surrounded by ? may be omitted
+//Sorrounded by * is defaulted to private if omitted
 function createCommandHandler(creationArguments) {
     try {
         //Validade minimum arguments
@@ -137,6 +143,7 @@ function alterCommandHandler(alterationArguments) {
         nameValidationHandler(alterationArguments[2]);
         var className = alterationArguments[2]; //Create Class table
 
+        //Handles possible name change
         const newName = modelNameChangeHandler(alterationArguments, className);
         if (newName) {
             className = newName;
