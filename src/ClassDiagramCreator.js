@@ -129,6 +129,9 @@ function createCommandHandler(creationArguments) {
 }
 
 //Alteration handlers
+//create MODELTYPE NAME ?-n NEWNAME?
+//Supported MODELTYPEs: class
+//Surrounded by ? may be omitted
 function alterCommandHandler(alterationArguments) {
     try {
         //Validade minimum arguments
