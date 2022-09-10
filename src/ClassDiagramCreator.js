@@ -1,6 +1,7 @@
 //Errors
 const UNDEFINED_COMMAND = "Undefined command!";
 const CREATE_ERROR = "Create must have at minimum type and name!";
+const ALTER_ERROR = "Create must have at minimum type, name and one argument!";
 const TYPE_UNDEFINED = "Specified type is undefined!"
 const CLASS_NAME_ERROR = "Name used is invalid or missing!";
 const ARGUMENTS_ERROR = "Arguments are missing or invalid!"
@@ -25,6 +26,10 @@ $(document).ready(function() {
 
                     case "create":
                         createCommandHandler(commandArguments);
+                        break;
+
+                    case "alter":
+                        alterCommandHandler(commandArguments);
                         break;
 
                     default:
@@ -111,6 +116,25 @@ function createCommandHandler(creationArguments) {
                 </div>
             `);
         }
+    } catch (error) {
+        insertIntoCommandHistory(error)
+    }
+}
+
+//Alteration handlers
+function alterCommandHandler(creationArguments) {
+    try {
+        //Validade minimum arguments
+        if(creationArguments.length < 4) {
+            throw ALTER_ERROR;
+        }
+
+        //Type name must exist and be alphabetic character only
+        typeValidationHandler(creationArguments[1]);
+
+        //Class name must be alphabetic character only
+        nameValidationHandler(creationArguments[2]);
+        const className = creationArguments[2];
     } catch (error) {
         insertIntoCommandHistory(error)
     }
