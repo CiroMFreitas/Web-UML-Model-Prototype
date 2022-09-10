@@ -1,6 +1,8 @@
 //Errors
-const CREATE_TYPE_UNDEFINED = "Type chosen for creation is undefined!";
-const CLASS_NAME_MISSING = "Class name is missing or invalid on creation!";
+const UNDEFINED_COMMAND = "Undefined command!";
+const CREATE_ERROR = "Create must have at minimum type and name!";
+const TYPE_UNDEFINED = "Specified type is undefined!"
+const CLASS_NAME_ERROR = "Name used is invalid or missing!";
 const ARGUMENTS_ERROR = "Arguments are missing or invalid!"
 
 $(document).ready(function() {
@@ -26,7 +28,7 @@ $(document).ready(function() {
                         break;
 
                     default:
-                        insertIntoCommandHistory("Undefined command!");
+                        insertIntoCommandHistory(UNDEFINED_COMMAND);
                 }
             }
 
@@ -38,16 +40,16 @@ $(document).ready(function() {
 //Creation handlers
 function createCommandHandler(creationArguments) {
     try {
-        if((creationArguments.length < 2) ||
-        (creationArguments[1].toLowerCase() != "class")) {
-            throw CREATE_TYPE_UNDEFINED;
+        //Validade minimum arguments
+        if(creationArguments.length < 3) {
+            throw CREATE_ERROR;
         }
 
         //Class name must exist and be alphabetic character only
-        if((creationArguments.length < 3) ||
-        !(/^[A-Za-z]*$/.test(creationArguments[2].toLowerCase()))) {
-            throw CLASS_NAME_MISSING;
-        }
+        typeValidationHandler(creationArguments[1]);
+
+        //Class name must exist and be alphabetic character only
+        nameValidationHandler(creationArguments[2]);
         const className = creationArguments[2];
 
         //Get methods
@@ -138,8 +140,7 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
                 lastArgumentPosition = i;
             }
         }
-        
-        let arguments = creationArgumnts.slice(startArgumentPosition + 1, lastArgumentPosition + 1);
+
         if((creationArgumnts.length < startArgumentPosition + 1) ||
         (creationArgumnts[firstArgumentPosition][0] != "(") ||
         (creationArgumnts[lastArgumentPosition].lastIndexOf(")") == -1)) {
@@ -147,14 +148,17 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
         }
 
         //Remove ()
-        arguments[0] = creationArgumnts[firstArgumentPosition].replace("(", "");
-        arguments[arguments.length - 1] = creationArgumnts[lastArgumentPosition].replace(")", "");
+        creationArgumnts[firstArgumentPosition] = creationArgumnts[firstArgumentPosition].replace("(", "");
+        creationArgumnts[lastArgumentPosition] = creationArgumnts[lastArgumentPosition].replace(")", "");
+        
+        let arguments = creationArgumnts.slice(startArgumentPosition + 1, lastArgumentPosition + 1);
 
         if(creationArgumnts[firstArgumentPosition] == "") {
             throw ARGUMENTS_ERROR;
         }
 
         for(let i = 0; i < arguments.length; i++) {
+            //Removes uncessary chacters and split values into array
             arguments[i] = arguments[i].replace(",", "").split(":");
     
             switch(arguments[i][0].toLowerCase()) {
@@ -177,8 +181,30 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
                         throw ARGUMENTS_ERROR;
                     }
             }
+
+            //Argument type and name must have alphabetical characters only
+            nameValidationHandler(arguments[i][2]);
+            nameValidationHandler(arguments[i][3]);
         };
     
         return arguments;
+    }
+}
+
+//Type validation
+function typeValidationHandler(type) {
+    const types = [
+        "class"
+    ];
+
+    if(!types.includes(type)) {
+        throw TYPE_UNDEFINED;
+    }
+}
+
+//Name validation
+function nameValidationHandler(name) {
+    if(!(/^[A-Za-z]*$/.test(name))) {
+        throw CLASS_NAME_ERROR;
     }
 }
