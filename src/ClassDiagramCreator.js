@@ -129,9 +129,14 @@ function createCommandHandler(creationArguments) {
 }
 
 //Alteration handlers
-//create MODELTYPE NAME ?-n NEWNAME?
-//Supported MODELTYPEs: class
+//Command syntax:
+//alter MODELTYPE NAME ?-n NEWNAME? ?-a (ACTION .., ACTION)? ?-m (ACTION .., ACTION)?
 //Surrounded by ? may be omitted
+//Supported MODELTYPEs: class
+//Supported ACTIONs: add, rmv, alt
+//Action add, inserts new attribute/method to the bottom of the named model, syntax is add:*VISIBILITY*:TYPE:NAME, surrounded by * is defaulted to private
+//Action rmv, remeves named attribute/method in named model, syntax is rmv:NAME
+//Action alt, changes named attribute/method in named model, syntax is alt:NAME:VISIBILITY:TYPE:NEWNAME, - is used to define that field is not to be changed
 function alterCommandHandler(alterationArguments) {
     try {
         //Validade minimum arguments
