@@ -170,8 +170,8 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
             throw ARGUMENTS_ERROR;
         }
 
+        //Removes uncessary chacters and split values into array
         for(let i = 0; i < arguments.length; i++) {
-            //Removes uncessary chacters and split values into array
             arguments[i] = arguments[i].replace(",", "").split(":");
     
             switch(arguments[i][0].toLowerCase()) {
