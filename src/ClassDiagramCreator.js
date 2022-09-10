@@ -87,10 +87,26 @@ function createCommandHandler(creationArguments) {
         `);
     
         //Create attributes row
-        addToModelHandler(className, "class", attributes, "attribute");
+        if(attributes) {
+            addToModelHandler(className, "class", attributes, "attribute");
+        } else {
+            $('#'+className+'ClassAttributesRow').append(`
+                <div id="${className}ClassEmptyAttributeRow">
+                    -
+                </div>
+            `);
+        }
     
         //Create methods row
-        addToModelHandler(className, "class", methods, "method");
+        if(methods) {
+            addToModelHandler(className, "class", methods, "method");
+        } else {
+            $('#'+className+'ClassMethodsRow').append(`
+                <div id="${className}ClassEmptyMethodRow">
+                    -
+                </div>
+            `);
+        }
     } catch (error) {
         insertIntoCommandHistory(error)
     }
@@ -170,11 +186,14 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
             throw ARGUMENTS_ERROR;
         }
 
-        //Removes uncessary chacters and split values into array
+        //Removes unnecessary characters and split values into array
         for(let i = 0; i < arguments.length; i++) {
-            arguments[i] = arguments[i].replace(",", "").split(":");
+            if(arguments[i].toLowerCase().indexOf("add:") != -1) {
+                arguments[i] = arguments[i].toLowerCase().replace("add:", "");
+            }
+            arguments[i] = arguments[i].toLowerCase().replace(",", "").split(":");
     
-            switch(arguments[i][0].toLowerCase()) {
+            switch(arguments[i][0]) {
                 case "private":
                     arguments[i][0] = "-";
                     break;
