@@ -191,9 +191,9 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
             if(arguments[i].toLowerCase().indexOf("add:") != -1) {
                 arguments[i] = arguments[i].toLowerCase().replace("add:", "");
             }
-            arguments[i] = arguments[i].toLowerCase().replace(",", "").split(":");
+            arguments[i] = arguments[i].replace(",", "").split(":");
     
-            switch(arguments[i][0]) {
+            switch(arguments[i][0].toLowerCase()) {
                 case "private":
                     arguments[i][0] = "-";
                     break;
