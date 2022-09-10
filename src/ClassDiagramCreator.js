@@ -289,11 +289,13 @@ function modelNameChangeHandler(commandArguments, className) {
     return newName;
 }
 
+//Model information insertion handler
 function addToModelHandler(modelName, modelType, arguments, argumentType) {
     //Uppercase firstletter
     modelType = modelType.charAt(0).toUpperCase() + modelType.slice(1);
     argumentType = argumentType.charAt(0).toUpperCase() + argumentType.slice(1);
 
+    //Insertion on model's html
     arguments.forEach((argument) => {
         $('#'+modelName+modelType+argumentType+'sRow').append(`
             <div id="${modelName}${modelType}${argument[2]}Row">
