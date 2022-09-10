@@ -45,10 +45,10 @@ function createCommandHandler(creationArguments) {
             throw CREATE_ERROR;
         }
 
-        //Class name must exist and be alphabetic character only
+        //Type name must exist and be alphabetic character only
         typeValidationHandler(creationArguments[1]);
 
-        //Class name must exist and be alphabetic character only
+        //Class name must be alphabetic character only
         nameValidationHandler(creationArguments[2]);
         const className = creationArguments[2];
 
@@ -182,7 +182,7 @@ function argumentsHandler(startArgumentPosition, creationArgumnts) {
                     }
             }
 
-            //Argument type and name must have alphabetical characters only
+            //Argument type and name must be alphabetical characters only
             nameValidationHandler(arguments[i][2]);
             nameValidationHandler(arguments[i][3]);
         };
