@@ -46,8 +46,8 @@ $(document).ready(function() {
 //Creation handlers
 //Command syntax:
 //create MODELTYPE NAME ?-a (*VISIBILITY*:TYPE:NAME, .., *VISIBILITY*:TYPE:NAME)? ?-m (*VISIBILITY*:TYPE:NAME, .., *VISIBILITY*:TYPE:NAME)?
-//Sorrounded by * is defaulted to private if omitted
-//Surrounded by ? may be omitted
+//Argument surrounded by * is defaulted to private if omitted
+//Argument surrounded by ? may be omitted
 //Supported MODELTYPEs: class
 //Supported VISIBILITY: private, protected, public
 function createCommandHandler(creationArguments) {
@@ -99,10 +99,10 @@ function createCommandHandler(creationArguments) {
 //Alteration handlers
 //Command syntax:
 //alter MODELTYPE NAME ?-n NEWNAME? ?-a (ACTION .., ACTION)? ?-m (ACTION .., ACTION)?
-//Surrounded by ? may be omitted
+//Argument surrounded by ? may be omitted
 //Supported MODELTYPEs: class
 //Supported ACTIONs: add, rmv, alt
-//Action add, inserts new attribute/method to the bottom of the named model, syntax is add:*VISIBILITY*:TYPE:NAME, surrounded by * is defaulted to private
+//Action add, inserts new attribute/method to the bottom of the named model, syntax is add:*VISIBILITY*:TYPE:NAME, argument surrounded by * is defaulted to private
 //Action rmv, removes named attribute/method in named model, syntax is rmv:NAME
 //Action alt, changes named attribute/method in named model, syntax is alt:NAME:VISIBILITY:TYPE:NEWNAME, - is used to define that field is not to be changed
 function alterCommandHandler(alterationArguments) {
