@@ -121,7 +121,7 @@ function alterCommandHandler(alterationArguments) {
 
         //Handles possible name change
         const newName = modelNameChangeHandler(alterationArguments, className);
-        if (newName) {
+        if(newName) {
             className = newName;
         }
     } catch (error) {
