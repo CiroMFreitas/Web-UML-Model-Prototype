@@ -398,7 +398,7 @@ function removeInModelHandler(modelName, modelType, arguments, argumentType) {
     });
 
     //Removes empty row place holder if present
-    if($('#' + modelName + modelType + argumentType + 'sRow').length == 1) {
+    if($('#' + modelName + modelType + argumentType + 'sRow').children().length == 1) {
         $('#' + modelName + modelType + argumentType + 'sRow').append(`
             <div id="${modelName}${modelType}Empty${argumentType}Row">
                 -
