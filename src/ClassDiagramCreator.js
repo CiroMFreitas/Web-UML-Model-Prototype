@@ -376,7 +376,7 @@ function addToModelHandler(modelName, modelType, arguments, argumentType) {
     //Insertion on model's html
     arguments.forEach((argument) => {
         const htmlRowId = modelName + modelType + argument[2] + argumentType;
-        
+
         $('#' + htmlId + 'sRow').append(`
             <div id="${htmlRowId}Row">
                 <div id="${htmlRowId}Visibility" class="FloatRow">${argument[0]}&nbsp</div>
@@ -395,8 +395,17 @@ function removeInModelHandler(modelName, modelType, arguments, argumentType) {
 
     //Insertion on model's html
     arguments.forEach((argument) => {
-        $('#'+modelName+modelType+argument+argumentType+'Row').remove();
+        $('#' + modelName + modelType + argument + argumentType + 'Row').remove();
     });
+
+    //Removes empty row place holder if present
+    if($('#' + modelName + modelType + argumentType + 'sRow').length == 1) {
+        $('#' + modelName + modelType + argumentType + 'sRow').append(`
+            <div id="${modelName}${modelType}Empty${argumentType}Row">
+                -
+            </div>
+        `);
+    }
 }
 
 //Model information insertion handler
