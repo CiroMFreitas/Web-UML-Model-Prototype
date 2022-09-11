@@ -215,7 +215,7 @@ function addArgumentsHandler(arguments) {
         }
         argument = argument.replace(",", "").split(":");
     
-            switch(argument[0].toLowerCase()) {
+        switch(argument[0].toLowerCase()) {
             case "private":
                 argument[0] = "-";
                 break;
@@ -230,10 +230,10 @@ function addArgumentsHandler(arguments) {
 
             default:
                 if(argument.length == 2){
-                argument.unshift("-");
-            } else {
-                throw ARGUMENTS_ERROR;
-            }
+                    argument.unshift("-");
+                } else {
+                    throw ARGUMENTS_ERROR;
+                }
         }
 
         //Argument type and name must be alphabetical characters only
