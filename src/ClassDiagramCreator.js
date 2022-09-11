@@ -43,6 +43,8 @@ $(document).ready(function() {
     });
 });
 
+// ---> COMMAND HANDLERS <---
+
 //Creation handlers
 //Command syntax:
 //create MODELTYPE NAME ?-a (*VISIBILITY*:TYPE:NAME, .., *VISIBILITY*:TYPE:NAME)? ?-m (*VISIBILITY*:TYPE:NAME, .., *VISIBILITY*:TYPE:NAME)?
@@ -50,6 +52,8 @@ $(document).ready(function() {
 //Argument surrounded by ? may be omitted
 //Supported MODELTYPEs: class
 //Supported VISIBILITY: private, protected, public
+//Description:
+//Creates model with desired type and information
 function createCommandHandler(creationArguments) {
     try {
         //Validade minimum arguments
@@ -129,6 +133,8 @@ function createCommandHandler(creationArguments) {
 //Action add, inserts new attribute/method to the bottom of the named model, syntax is add:*VISIBILITY*:TYPE:NAME, argument surrounded by * is defaulted to private
 //Action rmv, removes named attribute/method in named model, syntax is rmv:NAME
 //Action alt, changes named attribute/method in named model, syntax is alt:NAME:VISIBILITY:TYPE:NEWNAME, - is used to define that field is not to be changed
+//Description:
+//Changes named model information
 function alterCommandHandler(alterationArguments) {
     try {
         //Validade minimum arguments
@@ -198,76 +204,15 @@ function alterCommandHandler(alterationArguments) {
 }
 
 //Clear handler
+//Commandsyntax:
+//clear
+//Description:
+//Clears command history text
 function clearCommandHandler() {
     $('#CommandHistory').val("");
 }
 
-//Insert into history
-function insertIntoCommandHistory(text) {
-    $('#CommandHistory').val($('#CommandHistory').val() + text + "\n");
-    $('#CommandHistory').scrollTop(9999999999);
-}
-
-
-//Handle arguments for methods and attributes
-function addArgumentsHandler(arguments) {
-    const handledAddArguments = [];
-
-    //Removes command strutuctre characters and split values into array
-    arguments.forEach((argument) => {
-        if(argument.toLowerCase().indexOf("add:") != -1) {
-            argument = argument.toLowerCase().replace("add:", "");
-        }
-        argument = argument.replace(",", "").split(":");
-    
-        switch(argument[0].toLowerCase()) {
-            case "private":
-                argument[0] = "-";
-                break;
-
-            case "public":
-                argument[0] = "+";
-                break;
-    
-            case "protected":
-                argument[0] = "~";
-                break;
-
-            default:
-                if(argument.length == 2){
-                    argument.unshift("-");
-                } else {
-                    throw ARGUMENTS_ERROR;
-                }
-        }
-
-        //Argument type and name must be alphabetical characters only
-        nameValidationHandler(argument[2]);
-        nameValidationHandler(argument[3]);
-
-        handledAddArguments.push(argument);
-    });
-
-    return handledAddArguments;
-}
-
-//Type validation
-function typeValidationHandler(type) {
-    const types = [
-        "class"
-    ];
-
-    if(!types.includes(type)) {
-        throw TYPE_UNDEFINED;
-    }
-}
-
-//Name validation
-function nameValidationHandler(name) {
-    if(!(/^[A-Za-z]*$/.test(name))) {
-        throw CLASS_NAME_ERROR;
-    }
-}
+// ---> DATA TO HTML HANDLERS <---
 
 //Model name change
 function modelNameChangeHandler(newName, model) {
@@ -339,7 +284,69 @@ function addToModelHandler(modelName, modelType, arguments, argumentType) {
     });
 }
 
-//Handle arguments for methods and attributes
+//Model information insertion handler
+function removeInModelHandler(modelName, modelType, arguments, argumentType) {
+    //Uppercase firstletter
+    modelType = modelType.charAt(0).toUpperCase() + modelType.slice(1);
+    argumentType = argumentType.charAt(0).toUpperCase() + argumentType.slice(1);
+
+    //Insertion on model's html
+    arguments.forEach((argument) => {
+        $('#'+modelName+modelType+argument+argumentType+'Row').remove();
+    });
+}
+
+//Insert into history
+function insertIntoCommandHistory(text) {
+    $('#CommandHistory').val($('#CommandHistory').val() + text + "\n");
+    $('#CommandHistory').scrollTop(9999999999);
+}
+
+// ---> UTILITY HANDLERS <---
+
+//Handle new arguments for methods and attributes
+function addArgumentsHandler(arguments) {
+    const handledAddArguments = [];
+
+    //Removes command strutuctre characters and split values into array
+    arguments.forEach((argument) => {
+        if(argument.toLowerCase().indexOf("add:") != -1) {
+            argument = argument.toLowerCase().replace("add:", "");
+        }
+        argument = argument.replace(",", "").split(":");
+    
+        switch(argument[0].toLowerCase()) {
+            case "private":
+                argument[0] = "-";
+                break;
+
+            case "public":
+                argument[0] = "+";
+                break;
+    
+            case "protected":
+                argument[0] = "~";
+                break;
+
+            default:
+                if(argument.length == 2){
+                    argument.unshift("-");
+                } else {
+                    throw ARGUMENTS_ERROR;
+                }
+        }
+
+        //Argument type and name must be alphabetical characters only
+        nameValidationHandler(argument[2]);
+        nameValidationHandler(argument[3]);
+
+        handledAddArguments.push(argument);
+    });
+
+    return handledAddArguments;
+}
+
+//Handle arguments removal of methods and attributes
 function rmvArgumentsHandler(arguments) {
     const handledAddArguments = [];
 
@@ -355,18 +362,6 @@ function rmvArgumentsHandler(arguments) {
     });
 
     return handledAddArguments;
-}
-
-//Model information insertion handler
-function removeInModelHandler(modelName, modelType, arguments, argumentType) {
-    //Uppercase firstletter
-    modelType = modelType.charAt(0).toUpperCase() + modelType.slice(1);
-    argumentType = argumentType.charAt(0).toUpperCase() + argumentType.slice(1);
-
-    //Insertion on model's html
-    arguments.forEach((argument) => {
-        $('#'+modelName+modelType+argument+argumentType+'Row').remove();
-    });
 }
 
 //Argument to array
@@ -395,4 +390,22 @@ function argumentToArrayHandler(firstArgumentPosition, arguments) {
     }
         
     return argumentsArray;
+}
+
+//Type validation
+function typeValidationHandler(type) {
+    const types = [
+        "class"
+    ];
+
+    if(!types.includes(type)) {
+        throw TYPE_UNDEFINED;
+    }
+}
+
+//Name validation
+function nameValidationHandler(name) {
+    if(!(/^[A-Za-z]*$/.test(name))) {
+        throw CLASS_NAME_ERROR;
+    }
 }
