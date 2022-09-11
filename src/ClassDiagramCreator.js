@@ -355,7 +355,7 @@ function addArgumentsHandler(arguments) {
 
 //Handle arguments removal of methods and attributes
 function rmvArgumentsHandler(arguments) {
-    const handledAddArguments = [];
+    const handledRmvArguments = [];
 
     //Removes command strutuctre characters and split values into array
     arguments.forEach((argument) => {
@@ -365,10 +365,10 @@ function rmvArgumentsHandler(arguments) {
         //Argument type and name must be alphabetical characters only
         nameValidationHandler(argument[1]);
 
-        handledAddArguments.push(argument[1]);
+        handledRmvArguments.push(argument[1]);
     });
 
-    return handledAddArguments;
+    return handledRmvArguments;
 }
 
 //Argument to array
