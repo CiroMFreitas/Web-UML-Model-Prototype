@@ -325,7 +325,7 @@ function addToModelHandler(modelName, modelType, arguments, argumentType) {
     //Insertion on model's html
     arguments.forEach((argument) => {
         $('#'+modelName+modelType+argumentType+'sRow').append(`
-            <div id="${modelName}${modelType}${argument[2]}Row">
+            <div id="${modelName}${modelType}${argument[2]}${argumentType}Row">
                 <div id="${modelName}${modelType}${argument[2]}${argumentType}Visibility" class="FloatRow">${argument[0]}&nbsp</div>
                 <div id="${modelName}${modelType}${argument[2]}${argumentType}Type" class="FloatRow">${argument[1]}:&nbsp</div>
                 <div id="${modelName}${modelType}${argument[2]}${argumentType}Name">${argument[2]}</div>
