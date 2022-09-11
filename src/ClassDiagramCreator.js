@@ -66,9 +66,9 @@ function createCommandHandler(creationArguments) {
 
         //Get attributes
         const attributeArgumentPosition = creationArguments.indexOf("-a");
-        let attributes = [];
+        let attributesArray = [];
         if(attributeArgumentPosition != -1) {
-            attributes = addArgumentsHandler(attributeArgumentPosition + 1, creationArguments);
+            attributesArray = argumentToArrayHandler(attributeArgumentPosition + 1, creationArguments);attributesArray = addArgumentsHandler(attributesArray);
         }
 
         //Get methods
@@ -222,31 +222,8 @@ function insertIntoCommandHistory(text) {
 
 
 //Handle arguments for methods and attributes
-function addArgumentsHandler(firstArgumentPosition, creationArguments) {
-    var lastArgumentPosition = creationArguments.length;
-    for(let i = firstArgumentPosition; i < lastArgumentPosition; i++) {
-        if(creationArguments[i].lastIndexOf(")") != -1) {
-            lastArgumentPosition = i;
-        }
-    }
-
-    if((creationArguments.length < firstArgumentPosition + 1) ||
-    (creationArguments[firstArgumentPosition][0] != "(") ||
-    (creationArguments[lastArgumentPosition].lastIndexOf(")") == -1)) {
-        throw ARGUMENTS_ERROR;
-    }
-
-    //Remove ()
-    creationArguments[firstArgumentPosition] = creationArguments[firstArgumentPosition].replace("(", "");
-    creationArguments[lastArgumentPosition] = creationArguments[lastArgumentPosition].replace(")", "");
-        
-    let arguments = creationArguments.slice(firstArgumentPosition, lastArgumentPosition + 1);
-
-    if(creationArguments[firstArgumentPosition] == "") {
-        throw ARGUMENTS_ERROR;
-    }
-
-    //Removes unnecessary characters and split values into array
+function addArgumentsHandler(arguments) {
+    //Removes command strutuctre characters and split values into array
     for(let i = 0; i < arguments.length; i++) {
         if(arguments[i].toLowerCase().indexOf("add:") != -1) {
             arguments[i] = arguments[i].toLowerCase().replace("add:", "");
@@ -368,4 +345,31 @@ function addToModelHandler(modelName, modelType, arguments, argumentType) {
             </div>
         `);
     });
+}
+//Argument to array
+function argumentToArrayHandler(firstArgumentPosition, arguments) {
+    var lastArgumentPosition = arguments.length;
+    for(let i = firstArgumentPosition; i < lastArgumentPosition; i++) {
+        if(arguments[i].lastIndexOf(")") != -1) {
+            lastArgumentPosition = i;
+        }
+    }
+
+    if((arguments.length < firstArgumentPosition + 1) ||
+    (arguments[firstArgumentPosition][0] != "(") ||
+    (arguments[lastArgumentPosition].lastIndexOf(")") == arguments.length)) {
+        throw ARGUMENTS_ERROR;
+    } 
+
+    //Remove ()
+    arguments[firstArgumentPosition] = arguments[firstArgumentPosition].replace("(", "");
+    arguments[lastArgumentPosition] = arguments[lastArgumentPosition].replace(")", "");
+        
+    const argumentsArray = arguments.slice(firstArgumentPosition, lastArgumentPosition + 1);
+
+    if(argumentsArray[firstArgumentPosition] == "") {
+        throw ARGUMENTS_ERROR;
+    }
+        
+    return argumentsArray;
 }
