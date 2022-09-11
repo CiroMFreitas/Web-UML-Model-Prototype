@@ -2,6 +2,7 @@
 const UNDEFINED_COMMAND = "Undefined command!";
 const CREATE_ERROR = "Create must have at minimum type and name!";
 const ALTER_ERROR = "Alter must have at minimum type, name and one argument!";
+const REMOVE_ERROR = "Remove must have type and name only!";
 const TYPE_UNDEFINED = "Specified type is undefined!";
 const CLASS_NAME_ERROR = "Name used is invalid or missing!";
 const ARGUMENTS_ERROR = "Arguments are missing or invalid!";
@@ -31,6 +32,10 @@ $(document).ready(function() {
 
                     case "alter":
                         alterCommandHandler(commandArguments);
+                        break;
+
+                    case "remove":
+                        removeCommandHandler(commandArguments);
                         break;
 
                     default:
@@ -260,6 +265,34 @@ function alterCommandHandler(alterationArguments) {
         if(nameChangeArgument != -1) {
             modelNameChangeHandler(newName, model);
         }
+    } catch (error) {
+        insertIntoCommandHistory(error)
+    }
+}
+
+//Creation handlers
+//Command syntax:
+//remove MODELTYPE NAME
+//Supported MODELTYPEs: class
+//Description:
+//Removes named model
+function removeCommandHandler(creationArguments) {
+    try {
+        //Validade minimum arguments
+        if(creationArguments.length != 3) {
+            throw REMOVE_ERROR;
+        }
+
+        //Type name must exist and be alphabetic character only
+        typeValidationHandler(creationArguments[1]);
+        const type = creationArguments[1].charAt(0).toUpperCase() + creationArguments[1].slice(1);
+
+        //Class name must be alphabetic character only
+        nameValidationHandler(creationArguments[2]);
+        const className = creationArguments[2];
+        
+        //Create Class table
+        $('#' + className + type).remove();
     } catch (error) {
         insertIntoCommandHistory(error)
     }
