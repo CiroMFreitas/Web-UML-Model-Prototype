@@ -95,8 +95,8 @@ function createCommandHandler(creationArguments) {
         `);
     
         //Create attributes row
-        if(attributes.length != 0) {
-            addToModelHandler(className, "class", attributes, "attribute");
+        if(attributesArray.length != 0) {
+            addToModelHandler(className, "class", attributesArray, "attribute");
         } else {
             $('#'+className+'ClassAttributesRow').append(`
                 <div id="${className}ClassEmptyAttributeRow">
@@ -162,41 +162,24 @@ function alterCommandHandler(alterationArguments) {
         let attrinutesToRmv = [];
         let attrinutesToAlt = [];
         if(attributeArgumentPosition != -1) {
-            let i = attributeArgumentPosition + 1;
-            if(!alterationArguments[i].includes("(")) {
-                throw ARGUMENTS_ERROR;
-            }
+            const attributesArguments = argumentToArrayHandler(attributeArgumentPosition + 1, alterationArguments);
 
-            do {
-                if(alterationArguments[i].toLowerCase().includes("add:")) {
-                    attrinutesToAdd.push(alterationArguments[i]);
-                } else if(alterationArguments[i].toLowerCase().includes("rmv:")) {
-                    attrinutesToRmv.push(alterationArguments[i]);
-                } else if(alterationArguments[i].toLowerCase().includes("alt:")) {
-                    attrinutesToAlt.push(alterationArguments[i]);
+            attributesArguments.forEach((attributeArgument) => {
+                if(attributeArgument.toLowerCase().includes("add:")) {
+                    attrinutesToAdd.push(attributeArgument);
+                } else if(attributeArgument.toLowerCase().includes("rmv:")) {
+                    attrinutesToRmv.push(attributeArgument);
+                } else if(attributeArgument.toLowerCase().includes("alt:")) {
+                    attrinutesToAlt.push(attributeArgument);
+                } else {
+                    throw ARGUMENTS_ERROR;
                 }
-
-                i++;
-            } while(!alterationArguments[i - 1].toLowerCase().includes(")"))
-    
-            //Add actions end point
-            if((attrinutesToAdd != 0) &&
-            (attrinutesToAdd[attrinutesToAdd.length - 1].indexOf(")") == -1)) {
-                attrinutesToAdd[attrinutesToAdd.length - 1].concat(")");
-            }
-            if((attrinutesToRmv != 0) &&
-            (attrinutesToRmv[attrinutesToRmv.length - 1].indexOf(")") == -1)) {
-                attrinutesToRmv[attrinutesToRmv.length - 1].concat(")");
-            }
-            if((attrinutesToAlt != 0) &&
-            (attrinutesToAlt[attrinutesToAlt.length - 1].indexOf(")") == -1)) {
-                attrinutesToAlt[attrinutesToAlt.length - 1].concat(")");
-            }
+            });
         }
 
         //Get attributes to be added
         if(attrinutesToAdd.length != 0) {
-            const addingAttributeArguments = addArgumentsHandler(0, attrinutesToAdd);
+            const addingAttributeArguments = addArgumentsHandler(attrinutesToAdd);
             addToModelHandler(className, "class", addingAttributeArguments, "attribute");
         }
 
