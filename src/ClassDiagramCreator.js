@@ -245,20 +245,7 @@ function nameValidationHandler(name) {
 }
 
 //Model name change
-function modelNameChangeHandler(commandArguments, className) {
-    //Checks if model exists
-    const model = $(`#${className}Class`);
-    if(model.length == 0) {
-        throw MODEL_NOT_FOUND;
-    }
-
-    //Checks if name is to be changed and valid
-    const nameChangeArgument = commandArguments.indexOf("-n");
-    if(nameChangeArgument == -1) {
-        return false;
-    }
-    const newName = commandArguments[nameChangeArgument + 1].trim();
-    nameValidationHandler(newName);
+function modelNameChangeHandler(newName, model) {
 
     //Changes base model html ids to new name format
     model.attr("id", `#${newName}Class`);
