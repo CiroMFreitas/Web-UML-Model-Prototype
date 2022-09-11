@@ -68,14 +68,14 @@ function createCommandHandler(creationArguments) {
         const attributeArgumentPosition = creationArguments.indexOf("-a");
         let attributes = [];
         if(attributeArgumentPosition != -1) {
-            attributes = argumentsHandler(attributeArgumentPosition + 1, creationArguments);
+            attributes = addArgumentsHandler(attributeArgumentPosition + 1, creationArguments);
         }
 
         //Get methods
         const methodArgumentPosition = creationArguments.indexOf("-m");
         let methods = [];
         if(methodArgumentPosition != -1) {
-            methods = argumentsHandler(methodArgumentPosition + 1, creationArguments);
+            methods = addArgumentsHandler(methodArgumentPosition + 1, creationArguments);
         }
     
         //Create Class table
@@ -196,7 +196,7 @@ function alterCommandHandler(alterationArguments) {
 
         //Get attributes to be added
         if(attrinutesToAdd.length != 0) {
-            const addingAttributeArguments = argumentsHandler(0, attrinutesToAdd);
+            const addingAttributeArguments = addArgumentsHandler(0, attrinutesToAdd);
             addToModelHandler(className, "class", addingAttributeArguments, "attribute");
         }
 
@@ -222,7 +222,7 @@ function insertIntoCommandHistory(text) {
 
 
 //Handle arguments for methods and attributes
-function argumentsHandler(firstArgumentPosition, creationArguments) {
+function addArgumentsHandler(firstArgumentPosition, creationArguments) {
     var lastArgumentPosition = creationArguments.length;
     for(let i = firstArgumentPosition; i < lastArgumentPosition; i++) {
         if(creationArguments[i].lastIndexOf(")") != -1) {
