@@ -181,7 +181,6 @@ function alterCommandHandler(alterationArguments) {
                     throw ARGUMENTS_ERROR;
                 }
             });
-
             //Handles alterating attributes arguments
             if(attrinutesToAdd.length != 0) {
                 attrinutesToAdd = addArgumentsHandler(attrinutesToAdd);
@@ -189,8 +188,11 @@ function alterCommandHandler(alterationArguments) {
             if(attrinutesToRmv.length != 0) {
                 attrinutesToRmv = rmvArgumentsHandler(attrinutesToRmv);
             }
+            if(attrinutesToAlt.length != 0) {
+                attrinutesToAlt = altArgumentsHandler(attrinutesToAlt);
+            }
         }
-        
+
         //Add new attributes
         if(attrinutesToAdd.length != 0) {
             addToModelHandler(className, "class", attrinutesToAdd, "attribute");
@@ -199,6 +201,11 @@ function alterCommandHandler(alterationArguments) {
         //Remove attributes
         if(attrinutesToRmv.length != 0) {
             removeInModelHandler(className, "class", attrinutesToRmv, "attribute");
+        }
+
+        //Alterate attributes
+        if(attrinutesToAlt.length != 0) {
+            alterateInModelHandler(className, "class", attrinutesToAlt, "attribute");
         }
 
         //Handles possible name change
@@ -303,6 +310,41 @@ function removeInModelHandler(modelName, modelType, arguments, argumentType) {
     });
 }
 
+//Model information insertion handler
+function alterateInModelHandler(modelName, modelType, arguments, argumentType) {
+    //Uppercase firstletter
+    modelType = modelType.charAt(0).toUpperCase() + modelType.slice(1);
+    argumentType = argumentType.charAt(0).toUpperCase() + argumentType.slice(1);
+
+    //Insertion on model's html
+    arguments.forEach((argument) => {
+        //Html id prototype
+        const htmlId = modelName + modelType + argument[0] + argumentType;
+
+        //Visibility
+        if(argument[1] != "-") {
+            $('#' + htmlId + 'Visibility').text(`${argument[1]}\xa0`);
+        }
+
+        //Type
+        if(argument[2] != "-") {
+            $('#' + htmlId + 'Type').text(`${argument[2]}:\xa0`);
+        }
+
+        //Name
+        if(argument[3] != "-") {
+            $('#' + htmlId + 'Name').text(argument[3]);
+
+            //New ids
+            const newHtmlId = modelName + modelType + argument[3] + argumentType;
+            $('#' + htmlId + 'Row').attr("id", '#' + newHtmlId + 'Row');
+            $('#' + htmlId + 'Visibility').attr("id", '#' + newHtmlId + 'Visibility');
+            $('#' + htmlId + 'Type').attr("id", '#' + newHtmlId + 'Type');
+            $('#' + htmlId + 'Name').attr("id", '#' + newHtmlId + 'Name');
+        }
+    });
+}
+
 //Insert into history
 function insertIntoCommandHistory(text) {
     $('#CommandHistory').val($('#CommandHistory').val() + text + "\n");
@@ -369,6 +411,47 @@ function rmvArgumentsHandler(arguments) {
     });
 
     return handledRmvArguments;
+}
+
+//Handle arguments removal of methods and attributes
+function altArgumentsHandler(arguments) {
+    const handledAltArguments = [];
+
+    //Removes command strutuctre characters and split values into array
+    arguments.forEach((argument) => {
+        //Removes , and get to be altered and alt designation
+        argument = argument.replace(",", "").split(":");
+        argument.shift();
+
+        //Argument type and name must be alphabetical characters only
+        nameValidationHandler(argument[1]);
+        if(argument[5] != "-") {
+            nameValidationHandler(argument[5]);
+        }
+    
+        switch(argument[1].toLowerCase()) {
+            case "private":
+                argument[1] = "-";
+                break;
+
+            case "public":
+                argument[1] = "+";
+                break;
+    
+            case "protected":
+                argument[1] = "~";
+                break;
+
+            default:
+                if(argument[1] != "-"){
+                    throw ARGUMENTS_ERROR;
+                }
+        }
+
+        handledAltArguments.push(argument);
+    });
+
+    return handledAltArguments;
 }
 
 //Argument to array
