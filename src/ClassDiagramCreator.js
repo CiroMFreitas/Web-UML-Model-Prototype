@@ -85,7 +85,6 @@ function createCommandHandler(creationArguments) {
         let methodsArray = [];
         if(methodArgumentPosition != -1) {
             methodsArray = argumentToArrayHandler(methodArgumentPosition + 1, creationArguments);
-            console.log(methodsArray);
             methodsArray = addArgumentsHandler(methodsArray);
         }
     
