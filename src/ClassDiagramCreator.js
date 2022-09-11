@@ -176,11 +176,16 @@ function alterCommandHandler(alterationArguments) {
                 }
             });
         }
-
-        //Get attributes to be added
+        //Add new attributes
         if(attrinutesToAdd.length != 0) {
             const addingAttributeArguments = addArgumentsHandler(attrinutesToAdd);
             addToModelHandler(className, "class", addingAttributeArguments, "attribute");
+        }
+
+        //Remove attributes
+        if(attrinutesToRmv.length != 0) {
+            const removingAttributeArguments = rmvArgumentsHandler(attrinutesToRmv);
+            removeInModelHandler(className, "class", removingAttributeArguments, "attribute");
         }
 
         //Handles possible name change
@@ -333,6 +338,37 @@ function addToModelHandler(modelName, modelType, arguments, argumentType) {
         `);
     });
 }
+
+//Handle arguments for methods and attributes
+function rmvArgumentsHandler(arguments) {
+    const handledAddArguments = [];
+
+    //Removes command strutuctre characters and split values into array
+    arguments.forEach((argument) => {
+        //Removes , and get to be removed argument name
+        argument = argument.replace(",", "").split(":");
+
+        //Argument type and name must be alphabetical characters only
+        nameValidationHandler(argument[1]);
+
+        handledAddArguments.push(argument[1]);
+    });
+
+    return handledAddArguments;
+}
+
+//Model information insertion handler
+function removeInModelHandler(modelName, modelType, arguments, argumentType) {
+    //Uppercase firstletter
+    modelType = modelType.charAt(0).toUpperCase() + modelType.slice(1);
+    argumentType = argumentType.charAt(0).toUpperCase() + argumentType.slice(1);
+
+    //Insertion on model's html
+    arguments.forEach((argument) => {
+        $('#'+modelName+modelType+argument+argumentType+'Row').remove();
+    });
+}
+
 //Argument to array
 function argumentToArrayHandler(firstArgumentPosition, arguments) {
     var lastArgumentPosition = arguments.length;
