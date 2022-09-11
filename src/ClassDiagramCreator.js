@@ -206,40 +206,44 @@ function insertIntoCommandHistory(text) {
 
 //Handle arguments for methods and attributes
 function addArgumentsHandler(arguments) {
+    const handledAddArguments = [];
+
     //Removes command strutuctre characters and split values into array
-    for(let i = 0; i < arguments.length; i++) {
-        if(arguments[i].toLowerCase().indexOf("add:") != -1) {
-            arguments[i] = arguments[i].toLowerCase().replace("add:", "");
+    arguments.forEach((argument) => {
+        if(argument.toLowerCase().indexOf("add:") != -1) {
+            argument = argument.toLowerCase().replace("add:", "");
         }
-        arguments[i] = arguments[i].replace(",", "").split(":");
+        argument = argument.replace(",", "").split(":");
     
-            switch(arguments[i][0].toLowerCase()) {
+            switch(argument[0].toLowerCase()) {
             case "private":
-                arguments[i][0] = "-";
+                argument[0] = "-";
                 break;
 
             case "public":
-                arguments[i][0] = "+";
+                argument[0] = "+";
                 break;
     
             case "protected":
-                arguments[i][0] = "~";
+                argument[0] = "~";
                 break;
 
             default:
-                if(arguments[i].length == 2){
-                arguments[i].unshift("-");
+                if(argument.length == 2){
+                argument.unshift("-");
             } else {
                 throw ARGUMENTS_ERROR;
             }
         }
 
         //Argument type and name must be alphabetical characters only
-        nameValidationHandler(arguments[i][2]);
-        nameValidationHandler(arguments[i][3]);
-    };
+        nameValidationHandler(argument[2]);
+        nameValidationHandler(argument[3]);
 
-    return arguments;
+        handledAddArguments.push(argument);
+    });
+
+    return handledAddArguments;
 }
 
 //Type validation
