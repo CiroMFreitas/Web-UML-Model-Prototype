@@ -195,6 +195,52 @@ function alterCommandHandler(alterationArguments) {
             }
         }
 
+        //Seperate methods actions
+        const methodArgumentPosition = alterationArguments.indexOf("-m");
+        let methodsToAdd = [];
+        let methodsToRmv = [];
+        let methodsToAlt = [];
+        if(methodArgumentPosition != -1) {
+            const methodsArguments = argumentToArrayHandler(methodArgumentPosition + 1, alterationArguments);
+
+            methodsArguments.forEach((methodArgument) => {
+                if(methodArgument.toLowerCase().includes("add:")) {
+                    methodsToAdd.push(methodArgument);
+                } else if(methodArgument.toLowerCase().includes("rmv:")) {
+                    methodsToRmv.push(methodArgument);
+                } else if(methodArgument.toLowerCase().includes("alt:")) {
+                    methodsToAlt.push(methodArgument);
+                } else {
+                    throw ARGUMENTS_ERROR;
+                }
+            });
+            //Handles alterating methods arguments
+            if(methodsToAdd.length != 0) {
+                methodsToAdd = addArgumentsHandler(methodsToAdd);
+            }
+            if(methodsToRmv.length != 0) {
+                methodsToRmv = rmvArgumentsHandler(methodsToRmv);
+            }
+            if(methodsToAlt.length != 0) {
+                methodsToAlt = altArgumentsHandler(methodsToAlt);
+            }
+        }
+
+        //Add new methods
+        if(methodsToAdd.length != 0) {
+            addToModelHandler(className, "class", methodsToAdd, "method");
+        }
+
+        //Remove methods
+        if(methodsToRmv.length != 0) {
+            removeInModelHandler(className, "class", methodsToRmv, "method");
+        }
+
+        //Alterate methods
+        if(methodsToAlt.length != 0) {
+            alterateInModelHandler(className, "class", methodsToAlt, "method");
+        }
+
         //Add new attributes
         if(attrinutesToAdd.length != 0) {
             addToModelHandler(className, "class", attrinutesToAdd, "attribute");
