@@ -64,11 +64,19 @@ function createCommandHandler(creationArguments) {
         nameValidationHandler(creationArguments[2]);
         const className = creationArguments[2];
 
-        //Get methods
-        const methods = argumentsHandler(creationArguments.indexOf("-m"), creationArguments);
-
         //Get attributes
-        const attributes = argumentsHandler(creationArguments.indexOf("-a"), creationArguments);
+        const attributeArgumentPosition = creationArguments.indexOf("-a");
+        let attributes = [];
+        if(attributeArgumentPosition != -1) {
+            attributes = argumentsHandler(attributeArgumentPosition + 1, creationArguments);
+        }
+
+        //Get methods
+        const methodArgumentPosition = creationArguments.indexOf("-m");
+        let methods = [];
+        if(methodArgumentPosition != -1) {
+            methods = argumentsHandler(methodArgumentPosition + 1, creationArguments);
+        }
     
         //Create Class table
         $('#ClassDiagramCanvas').append(`
@@ -87,7 +95,7 @@ function createCommandHandler(creationArguments) {
         `);
     
         //Create attributes row
-        if(attributes) {
+        if(attributes.length != 0) {
             addToModelHandler(className, "class", attributes, "attribute");
         } else {
             $('#'+className+'ClassAttributesRow').append(`
@@ -98,7 +106,7 @@ function createCommandHandler(creationArguments) {
         }
     
         //Create methods row
-        if(methods) {
+        if(methods.length != 0) {
             addToModelHandler(className, "class", methods, "method");
         } else {
             $('#'+className+'ClassMethodsRow').append(`
@@ -158,69 +166,64 @@ function insertIntoCommandHistory(text) {
 
 
 //Handle arguments for methods and attributes
-function argumentsHandler(startArgumentPosition, creationArgumnts) {
-    //Arguments must be present, surrouded by () and must follow the Visibility:Type:Name format, although visibility may be omitted and defaulted to private
-    if(startArgumentPosition != -1) {
-        //Get arguments first and last positions
-        const firstArgumentPosition = startArgumentPosition + 1;
-        var lastArgumentPosition = creationArgumnts.length;
-        for(let i = startArgumentPosition + 1; i < lastArgumentPosition; i++) {
-            if(creationArgumnts[i].lastIndexOf(")") != -1) {
-                lastArgumentPosition = i;
-            }
+function argumentsHandler(firstArgumentPosition, creationArguments) {
+    var lastArgumentPosition = creationArguments.length;
+    for(let i = firstArgumentPosition; i < lastArgumentPosition; i++) {
+        if(creationArguments[i].lastIndexOf(")") != -1) {
+            lastArgumentPosition = i;
         }
+    }
 
-        if((creationArgumnts.length < startArgumentPosition + 1) ||
-        (creationArgumnts[firstArgumentPosition][0] != "(") ||
-        (creationArgumnts[lastArgumentPosition].lastIndexOf(")") == -1)) {
-            throw ARGUMENTS_ERROR;
-        }
+    if((creationArguments.length < firstArgumentPosition + 1) ||
+    (creationArguments[firstArgumentPosition][0] != "(") ||
+    (creationArguments[lastArgumentPosition].lastIndexOf(")") == -1)) {
+        throw ARGUMENTS_ERROR;
+    }
 
-        //Remove ()
-        creationArgumnts[firstArgumentPosition] = creationArgumnts[firstArgumentPosition].replace("(", "");
-        creationArgumnts[lastArgumentPosition] = creationArgumnts[lastArgumentPosition].replace(")", "");
+    //Remove ()
+    creationArguments[firstArgumentPosition] = creationArguments[firstArgumentPosition].replace("(", "");
+    creationArguments[lastArgumentPosition] = creationArguments[lastArgumentPosition].replace(")", "");
         
-        let arguments = creationArgumnts.slice(startArgumentPosition + 1, lastArgumentPosition + 1);
+    let arguments = creationArguments.slice(firstArgumentPosition, lastArgumentPosition + 1);
 
-        if(creationArgumnts[firstArgumentPosition] == "") {
-            throw ARGUMENTS_ERROR;
+    if(creationArguments[firstArgumentPosition] == "") {
+        throw ARGUMENTS_ERROR;
+    }
+
+    //Removes unnecessary characters and split values into array
+    for(let i = 0; i < arguments.length; i++) {
+        if(arguments[i].toLowerCase().indexOf("add:") != -1) {
+            arguments[i] = arguments[i].toLowerCase().replace("add:", "");
         }
-
-        //Removes unnecessary characters and split values into array
-        for(let i = 0; i < arguments.length; i++) {
-            if(arguments[i].toLowerCase().indexOf("add:") != -1) {
-                arguments[i] = arguments[i].toLowerCase().replace("add:", "");
-            }
-            arguments[i] = arguments[i].replace(",", "").split(":");
+        arguments[i] = arguments[i].replace(",", "").split(":");
     
             switch(arguments[i][0].toLowerCase()) {
-                case "private":
-                    arguments[i][0] = "-";
-                    break;
-    
-                case "public":
-                    arguments[i][0] = "+";
-                    break;
-    
-                case "protected":
-                    arguments[i][0] = "~";
-                    break;
-    
-                default:
-                    if(arguments[i].length == 2){
-                        arguments[i].unshift("-");
-                    } else {
-                        throw ARGUMENTS_ERROR;
-                    }
-            }
+            case "private":
+                arguments[i][0] = "-";
+                break;
 
-            //Argument type and name must be alphabetical characters only
-            nameValidationHandler(arguments[i][2]);
-            nameValidationHandler(arguments[i][3]);
-        };
+            case "public":
+                arguments[i][0] = "+";
+                break;
     
-        return arguments;
-    }
+            case "protected":
+                arguments[i][0] = "~";
+                break;
+
+            default:
+                if(arguments[i].length == 2){
+                arguments[i].unshift("-");
+            } else {
+                throw ARGUMENTS_ERROR;
+            }
+        }
+
+        //Argument type and name must be alphabetical characters only
+        nameValidationHandler(arguments[i][2]);
+        nameValidationHandler(arguments[i][3]);
+    };
+
+    return arguments;
 }
 
 //Type validation
@@ -304,8 +307,6 @@ function modelNameChangeHandler(commandArguments, className) {
     } else {
         methods[1].id = newName + "ClassEmptyMethodRow";
     }
-
-    return newName;
 }
 
 //Model information insertion handler
