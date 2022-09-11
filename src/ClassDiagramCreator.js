@@ -366,14 +366,16 @@ function addToModelHandler(modelName, modelType, arguments, argumentType) {
     //Uppercase firstletter
     modelType = modelType.charAt(0).toUpperCase() + modelType.slice(1);
     argumentType = argumentType.charAt(0).toUpperCase() + argumentType.slice(1);
+    const htmlId = modelName + modelType + argumentType;
+    const htmlRowId = modelName + modelType + argument[2] + argumentType;
 
     //Insertion on model's html
     arguments.forEach((argument) => {
-        $('#'+modelName+modelType+argumentType+'sRow').append(`
-            <div id="${modelName}${modelType}${argument[2]}${argumentType}Row">
-                <div id="${modelName}${modelType}${argument[2]}${argumentType}Visibility" class="FloatRow">${argument[0]}&nbsp</div>
-                <div id="${modelName}${modelType}${argument[2]}${argumentType}Type" class="FloatRow">${argument[1]}:&nbsp</div>
-                <div id="${modelName}${modelType}${argument[2]}${argumentType}Name">${argument[2]}</div>
+        $('#' + htmlId + 'sRow').append(`
+            <div id="${htmlRowId}Row">
+                <div id="${htmlRowId}Visibility" class="FloatRow">${argument[0]}&nbsp</div>
+                <div id="${htmlRowId}Type" class="FloatRow">${argument[1]}:&nbsp</div>
+                <div id="${htmlRowId}Name">${argument[2]}</div>
             </div>
         `);
     });
