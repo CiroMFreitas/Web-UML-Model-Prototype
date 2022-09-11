@@ -181,17 +181,24 @@ function alterCommandHandler(alterationArguments) {
                     throw ARGUMENTS_ERROR;
                 }
             });
+
+            //Handles alterating attributes arguments
+            if(attrinutesToAdd.length != 0) {
+                attrinutesToAdd = addArgumentsHandler(attrinutesToAdd);
+            }
+            if(attrinutesToRmv.length != 0) {
+                attrinutesToRmv = rmvArgumentsHandler(attrinutesToRmv);
+            }
         }
+        
         //Add new attributes
         if(attrinutesToAdd.length != 0) {
-            const addingAttributeArguments = addArgumentsHandler(attrinutesToAdd);
-            addToModelHandler(className, "class", addingAttributeArguments, "attribute");
+            addToModelHandler(className, "class", attrinutesToAdd, "attribute");
         }
 
         //Remove attributes
         if(attrinutesToRmv.length != 0) {
-            const removingAttributeArguments = rmvArgumentsHandler(attrinutesToRmv);
-            removeInModelHandler(className, "class", removingAttributeArguments, "attribute");
+            removeInModelHandler(className, "class", attrinutesToRmv, "attribute");
         }
 
         //Handles possible name change
