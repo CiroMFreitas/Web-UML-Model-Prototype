@@ -202,7 +202,7 @@ function clearCommandHandler() {
     $('#CommandHistory').val("");
 }
 
-//Insert into history h
+//Insert into history
 function insertIntoCommandHistory(text) {
     $('#CommandHistory').val($('#CommandHistory').val() + text + "\n");
     $('#CommandHistory').scrollTop(9999999999);
