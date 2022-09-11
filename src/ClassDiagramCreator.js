@@ -184,9 +184,9 @@ function alterCommandHandler(alterationArguments) {
             (attrinutesToAdd[attrinutesToAdd.length - 1].indexOf(")") == -1)) {
                 attrinutesToAdd[attrinutesToAdd.length - 1].concat(")");
             }
-            if((attrinutesToAlt != 0) &&
-            (attrinutesToAlt[attrinutesToRmv.length - 1].indexOf(")") == -1)) {
-                attrinutesToAlt[attrinutesToRmv.length - 1].concat(")");
+            if((attrinutesToRmv != 0) &&
+            (attrinutesToRmv[attrinutesToRmv.length - 1].indexOf(")") == -1)) {
+                attrinutesToRmv[attrinutesToRmv.length - 1].concat(")");
             }
             if((attrinutesToAlt != 0) &&
             (attrinutesToAlt[attrinutesToAlt.length - 1].indexOf(")") == -1)) {
