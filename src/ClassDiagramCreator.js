@@ -367,10 +367,16 @@ function addToModelHandler(modelName, modelType, arguments, argumentType) {
     modelType = modelType.charAt(0).toUpperCase() + modelType.slice(1);
     argumentType = argumentType.charAt(0).toUpperCase() + argumentType.slice(1);
     const htmlId = modelName + modelType + argumentType;
-    const htmlRowId = modelName + modelType + argument[2] + argumentType;
+
+    //Removes empty row place holder if present
+    if($('#' + modelName + modelType + 'Empty' + argumentType + 'Row').length != 0) {
+        $('#' + modelName + modelType + 'Empty' + argumentType + 'Row').remove();
+    }
 
     //Insertion on model's html
     arguments.forEach((argument) => {
+        const htmlRowId = modelName + modelType + argument[2] + argumentType;
+        
         $('#' + htmlId + 'sRow').append(`
             <div id="${htmlRowId}Row">
                 <div id="${htmlRowId}Visibility" class="FloatRow">${argument[0]}&nbsp</div>
