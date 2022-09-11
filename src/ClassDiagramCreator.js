@@ -143,10 +143,66 @@ function alterCommandHandler(alterationArguments) {
         nameValidationHandler(alterationArguments[2]);
         var className = alterationArguments[2]; //Create Class table
 
+        //Checks if model exists
+        const model = $(`#${className}Class`);
+        if(model.length == 0) {
+            throw MODEL_NOT_FOUND;
+        }
+
+        //Checks if name is to be changed and valid
+        const nameChangeArgument = alterationArguments.indexOf("-n");
+        const newName = alterationArguments[nameChangeArgument + 1].trim();
+        if(nameChangeArgument != -1) {
+            nameValidationHandler(newName);
+        }
+
+        //Seperate attributes actions
+        const attributeArgumentPosition = alterationArguments.indexOf("-a");
+        let attrinutesToAdd = [];
+        let attrinutesToRmv = [];
+        let attrinutesToAlt = [];
+        if(attributeArgumentPosition != -1) {
+            let i = attributeArgumentPosition + 1;
+            if(!alterationArguments[i].includes("(")) {
+                throw ARGUMENTS_ERROR;
+            }
+
+            do {
+                if(alterationArguments[i].toLowerCase().includes("add:")) {
+                    attrinutesToAdd.push(alterationArguments[i]);
+                } else if(alterationArguments[i].toLowerCase().includes("rmv:")) {
+                    attrinutesToRmv.push(alterationArguments[i]);
+                } else if(alterationArguments[i].toLowerCase().includes("alt:")) {
+                    attrinutesToAlt.push(alterationArguments[i]);
+                }
+
+                i++;
+            } while(!alterationArguments[i - 1].toLowerCase().includes(")"))
+    
+            //Add actions end point
+            if((attrinutesToAdd != 0) &&
+            (attrinutesToAdd[attrinutesToAdd.length - 1].indexOf(")") == -1)) {
+                attrinutesToAdd[attrinutesToAdd.length - 1].concat(")");
+            }
+            if((attrinutesToAlt != 0) &&
+            (attrinutesToAlt[attrinutesToRmv.length - 1].indexOf(")") == -1)) {
+                attrinutesToAlt[attrinutesToRmv.length - 1].concat(")");
+            }
+            if((attrinutesToAlt != 0) &&
+            (attrinutesToAlt[attrinutesToAlt.length - 1].indexOf(")") == -1)) {
+                attrinutesToAlt[attrinutesToAlt.length - 1].concat(")");
+            }
+        }
+
+        //Get attributes to be added
+        if(attrinutesToAdd.length != 0) {
+            const addingAttributeArguments = argumentsHandler(0, attrinutesToAdd);
+            addToModelHandler(className, "class", addingAttributeArguments, "attribute");
+        }
+
         //Handles possible name change
-        const newName = modelNameChangeHandler(alterationArguments, className);
-        if(newName) {
-            className = newName;
+        if(nameChangeArgument != -1) {
+            modelNameChangeHandler(newName, model);
         }
     } catch (error) {
         insertIntoCommandHistory(error)
