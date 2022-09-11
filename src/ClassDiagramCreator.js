@@ -132,7 +132,7 @@ function createCommandHandler(creationArguments) {
 //Supported ACTIONs: add, rmv, alt
 //Action add, inserts new attribute/method to the bottom of the named model, syntax is add:*VISIBILITY*:TYPE:NAME, argument surrounded by * is defaulted to private
 //Action rmv, removes named attribute/method in named model, syntax is rmv:NAME
-//Action alt, changes named attribute/method in named model, syntax is alt:NAME:VISIBILITY:TYPE:NEWNAME, - is used to define that field is not to be changed
+//Action alt, changes named attribute/method in named model, syntax is alt:NAME:VISIBILITY:TYPE:NEWNAME, - is used to define which field is not to be changed
 //Description:
 //Changes named model information
 function alterCommandHandler(alterationArguments) {
