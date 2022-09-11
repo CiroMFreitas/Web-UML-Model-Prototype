@@ -77,9 +77,11 @@ function createCommandHandler(creationArguments) {
 
         //Get methods
         const methodArgumentPosition = creationArguments.indexOf("-m");
-        let methods = [];
+        let methodsArray = [];
         if(methodArgumentPosition != -1) {
-            methods = addArgumentsHandler(methodArgumentPosition + 1, creationArguments);
+            methodsArray = argumentToArrayHandler(methodArgumentPosition + 1, creationArguments);
+            console.log(methodsArray);
+            methodsArray = addArgumentsHandler(methodsArray);
         }
     
         //Create Class table
@@ -110,8 +112,8 @@ function createCommandHandler(creationArguments) {
         }
     
         //Create methods row
-        if(methods.length != 0) {
-            addToModelHandler(className, "class", methods, "method");
+        if(methodsArray.length != 0) {
+            addToModelHandler(className, "class", methodsArray, "method");
         } else {
             $('#'+className+'ClassMethodsRow').append(`
                 <div id="${className}ClassEmptyMethodRow">
