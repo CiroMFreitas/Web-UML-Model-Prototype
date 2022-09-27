@@ -1,6 +1,12 @@
+import ClassDiagramCanvas from "./ClassDiagramCanvas/ClassDiagramCanvas";
+import CommandPanel from "./CommandPanel/CommandPanel";
+
 function App() {
   return (
-    <div>Hello World!</div>
+    <>
+      <ClassDiagramCanvas />
+      <CommandPanel />
+    </>
   );
 }
 
