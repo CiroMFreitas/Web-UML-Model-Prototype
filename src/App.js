@@ -1,11 +1,14 @@
-import ClassDiagramCanvas from "./ClassDiagramCanvas/ClassDiagramCanvas";
-import CommandPanel from "./CommandPanel/CommandPanel";
+import { useState } from "react";
+import ClassDiagramCanvas from "./Components/ClassDiagramCanvas/ClassDiagramCanvas";
+import CommandPanel from "./Components/CommandPanel/CommandPanel";
 
 function App() {
+  const [commands, setCommands] = useState([]);
+
   return (
     <>
       <ClassDiagramCanvas />
-      <CommandPanel />
+      <CommandPanel commands={ commands } />
     </>
   );
 }
