@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
+import { v4 as uuidv4 } from "uuid";
 
-export default function CommandPanel({ commands }) {
+export default function CommandPanel({ commands, setCommands }) {
+  const commandLineRef = useRef();
+
+  function commandLineHandler(event) {
+    const commandLine = commandLineRef.current.value;
+
+    if(event.keyCode === 13) {
+      commandLineRef.current.value = null;
+      
+      setCommands(prevCommands => {
+        return [...prevCommands,
+          {
+            id: uuidv4(),
+            line: commandLine
+          }]
+      });
+    }
+  }
+
   return (
     <div id="CommandPanel">
       <div id="CommandHistory" aria-live="polite" disabled>
@@ -13,7 +32,7 @@ export default function CommandPanel({ commands }) {
         }
       </div>
       
-      <textarea id="CommandConsole" aria-label="Console de comandos" autoFocus></textarea>
+      <textarea id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label="Console de comandos" autoFocus></textarea>
     </div>
   );
 }
