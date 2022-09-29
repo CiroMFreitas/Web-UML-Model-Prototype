@@ -25,16 +25,18 @@ export default function CommandPanel({ commands, setCommands }) {
             commandLine
           ];
 
-          const handledCommandLine = classDiagramCommandsHandler(commandLine.line);
-
-          console.log(handledCommandLine);
-          if(handledCommandLine[0] === "error") {
+          try {
+            const handledCommandLine = classDiagramCommandsHandler(commandLine.line);
+            
+            console.log(handledCommandLine);
+          } catch(error) {
+            console.log(error);
+            
             updatedCommands.push({
               id: uuidv4(),
-              line: handledCommandLine[1]
+              line: error
             });
           }
-          console.log(updatedCommands);
 
           return updatedCommands
         });
