@@ -2,26 +2,41 @@ import React, { useRef } from 'react';
 import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
+import classDiagramCommandsHandler from '../Handlers/ClassDiagramCommandsHandler';
 
 export default function CommandPanel({ commands, setCommands }) {
   const commandLineRef = useRef();
 
-  // Handlers
-  function commandLineHandler(event) {
-    const commandLine = commandLineRef.current.value;
-
+  // Local Handlers
+  async function commandLineHandler(event) {
     if(event.keyCode === 13) {
+      const commandLine = {
+        id: uuidv4(),
+        line: commandLineRef.current.value
+      };
       commandLineRef.current.value = null;
 
-      if(commandLine.toLowerCase().includes("clear")) {
+      if(commandLine.line.toLowerCase().trim() === "clear") {
         setCommands([]);
-      } else {      
+      } else if(commandLine.line.trim() !== "") {
         setCommands(prevCommands => {
-          return [...prevCommands,
-            {
+          let updatedCommands = [
+            ...prevCommands,
+            commandLine
+          ];
+
+          const handledCommandLine = classDiagramCommandsHandler(commandLine.line);
+
+          console.log(handledCommandLine);
+          if(handledCommandLine[0] === "error") {
+            updatedCommands.push({
               id: uuidv4(),
-              line: commandLine
-            }]
+              line: handledCommandLine[1]
+            });
+          }
+          console.log(updatedCommands);
+
+          return updatedCommands
         });
       }
     }
