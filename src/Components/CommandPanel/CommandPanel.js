@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 export default function CommandPanel({ commands, setCommands }) {
   const commandLineRef = useRef();
 
+  // Handlers
   function commandLineHandler(event) {
     const commandLine = commandLineRef.current.value;
 
@@ -22,6 +23,7 @@ export default function CommandPanel({ commands, setCommands }) {
     }
   }
 
+  // Component
   return (
     <div id="CommandPanel">
       <div id="CommandHistory" aria-live="polite" disabled>
@@ -36,5 +38,3 @@ export default function CommandPanel({ commands, setCommands }) {
     </div>
   );
 }
-/*
-*/

@@ -7,7 +7,7 @@ function App() {
 
   //Onload actions
   /*useEffect(() => {
-    return nothing for now
+    return "nothing for now"
   }, []);*/
 
   return (
