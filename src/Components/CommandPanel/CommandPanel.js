@@ -12,14 +12,18 @@ export default function CommandPanel({ commands, setCommands }) {
 
     if(event.keyCode === 13) {
       commandLineRef.current.value = null;
-      
-      setCommands(prevCommands => {
-        return [...prevCommands,
-          {
-            id: uuidv4(),
-            line: commandLine
-          }]
-      });
+
+      if(commandLine.toLowerCase().includes("clear")) {
+        setCommands([]);
+      } else {      
+        setCommands(prevCommands => {
+          return [...prevCommands,
+            {
+              id: uuidv4(),
+              line: commandLine
+            }]
+        });
+      }
     }
   }
 
