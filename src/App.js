@@ -3,7 +3,7 @@ import ClassDiagramCanvas from "./Components/ClassDiagramCanvas/ClassDiagramCanv
 import CommandPanel from "./Components/CommandPanel/CommandPanel";
 
 function App() {
-  const [commands, setCommands] = useState([]);
+  const [handledCommands, setHandledCommands] = useState([]);
 
   //Onload actions
   /*useEffect(() => {
@@ -12,8 +12,8 @@ function App() {
 
   return (
     <>
-      <ClassDiagramCanvas />
-      <CommandPanel commands={ commands } setCommands={ setCommands }/>
+      <ClassDiagramCanvas handledCommands={ handledCommands } setHandledCommands={ setHandledCommands } />
+      <CommandPanel handledCommands={ handledCommands } setHandledCommands={ setHandledCommands } />
     </>
   );
 }

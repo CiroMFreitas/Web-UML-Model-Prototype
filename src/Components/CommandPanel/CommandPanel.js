@@ -1,14 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
 import classDiagramCommandsHandler from '../Handlers/ClassDiagramCommandsHandler';
 
-export default function CommandPanel({ commands, setCommands }) {
+export default function CommandPanel({ handledCommands, setHandledCommands }) {
   const commandLineRef = useRef();
+  const [commands, setCommands] = useState([]);
 
   // Local Handlers
-  async function commandLineHandler(event) {
+  function commandLineHandler(event) {
     if(event.keyCode === 13) {
       const commandLine = {
         id: uuidv4(),
@@ -27,8 +28,17 @@ export default function CommandPanel({ commands, setCommands }) {
 
           try {
             const handledCommandLine = classDiagramCommandsHandler(commandLine.line);
-            
+
+            setHandledCommands(prevHandledCommands => {
+              return [
+                ...prevHandledCommands,
+                handledCommandLine
+              ];
+            });
+
             console.log(handledCommandLine);
+            
+            console.log(handledCommands);
           } catch(error) {
             console.log(error);
             
