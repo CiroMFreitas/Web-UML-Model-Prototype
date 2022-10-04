@@ -22,7 +22,7 @@ export default function classDiagramCommandsHandler(commandLine) {
     }
 
     switch(command[0].toLowerCase()) {
-        case "adcionar":
+        case "adicionar":
             handledCommandLine = addCommandHandler(command);
             break;
 
@@ -58,7 +58,7 @@ function addArgumentsHandler(command, argumentIndex) {
         arguments: []
     }
 
-    for(let i = argumentIndex + 1; !command && command[i].includes(":"); i++) {
+    for(let i = argumentIndex + 1; !command[i] && command[i].includes(":"); i++) {
         const addArgument = command[i].split(":");
         
         switch(addArgument.length) {

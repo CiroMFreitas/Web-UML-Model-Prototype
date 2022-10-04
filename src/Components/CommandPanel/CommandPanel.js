@@ -1,12 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
 import classDiagramCommandsHandler from '../Handlers/ClassDiagramCommandsHandler';
+import HandledCommandsContext from '../../Contexts/HandledCommandContext';
 
-export default function CommandPanel({ handledCommands, setHandledCommands }) {
+export default function CommandPanel() {
   const commandLineRef = useRef();
   const [commands, setCommands] = useState([]);
+  const { newHandledCommand } = useContext(HandledCommandsContext);
 
   // Local Handlers
   function commandLineHandler(event) {
@@ -27,18 +29,7 @@ export default function CommandPanel({ handledCommands, setHandledCommands }) {
           ];
 
           try {
-            const handledCommandLine = classDiagramCommandsHandler(commandLine.line);
-
-            setHandledCommands(prevHandledCommands => {
-              return [
-                ...prevHandledCommands,
-                handledCommandLine
-              ];
-            });
-
-            console.log(handledCommandLine);
-            
-            console.log(handledCommands);
+            newHandledCommand(classDiagramCommandsHandler(commandLine.line));
           } catch(error) {
             console.log(error);
             
@@ -65,7 +56,7 @@ export default function CommandPanel({ handledCommands, setHandledCommands }) {
         }
       </div>
       
-      <textarea id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label="Console de comandos" autoFocus></textarea>
+      <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label="Console de comandos" autoFocus></input>
     </div>
   );
 }

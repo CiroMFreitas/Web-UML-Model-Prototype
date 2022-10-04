@@ -1,9 +1,8 @@
-import { useState } from "react";
 import ClassDiagramCanvas from "./Components/ClassDiagramCanvas/ClassDiagramCanvas";
 import CommandPanel from "./Components/CommandPanel/CommandPanel";
+import { HandledCommandsProvider } from "./Contexts/HandledCommandContext";
 
 function App() {
-  const [handledCommands, setHandledCommands] = useState([]);
 
   //Onload actions
   /*useEffect(() => {
@@ -11,10 +10,12 @@ function App() {
   }, []);*/
 
   return (
-    <>
-      <ClassDiagramCanvas handledCommands={ handledCommands } setHandledCommands={ setHandledCommands } />
-      <CommandPanel handledCommands={ handledCommands } setHandledCommands={ setHandledCommands } />
-    </>
+    <div>
+      <HandledCommandsProvider>
+        <ClassDiagramCanvas />
+        <CommandPanel />
+      </HandledCommandsProvider>
+    </div>
   );
 }
 
