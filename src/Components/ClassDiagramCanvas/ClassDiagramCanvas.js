@@ -10,9 +10,9 @@ export default function ClassDiagramCanvas() {
     <div id="ClassDiagramCanvas">
       <h1>TEST</h1>
       {
-        classes.map((class) => {
-          <div key={ class.id }>
-            <h1>{ class.entityName }</h1>
+        classes.map((classData) => {
+          <div key={ classData.id }>
+            <h1>{ classData.entityName }</h1>
           </div>
         })
       }
