@@ -3,12 +3,12 @@ import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
 import classDiagramCommandsHandler from '../Handlers/ClassDiagramCommandsHandler';
-import HandledCommandsContext from '../../Contexts/HandledCommandContext';
+import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
 export default function CommandPanel() {
   const commandLineRef = useRef();
   const [commands, setCommands] = useState([]);
-  const { newHandledCommand } = useContext(HandledCommandsContext);
+  const { commandHandler } = useContext(CommandHandlerContext);
 
   // Local Handlers
   function commandLineHandler(event) {
@@ -29,7 +29,7 @@ export default function CommandPanel() {
           ];
 
           try {
-            newHandledCommand(classDiagramCommandsHandler(commandLine.line));
+            commandHandler(classDiagramCommandsHandler(commandLine.line));
           } catch(error) {
             console.log(error);
             

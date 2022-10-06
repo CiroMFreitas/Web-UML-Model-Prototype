@@ -1,22 +1,21 @@
 import React, { useContext } from 'react';
-import HandledCommandsContext from '../../Contexts/HandledCommandContext';
+import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 import "./ClassDiagramCanvas.css";
 
 export default function ClassDiagramCanvas() {
-  const { handledCommands } = useContext(HandledCommandsContext);
+  const { classes } = useContext(CommandHandlerContext);
 
   // Component
   return (
     <div id="ClassDiagramCanvas">
-      { console.log(handledCommands) }
-      <h1>{ handledCommands.entityName }</h1>
+      <h1>TEST</h1>
+      {
+        classes.map((class) => {
+          <div key={ class.id }>
+            <h1>{ class.entityName }</h1>
+          </div>
+        })
+      }
     </div>
   );
 }
-/*
-      { handledCommands.map((handledCommand) => (
-        <div>
-          <h2>{ handledCommand.entityName }</h2>
-        </div>
-      ))}
-*/

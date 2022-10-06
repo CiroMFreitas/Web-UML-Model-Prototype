@@ -1,6 +1,6 @@
 import ClassDiagramCanvas from "./Components/ClassDiagramCanvas/ClassDiagramCanvas";
 import CommandPanel from "./Components/CommandPanel/CommandPanel";
-import { HandledCommandsProvider } from "./Contexts/HandledCommandContext";
+import { CommandHandlerProvider } from "./Contexts/CommandHandlerContext";
 
 function App() {
 
@@ -10,11 +10,11 @@ function App() {
   }, []);*/
 
   return (
-    <div>
-      <HandledCommandsProvider>
+    <div id="app">
+      <CommandHandlerProvider>
         <ClassDiagramCanvas />
         <CommandPanel />
-      </HandledCommandsProvider>
+      </CommandHandlerProvider>
     </div>
   );
 }

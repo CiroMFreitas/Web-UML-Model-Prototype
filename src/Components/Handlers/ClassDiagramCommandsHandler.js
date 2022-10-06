@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 // Supported Key Words
 const SUPPORTED_ENTITY_TYPES = [
     "classe"
@@ -35,36 +37,35 @@ export default function classDiagramCommandsHandler(commandLine) {
 
 function addCommandHandler(command) {
     const handledAddCommand = {
+        id: uuidv4(),
         type: "add",
         entity: command[1],
         entityName: command[2],
-        arguments: []
+        attributes: [],
+        methods: []
     }
 
     // Possible Arguments
     if(command.indexOf("-a") !== -1) {
-        handledAddCommand.arguments.push(addArgumentsHandler(command, command.indexOf("-a")));
+        handledAddCommand.attributes = addArgumentsHandler(command, command.indexOf("-a"));
     }
     if(command.indexOf("-m") !== -1) {
-        handledAddCommand.arguments.push(addArgumentsHandler(command, command.indexOf("-m")));
+        handledAddCommand.methods = addArgumentsHandler(command, command.indexOf("-m"));
     }
 
     return handledAddCommand;
 }
 
 function addArgumentsHandler(command, argumentIndex) {
-    const addArguments = {
-        type: command[argumentIndex],
-        arguments: []
-    }
+    const addArguments = []
 
-    for(let i = argumentIndex + 1; !command[i] && command[i].includes(":"); i++) {
+    for(let i = argumentIndex + 1; command[i] && command[i].includes(":"); i++) {
         const addArgument = command[i].split(":");
         
         switch(addArgument.length) {
             case 3:
                 if(SUPPORTED_VISIBILITY.includes(addArgument[0])) {
-                    addArguments.arguments.push({
+                    addArguments.push({
                         visibility: addArgument[0],
                         type: addArgument[1],
                         name: addArgument[2]
