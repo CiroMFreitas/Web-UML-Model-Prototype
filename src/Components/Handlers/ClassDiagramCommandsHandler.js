@@ -6,9 +6,9 @@ const SUPPORTED_ENTITY_TYPES = [
     "classe"
 ];
 const SUPPORTED_VISIBILITY = [
-    "public",
-    "protected",
-    "private"
+    "pública",
+    "protegida",
+    "privada"
 ]
 
 // ERRORS
