@@ -8,13 +8,13 @@ export default function ClassDiagramCanvas() {
   // Component
   return (
     <div id="ClassDiagramCanvas">
-      <h1>TEST</h1>
       {
-        classes.map((classData) => {
+        classes.map((classData) => (
           <div key={ classData.id }>
             <h1>{ classData.entityName }</h1>
+            <h2>{ classData.entityType }</h2>
           </div>
-        })
+        ))
       }
     </div>
   );

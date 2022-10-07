@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import upperCaseFirstLetter from "./StringHandler";
 
 // Supported Key Words
 const SUPPORTED_ENTITY_TYPES = [
@@ -39,8 +40,8 @@ function addCommandHandler(command) {
     const handledAddCommand = {
         id: uuidv4(),
         type: "add",
-        entity: command[1],
-        entityName: command[2],
+        entityType: upperCaseFirstLetter(command[1]),
+        entityName: upperCaseFirstLetter(command[2]),
         attributes: [],
         methods: []
     }
