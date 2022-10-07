@@ -1,20 +1,32 @@
 import { createContext, useState } from "react";
 
+// Supported Key Words
+const SUPPORTED_ENTITY_TYPES = {
+    classType: "classe"
+};
+
 const CommandHandlerContext = createContext();
 
 export function CommandHandlerProvider({ children }) {
-    const [classes, setClasses] = useState([]);
+    const [classEntities, setClassEntities] = useState([]);
 
     const commandHandler = (handledCommand) => {
         switch(handledCommand.type) {
             case "add":
                 delete handledCommand.type;
-                setClasses(prevClasses => {
-                    return [
-                        ...prevClasses,
-                        handledCommand
-                    ];
-                })
+                
+                switch(handledCommand.entityType.toLowerCase()) {
+                    case SUPPORTED_ENTITY_TYPES.classType:
+                    setClassEntities(prevClassEntities => {
+                        return [
+                            ...prevClassEntities,
+                            handledCommand
+                        ];
+                    });
+                    break;
+
+                    default:
+                }
                 break;
 
             default:
@@ -22,7 +34,7 @@ export function CommandHandlerProvider({ children }) {
     };
 
     return (
-        <CommandHandlerContext.Provider value={{ classes, commandHandler }}>
+        <CommandHandlerContext.Provider value={{ classEntities, commandHandler }}>
             { children }
         </CommandHandlerContext.Provider>
     );

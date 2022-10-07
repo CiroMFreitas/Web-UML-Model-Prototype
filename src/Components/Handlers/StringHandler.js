@@ -1,4 +1,4 @@
-export default function upperCaseFirstLetter(upperCaseString) {
+export function upperCaseFirstLetter(upperCaseString) {
     const firstLetter = upperCaseString.charAt(0).toUpperCase();
 
     return firstLetter + upperCaseString.substring(1)
