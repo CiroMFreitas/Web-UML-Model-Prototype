@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import { upperCaseFirstLetter } from "./UtilityHandlers/StringHandler";
-import addClassCommandHandler from "./ClassEnityHandlers/AddClassCommandHandler";
+import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
+import addClassCommandHandler from "../ClassEnityHandlers/AddClassCommandHandler";
 
 // Supported Key Words
 const SUPPORTED_COMMANDS = {
