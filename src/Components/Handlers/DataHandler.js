@@ -19,21 +19,4 @@ export function getKeyByValue(jsonObject, value) {
     return lookUpKey;
 }
 
-export function isValueInArray(searchingArray, value) {
-    searchingArray.forEach((index) => {
-        if(index === value) {
-            return true
-        } else if(Array.isArray(index)) {
-            if(isValueInArray(index, value)){
-                return true;
-            }
-        } else if(JSON.constructor === index.constructor) {
-            const key = getKeyByValue(index, value);
-            if(key !== "") {
-                return true;
-            }
-        }
-
-        return false;
-    });
 }
