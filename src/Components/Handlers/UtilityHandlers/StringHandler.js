@@ -1,3 +1,6 @@
+// Errors
+const ERROR_INVALID_CHARACHTER = "Nome ou tipo com carácter inválido!";
+
 /**
  * Receives a string and returns the same string with it's first letter upper cased.
  * 
@@ -16,6 +19,6 @@ export function upperCaseFirstLetter(upperCaseString) {
  */
 export function validateNameSpace(nameSpace) {
     if(!(/^[a-z0-9]+$/i.test(nameSpace))) {
-        throw "Nome ou tipo com carácter inválido!"
+        throw ERROR_INVALID_CHARACHTER;
     }
 }
