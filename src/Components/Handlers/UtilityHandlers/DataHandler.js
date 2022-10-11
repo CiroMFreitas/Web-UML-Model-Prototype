@@ -22,5 +22,5 @@ export function getKeyByValue(object, value) {
         }
     })
 
-    return false
+    return false;
 }
