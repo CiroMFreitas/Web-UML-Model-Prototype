@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from 'react';
 import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
-import classDiagramCommandsHandler from '../Handlers/ClassDiagramCommandsHandler';
+import classDiagramCommandsHandler from '../Handlers/AppHandlers/ClassDiagramCommandsHandler';
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
 export default function CommandPanel() {
