@@ -13,12 +13,14 @@ export function upperCaseFirstLetter(upperCaseString) {
 }
 
 /**
- * Checks if string's characthers are alphanumeric only, if not throws error.
+ * Checks if string's characthers are alphanumeric only, if true returns namespace, else throws error.
  * 
  * @param {String} nameSpace
  */
 export function validateNameSpace(nameSpace) {
     if(!(/^[a-z0-9]+$/i.test(nameSpace))) {
         throw ERROR_INVALID_CHARACHTER;
+    } else {
+        return nameSpace;
     }
 }
