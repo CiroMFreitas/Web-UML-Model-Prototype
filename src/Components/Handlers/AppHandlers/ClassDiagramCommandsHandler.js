@@ -27,7 +27,7 @@ const ERROR_UNRECOGNISED_ENTITY_TYPE = "Entidade não reconhecida!";
  * @param {String} commandLine
  */
 export default function classDiagramCommandsHandler(commandLine) {
-    const command = commandLine.replace("\n", "").split(" ");
+    const command = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
     const handledObjectEntity = {
         id: uuidv4()
     };
@@ -40,6 +40,7 @@ export default function classDiagramCommandsHandler(commandLine) {
         default:
             throw ERROR_UNRECOGNISED_COMMAND;
     }
+    console.log(handledObjectEntity);
 
     return handledObjectEntity;
 }

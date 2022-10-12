@@ -40,7 +40,9 @@ export default function addClassCommandHandler(command) {
     }
     
     if(command.indexOf("-m") !== -1) {
-        handledAddEntity.methods = addMethodsHandler(command, command.indexOf("-m") + 1);
+        const firstMethodArgumentIndex = command.indexOf("-m") + 1;
+
+        handledAddEntity.methods = addMethodsHandler(command.slice(firstMethodArgumentIndex));
     }
 
     return handledAddEntity;
@@ -49,19 +51,19 @@ export default function addClassCommandHandler(command) {
 // Handles possible attributes
 function addAttributesHandler(attributesArguments) {
     const addAttributes = []
-    const lastAttributeArgumentIndex = getLastArgumentIndexHandler(attributesArguments, "]");
+    const lastAttributeArgumentIndex = getLastArgumentIndexHandler(attributesArguments, "}");
     
     // Checks if attributes are sorrounded by [] and removes it
-    if(!attributesArguments[0].includes("[") ||
-    !attributesArguments[lastAttributeArgumentIndex].includes("]")) {
+    if(!attributesArguments[0].includes("{") ||
+    !attributesArguments[lastAttributeArgumentIndex].includes("}")) {
         throw ERROR_COMMAND_SYNTAX;
     }
-    attributesArguments[0] = attributesArguments[0].replace("[", "");
-    attributesArguments[lastAttributeArgumentIndex] = attributesArguments[lastAttributeArgumentIndex].replace("]", "");
+    attributesArguments[0] = attributesArguments[0].replace("{", "");
+    attributesArguments[lastAttributeArgumentIndex] = attributesArguments[lastAttributeArgumentIndex].replace("}", "");
 
     // Get and split attributes arguments
-    for(let i = 0; i <= attributesArguments; i++) {
-        const addAttribute = attributesArguments[i].replace(",", "").split(":");
+    for(let i = 0; i <= lastAttributeArgumentIndex; i++) {
+        const addAttribute = attributesArguments[i].split(":");
 
         // Create attribute depending on the number of arguments and supported visibility
         switch(addAttribute.length) {
