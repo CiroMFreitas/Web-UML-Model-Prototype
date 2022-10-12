@@ -60,17 +60,17 @@ function addAttributesHandler(attributesArguments) {
     attributesArguments[lastAttributeArgumentIndex] = attributesArguments[lastAttributeArgumentIndex].replace("]", "");
 
     // Get and split attributes arguments
-    attributesArguments.forEach((attributesArgument) => {
-        const addArgument = attributesArgument.replace(",", "").split(":");
+    for(let i = 0; i <= attributesArguments; i++) {
+        const addAttribute = attributesArguments[i].replace(",", "").split(":");
 
         // Create attribute depending on the number of arguments and supported visibility
-        switch(addArgument.length) {
+        switch(addAttribute.length) {
             case 3:
-                if(getKeyByValue(SUPPORTED_VISIBILITY, addArgument[0])) {
+                if(getKeyByValue(SUPPORTED_VISIBILITY, addAttribute[0])) {
                     addAttributes.push({
-                        visibility: addArgument[0],
-                        type: validateNameSpace(addArgument[1]),
-                        name: validateNameSpace(addArgument[2])
+                        visibility: addAttribute[0],
+                        type: validateNameSpace(addAttribute[1]),
+                        name: validateNameSpace(addAttribute[2])
                     });
                 } else {
                     throw ERROR_COMMAND_SYNTAX;
@@ -80,16 +80,15 @@ function addAttributesHandler(attributesArguments) {
             case 2:
                 addAttributes.push({
                     visibility: SUPPORTED_VISIBILITY.public[1],
-                    type: validateNameSpace(addArgument[0]),
-                    name: validateNameSpace(addArgument[1])
+                    type: validateNameSpace(addAttribute[0]),
+                    name: validateNameSpace(addAttribute[1])
                 });
                 break;
             
             default:
                 throw ERROR_COMMAND_SYNTAX;
         }
-
-    });
+    }
 
     return addAttributes;
 }
