@@ -98,6 +98,81 @@ function addAttributesHandler(attributesArguments) {
 // Handles possible methods
 function addMethodsHandler(methodsArguments) {
     const addMethods = [];
+    const lastMethodArgumentIndex = getLastArgumentIndexHandler(methodsArguments, "}");
+    
+    // Checks if methods are sorrounded by [] and removes it
+    if(!methodsArguments[0].includes("{") ||
+    !methodsArguments[lastMethodArgumentIndex].includes("}")) {
+        throw ERROR_COMMAND_SYNTAX;
+    }
+    methodsArguments[0] = methodsArguments[0].replace("{", "");
+    methodsArguments[lastMethodArgumentIndex] = methodsArguments[lastMethodArgumentIndex].replace("}", "");
+
+    // Get and split methods arguments
+    for(let i = 0; i <= lastMethodArgumentIndex;) {
+        const methodArgument = methodsArguments[i].split("(");
+        const addMethodArguments = methodArgument[0].split(":");
+        let addMethod;
+
+        // Create methdod depending on the number of arguments and supported visibility
+        switch(addMethodArguments.length) {
+            case 3:
+                if(getKeyByValue(SUPPORTED_VISIBILITY, addMethodArguments[0])) {
+                    addMethod = {
+                        visibility: addMethodArguments[0],
+                        type: validateNameSpace(addMethodArguments[1]),
+                        name: validateNameSpace(addMethodArguments[2]),
+                        parameters: []
+                    };
+                } else {
+                    throw ERROR_COMMAND_SYNTAX;
+                }
+                break;
+
+            case 2:
+                addMethod =  {
+                    visibility: SUPPORTED_VISIBILITY.public[1],
+                    type: validateNameSpace(addMethodArguments[0]),
+                    name: validateNameSpace(addMethodArguments[1]),
+                    parameters: []
+                };
+                break;
+            
+            default:
+                throw ERROR_COMMAND_SYNTAX;
+        }
+        
+        // Checks if next argument is a method parameter
+        let k = i + 1;
+        const addMethodParameters = [];
+
+        if(methodArgument[1] !== ")") {
+            const firstMethodParamanter = methodArgument[1].replace(")", "").split(":");
+            addMethodParameters.push({
+                type: firstMethodParamanter[0],
+                name: firstMethodParamanter[1]
+            });
+            
+            while(!methodsArguments[k - 1].includes(")")) {
+                const parameter = methodsArguments[k].replace(")", "").split(":");
+
+                if(parameter.length === 2) {
+                    addMethodParameters.push({
+                        type: parameter[0],
+                        name: parameter[1]
+                    });
+                } else {
+                    throw ERROR_COMMAND_SYNTAX;
+                }
+
+                k++;
+            }
+        }
+        addMethod.parameters = addMethodParameters;
+        i = k;
+
+        addMethods.push(addMethod);
+    }
 
     return addMethods;
 }
