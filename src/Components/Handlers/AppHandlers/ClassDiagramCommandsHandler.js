@@ -40,7 +40,6 @@ export default function classDiagramCommandsHandler(commandLine) {
         default:
             throw ERROR_UNRECOGNISED_COMMAND;
     }
-    console.log(handledObjectEntity);
 
     return handledObjectEntity;
 }
