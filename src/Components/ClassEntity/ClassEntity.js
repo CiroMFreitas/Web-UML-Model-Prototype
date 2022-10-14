@@ -54,8 +54,6 @@ export default function ClassEntity({ classEntity } ) {
           <div className="entityName">{ classEntity.entityName }</div>
       </div>
       { console.log(classEntity) }
-      { console.log(classEntity.attributes) }
-      { console.log(classEntity.methods) }
     </div>
   )
 }
