@@ -27,6 +27,8 @@ export function CommandHandlerProvider({ children }) {
 
             default:
         }
+        
+        return handledCommand;
     };
 
     return (
