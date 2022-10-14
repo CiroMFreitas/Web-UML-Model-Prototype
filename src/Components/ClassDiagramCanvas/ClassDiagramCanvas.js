@@ -11,7 +11,7 @@ export default function ClassDiagramCanvas() {
     <div id="ClassDiagramCanvas">
       {
         classEntities.map(classEntity => {
-          return <ClassEntity key={ classEntity.id } type={ classEntity.entityType } name={ classEntity.entityName } attributes={ classEntity.attributes } methods={ classEntity.attributes } />
+          return <ClassEntity key={ classEntity.id } classEntity={ classEntity } />
         })
       }
     </div>

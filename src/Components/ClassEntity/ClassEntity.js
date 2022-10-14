@@ -1,16 +1,16 @@
 import React from 'react';
 
-export default function ClassEntity(type, name, attributes, methods) {
+export default function ClassEntity({ classEntity } ) {
 
   /*
   function renderAttribute() {
-      if(attributes.length === 0) {
+      if(classEntity.attributes.length === 0) {
         return (
           <div className="emptyLine">-</div>
         );
       } else {
           return(
-              attributes.map((attribute) => (
+              classEntity.attributes.map((attribute) => (
                   <div className="attributeLine">
                     <div className="attributeVisibility">{ attribute.visibility }</div>
                     <div className="attributeType">{ attribute.type }</div>
@@ -22,13 +22,13 @@ export default function ClassEntity(type, name, attributes, methods) {
   }
 
   function renderMethod() {
-      if(methods.length === 0) {
+      if(classEntity.methods.length === 0) {
         return (
           <div className="emptyLine">-</div>
         );
       } else {
         return (
-          methods.map((method) => (
+          classEntity.methods.map((method) => (
               <div className="methodLine">
                 <div className="methodVisibility">{ method.visibility }</div>
                 <div className="methodType">{ method.type }</div>
@@ -50,13 +50,12 @@ export default function ClassEntity(type, name, attributes, methods) {
   return (
     <div className="classEntity">
       <div className="classTittle">
-          <div className="entityType">{ type }</div>
-          <div className="entityName">{ name }</div>
+          <div className="entityType">{ classEntity.entityType }</div>
+          <div className="entityName">{ classEntity.entityName }</div>
       </div>
-      { console.log(type) }
-      { console.log(name) }
-      { console.log(attributes) }
-      { console.log(methods) }
+      { console.log(classEntity) }
+      { console.log(classEntity.attributes) }
+      { console.log(classEntity.methods) }
     </div>
   )
 }
