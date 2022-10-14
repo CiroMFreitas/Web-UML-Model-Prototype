@@ -2,9 +2,7 @@ import React, { useContext, useRef, useState } from 'react';
 import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
-import classDiagramCommandsHandler from '../Handlers/AppHandlers/ClassDiagramCommandsHandler';
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
-import feedbackHandler from '../Handlers/AppHandlers/FeedbackHandler';
 
 export default function CommandPanel() {
   const commandLineRef = useRef();
@@ -30,13 +28,11 @@ export default function CommandPanel() {
           ];
 
           try {
-            const handledCommand = commandHandler(classDiagramCommandsHandler(commandLine.line));
-
-            const handledFeedback = feedbackHandler(handledCommand);
+            const feedback = commandHandler(commandLine.line);
             
             updatedCommands.push({
               id: uuidv4(),
-              line: handledFeedback
+              line: feedback
             });
           } catch(error) {
             console.log(error);

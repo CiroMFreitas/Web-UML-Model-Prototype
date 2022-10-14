@@ -1,31 +1,32 @@
 import { ERROR_COMMAND_SYNTAX } from "../../../Utils/Errors";
-import { SUPPORTED_VISIBILITY } from "../../../Utils/SupportedKeyWords";
+import { SUPPORTED_ENTITY_TYPES, SUPPORTED_VISIBILITY } from "../../../Utils/SupportedKeyWords";
 import { getKeyByValue, getLastArgumentIndexHandler } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
 
 /**
  * Handles command returning an object to be used as a classEntity.
  * 
- * @param {String} command 
+ * @param {String} commandArray 
  */
-export default function createClassCommandHandler(command) {
+export default function createClassCommandHandler(commandArray) {
     const handledCreateEntity = {
-        entityName: upperCaseFirstLetter(validateNameSpace(command[2])),
+        entityType: upperCaseFirstLetter(SUPPORTED_ENTITY_TYPES.class[1]),
+        entityName: upperCaseFirstLetter(validateNameSpace(commandArray[2])),
         attributes: [],
         methods: []
     }
 
     // Get attributes and methods
-    if(command.indexOf("-a") !== -1) {
-        const firstAttributeArgumentIndex = command.indexOf("-a") + 1;
+    if(commandArray.indexOf("-a") !== -1) {
+        const firstAttributeArgumentIndex = commandArray.indexOf("-a") + 1;
 
-        handledCreateEntity.attributes = createAttributesHandler(command.slice(firstAttributeArgumentIndex));
+        handledCreateEntity.attributes = createAttributesHandler(commandArray.slice(firstAttributeArgumentIndex));
     }
     
-    if(command.indexOf("-m") !== -1) {
-        const firstMethodArgumentIndex = command.indexOf("-m") + 1;
+    if(commandArray.indexOf("-m") !== -1) {
+        const firstMethodArgumentIndex = commandArray.indexOf("-m") + 1;
 
-        handledCreateEntity.methods = createMethodsHandler(command.slice(firstMethodArgumentIndex));
+        handledCreateEntity.methods = createMethodsHandler(commandArray.slice(firstMethodArgumentIndex));
     }
 
     return handledCreateEntity;
