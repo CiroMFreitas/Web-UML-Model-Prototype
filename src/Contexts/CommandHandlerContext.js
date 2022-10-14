@@ -7,10 +7,10 @@ export function CommandHandlerProvider({ children }) {
     const [classEntities, setClassEntities] = useState([]);
 
     const commandHandler = (handledCommand) => {
+        console.log(handledCommand.command);
         switch(handledCommand.command) {
             case SUPPORTED_COMMANDS.create[0]:
-                const newEntity = handledCommand;
-                delete newEntity.command;
+                const newEntity = { ...handledCommand };
 
                 createEntityHandler(newEntity);
 
@@ -23,10 +23,10 @@ export function CommandHandlerProvider({ children }) {
     };
 
     function createEntityHandler(newEntity) {
-        console.log(newEntity);
+        delete newEntity.command;
+
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(newEntity.entityType.toLowerCase()):
-                console.log(newEntity)
                 setClassEntities(prevClassEntities => {
                 return [
                     ...prevClassEntities,
