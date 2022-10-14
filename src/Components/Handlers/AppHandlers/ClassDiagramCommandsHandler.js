@@ -30,9 +30,25 @@ export default function classDiagramCommandsHandler(commandLine) {
     return handledObjectEntity;
 }
 
-// Check which type is to be handled
+// Following functions checks which type is to be handled according to command
 function addCommandHandler(command) {
-    const handledAddEntity = {
+    const handledCreateEntity = {
+        entityType: upperCaseFirstLetter(command[1].toLowerCase())
+    }
+    
+    switch(true) {
+        case SUPPORTED_ENTITY_TYPES.class.includes(handledCreateEntity.entityType.toLowerCase()):
+            Object.assign(handledCreateEntity, createClassCommandHandler(command));
+
+            break;
+            
+        default:
+            throw ERROR_UNRECOGNISED_ENTITY_TYPE;
+    }
+
+    return handledCreateEntity;
+}
+
         entityType: upperCaseFirstLetter(command[1].toLowerCase())
     }
     
