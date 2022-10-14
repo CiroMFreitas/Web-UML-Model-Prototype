@@ -10,7 +10,7 @@ export const SUPPORTED_COMMANDS = {
 }
 
 export const SUPPORTED_ENTITY_TYPES = {
-    classType: [
+    class: [
         "class",
         "classe"
     ]
