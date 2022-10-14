@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
+import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
 
 const CommandHandlerContext = createContext();
 
@@ -7,22 +7,13 @@ export function CommandHandlerProvider({ children }) {
     const [classEntities, setClassEntities] = useState([]);
 
     const commandHandler = (handledCommand) => {
-        switch(handledCommand.type) {
-            case "create":
-                delete handledCommand.type;
-                
-                switch(handledCommand.entityType.toLowerCase()) {
-                    case SUPPORTED_ENTITY_TYPES.classType:
-                    setClassEntities(prevClassEntities => {
-                        return [
-                            ...prevClassEntities,
-                            handledCommand
-                        ];
-                    });
-                    break;
+        switch(handledCommand.command) {
+            case SUPPORTED_COMMANDS.create[0]:
+                const newEntity = handledCommand;
+                delete newEntity.command;
 
-                    default:
-                }
+                createEntityHandler(newEntity);
+
                 break;
 
             default:
@@ -30,6 +21,23 @@ export function CommandHandlerProvider({ children }) {
         
         return handledCommand;
     };
+
+    function createEntityHandler(newEntity) {
+        console.log(newEntity);
+        switch(true) {
+            case SUPPORTED_ENTITY_TYPES.class.includes(newEntity.entityType.toLowerCase()):
+                console.log(newEntity)
+                setClassEntities(prevClassEntities => {
+                return [
+                    ...prevClassEntities,
+                    newEntity
+                ];
+            });
+            break;
+    
+            default:
+        }
+    }
 
     return (
         <CommandHandlerContext.Provider value={{ classEntities, commandHandler }}>
