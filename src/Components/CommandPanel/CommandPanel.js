@@ -4,6 +4,7 @@ import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
 import classDiagramCommandsHandler from '../Handlers/AppHandlers/ClassDiagramCommandsHandler';
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
+import feedbackHandler from '../Handlers/AppHandlers/FeedbackHandler';
 
 export default function CommandPanel() {
   const commandLineRef = useRef();
@@ -29,7 +30,14 @@ export default function CommandPanel() {
           ];
 
           try {
-            commandHandler(classDiagramCommandsHandler(commandLine.line));
+            const handledCommand = commandHandler(classDiagramCommandsHandler(commandLine.line));
+
+            const handledFeedback = feedbackHandler(handledCommand);
+            
+            updatedCommands.push({
+              id: uuidv4(),
+              line: handledFeedback
+            });
           } catch(error) {
             console.log(error);
             
