@@ -1,5 +1,4 @@
-// Errors
-const ERROR_MISSING_END_SYMBOL = "Um dos argumentos do comando não foi fechado apropriadamente!";
+import { ERROR_MISSING_END_SYMBOL } from "../../../Utils/Errors";
 
 /**
  * Returns top most key which has the searched value, the search will go deep if object contains another object within, but will use includes function on arrays.

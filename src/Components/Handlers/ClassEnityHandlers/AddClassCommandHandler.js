@@ -1,24 +1,7 @@
+import { ERROR_COMMAND_SYNTAX } from "../../../Utils/Errors";
+import { SUPPORTED_VISIBILITY } from "../../../Utils/SupportedKeyWords";
 import { getKeyByValue, getLastArgumentIndexHandler } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
-
-// Supported Key Words
-const SUPPORTED_VISIBILITY = {
-    public: [
-        "public",
-        "pública"
-    ],
-    protected: [
-        "protected",
-        "protegida"
-    ],
-    private: [
-        "private",
-        "privada"
-    ]
-};
-
-// Errors
-const ERROR_COMMAND_SYNTAX = "Erro na sintaxe do comando!"
 
 /**
  * Handles command returning an object to be used as a classEntity.

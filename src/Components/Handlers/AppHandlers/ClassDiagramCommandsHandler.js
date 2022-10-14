@@ -1,25 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
 import addClassCommandHandler from "../ClassEnityHandlers/AddClassCommandHandler";
-
-// Supported Key Words
-const SUPPORTED_COMMANDS = {
-    add: [
-        "add",
-        "adicionar"
-    ]
-}
-
-const SUPPORTED_ENTITY_TYPES = {
-    classType: [
-        "class",
-        "classe"
-    ]
-};
-
-// ERRORS
-const ERROR_UNRECOGNISED_COMMAND = "Comando não reconhecido!";
-const ERROR_UNRECOGNISED_ENTITY_TYPE = "Entidade não reconhecida!";
+import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../../../Utils/SupportedKeyWords";
+import { ERROR_UNRECOGNISED_COMMAND, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../../../Utils/Errors";
 
 /**
  * Receives a command line and handles it into an object to be stored and rendered on application.

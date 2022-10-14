@@ -1,9 +1,5 @@
 import { createContext, useState } from "react";
-
-// Supported Key Words
-const SUPPORTED_ENTITY_TYPES = {
-    classType: "classe"
-};
+import { SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
 
 const CommandHandlerContext = createContext();
 
