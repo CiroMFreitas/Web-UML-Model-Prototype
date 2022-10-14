@@ -9,20 +9,32 @@ import { ERROR_MISSING_END_SYMBOL } from "../../../Utils/Errors";
  * @param {String} value 
  */
 export function getKeyByValue(object, value) {
-    Object.keys(object).forEach((key) => {
-        if(key === value) {
-            return key;
-        } else if(Array.isArray(key)) {
-            if(object[key].includes(value)) {
-                return key;
-            }
-        } else if(JSON.constructor === object.constructor) {
-            const keyInObject = getKeyByValue(object[key], value);
-            if(keyInObject) {
-                return key;
-            }
+    const keys = Object.keys(object);
+    
+    for(let i = 0; i < keys.length; i++) {
+        switch(true) {
+            case keys[i] === value:
+                return keys[i];
+
+            case Array.isArray(object[keys[i]]):
+                if(object[keys[i]].includes(value)) {
+                    return keys[i];
+                }
+
+                break;
+
+            case JSON.constructor === object[keys[i]].constructor:
+                const keyInObject = getKeyByValue(object[keys[i]], value);
+
+                if(keyInObject) {
+                    return keys[i];
+                }
+
+                break;
+            
+            default:
         }
-    })
+    }
 
     return false;
 }
