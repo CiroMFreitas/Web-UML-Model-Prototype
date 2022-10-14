@@ -4,6 +4,7 @@ import createClassCommandHandler from "../ClassEnityHandlers/CreateClassCommandH
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../../../Utils/SupportedKeyWords";
 import { ERROR_UNRECOGNISED_COMMAND, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../../../Utils/Errors";
 import { getKeyByValue } from "../UtilityHandlers/DataHandler";
+import readClassCommandHandler from "../ClassEnityHandlers/ReadClassCommandHandler";
 
 /**
  * Receives a command line and handles it into an object to be stored and rendered on application.
@@ -21,6 +22,11 @@ export default function classDiagramCommandsHandler(commandLine) {
         case SUPPORTED_COMMANDS.create[0]:
             Object.assign(handledObjectEntity, addCommandHandler(command));
 
+            break;
+
+            case SUPPORTED_COMMANDS.read[0]:
+                Object.assign(handledObjectEntity, readCommandHandler(command));
+    
             break;
 
         default:
@@ -49,12 +55,14 @@ function addCommandHandler(command) {
     return handledCreateEntity;
 }
 
+function readCommandHandler(command) {
+    const handledReadEntity = {
         entityType: upperCaseFirstLetter(command[1].toLowerCase())
     }
     
     switch(true) {
-        case SUPPORTED_ENTITY_TYPES.class.includes(handledAddEntity.entityType.toLowerCase()):
-            Object.assign(handledAddEntity, createClassCommandHandler(command));
+        case SUPPORTED_ENTITY_TYPES.class.includes(handledReadEntity.entityType.toLowerCase()):
+            Object.assign(handledReadEntity, readClassCommandHandler(command));
 
             break;
             
@@ -62,5 +70,5 @@ function addCommandHandler(command) {
             throw ERROR_UNRECOGNISED_ENTITY_TYPE;
     }
 
-    return handledAddEntity;
+    return handledReadEntity;
 }
