@@ -17,7 +17,7 @@ export function CommandHandlerProvider({ children }) {
             case SUPPORTED_COMMANDS.create.includes(commandArray[0].toLowerCase()):
                 return createEntityHandler(commandArray);
 
-            case SUPPORTED_COMMANDS.includes(commandArray[0].toLowerCase()):
+            case SUPPORTED_COMMANDS.read.includes(commandArray[0].toLowerCase()):
                 return readEntityHandler(commandArray);
 
             default:
