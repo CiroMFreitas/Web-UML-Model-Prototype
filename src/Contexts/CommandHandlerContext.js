@@ -2,8 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
 import createClassCommandHandler from "../Components/Handlers/ClassEnityHandlers/CreateClassCommandHandler";
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
-import { ERROR_COMMAND_SYNTAX, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
+import { ERROR_CLASS_ALREADY_EXISTS, ERROR_COMMAND_SYNTAX, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
 import readClassCommandHandler from "../Components/Handlers/ClassEnityHandlers/ReadClassCommandHandler";
+import { upperCaseFirstLetter } from "../Components/Handlers/UtilityHandlers/StringHandler";
 
 const CommandHandlerContext = createContext();
 
@@ -33,6 +34,12 @@ export function CommandHandlerProvider({ children }) {
 
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(commandArray[1].toLowerCase()):
+                const classAlreadyExists = classEntities.find((classEntity) => classEntity.entityName === upperCaseFirstLetter(commandArray[2]));
+
+                if(classAlreadyExists) {
+                    throw ERROR_CLASS_ALREADY_EXISTS;
+                }
+
                 Object.assign(newEntity, createClassCommandHandler(commandArray));
 
                 setClassEntities(prevClassEntities => {
