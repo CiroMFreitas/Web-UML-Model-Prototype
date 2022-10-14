@@ -8,7 +8,7 @@ export function CommandHandlerProvider({ children }) {
 
     const commandHandler = (handledCommand) => {
         switch(handledCommand.type) {
-            case "add":
+            case "create":
                 delete handledCommand.type;
                 
                 switch(handledCommand.entityType.toLowerCase()) {

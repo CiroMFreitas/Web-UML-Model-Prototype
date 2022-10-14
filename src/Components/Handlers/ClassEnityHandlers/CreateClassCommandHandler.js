@@ -8,8 +8,8 @@ import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/Stri
  * 
  * @param {String} command 
  */
-export default function addClassCommandHandler(command) {
-    const handledAddEntity = {
+export default function createClassCommandHandler(command) {
+    const handledCreateEntity = {
         entityName: upperCaseFirstLetter(validateNameSpace(command[2])),
         attributes: [],
         methods: []
@@ -19,21 +19,21 @@ export default function addClassCommandHandler(command) {
     if(command.indexOf("-a") !== -1) {
         const firstAttributeArgumentIndex = command.indexOf("-a") + 1;
 
-        handledAddEntity.attributes = addAttributesHandler(command.slice(firstAttributeArgumentIndex));
+        handledCreateEntity.attributes = createAttributesHandler(command.slice(firstAttributeArgumentIndex));
     }
     
     if(command.indexOf("-m") !== -1) {
         const firstMethodArgumentIndex = command.indexOf("-m") + 1;
 
-        handledAddEntity.methods = addMethodsHandler(command.slice(firstMethodArgumentIndex));
+        handledCreateEntity.methods = createMethodsHandler(command.slice(firstMethodArgumentIndex));
     }
 
-    return handledAddEntity;
+    return handledCreateEntity;
 }
 
 // Handles possible attributes
-function addAttributesHandler(attributesArguments) {
-    const addAttributes = []
+function createAttributesHandler(attributesArguments) {
+    const createAttributes = []
     const lastAttributeArgumentIndex = getLastArgumentIndexHandler(attributesArguments, "}");
     
     // Checks if attributes are sorrounded by [] and removes it
@@ -46,16 +46,16 @@ function addAttributesHandler(attributesArguments) {
 
     // Get and split attributes arguments
     for(let i = 0; i <= lastAttributeArgumentIndex; i++) {
-        const addAttribute = attributesArguments[i].split(":");
+        const createAttribute = attributesArguments[i].split(":");
 
         // Create attribute depending on the number of arguments and supported visibility
-        switch(addAttribute.length) {
+        switch(createAttribute.length) {
             case 3:
-                if(getKeyByValue(SUPPORTED_VISIBILITY, addAttribute[0])) {
-                    addAttributes.push({
-                        visibility: addAttribute[0],
-                        type: validateNameSpace(addAttribute[1]),
-                        name: validateNameSpace(addAttribute[2])
+                if(getKeyByValue(SUPPORTED_VISIBILITY, createAttribute[0])) {
+                    createAttributes.push({
+                        visibility: createAttribute[0],
+                        type: validateNameSpace(createAttribute[1]),
+                        name: validateNameSpace(createAttribute[2])
                     });
                 } else {
                     throw ERROR_COMMAND_SYNTAX;
@@ -63,10 +63,10 @@ function addAttributesHandler(attributesArguments) {
                 break;
 
             case 2:
-                addAttributes.push({
+                createAttributes.push({
                     visibility: SUPPORTED_VISIBILITY.public[1],
-                    type: validateNameSpace(addAttribute[0]),
-                    name: validateNameSpace(addAttribute[1])
+                    type: validateNameSpace(createAttribute[0]),
+                    name: validateNameSpace(createAttribute[1])
                 });
                 break;
             
@@ -75,12 +75,12 @@ function addAttributesHandler(attributesArguments) {
         }
     }
 
-    return addAttributes;
+    return createAttributes;
 }
 
 // Handles possible methods
-function addMethodsHandler(methodsArguments) {
-    const addMethods = [];
+function createMethodsHandler(methodsArguments) {
+    const createMethods = [];
     const lastMethodArgumentIndex = getLastArgumentIndexHandler(methodsArguments, "}");
     
     // Checks if methods are sorrounded by [] and removes it
@@ -94,17 +94,17 @@ function addMethodsHandler(methodsArguments) {
     // Get and split methods arguments
     for(let i = 0; i <= lastMethodArgumentIndex;) {
         const methodArgument = methodsArguments[i].split("(");
-        const addMethodArguments = methodArgument[0].split(":");
-        let addMethod;
+        const createMethodArguments = methodArgument[0].split(":");
+        let createMethod;
 
         // Create methdod depending on the number of arguments and supported visibility
-        switch(addMethodArguments.length) {
+        switch(createMethodArguments.length) {
             case 3:
-                if(getKeyByValue(SUPPORTED_VISIBILITY, addMethodArguments[0])) {
-                    addMethod = {
-                        visibility: addMethodArguments[0],
-                        type: validateNameSpace(addMethodArguments[1]),
-                        name: validateNameSpace(addMethodArguments[2]),
+                if(getKeyByValue(SUPPORTED_VISIBILITY, createMethodArguments[0])) {
+                    createMethod = {
+                        visibility: createMethodArguments[0],
+                        type: validateNameSpace(createMethodArguments[1]),
+                        name: validateNameSpace(createMethodArguments[2]),
                         parameters: []
                     };
                 } else {
@@ -113,10 +113,10 @@ function addMethodsHandler(methodsArguments) {
                 break;
 
             case 2:
-                addMethod =  {
+                createMethod =  {
                     visibility: SUPPORTED_VISIBILITY.public[1],
-                    type: validateNameSpace(addMethodArguments[0]),
-                    name: validateNameSpace(addMethodArguments[1]),
+                    type: validateNameSpace(createMethodArguments[0]),
+                    name: validateNameSpace(createMethodArguments[1]),
                     parameters: []
                 };
                 break;
@@ -151,11 +151,11 @@ function addMethodsHandler(methodsArguments) {
                 k++;
             }
         }
-        addMethod.parameters = addMethodParameters;
+        createMethod.parameters = addMethodParameters;
         i = k;
 
-        addMethods.push(addMethod);
+        createMethods.push(createMethod);
     }
 
-    return addMethods;
+    return createMethods;
 }

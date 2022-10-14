@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
-import addClassCommandHandler from "../ClassEnityHandlers/AddClassCommandHandler";
+import createClassCommandHandler from "../ClassEnityHandlers/CreateClassCommandHandler";
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../../../Utils/SupportedKeyWords";
 import { ERROR_UNRECOGNISED_COMMAND, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../../../Utils/Errors";
 
@@ -16,7 +16,7 @@ export default function classDiagramCommandsHandler(commandLine) {
     };
 
     switch(true) {
-        case SUPPORTED_COMMANDS.add.includes(command[0].toLowerCase()):
+        case SUPPORTED_COMMANDS.create.includes(command[0].toLowerCase()):
             Object.assign(handledObjectEntity, addCommandHandler(command));
             break;
 
@@ -30,13 +30,13 @@ export default function classDiagramCommandsHandler(commandLine) {
 // Check which type is to be handled
 function addCommandHandler(command) {
     const handledAddEntity = {
-        type: "add",
+        type: "create",
         entityType: upperCaseFirstLetter(command[1])
     }
     
     switch(true) {
         case SUPPORTED_ENTITY_TYPES.classType.includes(handledAddEntity.entityType.toLowerCase()):
-            Object.assign(handledAddEntity, addClassCommandHandler(command));
+            Object.assign(handledAddEntity, createClassCommandHandler(command));
             break;
             
         default:
