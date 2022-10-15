@@ -13,12 +13,14 @@ export function CommandHandlerProvider({ children }) {
 
     const commandHandler = (commandLine) => {
         const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
+        const commandType = commandArray.shift().toLowerCase();
+        const entityType = commandArray.shift().toLowerCase();
         
         switch(true) {
-            case SUPPORTED_COMMANDS.create.includes(commandArray[0].toLowerCase()):
-                return createEntityHandler(commandArray);
+            case SUPPORTED_COMMANDS.create.includes(commandType):
+                return createEntityHandler(commandArray, entityType);
 
-            case SUPPORTED_COMMANDS.read.includes(commandArray[0].toLowerCase()):
+            case SUPPORTED_COMMANDS.read.includes(commandType, entityType):
                 return readEntityHandler(commandArray);
 
             default:
@@ -27,14 +29,14 @@ export function CommandHandlerProvider({ children }) {
         
     };
 
-    function createEntityHandler(commandArray) {
+    function createEntityHandler(commandArray, entityType) {
         const newEntity = {
             id: uuidv4()
         };
 
         switch(true) {
-            case SUPPORTED_ENTITY_TYPES.class.includes(commandArray[1].toLowerCase()):
-                const classAlreadyExists = classEntities.find((classEntity) => classEntity.entityName === upperCaseFirstLetter(commandArray[2]));
+            case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
+                const classAlreadyExists = classEntities.find((classEntity) => classEntity.entityName === upperCaseFirstLetter(commandArray[0]));
 
                 if(classAlreadyExists) {
                     throw ERROR_CLASS_ALREADY_EXISTS;
@@ -56,9 +58,9 @@ export function CommandHandlerProvider({ children }) {
         }
     }
 
-    function readEntityHandler(commandArray) {        
+    function readEntityHandler(commandArray, entityType) {
         switch(true) {
-            case SUPPORTED_ENTITY_TYPES.class.includes(commandArray[1].toLowerCase()):
+            case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
                 return readClassCommandHandler(commandArray, classEntities);
                 
             default:

@@ -5,7 +5,7 @@ export default function readClassCommandHandler(commandArray, classEntities) {
     const classEntity = classEntities.find((classEntity) => commandArray[2] === classEntity.entityName);
 
     if(!classEntity) {
-        return "A classe " + upperCaseFirstLetter(commandArray[2].toLowerCase()) + " não existe no projeto!";
+        return "A classe " + upperCaseFirstLetter(commandArray[0].toLowerCase()) + " não existe no projeto!";
     }
 
     const feedback = [
