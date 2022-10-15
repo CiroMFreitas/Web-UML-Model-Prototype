@@ -6,6 +6,10 @@ export const SUPPORTED_COMMANDS = {
     read: [
         "read",
         "ler"
+    ],
+    alter: [
+        "alter",
+        "alterar"
     ]
 }
 
