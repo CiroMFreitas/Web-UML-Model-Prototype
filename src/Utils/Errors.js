@@ -9,3 +9,5 @@ export const ERROR_INVALID_CHARACTER = "Nome ou tipo com carácter inválido!";
 export const ERROR_MISSING_END_SYMBOL = "Um dos argumentos do comando não foi fechado apropriadamente!";
 
 export const ERROR_CLASS_ALREADY_EXISTS = "Uma classe com este nome já existe!";
+
+export const ERROR_CLASS_DOES_NOT_EXISTS = "A classe que está solicitada não existe!";
