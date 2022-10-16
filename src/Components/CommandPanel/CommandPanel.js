@@ -14,7 +14,7 @@ export default function CommandPanel() {
     if(event.keyCode === 13) {
       const commandLine = {
         id: uuidv4(),
-        line: commandLineRef.current.value
+        line: commandLineRef.current.value + "."
       };
       commandLineRef.current.value = null;
 
@@ -32,14 +32,14 @@ export default function CommandPanel() {
             
             updatedCommands.push({
               id: uuidv4(),
-              line: feedback
+              line: feedback + "."
             });
           } catch(error) {
             console.log(error);
             
             updatedCommands.push({
               id: uuidv4(),
-              line: error
+              line: error + "."
             });
           }
 
