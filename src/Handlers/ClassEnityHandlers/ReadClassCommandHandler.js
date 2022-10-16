@@ -1,4 +1,4 @@
-import { ERROR_COMMAND_SYNTAX } from "../../../Utils/Errors";
+import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
 import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
 
 export default function readClassCommandHandler(commandArray, classEntities) {

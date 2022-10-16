@@ -1,4 +1,4 @@
-import { ERROR_INVALID_CHARACTER } from "../../../Utils/Errors";
+import { ERROR_INVALID_CHARACTER } from "../../Utils/Errors";
 
 /**
  * Receives a string and returns the same string with it's first letter upper cased.

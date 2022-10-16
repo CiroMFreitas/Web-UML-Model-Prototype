@@ -1,5 +1,5 @@
-import { ERROR_COMMAND_SYNTAX } from "../../../Utils/Errors";
-import { SUPPORTED_ENTITY_TYPES, SUPPORTED_VISIBILITY } from "../../../Utils/SupportedKeyWords";
+import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
+import { SUPPORTED_ENTITY_TYPES, SUPPORTED_VISIBILITY } from "../../Utils/SupportedKeyWords";
 import { getKeyByValue, getLastArgumentIndexHandler } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
 

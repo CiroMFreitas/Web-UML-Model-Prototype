@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
-import createClassCommandHandler from "../Components/Handlers/ClassEnityHandlers/CreateClassCommandHandler";
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
 import { ERROR_CLASS_ALREADY_EXISTS, ERROR_CLASS_DOES_NOT_EXISTS, ERROR_COMMAND_SYNTAX, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
-import readClassCommandHandler from "../Components/Handlers/ClassEnityHandlers/ReadClassCommandHandler";
-import { upperCaseFirstLetter } from "../Components/Handlers/UtilityHandlers/StringHandler";
+import createClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
+import readClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
+import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
+import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
 
 const CommandHandlerContext = createContext();
 
