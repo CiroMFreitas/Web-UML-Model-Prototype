@@ -26,11 +26,11 @@ export function CommandHandlerProvider({ children }) {
             case SUPPORTED_COMMANDS.create.includes(commandType):
                 return createEntityHandler(commandArray, entityType);
 
-            case SUPPORTED_COMMANDS.read.includes(commandType, entityType):
-                return readEntityHandler(commandArray);
+            case SUPPORTED_COMMANDS.read.includes(commandType):
+                return readEntityHandler(commandArray, entityType);
 
-            case SUPPORTED_COMMANDS.alter.includes(commandType, entityType):
-                return alterEntityHandler(commandArray)
+            case SUPPORTED_COMMANDS.alter.includes(commandType):
+                return alterEntityHandler(commandArray, entityType)
 
             default:
                 throw ERROR_COMMAND_SYNTAX;
