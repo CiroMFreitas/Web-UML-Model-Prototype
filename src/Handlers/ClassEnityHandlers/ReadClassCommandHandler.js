@@ -2,10 +2,11 @@ import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
 import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
 
 export default function readClassCommandHandler(commandArray, classEntities) {
-    const classEntity = classEntities.find((classEntity) => commandArray[2] === classEntity.entityName);
+    const classEntityName = upperCaseFirstLetter(commandArray[0].toLowerCase());
+    const classEntity = classEntities.find((classEntity) => classEntityName === classEntity.entityName);
 
     if(!classEntity) {
-        return "A classe " + upperCaseFirstLetter(commandArray[0].toLowerCase()) + " não existe no projeto!";
+        return "A classe " + upperCaseFirstLetter(classEntityName.toLowerCase()) + " não existe no projeto!";
     }
 
     const feedback = [
@@ -13,18 +14,18 @@ export default function readClassCommandHandler(commandArray, classEntities) {
         classEntity.entityName
     ];
 
-    if(commandArray.length === 3) {
+    if(commandArray.length === 1) {
         feedback.push(" existe no projeto");
     }
 
    if(commandArray.includes("-a")) {
         if(classEntity.attributes.length === 0) {
-            feedback.push(". Não possui attributos.");
+            feedback.push("; não possui attributos");
         } else {
             if(classEntity.attributes.length > 1) {
-                feedback.push(". Possui os attributos");
+                feedback.push("; possui os attributos");
             } else {
-                feedback.push(". Possui o attributo");
+                feedback.push("; possui o attributo");
             }
     
             classEntity.attributes.forEach((attribute) => {
@@ -37,32 +38,34 @@ export default function readClassCommandHandler(commandArray, classEntities) {
 
     if(commandArray.includes("-m")) {
         if(classEntity.methods.length === 0) {
-            feedback.push(". Não possui métodos.");
+            feedback.push("; não possui métodos.");
         } else {
             if(classEntity.methods.length > 1) {
-                feedback.push(". Possui os métodos");
+                feedback.push("; possui os métodos");
             } else {
-                feedback.push(". Possui o método");
+                feedback.push("; possui o método");
             }
     
             classEntity.methods.forEach((method) => {
-                feedback.push(". " + method.visibility);
+                feedback.push("; " + method.visibility);
                 feedback.push(" " + method.name);
                 feedback.push(" " + method.type);
     
                 if(method.parameters.length === 0) {
-                    feedback.push(" e não possui parametros");
+                    feedback.push(" e não possui parâmetros");
                 } else {
                     if(method.parameters.length > 1) {
-                        feedback.push(" e possui os parametros");
+                        feedback.push("; que possui os parâmetro");
                     } else {
-                        feedback.push(" e possui o parametro");
+                        feedback.push("; que possui o parâmetro");
                     }
 
                     method.parameters.forEach((parameter) => {
                         feedback.push("; " + parameter.name);
                         feedback.push(" " + parameter.type);
                     });
+
+                    feedback.push(", fim parâmetro");
                 }
             });
         }
@@ -73,5 +76,5 @@ export default function readClassCommandHandler(commandArray, classEntities) {
         throw ERROR_COMMAND_SYNTAX;
     }
 
-    return feedback.toString().replaceAll(",", "") + ".";
+    return feedback.toString().replaceAll(",", "").replaceAll(";", ",") + ".";
 }
