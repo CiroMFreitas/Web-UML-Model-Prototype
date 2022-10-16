@@ -88,6 +88,8 @@ export function CommandHandlerProvider({ children }) {
                         if(prevClassEntity === alteringClass) {
                             prevClassEntity = alteredEntity;
                         }
+
+                        return prevClassEntity;
                     })
 
                     return [
