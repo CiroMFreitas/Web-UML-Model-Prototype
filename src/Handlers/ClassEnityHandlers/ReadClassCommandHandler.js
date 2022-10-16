@@ -76,5 +76,5 @@ export default function readClassCommandHandler(commandArray, classEntities) {
         throw ERROR_COMMAND_SYNTAX;
     }
 
-    return feedback.toString().replaceAll(",", "").replaceAll(";", ",") + ".";
+    return feedback.toString().replaceAll(",", "").replaceAll(";", ",");
 }
