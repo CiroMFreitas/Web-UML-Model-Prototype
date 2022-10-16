@@ -97,9 +97,7 @@ export function CommandHandlerProvider({ children }) {
                         return prevClassEntity;
                     })
 
-                    return [
-                        ...newClassEntities
-                    ];
+                    return newClassEntities;
                 });
 
                 
