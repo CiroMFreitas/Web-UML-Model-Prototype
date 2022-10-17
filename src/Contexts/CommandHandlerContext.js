@@ -86,7 +86,16 @@ export function CommandHandlerProvider({ children }) {
                     throw ERROR_CLASS_DOES_NOT_EXISTS;
                 }
 
-                const alteredEntity = alterClassCommandHandler(commandArray, alteringClass);
+                const renameIndex = commandArray.indexOf("-n");
+                if(renameIndex) {
+                    classEntities.forEach((classEntity) => {
+                        if(classEntity.entityName === commandArray(renameIndex + 1)) {
+                            throw ERROR_CLASS_ALREADY_EXISTS;
+                        }
+                    });
+                }
+
+                const alteredEntity = alterClassCommandHandler(commandArray, alteringClass, renameIndex);
 
                 setClassEntities(prevClassEntities => {
                     const newClassEntities = prevClassEntities.map((prevClassEntity) => {
