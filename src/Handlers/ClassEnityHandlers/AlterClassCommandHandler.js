@@ -6,7 +6,7 @@ export default function alterClassCommandHandler(commandArray, alteringClass, re
 
     const handledAlteringClass = alteringClass;
     
-    if(renameIndex) {
+    if(renameIndex !== -1) {
         handledAlteringClass.entityName = alterNameHandler(commandArray[renameIndex + 1]);
     }
 

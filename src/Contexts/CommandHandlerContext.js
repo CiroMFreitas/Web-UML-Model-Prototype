@@ -84,7 +84,9 @@ export function CommandHandlerProvider({ children }) {
                 }
 
                 const renameIndex = commandArray.indexOf("-n");
-                entityNameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[renameIndex + 1].toLowerCase()));
+                if(renameIndex !== -1) {
+                    entityNameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[renameIndex + 1].toLowerCase()));
+                }
 
                 const alteredEntity = alterClassCommandHandler(commandArray, alteringClass, renameIndex);
 
