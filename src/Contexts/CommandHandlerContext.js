@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
-import { ERROR_CLASS_ALREADY_EXISTS, ERROR_CLASS_DOES_NOT_EXISTS, ERROR_COMMAND_SYNTAX, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
+import { ERROR_CLASS_DOES_NOT_EXISTS, ERROR_COMMAND_SYNTAX, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
 import createClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
 import readClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
 import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
+import { entityNameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 
 const CommandHandlerContext = createContext();
 
@@ -45,11 +46,7 @@ export function CommandHandlerProvider({ children }) {
 
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
-                const classAlreadyExists = classEntities.find((classEntity) => classEntity.entityName === upperCaseFirstLetter(commandArray[0]));
-
-                if(classAlreadyExists) {
-                    throw ERROR_CLASS_ALREADY_EXISTS;
-                }
+                entityNameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[0].toLowerCase()));
 
                 Object.assign(newEntity, createClassCommandHandler(commandArray));
 
@@ -87,13 +84,7 @@ export function CommandHandlerProvider({ children }) {
                 }
 
                 const renameIndex = commandArray.indexOf("-n");
-                if(renameIndex) {
-                    classEntities.forEach((classEntity) => {
-                        if(classEntity.entityName === commandArray(renameIndex + 1)) {
-                            throw ERROR_CLASS_ALREADY_EXISTS;
-                        }
-                    });
-                }
+                entityNameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[renameIndex + 1].toLowerCase()));
 
                 const alteredEntity = alterClassCommandHandler(commandArray, alteringClass, renameIndex);
 
