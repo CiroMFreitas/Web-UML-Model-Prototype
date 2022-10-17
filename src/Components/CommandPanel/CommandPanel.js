@@ -12,23 +12,25 @@ export default function CommandPanel() {
   // Local Handlers
   function commandLineHandler(event) {
     if(event.keyCode === 13) {
-      const commandLine = {
-        id: uuidv4(),
-        line: commandLineRef.current.value + "."
-      };
+      const commandLine = commandLineRef.current.value;
       commandLineRef.current.value = null;
 
-      if(commandLine.line.toLowerCase().trim() === "clear") {
+      if(commandLine.toLowerCase().trim() === "clear") {
         setCommands([]);
-      } else if(commandLine.line.trim() !== "") {
+      } else if(commandLine.trim() !== "") {
+        const command = {
+          id: uuidv4(),
+          line: commandLine + "."
+        };
+
         setCommands(prevCommands => {
           let updatedCommands = [
             ...prevCommands,
-            commandLine
+            command
           ];
 
           try {
-            const feedback = commandHandler(commandLine.line);
+            const feedback = commandHandler(commandLine);
             
             updatedCommands.push({
               id: uuidv4(),

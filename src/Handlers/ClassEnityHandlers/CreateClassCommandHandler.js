@@ -9,9 +9,10 @@ import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/Stri
  * @param {String} commandArray 
  */
 export default function createClassCommandHandler(commandArray) {
+    console.log(commandArray);
     const handledCreateEntity = {
         entityType: upperCaseFirstLetter(SUPPORTED_ENTITY_TYPES.class[1]),
-        entityName: upperCaseFirstLetter(validateNameSpace(commandArray[0])),
+        entityName: upperCaseFirstLetter(validateNameSpace(commandArray[0].toLowerCase())),
         attributes: [],
         methods: []
     }

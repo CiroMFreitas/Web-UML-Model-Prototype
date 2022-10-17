@@ -60,7 +60,7 @@ export function CommandHandlerProvider({ children }) {
                     ];
                 });
                 
-                return "A classe " + newEntity.entityName + " foi criada com sucesso!";
+                return "A classe " + newEntity.entityName + " foi criada com sucesso";
     
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;
@@ -102,7 +102,7 @@ export function CommandHandlerProvider({ children }) {
 
                 
                 
-                return "A classe " + alteringClass.entityName + " foi alterada com sucesso!";
+                return "A classe " + alteringClass.entityName + " foi alterada com sucesso";
                 
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;
