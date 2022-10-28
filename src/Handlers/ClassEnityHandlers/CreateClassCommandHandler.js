@@ -1,6 +1,6 @@
 import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
 import { SUPPORTED_ENTITY_TYPES, SUPPORTED_VISIBILITY } from "../../Utils/SupportedKeyWords";
-import { getKeyByValue, getLastArgumentIndexHandler } from "../UtilityHandlers/DataHandler";
+import { attributesFormatter, getKeyByValue, getLastArgumentIndexHandler } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
 
 /**
@@ -17,9 +17,8 @@ export default function createClassCommandHandler(commandArray) {
     }
 
     // Get attributes and methods
-    if(commandArray.indexOf("-a") !== -1) {
-        const firstAttributeArgumentIndex = commandArray.indexOf("-a") + 1;
-
+    const firstAttributeArgumentIndex = commandArray.indexOf("-a");
+    if(firstAttributeArgumentIndex !== -1) {
         handledCreateEntity.attributes = createAttributesHandler(commandArray.slice(firstAttributeArgumentIndex));
     }
     
@@ -33,30 +32,20 @@ export default function createClassCommandHandler(commandArray) {
 }
 
 // Handles possible attributes
-function createAttributesHandler(attributesArguments) {
+function createAttributesHandler(argumentsArray) {
+    const attributesArguments = attributesFormatter(argumentsArray);
     const createAttributes = []
-    const lastAttributeArgumentIndex = getLastArgumentIndexHandler(attributesArguments, "}");
-    
-    // Checks if attributes are sorrounded by [] and removes it
-    if(!attributesArguments[0].includes("{") ||
-    !attributesArguments[lastAttributeArgumentIndex].includes("}")) {
-        throw ERROR_COMMAND_SYNTAX;
-    }
-    attributesArguments[0] = attributesArguments[0].replace("{", "");
-    attributesArguments[lastAttributeArgumentIndex] = attributesArguments[lastAttributeArgumentIndex].replace("}", "");
 
     // Get and split attributes arguments
-    for(let i = 0; i <= lastAttributeArgumentIndex; i++) {
-        const createAttribute = attributesArguments[i].split(":");
-
+    attributesArguments.forEach((attributeArgument) => {
         // Create attribute depending on the number of arguments and supported visibility
-        switch(createAttribute.length) {
+        switch(attributeArgument.length) {
             case 3:
-                if(getKeyByValue(SUPPORTED_VISIBILITY, createAttribute[0])) {
+                if(getKeyByValue(SUPPORTED_VISIBILITY, attributeArgument[0])) {
                     createAttributes.push({
-                        visibility: createAttribute[0],
-                        type: validateNameSpace(createAttribute[1]),
-                        name: validateNameSpace(createAttribute[2])
+                        visibility: attributeArgument[0],
+                        type: validateNameSpace(attributeArgument[1]),
+                        name: validateNameSpace(attributeArgument[2])
                     });
                 } else {
                     throw ERROR_COMMAND_SYNTAX;
@@ -66,15 +55,15 @@ function createAttributesHandler(attributesArguments) {
             case 2:
                 createAttributes.push({
                     visibility: SUPPORTED_VISIBILITY.public[1],
-                    type: validateNameSpace(createAttribute[0]),
-                    name: validateNameSpace(createAttribute[1])
+                    type: validateNameSpace(attributeArgument[0]),
+                    name: validateNameSpace(attributeArgument[1])
                 });
                 break;
             
             default:
                 throw ERROR_COMMAND_SYNTAX;
         }
-    }
+    });
 
     return createAttributes;
 }

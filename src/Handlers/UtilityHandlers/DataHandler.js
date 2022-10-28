@@ -54,3 +54,25 @@ export function getLastArgumentIndexHandler(argumentsArray, endSymbol) {
         throw ERROR_MISSING_END_SYMBOL;
     }
 }
+
+/**
+ * Receives an array of arguments with "-a" as first position, returning them properly formated for command handling.
+ * 
+ * @param {string[]} attributesArray 
+ * 
+ * @returns {string[]} formatedAttributesArray
+ */
+export function attributesFormatter(attributesArray) {
+    const formatedAttributesArray = [];
+    
+    for(let i = 1; !attributesArray[i - 1].includes("}"); i++) {
+        formatedAttributesArray.push(
+            attributesArray[i]
+                .replace("{", "")
+                .replace("}", "")
+                .split(":")
+        );
+    }
+
+    return formatedAttributesArray;
+}
