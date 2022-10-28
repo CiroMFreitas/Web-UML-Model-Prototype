@@ -58,16 +58,16 @@ export function getLastArgumentIndexHandler(argumentsArray, endSymbol) {
 /**
  * Receives an array of arguments with "-a" as first position, returning them properly formated for command handling.
  * 
- * @param {string[]} attributesArray 
+ * @param {string[]} argumentsArray 
  * 
  * @returns {string[]} formatedAttributesArray
  */
-export function attributesFormatter(attributesArray) {
+export function attributesFormatter(argumentsArray) {
     const formatedAttributesArray = [];
     
-    for(let i = 1; !attributesArray[i - 1].includes("}"); i++) {
+    for(let i = 1; !argumentsArray[i - 1].includes("}"); i++) {
         formatedAttributesArray.push(
-            attributesArray[i]
+            argumentsArray[i]
                 .replace("{", "")
                 .replace("}", "")
                 .split(":")
