@@ -76,3 +76,43 @@ export function attributesFormatter(argumentsArray) {
 
     return formatedAttributesArray;
 }
+
+export function methodsFormatter(argumentsArray) {
+    const formatedMethodsArray = [];
+    
+    for(let i = 1; !argumentsArray[i - 1].includes("}");) {
+        const [method, firstParameter] = argumentsArray[i].split("(");
+        let methodArgument = {
+            argument: method.replace("{", "").split(":"),
+            paramenters: []
+        };
+        console.log(argumentsArray[i]);
+        console.log(method);
+        console.log(firstParameter);
+        
+        // Checks if next argument is a method parameter
+        let k = i + 1;
+
+        if((firstParameter !== ")") && (firstParameter !== ")}")) {
+            methodArgument.paramenters.push(firstParameter
+                .replace(")", "")
+                .replace("}", "")
+                .split(":"));
+            
+            while(!argumentsArray[k - 1].includes(")")) {
+                methodArgument.paramenters.push(argumentsArray[k]
+                    .replace(")", "")
+                    .replace("}", "")
+                    .split(":"));
+
+                k++;
+            }
+        }
+        i = k;
+
+        formatedMethodsArray.push(methodArgument);
+    }
+
+    console.log(formatedMethodsArray);
+    return formatedMethodsArray;
+}

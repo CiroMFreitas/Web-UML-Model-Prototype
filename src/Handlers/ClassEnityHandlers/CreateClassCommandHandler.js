@@ -1,6 +1,6 @@
 import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
 import { SUPPORTED_ENTITY_TYPES, SUPPORTED_VISIBILITY } from "../../Utils/SupportedKeyWords";
-import { attributesFormatter, getKeyByValue, getLastArgumentIndexHandler } from "../UtilityHandlers/DataHandler";
+import { attributesFormatter, getKeyByValue, methodsFormatter } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
 
 /**
@@ -22,9 +22,8 @@ export default function createClassCommandHandler(commandArray) {
         handledCreateEntity.attributes = createAttributesHandler(commandArray.slice(firstAttributeArgumentIndex));
     }
     
-    if(commandArray.indexOf("-m") !== -1) {
-        const firstMethodArgumentIndex = commandArray.indexOf("-m") + 1;
-
+    const firstMethodArgumentIndex = commandArray.indexOf("-m");
+    if(firstMethodArgumentIndex !== -1) {
         handledCreateEntity.methods = createMethodsHandler(commandArray.slice(firstMethodArgumentIndex));
     }
 
@@ -69,83 +68,43 @@ function createAttributesHandler(argumentsArray) {
 }
 
 // Handles possible methods
-function createMethodsHandler(methodsArguments) {
-    const createMethods = [];
-    const lastMethodArgumentIndex = getLastArgumentIndexHandler(methodsArguments, "}");
+function createMethodsHandler(argumentsArray) {
+    const methodsArguments = methodsFormatter(argumentsArray);
     
-    // Checks if methods are sorrounded by [] and removes it
-    if(!methodsArguments[0].includes("{") ||
-    !methodsArguments[lastMethodArgumentIndex].includes("}")) {
-        throw ERROR_COMMAND_SYNTAX;
-    }
-    methodsArguments[0] = methodsArguments[0].replace("{", "");
-    methodsArguments[lastMethodArgumentIndex] = methodsArguments[lastMethodArgumentIndex].replace("}", "");
-
-    // Get and split methods arguments
-    for(let i = 0; i <= lastMethodArgumentIndex;) {
-        const methodArgument = methodsArguments[i].split("(");
-        const createMethodArguments = methodArgument[0].split(":");
-        let createMethod;
+    const newMethods = methodsArguments.map((newMethod) => {
+        const newParameters = newMethod.paramenters.map((newMethodParameter) => {
+            return {
+                type: validateNameSpace(newMethodParameter[0]),
+                name: validateNameSpace(newMethodParameter[1])
+            };
+        })
 
         // Create methdod depending on the number of arguments and supported visibility
-        switch(createMethodArguments.length) {
+        switch(newMethod.argument.length) {
             case 3:
-                if(getKeyByValue(SUPPORTED_VISIBILITY, createMethodArguments[0])) {
-                    createMethod = {
-                        visibility: createMethodArguments[0],
-                        type: validateNameSpace(createMethodArguments[1]),
-                        name: validateNameSpace(createMethodArguments[2]),
-                        parameters: []
+                if(getKeyByValue(SUPPORTED_VISIBILITY, newMethod.argument[0])) {
+                    return {
+                        visibility: newMethod.argument[0],
+                        type: validateNameSpace(newMethod.argument[1]),
+                        name: validateNameSpace(newMethod.argument[2]),
+                        parameters: newParameters
                     };
                 } else {
                     throw ERROR_COMMAND_SYNTAX;
                 }
-                break;
 
             case 2:
-                createMethod =  {
+                return  {
                     visibility: SUPPORTED_VISIBILITY.public[1],
-                    type: validateNameSpace(createMethodArguments[0]),
-                    name: validateNameSpace(createMethodArguments[1]),
-                    parameters: []
+                    type: validateNameSpace(newMethod.argument[0]),
+                    name: validateNameSpace(newMethod.argument[1]),
+                    parameters: newParameters
                 };
-                break;
             
             default:
                 throw ERROR_COMMAND_SYNTAX;
         }
-        
-        // Checks if next argument is a method parameter
-        let k = i + 1;
-        const addMethodParameters = [];
-
-        if(methodArgument[1] !== ")") {
-            const firstMethodParamanter = methodArgument[1].replace(")", "").split(":");
-            addMethodParameters.push({
-                type: firstMethodParamanter[0],
-                name: firstMethodParamanter[1]
-            });
-            
-            while(!methodsArguments[k - 1].includes(")")) {
-                const parameter = methodsArguments[k].replace(")", "").split(":");
-
-                if(parameter.length === 2) {
-                    addMethodParameters.push({
-                        type: parameter[0],
-                        name: parameter[1]
-                    });
-                } else {
-                    throw ERROR_COMMAND_SYNTAX;
-                }
-
-                k++;
-            }
-        }
-        createMethod.parameters = addMethodParameters;
-        i = k;
-
-        createMethods.push(createMethod);
-    }
-
-    return createMethods;
+    });
+    
+    return newMethods;
 }
