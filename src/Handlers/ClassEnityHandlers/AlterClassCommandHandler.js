@@ -10,8 +10,9 @@ export default function alterClassCommandHandler(commandArray, alteringClass, re
     return handledAlteringClass;
 }
 
-function alterNameHandler(oldName) {
-    const newName = upperCaseFirstLetter(validateNameSpace(oldName.toLowerCase()));
+function alterNameHandler(newName) {
+    return upperCaseFirstLetter(validateNameSpace(newName.toLowerCase()));
+}
 
     return newName;
 }
