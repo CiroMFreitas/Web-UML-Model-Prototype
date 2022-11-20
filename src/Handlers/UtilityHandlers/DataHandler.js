@@ -86,9 +86,6 @@ export function methodsFormatter(argumentsArray) {
             argument: method.replace("{", "").split(":"),
             paramenters: []
         };
-        console.log(argumentsArray[i]);
-        console.log(method);
-        console.log(firstParameter);
         
         // Checks if next argument is a method parameter
         let k = i + 1;
@@ -112,7 +109,6 @@ export function methodsFormatter(argumentsArray) {
 
         formatedMethodsArray.push(methodArgument);
     }
-
-    console.log(formatedMethodsArray);
+    
     return formatedMethodsArray;
 }
