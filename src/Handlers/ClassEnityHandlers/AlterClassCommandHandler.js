@@ -78,7 +78,7 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
                 const alteringAttribute = alteringClass.attributes.find((attribute) => alteringAttributeName === attribute.name);
 
                 if(alteringAttribute) {
-                    const alteringAttibuteIndex = alteringClass.attributes.indexOf(alteringAttribute);
+                    const alteringAttributeIndex = alteringClass.attributes.indexOf(alteringAttribute);
 
                     if(formattedArgument[0] !== "-") {
                         if(getKeyByValue(SUPPORTED_VISIBILITY, formattedArgument[0])) {
@@ -104,7 +104,7 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
                         }
                     }
 
-                    alteringClass.attributes.splice(alteringAttibuteIndex, 1, alteringAttribute);
+                    alteringClass.attributes.splice(alteringAttributeIndex, 1, alteringAttribute);
                 } else {
                     throw ERROR_COMMAND_SYNTAX;
                 }
