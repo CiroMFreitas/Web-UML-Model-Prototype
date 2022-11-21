@@ -34,3 +34,18 @@ export const SUPPORTED_VISIBILITY = {
         "privada"
     ]
 };
+
+export const SUPPORTED_ALTER_ARGUMENTS = {
+    add: [
+        "add",
+        "adicionar"
+    ],
+    remove: [
+        "remove",
+        "remover"
+    ],
+    alter: [
+        "alter",
+        "alterar"
+    ]
+}
