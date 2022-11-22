@@ -10,4 +10,4 @@ export const ERROR_MISSING_END_SYMBOL = "Um dos argumentos do comando não foi f
 
 export const ERROR_CLASS_ALREADY_EXISTS = "Uma classe com este nome já existe";
 
-export const ERROR_CLASS_DOES_NOT_EXISTS = "A classe que está solicitada não existe";
+export const ERROR_CLASS_DOES_NOT_EXISTS = "A classe solicitada não existe";
