@@ -7,6 +7,10 @@ export const SUPPORTED_COMMANDS = {
         "read",
         "ler"
     ],
+    remove: [
+        "remove",
+        "remover"
+    ],
     alter: [
         "alter",
         "alterar"

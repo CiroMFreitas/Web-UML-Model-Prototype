@@ -7,6 +7,7 @@ import readClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCom
 import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
 import { entityNameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
+import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
 
 const CommandHandlerContext = createContext();
 
@@ -30,8 +31,11 @@ export function CommandHandlerProvider({ children }) {
             case SUPPORTED_COMMANDS.read.includes(commandType):
                 return readEntityHandler(commandArray, entityType);
 
+            case SUPPORTED_COMMANDS.remove.includes(commandType):
+                return removeEntityHandler(commandArray, entityType);
+
             case SUPPORTED_COMMANDS.alter.includes(commandType):
-                return alterEntityHandler(commandArray, entityType)
+                return alterEntityHandler(commandArray, entityType);
 
             default:
                 throw ERROR_COMMAND_SYNTAX;
@@ -68,6 +72,20 @@ export function CommandHandlerProvider({ children }) {
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
                 return readClassCommandHandler(commandArray, classEntities);
+                
+            default:
+                throw ERROR_UNRECOGNISED_ENTITY_TYPE;
+        }
+    }
+
+    function removeEntityHandler(commandArray, entityType) {
+        switch(true) {
+            case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
+                const handledClassEntities = removeClassCommandHandler(commandArray, classEntities);
+
+                setClassEntities(handledClassEntities);
+
+                return "Classe " + commandArray[0] + " removida com sucesso!";
                 
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;
