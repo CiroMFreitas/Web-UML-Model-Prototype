@@ -119,10 +119,8 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
 
 function alterMethodsHandler(alteringArguments, alteringClass) {
     const formattedArguments = methodsFormatter(alteringArguments);
-    console.log(formattedArguments);
     
     formattedArguments.forEach((formattedArgument) => {
-        console.log(formattedArgument)
         const argument = formattedArgument.argument.shift().toLowerCase();
 
         switch(true) {
