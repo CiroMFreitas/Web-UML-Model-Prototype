@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
-import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
+import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES, SUPPORTED_RELATIONSHIP_TYPES } from "../Utils/SupportedKeyWords";
 import { ERROR_CLASS_DOES_NOT_EXISTS, ERROR_COMMAND_SYNTAX, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
 import createClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
 import readClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
@@ -8,11 +8,13 @@ import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassC
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
 import { entityNameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
+import createRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
 
 const CommandHandlerContext = createContext();
 
 export function CommandHandlerProvider({ children }) {
     const [classEntities, setClassEntities] = useState([])
+    const [relationshipEntities, setRelationshipEntities] = useState([])
 
     const commandHandler = (commandLine) => {
         const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
@@ -62,6 +64,20 @@ export function CommandHandlerProvider({ children }) {
                 });
                 
                 return "A classe " + newEntity.entityName + " foi criada com sucesso";
+
+            case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
+
+                Object.assign(newEntity, createRelationshipCommandHandler(commandArray, classEntities));
+
+                setRelationshipEntities(prevRealtionshipEntities => {
+                    return [
+                        ...prevRealtionshipEntities,
+                        newEntity
+                    ];
+                });
+
+                return "Relação " + SUPPORTED_RELATIONSHIP_TYPES[newEntity.relationshipType
+                ][1] + " entre " + newEntity.primaryClassName + " e " + newEntity.secondaryClassName + " foi criada com sucesso!";
     
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;
@@ -130,7 +146,7 @@ export function CommandHandlerProvider({ children }) {
     }
 
     return (
-        <CommandHandlerContext.Provider value={{ classEntities, commandHandler }}>
+        <CommandHandlerContext.Provider value={{ commandHandler, classEntities, relationshipEntities }}>
             { children }
         </CommandHandlerContext.Provider>
     );

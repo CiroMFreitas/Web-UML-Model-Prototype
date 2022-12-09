@@ -21,8 +21,47 @@ export const SUPPORTED_ENTITY_TYPES = {
     class: [
         "class",
         "classe"
+    ],
+    relationship: [
+        "relationship",
+        "relação"
     ]
 };
+
+export const SUPPORTED_RELATIONSHIP_TYPES = {
+    as: [
+        "associative",
+        "associativa"
+    ],
+    da: [
+        "directed association",
+        "associativa direcionada"
+    ],
+    ra: [
+        "reflexive association",
+        "associativa reflexiva"
+    ],
+    mu: [
+        "multiplicity",
+        "multiciplidade"
+    ],
+    ag: [
+        "aggregation",
+        "agregação"
+    ],
+    co: [
+        "composition",
+        "composição"
+    ],
+    in: [
+        "inheritance",
+        "herança"
+    ],
+    re: [
+        "realization",
+        "realização"
+    ]
+}
 
 export const SUPPORTED_VISIBILITY = {
     public: [
