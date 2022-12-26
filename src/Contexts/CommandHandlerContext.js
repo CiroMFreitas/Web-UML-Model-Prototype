@@ -113,7 +113,7 @@ export function CommandHandlerProvider({ children }) {
 
                 setClassEntities(handledClassEntities);
 
-                return "Classe " + commandArray[0] + " removida com sucesso!";
+                return "A classe " + commandArray[0] + " foi removida com sucesso!";
                 
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;
