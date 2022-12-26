@@ -11,6 +11,7 @@ import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClas
 import createRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
 import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
 import readRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
+import removeRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/removeRelationshipCommandHandler";
 
 const CommandHandlerContext = createContext();
 
@@ -114,6 +115,13 @@ export function CommandHandlerProvider({ children }) {
                 setClassEntities(handledClassEntities);
 
                 return "A classe " + commandArray[0] + " foi removida com sucesso!";
+
+            case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
+                const handledRelationshipEntities = removeRelationshipCommandHandler(commandArray, relationshipEntities);
+    
+                setRelationshipEntities(handledRelationshipEntities);
+    
+                return "A relação " + commandArray[0] + " foi removida com sucesso!";
                 
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;

@@ -14,6 +14,8 @@ export const ERROR_CLASS_ALREADY_EXISTS = "Uma classe com este nome já existe";
 
 export const ERROR_CLASS_DOES_NOT_EXISTS = "A classe solicitada não existe";
 
+export const ERROR_RELATIONSHIP_DOES_NOT_EXISTS = "A relação solicitada não existe";
+
 export const ERROR_INVALID_RELATIONSHIP_TYPE = "Tipo de relacionamento inválido";
 
 export const ERROR_INVALID_CARDINALITY = "Cardinalidade deve ter somente dois argumentos";
