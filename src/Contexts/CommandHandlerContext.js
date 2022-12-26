@@ -135,20 +135,6 @@ export function CommandHandlerProvider({ children }) {
 
                     return newClassEntities;
                 });
-
-                setRelationshipEntities(prevRelationshipsEntities => {
-                    return prevRelationshipsEntities.map(relationshipEntity => {
-                        if(relationshipEntity.primaryClassName === alteringClass.entityName) {
-                            relationshipEntity.primaryClassName = alteredEntity.entityName;
-                        }
-
-                        if(relationshipEntity.secondaryClassName === alteringClass.entityName) {
-                            relationshipEntity.secondaryClassName = alteredEntity.entityName;
-                        }
-
-                        return relationshipEntity;
-                    });
-                });
                 
                 return "A classe " + alteringClass.entityName + " foi alterada com sucesso";
                 

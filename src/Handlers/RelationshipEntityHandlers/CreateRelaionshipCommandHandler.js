@@ -48,8 +48,8 @@ export default function createRelationshipCommandHandler(commandArray, classEnti
 
     return {
         relationshipType,
-        primaryClassName,
-        secondaryClassName,
+        primaryClassId: primaryClassExists.id,
+        secondaryClassId: secondaryClassExists.id,
         primaryCardinality: cardinality[0],
         secondaryCardinality: cardinality[1]
     }
