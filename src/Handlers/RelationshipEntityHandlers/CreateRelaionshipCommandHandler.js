@@ -24,13 +24,13 @@ export default function createRelationshipCommandHandler(commandArray, classEnti
 
     // Validates classes names and see if they exist
     const primaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray[1].toLowerCase()))
-    const primaryClassExists = classEntities.find((classEntity) => classEntity.entityName === primaryClassName);
+    const primaryClassExists = classEntities.find((classEntity) => classEntity.name === primaryClassName);
     if(!primaryClassExists) {
         throw ERROR_CLASS_DOES_NOT_EXISTS;
     }
 
     const secondaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray[2].toLowerCase()))
-    const secondaryClassExists = classEntities.find((classEntity) => classEntity.entityName === secondaryClassName);
+    const secondaryClassExists = classEntities.find((classEntity) => classEntity.name === secondaryClassName);
     if(!secondaryClassExists) {
         throw ERROR_CLASS_DOES_NOT_EXISTS;
     }

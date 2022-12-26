@@ -3,8 +3,8 @@ import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
 
 
 export default function removeClassCommandHandler(commandArray, classEntities) {
-    const classEntityName = upperCaseFirstLetter(commandArray[0].toLowerCase());
-    const removingClass = classEntities.find((classEntity) => classEntity.entityName === classEntityName);
+    const classname = upperCaseFirstLetter(commandArray[0].toLowerCase());
+    const removingClass = classEntities.find((classEntity) => classEntity.name === classname);
 
     if(removingClass) {
         return classEntities.filter((classEntity) => classEntity !== removingClass);

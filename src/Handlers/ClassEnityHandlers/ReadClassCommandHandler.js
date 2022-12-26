@@ -2,16 +2,16 @@ import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
 import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
 
 export default function readClassCommandHandler(commandArray, classEntities) {
-    const classEntityName = upperCaseFirstLetter(commandArray[0].toLowerCase());
-    const classEntity = classEntities.find((classEntity) => classEntityName === classEntity.entityName);
+    const classname = upperCaseFirstLetter(commandArray[0].toLowerCase());
+    const classEntity = classEntities.find((classEntity) => classname === classEntity.name);
 
     if(!classEntity) {
-        return "A classe " + upperCaseFirstLetter(classEntityName.toLowerCase()) + " não existe no projeto!";
+        return "A classe " + upperCaseFirstLetter(classname.toLowerCase()) + " não existe no projeto!";
     }
 
     const feedback = [
         "A classe ",
-        classEntity.entityName
+        classEntity.name
     ];
 
     if(commandArray.length === 1) {

@@ -6,8 +6,8 @@ export default function RelationshipEntity({ relationshipEntity } ) {
       <div className="classEntity">
         <div className="classTittle">
             <div className="entityType">{ relationshipEntity.relationshipType }</div>
-            <div className="entityName">{ relationshipEntity.primaryClassName }</div>
-            <div className="entityName">{ relationshipEntity.secondaryClassName }</div>
+            <div className="name">{ relationshipEntity.primaryClassName }</div>
+            <div className="name">{ relationshipEntity.secondaryClassName }</div>
         </div>
         { console.log(relationshipEntity) }
       </div>

@@ -6,7 +6,7 @@ import createClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClas
 import readClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
 import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
-import { entityNameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
+import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
 import createRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
 
@@ -52,7 +52,7 @@ export function CommandHandlerProvider({ children }) {
 
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
-                entityNameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[0].toLowerCase()));
+                nameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[0].toLowerCase()));
 
                 Object.assign(newEntity, createClassCommandHandler(commandArray));
 
@@ -63,7 +63,7 @@ export function CommandHandlerProvider({ children }) {
                     ];
                 });
                 
-                return "A classe " + newEntity.entityName + " foi criada com sucesso";
+                return "A classe " + newEntity.name + " foi criada com sucesso";
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
 
@@ -118,7 +118,7 @@ export function CommandHandlerProvider({ children }) {
     function alterEntityHandler(commandArray, entityType) {
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
-                const alteringClass = classEntities.find((classEntity) => classEntity.entityName === upperCaseFirstLetter(commandArray[0]));
+                const alteringClass = classEntities.find((classEntity) => classEntity.name === upperCaseFirstLetter(commandArray[0]));
 
                 if(!alteringClass) {
                     throw ERROR_CLASS_DOES_NOT_EXISTS;
@@ -126,7 +126,7 @@ export function CommandHandlerProvider({ children }) {
 
                 const renameIndex = commandArray.indexOf("-n");
                 if(renameIndex !== -1) {
-                    entityNameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[renameIndex + 1].toLowerCase()));
+                    nameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[renameIndex + 1].toLowerCase()));
                 }
 
                 const alteredEntity = alterClassCommandHandler(commandArray, alteringClass, renameIndex);
@@ -143,7 +143,7 @@ export function CommandHandlerProvider({ children }) {
                     return newClassEntities;
                 });
                 
-                return "A classe " + alteringClass.entityName + " foi alterada com sucesso";
+                return "A classe " + alteringClass.name + " foi alterada com sucesso";
                 
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;
