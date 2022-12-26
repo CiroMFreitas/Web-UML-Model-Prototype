@@ -10,6 +10,7 @@ import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
 import createRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
 import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
+import readRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
 
 const CommandHandlerContext = createContext();
 
@@ -96,6 +97,9 @@ export function CommandHandlerProvider({ children }) {
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
                 return readClassCommandHandler(commandArray, classEntities);
+
+            case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
+                return readRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
                 
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;
