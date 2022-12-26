@@ -38,7 +38,7 @@ export default function createRelationshipCommandHandler(commandArray, classEnti
     // Gets relationship or generates one if none is given
     const nameIndex = commandArray.indexOf("-n") + 1;
     let relationshipName;
-    if(nameIndex === -1) {
+    if(nameIndex === 0) {
         relationshipName = primaryClassName + relationshipType + secondaryClassName;
     } else {
         relationshipName = commandArray[nameIndex];
