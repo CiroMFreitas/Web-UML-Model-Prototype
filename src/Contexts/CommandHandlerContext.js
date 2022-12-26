@@ -9,6 +9,7 @@ import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler"
 import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
 import createRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
+import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
 
 const CommandHandlerContext = createContext();
 
@@ -144,7 +145,29 @@ export function CommandHandlerProvider({ children }) {
                 });
                 
                 return "A classe " + alteringClass.name + " foi alterada com sucesso";
-                
+
+            case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
+                const relationshipName = commandArray.shift();
+                const alteringRelationship = relationshipEntities.find((relationship) => relationship.name === relationshipName);
+
+                const alteredRelationship = AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities);
+
+                setRelationshipEntities(prevRelationshipEntities => {
+                    const newRelationshipEntities = prevRelationshipEntities.map((prevRelationshipEntity) => {
+                        if(prevRelationshipEntity === alteringRelationship) {
+                            prevRelationshipEntity = alteredRelationship;
+                        }
+
+                        return prevRelationshipEntity;
+                    })
+
+                    return newRelationshipEntities;
+                });
+
+                return "A relação " +
+                    relationshipName +
+                    " for alterada com sucesso!";
+
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;
         }
