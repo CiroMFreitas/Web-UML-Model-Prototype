@@ -9,27 +9,25 @@ import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/Stri
  * @param {String} commandArray 
  */
 export default function createRelationshipCommandHandler(commandArray, classEntities) {
-    console.log(commandArray)
-    console.log(classEntities)
     // Checks if a sufficient number of arguments is present
     if(commandArray.length < 3) {
         throw ERROR_INSUFFICIENT_ARGUMENTS;
     }
 
     // Checks if relationship type is valid
-    const relationshipType = getKeyByValue(SUPPORTED_RELATIONSHIP_TYPES, commandArray[0]);
+    const relationshipType = getKeyByValue(SUPPORTED_RELATIONSHIP_TYPES, commandArray.shift());
     if(!relationshipType) {
         throw ERROR_INVALID_RELATIONSHIP_TYPE;
     }
 
     // Validates classes names and see if they exist
-    const primaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray[1].toLowerCase()))
+    const primaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray.shift().toLowerCase()))
     const primaryClassExists = classEntities.find((classEntity) => classEntity.name === primaryClassName);
     if(!primaryClassExists) {
         throw ERROR_CLASS_DOES_NOT_EXISTS;
     }
 
-    const secondaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray[2].toLowerCase()))
+    const secondaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray.shift().toLowerCase()))
     const secondaryClassExists = classEntities.find((classEntity) => classEntity.name === secondaryClassName);
     if(!secondaryClassExists) {
         throw ERROR_CLASS_DOES_NOT_EXISTS;
