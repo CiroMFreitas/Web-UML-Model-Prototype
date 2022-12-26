@@ -44,9 +44,10 @@ export default function createRelationshipCommandHandler(commandArray, classEnti
         relationshipName = commandArray[nameIndex];
     }
     
-    let cardinality = [];
-    if(commandArray.length > 3) {
-        cardinality = commandArray[3].split(":");
+    const cardinalityIndex = commandArray.indexOf("-c") + 1;
+    let cardinality;
+    if(cardinalityIndex !== 0) {
+        cardinality = commandArray[cardinalityIndex].split(":");
 
         if(cardinality.length !== 2) {
             throw ERROR_INVALID_CARDINALITY;
