@@ -51,7 +51,7 @@ export default function ClassEntity({ classEntity } ) {
     <div className="classEntity">
       <div className="classTittle">
           <div className="entityType">{ classEntity.entityType }</div>
-          <div className="entityName">{ classEntity.entityName }</div>
+          <div className="name">{ classEntity.name }</div>
       </div>
       { console.log(classEntity) }
     </div>

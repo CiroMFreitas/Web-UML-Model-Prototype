@@ -7,7 +7,7 @@ export default function alterClassCommandHandler(commandArray, alteringClass, re
     const handledAlteringClass = alteringClass;
     
     if(renameIndex !== -1) {
-        handledAlteringClass.entityName = alterNameHandler(commandArray[renameIndex + 1]);
+        handledAlteringClass.name = alterNameHandler(commandArray[renameIndex + 1]);
     }
 
     const alteringAttributesIndex = commandArray.indexOf("-a");
