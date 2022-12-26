@@ -76,8 +76,15 @@ export function CommandHandlerProvider({ children }) {
                     ];
                 });
 
-                return "Relação " + SUPPORTED_RELATIONSHIP_TYPES[newEntity.relationshipType
-                ][1] + " entre " + newEntity.primaryClassName + " e " + newEntity.secondaryClassName + " foi criada com sucesso!";
+                return "Relação " +
+                SUPPORTED_RELATIONSHIP_TYPES[newEntity.relationshipType][1] +
+                " entre " +
+                newEntity.primaryClassName +
+                " e " +
+                newEntity.secondaryClassName +
+                " com o nome " +
+                newEntity.name +
+                " foi criada com sucesso!";
     
             default:
                 throw ERROR_UNRECOGNISED_ENTITY_TYPE;

@@ -34,6 +34,15 @@ export default function createRelationshipCommandHandler(commandArray, classEnti
     if(!secondaryClassExists) {
         throw ERROR_CLASS_DOES_NOT_EXISTS;
     }
+
+    // Gets relationship or generates one if none is given
+    const nameIndex = commandArray.indexOf("-n") + 1;
+    let relationshipName;
+    if(nameIndex === -1) {
+        relationshipName = primaryClassName + relationshipType + secondaryClassName;
+    } else {
+        relationshipName = commandArray[nameIndex];
+    }
     
     let cardinality = [];
     if(commandArray.length > 3) {
@@ -47,6 +56,7 @@ export default function createRelationshipCommandHandler(commandArray, classEnti
     }
 
     return {
+        name: relationshipName,
         relationshipType,
         primaryClassId: primaryClassExists.id,
         secondaryClassId: secondaryClassExists.id,
