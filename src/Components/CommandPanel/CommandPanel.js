@@ -4,10 +4,13 @@ import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
+import { useTranslation } from 'react-i18next'
+
 export default function CommandPanel() {
   const commandLineRef = useRef();
   const [commands, setCommands] = useState([]);
   const { commandHandler } = useContext(CommandHandlerContext);
+  const { t } = useTranslation();
 
   // Local Handlers
   function commandLineHandler(event) {
@@ -62,7 +65,7 @@ export default function CommandPanel() {
         }
       </div>
       
-      <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label="Console de comandos" autoFocus></input>
+      <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label={ t("label.command_console") } autoFocus></input>
     </div>
   );
 }
