@@ -1,7 +1,8 @@
-import { ERROR_CLASS_DOES_NOT_EXISTS, ERROR_INSUFFICIENT_ARGUMENTS, ERROR_INVALID_CARDINALITY, ERROR_INVALID_RELATIONSHIP_TYPE } from "../../Utils/Errors";
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../../Utils/SupportedKeyWords";
 import { getArgumentsValueIndex, getKeyByValue } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
+
+import { useTranslation } from 'react-i18next'
 
 /**
  * Handles command returning an object to be used as a relationshipEntity.
@@ -9,28 +10,30 @@ import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/Stri
  * @param {String} commandArray 
  */
 export default function CreateRelationshipCommandHandler(commandArray, classEntities) {
+    const { t } = useTranslation();
+
     // Checks if a sufficient number of arguments is present
     if(commandArray.length < 3) {
-        throw ERROR_INSUFFICIENT_ARGUMENTS;
+        throw t("error.insufficient_arguments");
     }
 
     // Checks if relationship type is valid
     const relationshipType = getKeyByValue(SUPPORTED_RELATIONSHIP_TYPES, commandArray.shift());
     if(!relationshipType) {
-        throw ERROR_INVALID_RELATIONSHIP_TYPE;
+        throw t("error.not_supported_relationship_type");
     }
 
     // Validates classes names and see if they exist
     const primaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray.shift().toLowerCase()))
     const primaryClassExists = classEntities.find((classEntity) => classEntity.name === primaryClassName);
     if(!primaryClassExists) {
-        throw ERROR_CLASS_DOES_NOT_EXISTS;
+        throw t("error.class_not_found");
     }
 
     const secondaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray.shift().toLowerCase()))
     const secondaryClassExists = classEntities.find((classEntity) => classEntity.name === secondaryClassName);
     if(!secondaryClassExists) {
-        throw ERROR_CLASS_DOES_NOT_EXISTS;
+        throw t("error.class_not_found");
     }
 
     // Gets relationship or generates one if none is given
@@ -48,7 +51,7 @@ export default function CreateRelationshipCommandHandler(commandArray, classEnti
         cardinality = commandArray[cardinalityIndex].split(":");
 
         if(cardinality.length !== 2) {
-            throw ERROR_INVALID_CARDINALITY;
+            throw t("error.invalid_cadinality");
         }
     } else {
         cardinality = ["", ""];

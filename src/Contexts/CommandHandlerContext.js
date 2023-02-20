@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES, SUPPORTED_RELATIONSHIP_TYPES } from "../Utils/SupportedKeyWords";
-import { ERROR_CLASS_DOES_NOT_EXISTS, ERROR_COMMAND_SYNTAX, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
 import readClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
+import { ERROR_CLASS_DOES_NOT_EXISTS, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
 import CreateClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
 import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";

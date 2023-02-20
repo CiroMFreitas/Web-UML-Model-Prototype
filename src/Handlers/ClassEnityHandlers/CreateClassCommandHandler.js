@@ -1,12 +1,13 @@
-import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
 import { SUPPORTED_ENTITY_TYPES, SUPPORTED_VISIBILITY } from "../../Utils/SupportedKeyWords";
 import { attributesFormatter, getKeyByValue, methodsFormatter } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
 
+import { useTranslation } from 'react-i18next'
+
 /**
  * Handles command returning an object to be used as a classEntity.
  * 
- * @param {String} commandArray 
+ * @param {String} commandArray
  */
 export default function CreateClassCommandHandler(commandArray) {
     const handledCreateEntity = {
@@ -19,21 +20,22 @@ export default function CreateClassCommandHandler(commandArray) {
     // Get attributes and methods
     const firstAttributeArgumentIndex = commandArray.indexOf("-a");
     if(firstAttributeArgumentIndex !== -1) {
-        handledCreateEntity.attributes = createAttributesHandler(commandArray.slice(firstAttributeArgumentIndex));
+        handledCreateEntity.attributes = CreateAttributesHandler(commandArray.slice(firstAttributeArgumentIndex));
     }
     
     const firstMethodArgumentIndex = commandArray.indexOf("-m");
     if(firstMethodArgumentIndex !== -1) {
-        handledCreateEntity.methods = createMethodsHandler(commandArray.slice(firstMethodArgumentIndex));
+        handledCreateEntity.methods = CreateMethodsHandler(commandArray.slice(firstMethodArgumentIndex));
     }
 
     return handledCreateEntity;
 }
 
 // Handles possible attributes
-function createAttributesHandler(argumentsArray) {
+function CreateAttributesHandler(argumentsArray) {
     const attributesArguments = attributesFormatter(argumentsArray);
     const createAttributes = []
+    const { t } = useTranslation();
 
     // Get and split attributes arguments
     attributesArguments.forEach((attributeArgument) => {
@@ -47,7 +49,7 @@ function createAttributesHandler(argumentsArray) {
                         name: validateNameSpace(attributeArgument[2])
                     });
                 } else {
-                    throw ERROR_COMMAND_SYNTAX;
+                    throw t("error.command_syntax");
                 }
                 break;
 
@@ -60,7 +62,7 @@ function createAttributesHandler(argumentsArray) {
                 break;
             
             default:
-                throw ERROR_COMMAND_SYNTAX;
+                throw t("error.command_syntax");
         }
     });
 
@@ -68,8 +70,9 @@ function createAttributesHandler(argumentsArray) {
 }
 
 // Handles possible methods
-function createMethodsHandler(argumentsArray) {
+function CreateMethodsHandler(argumentsArray) {
     const methodsArguments = methodsFormatter(argumentsArray);
+    const { t } = useTranslation();
     
     const newMethods = methodsArguments.map((newMethod) => {
         const newParameters = newMethod.paramenters.map((newMethodParameter) => {
@@ -90,7 +93,7 @@ function createMethodsHandler(argumentsArray) {
                         parameters: newParameters
                     };
                 } else {
-                    throw ERROR_COMMAND_SYNTAX;
+                    throw t("error.command_syntax");
                 }
 
             case 2:
@@ -102,7 +105,7 @@ function createMethodsHandler(argumentsArray) {
                 };
             
             default:
-                throw ERROR_COMMAND_SYNTAX;
+                throw t("error.command_syntax");
         }
     });
     
