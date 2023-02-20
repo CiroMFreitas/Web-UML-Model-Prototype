@@ -4,11 +4,6 @@ import { CommandHandlerProvider } from "./Contexts/CommandHandlerContext";
 
 function App() {
 
-  //Onload actions
-  /*useEffect(() => {
-    return "nothing for now"
-  }, []);*/
-
   return (
     <div id="app">
       <CommandHandlerProvider>
