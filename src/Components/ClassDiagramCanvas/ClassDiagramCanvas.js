@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 import ClassEntity from '../ClassEntity/ClassEntity';
-import RelationshipEntity from '../RelationshipEnity/RelationshipEntity';
+import RelationshipEntity from '../RelationshipEntity/RelationshipEntity';
 import "./ClassDiagramCanvas.css";
 
 export default function ClassDiagramCanvas() {
