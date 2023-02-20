@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES, SUPPORTED_RELATIONSHIP_TYPES } from "../Utils/SupportedKeyWords";
-import readClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
 import { ERROR_CLASS_DOES_NOT_EXISTS, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
 import CreateClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
+import ReadClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
 import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
 import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
@@ -100,13 +100,13 @@ export function CommandHandlerProvider({ children }) {
     function readEntityHandler(commandArray, entityType) {
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
-                return readClassCommandHandler(commandArray, classEntities);
+                return ReadClassCommandHandler(commandArray, classEntities);
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
                 return readRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
                 
             default:
-                throw ERROR_UNRECOGNISED_ENTITY_TYPE;
+                throw t("error.unrecognised_type");
         }
     }
 

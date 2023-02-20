@@ -1,43 +1,46 @@
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../../Utils/SupportedKeyWords";
 
-export default function readRelationshipCommandHandler(commandArray, relationshipEntities, classEntities) {
+import { useTranslation } from 'react-i18next'
+
+export default function ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities) {
     const relationshipName = commandArray.shift();
+    const { t } = useTranslation();
     
     const relationship = relationshipEntities.find((relationship) => relationship.name = relationshipName)
 
     if(!relationship) {
-        return "A relação " + relationship + " não existe no projeto!";
+        return t("command.read.relatioship.not_found.part1") + relationship + t("command.read.relatioship.not_found.part2");
     }
 
-    let feedback = "A relação " +
-    SUPPORTED_RELATIONSHIP_TYPES[relationship.relationshipType][1] +
-    " nomeada " +
-    relationship.name;
+    let feedback = t("command.read.relatioship.feedback.start") +
+        SUPPORTED_RELATIONSHIP_TYPES[relationship.relationshipType][1] +
+        t("command.read.relatioship.feedback.named") +
+        relationship.name;
 
     if(relationship.primaryClassId === relationship.secondaryClassId) {
-        feedback += " da classe " + classEntities.find((classEntity) => classEntity.id === relationship.primaryClassId).name;
+        feedback += t("command.read.relatioship.feedback.reflexive") + classEntities.find((classEntity) => classEntity.id === relationship.primaryClassId).name;
     } else {
-        feedback += " entre as classes " +
+        feedback += t("command.read.relatioship.feedback.between") +
         classEntities.find((classEntity) => classEntity.id === relationship.primaryClassId).name +
         " " +
         classEntities.find((classEntity) => classEntity.id === relationship.secondaryClassId).name;
     }
 
     if((relationship.primaryCardinality === "") && (relationship.secondaryCardinality === "")) {
-        feedback += " sem cardinalidade";
+        feedback += t("command.read.relatioship.feedback.cardinality.no");
     } else {
-        feedback += " com cardinalidade ";
+        feedback += t("command.read.relatioship.feedback.cardinality.yes");
 
         if(relationship.primaryCardinality === "") {
-            feedback += " de origem não especificada ";
+            feedback += t("command.read.relatioship.feedback.cardinality.no_origin");
         } else {
             feedback += relationship.primaryCardinality;
         }
 
-        feedback += " para ";
+        feedback += t("command.read.relatioship.feedback.cardinality.to");
 
         if(relationship.secondaryCardinality === "") {
-            feedback += "cardinalidade de destino não especificada";
+            feedback += t("command.read.relatioship.feedback.cardinality.no_destination");
         } else {
             feedback += relationship.secondaryCardinality;
         }

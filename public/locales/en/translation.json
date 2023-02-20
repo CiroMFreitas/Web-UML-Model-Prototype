@@ -20,8 +20,60 @@
                 }
             }
         },
+        "read": {
+            "class": {
+                "not_found": {
+                    "part1": "Class ",
+                    "part2": " was not found in the project"
+                },
+                "feedback": {
+                    "start": "Class ",
+                    "exists": " is present in the project",
+                    "attribute": {
+                        "none": "; does not have attributes",
+                        "singular": "; has the attribute",
+                        "plural": "; has the attributes"
+                    },
+                    "method": {
+                        "none": "; does not have methods",
+                        "singular": "; has the method",
+                        "plural": "; has the methods"
+                    },
+                    "parameter": {
+                        "none": "; and does not have parameters",
+                        "singular": "; which has the parameter",
+                        "plural": "; which has the parameters",
+                        "last": "; which is the last parameter"
+                    }
+                }
+            },
+            "relationship": {
+                "not_found": {
+                    "part1": "Relationship ",
+                    "part2": " was not found in the project"
+                },
+                "feedback": {
+                    "start": "Relationship ",
+                    "named": " named ",
+                    "reflexive": " of ",
+                    "between": " between ",
+                    "cardinality": {
+                        "no": " without cardinality",
+                        "yes": " with cardinality ",
+                        "no_origin": " with no specified origin",
+                        "to": " to ",
+                        "no_destination": " with no specified destination"
+                    }
+                }
+            }
+        }
+    },
     "error": {
         "command_syntax": "Error on command syntax",
-        "unrecognised_type": "Entity type not recognised"
+        "unrecognised_type": "Entity type not recognised",
+        "insufficient_arguments": "Insufficient arguments were given",
+        "not_supported_relationship_type": "Given relationship type not supported",
+        "class_not_found": "Class not found in the project",
+        "invalid_cadinality": "Given cardinality is invalid"
     }
 }

@@ -1,31 +1,33 @@
-import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
 import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
 
-export default function readClassCommandHandler(commandArray, classEntities) {
+import { useTranslation } from 'react-i18next'
+
+export default function ReadClassCommandHandler(commandArray, classEntities) {
     const classname = upperCaseFirstLetter(commandArray[0].toLowerCase());
     const classEntity = classEntities.find((classEntity) => classname === classEntity.name);
+    const { t } = useTranslation();
 
     if(!classEntity) {
-        return "A classe " + upperCaseFirstLetter(classname.toLowerCase()) + " não existe no projeto!";
+        return t("command.read.class.not_found.part1") + upperCaseFirstLetter(classname.toLowerCase()) + t("command.read.class.not_found.part2");
     }
 
     const feedback = [
-        "A classe ",
+        t("command.read.class.feedback.start"),
         classEntity.name
     ];
 
     if(commandArray.length === 1) {
-        feedback.push(" existe no projeto");
+        feedback.push(t("command.read.class.feedback.exists"));
     }
 
    if(commandArray.includes("-a")) {
         if(classEntity.attributes.length === 0) {
-            feedback.push("; não possui attributos");
+            feedback.push(t("command.read.class.feedback.attribute.none"));
         } else {
             if(classEntity.attributes.length > 1) {
-                feedback.push("; possui os attributos");
+                feedback.push(t("command.read.class.feedback.attribute.plural"));
             } else {
-                feedback.push("; possui o attributo");
+                feedback.push(t("command.read.class.feedback.attribute.singular"));
             }
     
             classEntity.attributes.forEach((attribute) => {
@@ -38,12 +40,12 @@ export default function readClassCommandHandler(commandArray, classEntities) {
 
     if(commandArray.includes("-m")) {
         if(classEntity.methods.length === 0) {
-            feedback.push("; não possui métodos.");
+            feedback.push(t("command.read.class.feedback.method.none"));
         } else {
             if(classEntity.methods.length > 1) {
-                feedback.push("; possui os métodos");
+                feedback.push(t("command.read.class.feedback.method.plural"));
             } else {
-                feedback.push("; possui o método");
+                feedback.push(t("command.read.class.feedback.method.singular"));
             }
     
             classEntity.methods.forEach((method) => {
@@ -52,12 +54,12 @@ export default function readClassCommandHandler(commandArray, classEntities) {
                 feedback.push(" " + method.type);
     
                 if(method.parameters.length === 0) {
-                    feedback.push(" e não possui parâmetros");
+                    feedback.push(t("command.read.class.feedback.parameter.none"));
                 } else {
                     if(method.parameters.length > 1) {
-                        feedback.push("; que possui os parâmetro");
+                        feedback.push(t("command.read.class.feedback.parameter.plural"));
                     } else {
-                        feedback.push("; que possui o parâmetro");
+                        feedback.push(t("command.read.class.feedback.parameter.singular"));
                     }
 
                     method.parameters.forEach((parameter) => {
@@ -65,7 +67,9 @@ export default function readClassCommandHandler(commandArray, classEntities) {
                         feedback.push(" " + parameter.type);
                     });
 
-                    feedback.push(", fim parâmetro");
+                    if(method.parameters.length > 1) {
+                        feedback.push(t("command.read.class.feedback.parameter.last"));
+                    }
                 }
             });
         }
@@ -73,7 +77,7 @@ export default function readClassCommandHandler(commandArray, classEntities) {
     
 
     if(feedback.length === 2) {
-        throw ERROR_COMMAND_SYNTAX;
+        throw t("error.command_syntax");
     }
 
     return feedback.toString().replaceAll(",", "").replaceAll(";", ",");

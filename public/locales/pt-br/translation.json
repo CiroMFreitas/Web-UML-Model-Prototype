@@ -20,8 +20,60 @@
                 }
             }
         },
+        "read": {
+            "class": {
+                "not_found": {
+                    "part1": "A classe ",
+                    "part2": " não foi encontrada no projeto"
+                },
+                "feedback": {
+                    "start": "A classe ",
+                    "exists": " existe no projeto",
+                    "attributes": {
+                        "none": "; não possui atributos",
+                        "singular": "; possui o atributo",
+                        "plural": "; possui os atributos"
+                    },
+                    "method": {
+                        "none": "; não possui métodos",
+                        "singular": "; possui o método",
+                        "plural": "; possui os métodos"
+                    },
+                    "parameter": {
+                        "none": "; e não possui parâmetros",
+                        "singular": "; que possui o parâmetro",
+                        "plural": "; que possui os parâmetros",
+                        "last": "; que é o último parâmetro"
+                    }
+                }
+            },
+            "relationship": {
+                "not_found": {
+                    "part1": "O relacionamento ",
+                    "part2": " não foi encontrado no projeto"
+                },
+                "feedback": {
+                    "start": "O relacionamento ",
+                    "named": " com nome ",
+                    "reflexive": " da classe ",
+                    "between": " entre as classes ",
+                    "cardinality": {
+                        "no": " sem cardinalidade",
+                        "yes": " com cardinalidade ",
+                        "no_origin": " sem origem especificada",
+                        "to": " para ",
+                        "no_destination": " sem destino especificado"
+                    }
+                }
+            }
+        }
+    },
     "error": {
         "command_syntax": "Erro na sintaxe do comando",
-        "unrecognised_type": "Entidade não reconhecida"
+        "unrecognised_type": "Entidade não reconhecida",
+        "insufficient_arguments": "Não foram fornecidos argumentos suficientes",
+        "not_supported_relationship_type": "Tipo de relacionamento fornecido não é suportado",
+        "class_not_found": "Classe não foi encontrada no projeto",
+        "invalid_cadinality": "Cardinalidade fornecida é invalida"
     }
 }
