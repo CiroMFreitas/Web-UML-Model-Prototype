@@ -8,7 +8,7 @@ import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/Stri
  * 
  * @param {String} commandArray 
  */
-export default function createRelationshipCommandHandler(commandArray, classEntities) {
+export default function CreateRelationshipCommandHandler(commandArray, classEntities) {
     // Checks if a sufficient number of arguments is present
     if(commandArray.length < 3) {
         throw ERROR_INSUFFICIENT_ARGUMENTS;

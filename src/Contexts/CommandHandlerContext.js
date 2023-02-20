@@ -2,28 +2,31 @@ import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES, SUPPORTED_RELATIONSHIP_TYPES } from "../Utils/SupportedKeyWords";
 import { ERROR_CLASS_DOES_NOT_EXISTS, ERROR_COMMAND_SYNTAX, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
-import createClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
 import readClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
+import CreateClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
 import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
 import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
-import createRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
+import CreateRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
 import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
 import readRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
 import removeRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/removeRelationshipCommandHandler";
+
+import { useTranslation } from 'react-i18next'
 
 const CommandHandlerContext = createContext();
 
 export function CommandHandlerProvider({ children }) {
     const [classEntities, setClassEntities] = useState([])
     const [relationshipEntities, setRelationshipEntities] = useState([])
+    const { t } = useTranslation();
 
     const commandHandler = (commandLine) => {
         const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
 
         if(commandArray.length < 3) {
-            throw ERROR_COMMAND_SYNTAX;
+            throw t("error.command_syntax");
         }
 
         const commandType = commandArray.shift().toLowerCase();
@@ -43,7 +46,7 @@ export function CommandHandlerProvider({ children }) {
                 return alterEntityHandler(commandArray, entityType);
 
             default:
-                throw ERROR_COMMAND_SYNTAX;
+                throw t("error.command_syntax");
         }
         
     };
@@ -57,7 +60,7 @@ export function CommandHandlerProvider({ children }) {
             case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
                 nameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[0].toLowerCase()));
 
-                Object.assign(newEntity, createClassCommandHandler(commandArray));
+                Object.assign(newEntity, CreateClassCommandHandler(commandArray));
 
                 setClassEntities(prevClassEntities => {
                     return [
@@ -66,11 +69,11 @@ export function CommandHandlerProvider({ children }) {
                     ];
                 });
                 
-                return "A classe " + newEntity.name + " foi criada com sucesso";
+                return t("commad.create.class.success_feedback.part1") + newEntity.name + t("commad.create.class.success_feedback.part2");
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
 
-                Object.assign(newEntity, createRelationshipCommandHandler(commandArray, classEntities));
+                Object.assign(newEntity, CreateRelationshipCommandHandler(commandArray, classEntities));
 
                 setRelationshipEntities(prevRealtionshipEntities => {
                     return [
@@ -79,18 +82,18 @@ export function CommandHandlerProvider({ children }) {
                     ];
                 });
 
-                return "Relação " +
+                return t("commad.create.relationship.success_feedback.part1") +
                 SUPPORTED_RELATIONSHIP_TYPES[newEntity.relationshipType][1] +
-                " entre " +
+                t("commad.create.relationship.success_feedback.part2") +
                 newEntity.primaryClassName +
-                " e " +
+                t("commad.create.relationship.success_feedback.part3") +
                 newEntity.secondaryClassName +
-                " com o nome " +
+                t("commad.create.relationship.success_feedback.part4") +
                 newEntity.name +
-                " foi criada com sucesso!";
+                t("commad.create.relationship.success_feedback.part5");
     
             default:
-                throw ERROR_UNRECOGNISED_ENTITY_TYPE;
+                throw t("error.unrecognised_type");
         }
     }
 

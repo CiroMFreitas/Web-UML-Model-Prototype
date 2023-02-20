@@ -1,5 +1,27 @@
 {
     "label": {
         "command_console": "Command Console"
+    },
+    "command": {
+        "create": {
+            "class": {
+                "success_feedback": {
+                    "part1": "Class ",
+                    "part2": " was successfully created"
+                }
+            },
+            "relationship": {
+                "success_feedback": {
+                    "part1": "A ",
+                    "part2": " relationship between ",
+                    "part3": " and ",
+                    "part4": " named ",
+                    "part5": " was successfully createed"
+                }
+            }
+        },
+    "error": {
+        "command_syntax": "Error on command syntax",
+        "unrecognised_type": "Entity type not recognised"
     }
 }
