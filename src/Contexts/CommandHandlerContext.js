@@ -1,25 +1,26 @@
 import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
+import { useTranslation } from 'react-i18next';
+
 import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES, SUPPORTED_RELATIONSHIP_TYPES } from "../Utils/SupportedKeyWords";
-import { ERROR_CLASS_DOES_NOT_EXISTS, ERROR_UNRECOGNISED_ENTITY_TYPE } from "../Utils/Errors";
+import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
+import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
+
 import CreateClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
 import ReadClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
 import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
-import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
-import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 import RemoveClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
+
 import CreateRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
 import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
 import ReadRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
 import RemoveRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/RemoveRelationshipCommandHandler";
 
-import { useTranslation } from 'react-i18next'
-
 const CommandHandlerContext = createContext();
 
 export function CommandHandlerProvider({ children }) {
-    const [classEntities, setClassEntities] = useState([])
-    const [relationshipEntities, setRelationshipEntities] = useState([])
+    const [classEntities, setClassEntities] = useState([]);
+    const [relationshipEntities, setRelationshipEntities] = useState([]);
     const { t } = useTranslation();
 
     const commandHandler = (commandLine) => {
@@ -137,7 +138,7 @@ export function CommandHandlerProvider({ children }) {
                 const alteringClass = classEntities.find((classEntity) => classEntity.name === upperCaseFirstLetter(commandArray[0]));
 
                 if(!alteringClass) {
-                    throw ERROR_CLASS_DOES_NOT_EXISTS;
+                    throw t("error.class_not_found");
                 }
 
                 const renameIndex = commandArray.indexOf("-n");
@@ -159,7 +160,7 @@ export function CommandHandlerProvider({ children }) {
                     return newClassEntities;
                 });
                 
-                return "A classe " + alteringClass.name + " foi alterada com sucesso";
+                return t("command.alter.class.success_feedback.part1") + alteringClass.name + t("command.alter.class.success_feedback.part2");
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
                 const relationshipName = commandArray.shift();

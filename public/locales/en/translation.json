@@ -80,6 +80,20 @@
                     "part2": " was successfully removed"
                 }
             }
+        },
+        "alter": {
+            "class": {
+                "success_feedback": {
+                    "part1": "Class ",
+                    "part2": " was successfully altered"
+                }
+            },
+            "relationship": {
+                "success_feedback": {
+                    "part1": "Relationship ",
+                    "part2": " was successfully altered"
+                }
+            }
         }
     },
     "error": {

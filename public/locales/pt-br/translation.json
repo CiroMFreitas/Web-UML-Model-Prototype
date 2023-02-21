@@ -80,6 +80,20 @@
                     }
                 }
             }
+        },
+        "alter": {
+            "class": {
+                "success_feedback": {
+                    "part1": "A classe ",
+                    "part2": " foi alterada com sucesso"
+                },
+                "relationship": {
+                    "success_feedback": {
+                        "part1": "O relacionamento ",
+                        "part2": " foi alterada com sucesso"
+                    }
+                }
+            }
         }
     },
     "error": {

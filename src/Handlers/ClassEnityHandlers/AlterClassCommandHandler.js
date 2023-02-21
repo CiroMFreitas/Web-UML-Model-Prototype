@@ -1,9 +1,10 @@
-import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
+import { useTranslation } from 'react-i18next';
+
 import { SUPPORTED_ALTER_ARGUMENTS, SUPPORTED_VISIBILITY } from "../../Utils/SupportedKeyWords";
 import { attributesFormatter, getKeyByValue, methodsFormatter } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
 
-export default function alterClassCommandHandler(commandArray, alteringClass, renameIndex) {
+export default function AlterClassCommandHandler(commandArray, alteringClass, renameIndex) {
     const handledAlteringClass = alteringClass;
     
     if(renameIndex !== -1) {
@@ -12,12 +13,12 @@ export default function alterClassCommandHandler(commandArray, alteringClass, re
 
     const alteringAttributesIndex = commandArray.indexOf("-a");
     if(alteringAttributesIndex !== -1) {
-        alterAttributesHandler(commandArray.slice(alteringAttributesIndex), alteringClass)
+        AlterAttributesHandler(commandArray.slice(alteringAttributesIndex), alteringClass)
     }
 
     const alteringMethodsIndex = commandArray.indexOf("-m");
     if(alteringMethodsIndex !== -1) {
-        alterMethodsHandler(commandArray.slice(alteringMethodsIndex), alteringClass)
+        AlterMethodsHandler(commandArray.slice(alteringMethodsIndex), alteringClass)
     }
 
     return handledAlteringClass;
@@ -27,8 +28,9 @@ function alterNameHandler(newName) {
     return upperCaseFirstLetter(validateNameSpace(newName.toLowerCase()));
 }
 
-function alterAttributesHandler(alteringArguments, alteringClass) {
+function AlterAttributesHandler(alteringArguments, alteringClass) {
     const formattedArguments = attributesFormatter(alteringArguments);
+    const { t } = useTranslation();
     
     formattedArguments.forEach((formattedArgument) => {
         const argument = formattedArgument.shift().toLowerCase();
@@ -44,7 +46,7 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
                                 name: validateNameSpace(formattedArgument[2])
                             });
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                         break;
         
@@ -57,7 +59,7 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
                         break;
                     
                     default:
-                        throw ERROR_COMMAND_SYNTAX;
+                        throw t("error.command_syntax");
                 }
             break
 
@@ -67,7 +69,7 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
                 if(removingAttibuteIndex !== -1) {
                     alteringClass.attributes.splice(removingAttibuteIndex, 1);
                 } else {
-                    throw ERROR_COMMAND_SYNTAX;
+                    throw t("error.command_syntax");
                 }
 
                 break;
@@ -84,7 +86,7 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
                         if(getKeyByValue(SUPPORTED_VISIBILITY, formattedArgument[0])) {
                             alteringAttribute.visibility = formattedArgument[0];
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                     }
 
@@ -92,7 +94,7 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
                         if(validateNameSpace(formattedArgument[1])) {
                             alteringAttribute.type = formattedArgument[1];
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                     }
 
@@ -100,25 +102,26 @@ function alterAttributesHandler(alteringArguments, alteringClass) {
                         if(validateNameSpace(formattedArgument[2])) {
                             alteringAttribute.name = formattedArgument[2];
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                     }
 
                     alteringClass.attributes.splice(alteringAttributeIndex, 1, alteringAttribute);
                 } else {
-                    throw ERROR_COMMAND_SYNTAX;
+                    throw t("error.command_syntax");
                 }
 
                 break;
 
             default:
-                throw ERROR_COMMAND_SYNTAX;
+                throw t("error.command_syntax");
         }
     });
 }
 
-function alterMethodsHandler(alteringArguments, alteringClass) {
+function AlterMethodsHandler(alteringArguments, alteringClass) {
     const formattedArguments = methodsFormatter(alteringArguments);
+    const { t } = useTranslation();
     
     formattedArguments.forEach((formattedArgument) => {
         const argument = formattedArgument.argument.shift().toLowerCase();
@@ -139,7 +142,7 @@ function alterMethodsHandler(alteringArguments, alteringClass) {
                             newMethod.type = validateNameSpace(formattedArgument.argument[1]);
                             newMethod.name = validateNameSpace(formattedArgument.argument[2]);
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                         break;
         
@@ -151,7 +154,7 @@ function alterMethodsHandler(alteringArguments, alteringClass) {
                         break;
                     
                     default:
-                        throw ERROR_COMMAND_SYNTAX;
+                        throw t("error.command_syntax");
                 }
 
                 newMethod.parameters = formattedArgument.paramenters.map((newParameter) => {
@@ -184,7 +187,7 @@ function alterMethodsHandler(alteringArguments, alteringClass) {
                         if(getKeyByValue(SUPPORTED_VISIBILITY, formattedArgument.argument[0])) {
                             alteringMethod.visibility = formattedArgument.argument[0];
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                     }
 
@@ -192,7 +195,7 @@ function alterMethodsHandler(alteringArguments, alteringClass) {
                         if(validateNameSpace(formattedArgument.argument[1])) {
                             alteringMethod.type = formattedArgument.argument[1];
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                     }
 
@@ -200,28 +203,30 @@ function alterMethodsHandler(alteringArguments, alteringClass) {
                         if(validateNameSpace(formattedArgument.argument[2])) {
                             alteringMethod.name = formattedArgument.argument[2];
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                     }
 
                     if(formattedArgument.paramenters.length > 0) {
-                        alteringMethod.parameters = alterMethodParametersHandler(formattedArgument.paramenters, alteringMethod.parameters);
+                        alteringMethod.parameters = AlterMethodParametersHandler(formattedArgument.paramenters, alteringMethod.parameters);
                     }
 
                     alteringClass.methods.splice(alteringMethodIndex, 1, alteringMethod);
                 } else {
-                    throw ERROR_COMMAND_SYNTAX;
+                    throw t("error.command_syntax");
                 }
 
                 break;
 
             default:
-                throw ERROR_COMMAND_SYNTAX;
+                throw t("error.command_syntax");
         }
     });
 }
 
-function alterMethodParametersHandler(alteringParamentersArguments, methodParameters) {
+function AlterMethodParametersHandler(alteringParamentersArguments, methodParameters) {
+    const { t } = useTranslation();
+
     alteringParamentersArguments.forEach((alteringParamentersArgument) => {
         const argument = alteringParamentersArgument.shift();
     
@@ -253,7 +258,7 @@ function alterMethodParametersHandler(alteringParamentersArguments, methodParame
                         if(validateNameSpace(alteringParamentersArgument[0])) {
                             alteringParameter.type = alteringParamentersArgument[0];
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                     }
 
@@ -261,7 +266,7 @@ function alterMethodParametersHandler(alteringParamentersArguments, methodParame
                         if(validateNameSpace(alteringParamentersArgument[1])) {
                             alteringParameter.name = alteringParamentersArgument[1];
                         } else {
-                            throw ERROR_COMMAND_SYNTAX;
+                            throw t("error.command_syntax");
                         }
                     }
 
@@ -271,7 +276,7 @@ function alterMethodParametersHandler(alteringParamentersArguments, methodParame
                 break;
             
             default:
-                throw ERROR_COMMAND_SYNTAX;
+                throw t("error.command_syntax");
         }
     });
 
