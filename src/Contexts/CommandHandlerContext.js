@@ -10,8 +10,8 @@ import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
 import CreateRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
 import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
-import readRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
 import removeRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/removeRelationshipCommandHandler";
+import ReadRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
 
 import { useTranslation } from 'react-i18next'
 
