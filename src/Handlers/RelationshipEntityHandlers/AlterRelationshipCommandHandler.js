@@ -1,10 +1,10 @@
-import { ERROR_COMMAND_SYNTAX } from "../../Utils/Errors";
-import { SUPPORTED_ALTER_ARGUMENTS, SUPPORTED_VISIBILITY } from "../../Utils/SupportedKeyWords";
-import { attributesFormatter, getArgumentsValueIndex, getKeyByValue, methodsFormatter } from "../UtilityHandlers/DataHandler";
-import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
+import { useTranslation } from 'react-i18next';
+
+import { getArgumentsValueIndex } from "../UtilityHandlers/DataHandler";
 
 export default function AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities) {
     const handledAlteringRelationship = alteringRelationship;
+    const { t } = useTranslation();
     
     const renameIndex = getArgumentsValueIndex(commandArray, "-n");
     if(renameIndex !== 0) {
@@ -13,19 +13,35 @@ export default function AlterRelationshipCommandHandler(commandArray, alteringRe
 
     const primaryClassIndex = getArgumentsValueIndex(commandArray, "-pc");
     if(primaryClassIndex !== 0) {
-        handledAlteringRelationship.primaryClassId = classEntities.find((classEntity) => classEntity.name === commandArray[primaryClassIndex]).id
+        const newPrimaryClass = classEntities.find((classEntity) => classEntity.name === commandArray[primaryClassIndex]).id;
+
+        if(newPrimaryClass) {
+            handledAlteringRelationship.primaryClassId = newPrimaryClass;
+        } else {
+            throw t("error.class_not_found");
+        }
     }
 
     const secondaryClassIndex = getArgumentsValueIndex(commandArray, "-sc");
     if(secondaryClassIndex !== 0) {
-        handledAlteringRelationship.secondaryClassId = classEntities.find((classEntity) => classEntity.name === commandArray[secondaryClassIndex]).id
+        const newSecondaruClass = classEntities.find((classEntity) => classEntity.name === commandArray[secondaryClassIndex]).id;
+        if(newSecondaruClass) {
+            handledAlteringRelationship.secondaryClassId = newSecondaruClass;
+        } else {
+            throw t("error.class_not_found");
+        }
     }
 
     const cardinalityIndex = getArgumentsValueIndex(commandArray, "-c");
     if(cardinalityIndex !== 0) {
         const cardinality = commandArray[cardinalityIndex].split(":");
-        handledAlteringRelationship.primaryCardinality = cardinality[0];
-        handledAlteringRelationship.secondaryCardinality = cardinality[1];
+
+        if(cardinality.length === 2) {
+            handledAlteringRelationship.primaryCardinality = cardinality[0];
+            handledAlteringRelationship.secondaryCardinality = cardinality[1];
+        } else {
+            throw t("error.invalid_cadinality");
+        }
     }
 
     return handledAlteringRelationship;

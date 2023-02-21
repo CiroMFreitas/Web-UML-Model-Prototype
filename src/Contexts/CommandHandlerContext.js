@@ -166,6 +166,10 @@ export function CommandHandlerProvider({ children }) {
                 const relationshipName = commandArray.shift();
                 const alteringRelationship = relationshipEntities.find((relationship) => relationship.name === relationshipName);
 
+                if(!alteringRelationship) {
+                    throw t("error.relationship_not_found");
+                }
+
                 const alteredRelationship = AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities);
 
                 setRelationshipEntities(prevRelationshipEntities => {
@@ -180,12 +184,12 @@ export function CommandHandlerProvider({ children }) {
                     return newRelationshipEntities;
                 });
 
-                return "A relação " +
+                return t("command.alter.relationship.success_feedback.part1") +
                     relationshipName +
-                    " for alterada com sucesso!";
+                    t("command.alter.relationship.success_feedback.part2");
 
             default:
-                throw ERROR_UNRECOGNISED_ENTITY_TYPE;
+                throw t("error.unrecognised_type");
         }
     }
 
