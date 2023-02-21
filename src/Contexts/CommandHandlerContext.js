@@ -7,11 +7,11 @@ import ReadClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCom
 import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
 import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
-import removeClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
+import RemoveClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
 import CreateRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
 import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
-import removeRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/removeRelationshipCommandHandler";
 import ReadRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
+import RemoveRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/RemoveRelationshipCommandHandler";
 
 import { useTranslation } from 'react-i18next'
 
@@ -103,7 +103,7 @@ export function CommandHandlerProvider({ children }) {
                 return ReadClassCommandHandler(commandArray, classEntities);
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
-                return readRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
+                return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
                 
             default:
                 throw t("error.unrecognised_type");
@@ -113,21 +113,21 @@ export function CommandHandlerProvider({ children }) {
     function removeEntityHandler(commandArray, entityType) {
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
-                const handledClassEntities = removeClassCommandHandler(commandArray, classEntities);
+                const handledClassEntities = RemoveClassCommandHandler(commandArray, classEntities);
 
                 setClassEntities(handledClassEntities);
 
-                return "A classe " + commandArray[0] + " foi removida com sucesso!";
+                return t("command.remove.class.success_feedback.part1") + commandArray[0] + t("command.remove.class.success_feedback.part2");
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
-                const handledRelationshipEntities = removeRelationshipCommandHandler(commandArray, relationshipEntities);
+                const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
     
                 setRelationshipEntities(handledRelationshipEntities);
     
-                return "A relação " + commandArray[0] + " foi removida com sucesso!";
+                return t("command.remove.relationship.success_feedback.part1") + commandArray[0] + t("command.remove.relationship.success_feedback.part2");
                 
             default:
-                throw ERROR_UNRECOGNISED_ENTITY_TYPE;
+                throw t("error.unrecognised_type");
         }
     }
 

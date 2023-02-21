@@ -1,14 +1,14 @@
-import { ERROR_RELATIONSHIP_DOES_NOT_EXISTS } from "../../Utils/Errors";
-import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
+import { useTranslation } from 'react-i18next'
 
 
-export default function removeRelationshipCommandHandler(commandArray, relationshipEntities) {
+export default function RemoveRelationshipCommandHandler(commandArray, relationshipEntities) {
     const relationshipName = commandArray.shift();
     const removingRelationship = relationshipEntities.find((relationshipEntity) => relationshipEntity.name === relationshipName);
+    const { t } = useTranslation();
 
     if(removingRelationship) {
         return relationshipEntities.filter((relationshipEntity) => relationshipEntity !== removingRelationship);
     } else {
-        throw ERROR_RELATIONSHIP_DOES_NOT_EXISTS;
+        throw t("error.relationship_not_found");
     }
 }

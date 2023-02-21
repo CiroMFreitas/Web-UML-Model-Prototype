@@ -66,6 +66,20 @@
                     }
                 }
             }
+        },
+        "remove": {
+            "class": {
+                "success_feedback": {
+                    "part1": "A classe ",
+                    "part2": " foi removida com sucesso"
+                },
+                "relationship": {
+                    "success_feedback": {
+                        "part1": "O relacionamento ",
+                        "part2": " foi removida com sucesso"
+                    }
+                }
+            }
         }
     },
     "error": {
@@ -74,6 +88,7 @@
         "insufficient_arguments": "Não foram fornecidos argumentos suficientes",
         "not_supported_relationship_type": "Tipo de relacionamento fornecido não é suportado",
         "class_not_found": "Classe não foi encontrada no projeto",
-        "invalid_cadinality": "Cardinalidade fornecida é invalida"
+        "invalid_cadinality": "Cardinalidade fornecida é invalida",
+        "relationship_not_found": "Relacionamento não foi encontrado no projeto"
     }
 }

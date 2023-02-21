@@ -66,6 +66,20 @@
                     }
                 }
             }
+        },
+        "remove": {
+            "class": {
+                "success_feedback": {
+                    "part1": "Class ",
+                    "part2": " was successfully removed"
+                }
+            },
+            "relationship": {
+                "success_feedback": {
+                    "part1": "Relationship ",
+                    "part2": " was successfully removed"
+                }
+            }
         }
     },
     "error": {
@@ -74,6 +88,7 @@
         "insufficient_arguments": "Insufficient arguments were given",
         "not_supported_relationship_type": "Given relationship type not supported",
         "class_not_found": "Class not found in the project",
-        "invalid_cadinality": "Given cardinality is invalid"
+        "invalid_cadinality": "Given cardinality is invalid",
+        "relationship_not_found": "Relationship not found in the project"
     }
 }
