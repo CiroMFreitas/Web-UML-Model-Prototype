@@ -1,4 +1,4 @@
-import { ERROR_COMMAND_SYNTAX, ERROR_MISSING_END_SYMBOL } from "../../Utils/Errors";
+import { useTranslation } from 'react-i18next';
 
 /**
  * Returns top most key which has the searched value, the search will go deep if object contains another object within, but will use includes function on arrays.
@@ -45,13 +45,14 @@ export function getKeyByValue(object, value) {
  * @param {String[]} argumentsArray 
  * @param {String} endSymbol 
  */
-export function getLastArgumentIndexHandler(argumentsArray, endSymbol) {
+export function GetLastArgumentIndexHandler(argumentsArray, endSymbol) {
     const lastArgument = argumentsArray.find((argument) => argument.includes(endSymbol))
+    const { t } = useTranslation();
     
     if(lastArgument) {
         return argumentsArray.indexOf(lastArgument);
     } else {
-        throw ERROR_MISSING_END_SYMBOL;
+        throw t("error.missing_end_pointer");
     }
 }
 
@@ -113,11 +114,12 @@ export function methodsFormatter(argumentsArray) {
     return formatedMethodsArray;
 }
 
-export function getArgumentsValueIndex(commandArray, argument) {
+export function GetArgumentsValueIndex(commandArray, argument) {
     const index = commandArray.indexOf(argument) + 1;
+    const { t } = useTranslation();
 
     if(index >= commandArray.length) {
-        throw ERROR_COMMAND_SYNTAX;
+        throw t("error.command_syntax");
     }
 
     return index;

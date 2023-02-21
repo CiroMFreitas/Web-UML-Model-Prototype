@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../../Utils/SupportedKeyWords";
-import { getArgumentsValueIndex, getKeyByValue } from "../UtilityHandlers/DataHandler";
+import { GetArgumentsValueIndex, getKeyByValue } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
 
 /**
@@ -37,7 +37,7 @@ export default function CreateRelationshipCommandHandler(commandArray, classEnti
     }
 
     // Gets relationship or generates one if none is given
-    const nameIndex = getArgumentsValueIndex(commandArray, "-n");
+    const nameIndex = GetArgumentsValueIndex(commandArray, "-n");
     let relationshipName;
     if(nameIndex === 0) {
         relationshipName = primaryClassName + relationshipType + secondaryClassName;
@@ -45,7 +45,7 @@ export default function CreateRelationshipCommandHandler(commandArray, classEnti
         relationshipName = commandArray[nameIndex];
     }
     
-    const cardinalityIndex = getArgumentsValueIndex(commandArray, "-c");
+    const cardinalityIndex = GetArgumentsValueIndex(commandArray, "-c");
     let cardinality;
     if(cardinalityIndex !== 0) {
         cardinality = commandArray[cardinalityIndex].split(":");

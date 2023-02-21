@@ -1,17 +1,17 @@
 import { useTranslation } from 'react-i18next';
 
-import { getArgumentsValueIndex } from "../UtilityHandlers/DataHandler";
+import { GetArgumentsValueIndex } from "../UtilityHandlers/DataHandler";
 
 export default function AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities) {
     const handledAlteringRelationship = alteringRelationship;
     const { t } = useTranslation();
     
-    const renameIndex = getArgumentsValueIndex(commandArray, "-n");
+    const renameIndex = GetArgumentsValueIndex(commandArray, "-n");
     if(renameIndex !== 0) {
         handledAlteringRelationship.name = commandArray[renameIndex];
     }
 
-    const primaryClassIndex = getArgumentsValueIndex(commandArray, "-pc");
+    const primaryClassIndex = GetArgumentsValueIndex(commandArray, "-pc");
     if(primaryClassIndex !== 0) {
         const newPrimaryClass = classEntities.find((classEntity) => classEntity.name === commandArray[primaryClassIndex]).id;
 
@@ -22,7 +22,7 @@ export default function AlterRelationshipCommandHandler(commandArray, alteringRe
         }
     }
 
-    const secondaryClassIndex = getArgumentsValueIndex(commandArray, "-sc");
+    const secondaryClassIndex = GetArgumentsValueIndex(commandArray, "-sc");
     if(secondaryClassIndex !== 0) {
         const newSecondaruClass = classEntities.find((classEntity) => classEntity.name === commandArray[secondaryClassIndex]).id;
         if(newSecondaruClass) {
@@ -32,7 +32,7 @@ export default function AlterRelationshipCommandHandler(commandArray, alteringRe
         }
     }
 
-    const cardinalityIndex = getArgumentsValueIndex(commandArray, "-c");
+    const cardinalityIndex = GetArgumentsValueIndex(commandArray, "-c");
     if(cardinalityIndex !== 0) {
         const cardinality = commandArray[cardinalityIndex].split(":");
 

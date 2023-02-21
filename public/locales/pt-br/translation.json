@@ -103,6 +103,7 @@
         "not_supported_relationship_type": "Tipo de relacionamento fornecido não é suportado",
         "class_not_found": "Classe não foi encontrada no projeto",
         "invalid_cadinality": "Cardinalidade fornecida é invalida",
-        "relationship_not_found": "Relacionamento não foi encontrado no projeto"
+        "relationship_not_found": "Relacionamento não foi encontrado no projeto",
+        "missing_end_pointer": "Pelo menos um argumento não foi fechado apropiadamente"
     }
 }

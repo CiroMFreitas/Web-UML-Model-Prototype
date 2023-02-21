@@ -103,6 +103,7 @@
         "not_supported_relationship_type": "Given relationship type not supported",
         "class_not_found": "Class not found in the project",
         "invalid_cadinality": "Given cardinality is invalid",
-        "relationship_not_found": "Relationship not found in the project"
+        "relationship_not_found": "Relationship not found in the project",
+        "missing_end_pointer": "At least one argument was not properly closed"
     }
 }
