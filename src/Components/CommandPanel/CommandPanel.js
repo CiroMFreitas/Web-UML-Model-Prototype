@@ -1,10 +1,11 @@
 import React, { useContext, useRef, useState } from 'react';
-import CommandLine from '../CommandLine/CommandLine';
-import "./CommandPanel.css";
 import { v4 as uuidv4 } from "uuid";
+import { useTranslation } from 'react-i18next'
+
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
-import { useTranslation } from 'react-i18next'
+import CommandLine from '../CommandLine/CommandLine';
+import "./CommandPanel.css";
 
 export default function CommandPanel() {
   const commandLineRef = useRef();

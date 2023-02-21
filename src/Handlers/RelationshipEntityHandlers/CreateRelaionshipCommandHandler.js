@@ -1,8 +1,8 @@
+import { useTranslation } from 'react-i18next';
+
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../../Utils/SupportedKeyWords";
 import { getArgumentsValueIndex, getKeyByValue } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
-
-import { useTranslation } from 'react-i18next'
 
 /**
  * Handles command returning an object to be used as a relationshipEntity.

@@ -1,8 +1,8 @@
+import { useTranslation } from 'react-i18next';
+
 import { SUPPORTED_ENTITY_TYPES, SUPPORTED_VISIBILITY } from "../../Utils/SupportedKeyWords";
 import { attributesFormatter, getKeyByValue, methodsFormatter } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
-
-import { useTranslation } from 'react-i18next'
 
 /**
  * Handles command returning an object to be used as a classEntity.

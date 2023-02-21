@@ -1,6 +1,6 @@
-import { SUPPORTED_RELATIONSHIP_TYPES } from "../../Utils/SupportedKeyWords";
+import { useTranslation } from 'react-i18next';
 
-import { useTranslation } from 'react-i18next'
+import { SUPPORTED_RELATIONSHIP_TYPES } from "../../Utils/SupportedKeyWords";
 
 export default function ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities) {
     const relationshipName = commandArray.shift();

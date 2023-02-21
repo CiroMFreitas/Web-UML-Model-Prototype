@@ -1,7 +1,6 @@
+import { useTranslation } from 'react-i18next';
+
 import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
-
-import { useTranslation } from 'react-i18next'
-
 
 export default function RemoveClassCommandHandler(commandArray, classEntities) {
     const className = upperCaseFirstLetter(commandArray[0].toLowerCase());

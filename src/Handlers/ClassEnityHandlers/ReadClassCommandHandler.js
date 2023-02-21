@@ -1,6 +1,6 @@
-import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
+import { useTranslation } from 'react-i18next';
 
-import { useTranslation } from 'react-i18next'
+import { upperCaseFirstLetter } from "../UtilityHandlers/StringHandler";
 
 export default function ReadClassCommandHandler(commandArray, classEntities) {
     const classname = upperCaseFirstLetter(commandArray[0].toLowerCase());
