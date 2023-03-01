@@ -70,7 +70,7 @@ export function CommandHandlerProvider({ children }) {
                     ];
                 });
                 
-                return t("commad.create.class.success_feedback.part1") + newEntity.name + t("commad.create.class.success_feedback.part2");
+                return t("command.create.class.success_feedback.part1") + newEntity.name + t("command.create.class.success_feedback.part2");
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
 
@@ -83,15 +83,15 @@ export function CommandHandlerProvider({ children }) {
                     ];
                 });
 
-                return t("commad.create.relationship.success_feedback.part1") +
+                return t("command.create.relationship.success_feedback.part1") +
                 SUPPORTED_RELATIONSHIP_TYPES[newEntity.relationshipType][1] +
-                t("commad.create.relationship.success_feedback.part2") +
+                t("command.create.relationship.success_feedback.part2") +
                 newEntity.primaryClassName +
-                t("commad.create.relationship.success_feedback.part3") +
+                t("command.create.relationship.success_feedback.part3") +
                 newEntity.secondaryClassName +
-                t("commad.create.relationship.success_feedback.part4") +
+                t("command.create.relationship.success_feedback.part4") +
                 newEntity.name +
-                t("commad.create.relationship.success_feedback.part5");
+                t("command.create.relationship.success_feedback.part5");
     
             default:
                 throw t("error.unrecognised_type");
