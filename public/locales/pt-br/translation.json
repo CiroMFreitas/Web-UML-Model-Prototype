@@ -29,7 +29,7 @@
                 "feedback": {
                     "start": "A classe ",
                     "exists": " existe no projeto",
-                    "attributes": {
+                    "attribute": {
                         "none": "; não possui atributos",
                         "singular": "; possui o atributo",
                         "plural": "; possui os atributos"
