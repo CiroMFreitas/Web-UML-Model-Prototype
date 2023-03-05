@@ -26,10 +26,6 @@ export function CommandHandlerProvider({ children }) {
     const commandHandler = (commandLine) => {
         const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
 
-        if(commandArray.length < 3) {
-            throw t("error.command_syntax");
-        }
-
         const commandType = commandArray.shift().toLowerCase();
         const entityType = commandArray.shift().toLowerCase();
         
