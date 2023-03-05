@@ -126,6 +126,7 @@
         }
     },
     "error": {
+        "class_not_found": "Classe não foi encontrado no projeto",
         "insufficient_attribute_arguments": "Não foi fornecido argumentos suficientes para gerar o atributo",
         "insufficient_method_arguments": "Não foi fornecido argumentos suficientes para gerar o método",
         "insufficient_relationship_arguments": "Não foi fornecido argumentos suficientes para gerar o relacionamento",
@@ -133,13 +134,12 @@
         "missing_end_pointer": "Pelo menos um argumento não foi fechado apropiadamente",
         "missing_last_argument": "O último argumento está ausente",
         "primary_class_not_found": "A primeira classe não foi encontrada no projeto",
+        "relationship_not_found": "Relacionamento não foi encontrado no projeto",
         "secondary_class_not_found": "A segunda classe não foi encontrada no projeto",
         "unrecognized_attribute_visibility": "A visibilidade de um dos atributos não foi reconhecida",
         "unrecognized_command": "Comando não reconhecido",
         "unrecognized_entity_type": "Entidade não reconhecida",
         "unrecognized_method_visibility": "A visibilidade de um dos métodos não foi reconhecida",
-        "unrecognized_relationship_type": "Tipo de relacionamento não reconhecido",
-
-        "relationship_not_found": "Relacionamento não foi encontrado no projeto"
+        "unrecognized_relationship_type": "Tipo de relacionamento não reconhecido"
     }
 }

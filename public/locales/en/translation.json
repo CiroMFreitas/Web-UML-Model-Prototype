@@ -126,6 +126,7 @@
         }
     },
     "error": {
+        "class_not_found": "Class not found in the project",
         "insufficient_attribute_arguments": "Not enough arguments given to generate attribute",
         "insufficient_method_arguments": "Not enough arguments given to generate method",
         "insufficient_relationship_arguments": "Not enough arguments given to generate relationship",
@@ -133,13 +134,12 @@
         "missing_end_pointer": "At least one argument was not properly closed",
         "missing_last_argument": "The last argument is missing",
         "primary_class_not_found": "Primary class not found in the project",
+        "relationship_not_found": "Relationship not found in the project",
         "secondary_class_not_found": "Secondary class not found in the project",
         "unrecognized_attribute_visibility": "One of the attributes's visibility was not recognized",
         "unrecognized_command": "Unrecognized command",
         "unrecognized_entity_type": "Entity type not recognized",
         "unrecognized_method_visibility": "One of the methods's visibility was not recognized",
-        "unrecognized_relationship_type": "Relationship type not recognized",
-
-        "relationship_not_found": "Relationship not found in the project"
+        "unrecognized_relationship_type": "Relationship type not recognized"
     }
 }

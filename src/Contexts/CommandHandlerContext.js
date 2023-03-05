@@ -116,14 +116,14 @@ export function CommandHandlerProvider({ children }) {
 
     function removeEntityHandler(commandArray, entityType) {
         switch(true) {
-            case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
+            case SUPPORTED_ENTITY_TYPES.class === entityType:
                 const handledClassEntities = RemoveClassCommandHandler(commandArray, classEntities);
 
                 setClassEntities(handledClassEntities);
 
                 return t("command.remove.class.success_feedback.part1") + commandArray[0] + t("command.remove.class.success_feedback.part2");
 
-            case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
+            case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                 const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
     
                 setRelationshipEntities(handledRelationshipEntities);
