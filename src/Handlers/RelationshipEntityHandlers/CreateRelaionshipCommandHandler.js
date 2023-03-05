@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+//import { useTranslation } from 'react-i18next';
 
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../../Utils/SupportedKeyWords";
 import { GetArgumentsValueIndex, getKeyByValue } from "../UtilityHandlers/DataHandler";
@@ -10,30 +10,29 @@ import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/Stri
  * @param {String} commandArray 
  */
 export default function CreateRelationshipCommandHandler(commandArray, classEntities) {
-    const { t } = useTranslation();
 
     // Checks if a sufficient number of arguments is present
     if(commandArray.length < 3) {
-        throw t("error.insufficient_arguments");
+        throw "error.insufficient_relationship_arguments";
     }
 
     // Checks if relationship type is valid
-    const relationshipType = getKeyByValue(SUPPORTED_RELATIONSHIP_TYPES, commandArray.shift());
+    const relationshipType = SUPPORTED_RELATIONSHIP_TYPES[commandArray.shift()];
     if(!relationshipType) {
-        throw t("error.not_supported_relationship_type");
+        throw "error.unrecognized_relationship_type";
     }
 
     // Validates classes names and see if they exist
     const primaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray.shift().toLowerCase()))
     const primaryClassExists = classEntities.find((classEntity) => classEntity.name === primaryClassName);
     if(!primaryClassExists) {
-        throw t("error.class_not_found");
+        throw "error.primary_class_not_found";
     }
 
     const secondaryClassName = upperCaseFirstLetter(validateNameSpace(commandArray.shift().toLowerCase()))
     const secondaryClassExists = classEntities.find((classEntity) => classEntity.name === secondaryClassName);
     if(!secondaryClassExists) {
-        throw t("error.class_not_found");
+        throw "error.secondary_class_not_found";
     }
 
     // Gets relationship or generates one if none is given
@@ -46,15 +45,20 @@ export default function CreateRelationshipCommandHandler(commandArray, classEnti
     }
     
     const cardinalityIndex = GetArgumentsValueIndex(commandArray, "-c");
-    let cardinality;
+    const cardinality = {
+        primary: "",
+        secondary: ""
+    };
     if(cardinalityIndex !== 0) {
-        cardinality = commandArray[cardinalityIndex].split(":");
+        const cardinalityArgument = commandArray[cardinalityIndex].split(":");
 
         if(cardinality.length !== 2) {
-            throw t("error.invalid_cadinality");
+            throw "error.invalid_cadinality";
         }
-    } else {
-        cardinality = ["", ""];
+        const cardinality = {
+            primary: cardinalityArgument[0],
+            secondary:  cardinalityArgument[1]
+        };
     }
 
     return {
@@ -62,7 +66,6 @@ export default function CreateRelationshipCommandHandler(commandArray, classEnti
         relationshipType,
         primaryClassId: primaryClassExists.id,
         secondaryClassId: secondaryClassExists.id,
-        primaryCardinality: cardinality[0],
-        secondaryCardinality: cardinality[1]
+        cardinality: cardinality
     }
 }

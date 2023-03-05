@@ -1,7 +1,5 @@
-import { useTranslation } from 'react-i18next';
-
 import { SUPPORTED_ENTITY_TYPES, SUPPORTED_VISIBILITY } from "../../Utils/SupportedKeyWords";
-import { attributesFormatter, getKeyByValue, methodsFormatter } from "../UtilityHandlers/DataHandler";
+import { attributesFormatter, methodsFormatter } from "../UtilityHandlers/DataHandler";
 import { upperCaseFirstLetter, validateNameSpace } from "../UtilityHandlers/StringHandler";
 
 /**
@@ -35,34 +33,33 @@ export default function CreateClassCommandHandler(commandArray) {
 function CreateAttributesHandler(argumentsArray) {
     const attributesArguments = attributesFormatter(argumentsArray);
     const createAttributes = []
-    const { t } = useTranslation();
 
     // Get and split attributes arguments
     attributesArguments.forEach((attributeArgument) => {
         // Create attribute depending on the number of arguments and supported visibility
         switch(attributeArgument.length) {
             case 3:
-                if(getKeyByValue(SUPPORTED_VISIBILITY, attributeArgument[0])) {
+                if(SUPPORTED_VISIBILITY[attributeArgument[0]] === attributeArgument[0]) {
                     createAttributes.push({
                         visibility: attributeArgument[0],
                         type: validateNameSpace(attributeArgument[1]),
                         name: validateNameSpace(attributeArgument[2])
                     });
                 } else {
-                    throw t("error.command_syntax");
+                    throw "error.unrecognized_attribute_visibility";
                 }
                 break;
 
             case 2:
                 createAttributes.push({
-                    visibility: SUPPORTED_VISIBILITY.public[1],
+                    visibility: SUPPORTED_VISIBILITY.public,
                     type: validateNameSpace(attributeArgument[0]),
                     name: validateNameSpace(attributeArgument[1])
                 });
                 break;
             
             default:
-                throw t("error.command_syntax");
+                throw "error.insufficient_attribute_arguments";
         }
     });
 
@@ -72,7 +69,6 @@ function CreateAttributesHandler(argumentsArray) {
 // Handles possible methods
 function CreateMethodsHandler(argumentsArray) {
     const methodsArguments = methodsFormatter(argumentsArray);
-    const { t } = useTranslation();
     
     const newMethods = methodsArguments.map((newMethod) => {
         const newParameters = newMethod.paramenters.map((newMethodParameter) => {
@@ -85,7 +81,7 @@ function CreateMethodsHandler(argumentsArray) {
         // Create methdod depending on the number of arguments and supported visibility
         switch(newMethod.argument.length) {
             case 3:
-                if(getKeyByValue(SUPPORTED_VISIBILITY, newMethod.argument[0])) {
+                if(SUPPORTED_VISIBILITY[newMethod.argument[0]] === newMethod.argument[0]) {
                     return {
                         visibility: newMethod.argument[0],
                         type: validateNameSpace(newMethod.argument[1]),
@@ -93,19 +89,19 @@ function CreateMethodsHandler(argumentsArray) {
                         parameters: newParameters
                     };
                 } else {
-                    throw t("error.command_syntax");
+                    throw "error.unrecognized_method_visibility";
                 }
 
             case 2:
                 return  {
-                    visibility: SUPPORTED_VISIBILITY.public[1],
+                    visibility: SUPPORTED_VISIBILITY.public,
                     type: validateNameSpace(newMethod.argument[0]),
                     name: validateNameSpace(newMethod.argument[1]),
                     parameters: newParameters
                 };
             
             default:
-                throw t("error.command_syntax");
+                throw "error.insufficient_method_arguments";
         }
     });
     

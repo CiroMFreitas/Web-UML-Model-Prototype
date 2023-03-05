@@ -31,7 +31,7 @@ export function CommandHandlerProvider({ children }) {
         
         try {
             switch(true) {
-                case SUPPORTED_COMMANDS.create.includes(commandType):
+                case SUPPORTED_COMMANDS.create === commandType:
                     return createEntityHandler(commandArray, entityType);
     
                 case SUPPORTED_COMMANDS.read.includes(commandType):
@@ -58,7 +58,7 @@ export function CommandHandlerProvider({ children }) {
         };
 
         switch(true) {
-            case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
+            case SUPPORTED_ENTITY_TYPES.class === entityType:
                 nameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[0].toLowerCase()));
 
                 Object.assign(newEntity, CreateClassCommandHandler(commandArray));
@@ -72,7 +72,7 @@ export function CommandHandlerProvider({ children }) {
                 
                 return t("command.create.class.success_feedback.part1") + newEntity.name + t("command.create.class.success_feedback.part2");
 
-            case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
+            case SUPPORTED_ENTITY_TYPES.relationship === entityType:
 
                 Object.assign(newEntity, CreateRelationshipCommandHandler(commandArray, classEntities));
 
@@ -83,18 +83,21 @@ export function CommandHandlerProvider({ children }) {
                     ];
                 });
 
+                const primaryClass = classEntities.find((primaryClass) => primaryClass.id === newEntity.primaryClassId);
+                const secondaryClass = classEntities.find((secondaryClassName) => secondaryClassName.id === newEntity.secondaryClassId);
+
                 return t("command.create.relationship.success_feedback.part1") +
-                SUPPORTED_RELATIONSHIP_TYPES[newEntity.relationshipType][1] +
+                t("entities.relationship.types." + newEntity.relationshipType) +
                 t("command.create.relationship.success_feedback.part2") +
-                newEntity.primaryClassName +
+                primaryClass.name +
                 t("command.create.relationship.success_feedback.part3") +
-                newEntity.secondaryClassName +
+                secondaryClass.name +
                 t("command.create.relationship.success_feedback.part4") +
                 newEntity.name +
                 t("command.create.relationship.success_feedback.part5");
     
             default:
-                throw "error.unrecognized_type";
+                throw "error.unrecognized_entity_type";
         }
     }
 

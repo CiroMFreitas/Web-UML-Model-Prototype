@@ -2,6 +2,15 @@
     "label": {
         "command_console": "Console de Comandos"
     },
+    "entities": {
+        "relationship": {
+            "types": {
+                "associative": "associativa",
+                "directed_association": "associativa direcionada",
+                "reflexive_association": "associativa reflexiva",
+                "multiplicity": "multiplicativa",
+                "aggregation": "agregada",
+                "composition": "composta",
     "command": {
         "create": {
             "class": {
@@ -44,6 +53,12 @@
                         "singular": "; que possui o parâmetro",
                         "plural": "; que possui os parâmetros",
                         "last": "; que é o último parâmetro"
+                    "relationship": {
+                        "empty": "; não possui relacionamentos",
+                        "found": "; possui o relacionamento ",
+                        "with": " com a classe ",
+                        "cardinality": " e cardinalidade ",
+                        "no_cardinality": " e nenhuma cardinalidade",
                     }
                 }
             },

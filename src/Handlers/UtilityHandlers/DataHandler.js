@@ -1,5 +1,3 @@
-import { useTranslation } from 'react-i18next';
-
 /**
  * Returns top most key which has the searched value, the search will go deep if object contains another object within, but will use includes function on arrays.
  * 
@@ -46,13 +44,12 @@ export function getKeyByValue(object, value) {
  * @param {String} endSymbol 
  */
 export function GetLastArgumentIndexHandler(argumentsArray, endSymbol) {
-    const lastArgument = argumentsArray.find((argument) => argument.includes(endSymbol))
-    const { t } = useTranslation();
+    const lastArgument = argumentsArray.find((argument) => argument.includes(endSymbol));
     
     if(lastArgument) {
         return argumentsArray.indexOf(lastArgument);
     } else {
-        throw t("error.missing_end_pointer");
+        throw "error.missing_end_pointer";
     }
 }
 
@@ -116,10 +113,9 @@ export function methodsFormatter(argumentsArray) {
 
 export function GetArgumentsValueIndex(commandArray, argument) {
     const index = commandArray.indexOf(argument) + 1;
-    const { t } = useTranslation();
 
     if(index >= commandArray.length) {
-        throw t("error.command_syntax");
+        throw "error.missing_last_argument";
     }
 
     return index;

@@ -2,6 +2,10 @@
     "label": {
         "command_console": "Command Console"
     },
+    "entities": {
+        "relationship": {
+            "types": {
+                "associative": "associative",
     "command": {
         "create": {
             "class": {
@@ -44,6 +48,13 @@
                         "singular": "; which has the parameter",
                         "plural": "; which has the parameters",
                         "last": "; which is the last parameter"
+                    },
+                        "found": "; have a relationthip ",
+                        "with": " with class ",
+                        "cardinality": " and cardinality ",
+                        "no_cardinality": " and no cardinality",
+                        "to_cardinality": " to ",
+                        "not_specified_cardinality": "not specified"
                     }
                 }
             },
