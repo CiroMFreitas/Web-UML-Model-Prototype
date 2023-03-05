@@ -6,12 +6,22 @@
         "relationship": {
             "types": {
                 "associative": "associative",
+                "directed_association": "directed_association",
+                "reflexive_association": "reflexive_association",
+                "multiplicity": "multiplicity",
+                "aggregation": "aggregation",
+                "composition": "composition",
+                "inheritance": "inheritance",
+                "realization": "realization"
+            }
+        }
+    },
     "command": {
         "create": {
             "class": {
                 "success_feedback": {
-                    "part1": "Class ",
-                    "part2": " was successfully created"
+                    "part1": "",
+                    "part2": " class was successfully created"
                 }
             },
             "relationship": {
@@ -20,11 +30,16 @@
                     "part2": " relationship between ",
                     "part3": " and ",
                     "part4": " named ",
-                    "part5": " was successfully createed"
+                    "part5": " was successfully created"
                 }
             }
         },
         "read": {
+            "diagram": {
+                "empty": "Diagram does not have any classes yet",
+                "singular": "Diagram have the class",
+                "plural": "Diagram have the classes"
+            },
             "class": {
                 "not_found": {
                     "part1": "Class ",
@@ -41,7 +56,8 @@
                     "method": {
                         "none": "; does not have methods",
                         "singular": "; has the method",
-                        "plural": "; has the methods"
+                        "plural": "; has the methods",
+                        "last": " and "
                     },
                     "parameter": {
                         "none": "; and does not have parameters",
@@ -49,6 +65,8 @@
                         "plural": "; which has the parameters",
                         "last": "; which is the last parameter"
                     },
+                    "relationship": {
+                        "empty": "; does not have relationships",
                         "found": "; have a relationthip ",
                         "with": " with class ",
                         "cardinality": " and cardinality ",
@@ -108,13 +126,20 @@
         }
     },
     "error": {
-        "unrecognized_command": "Unrecognized command",
-        "unrecognised_type": "Entity type not recognised",
-        "insufficient_arguments": "Insufficient arguments were given",
-        "not_supported_relationship_type": "Given relationship type not supported",
-        "class_not_found": "Class not found in the project",
+        "insufficient_attribute_arguments": "Not enough arguments given to generate attribute",
+        "insufficient_method_arguments": "Not enough arguments given to generate method",
+        "insufficient_relationship_arguments": "Not enough arguments given to generate relationship",
         "invalid_cadinality": "Given cardinality is invalid",
-        "relationship_not_found": "Relationship not found in the project",
-        "missing_end_pointer": "At least one argument was not properly closed"
+        "missing_end_pointer": "At least one argument was not properly closed",
+        "missing_last_argument": "The last argument is missing",
+        "primary_class_not_found": "Primary class not found in the project",
+        "secondary_class_not_found": "Secondary class not found in the project",
+        "unrecognized_attribute_visibility": "One of the attributes's visibility was not recognized",
+        "unrecognized_command": "Unrecognized command",
+        "unrecognized_entity_type": "Entity type not recognized",
+        "unrecognized_method_visibility": "One of the methods's visibility was not recognized",
+        "unrecognized_relationship_type": "Relationship type not recognized",
+
+        "relationship_not_found": "Relationship not found in the project"
     }
 }
