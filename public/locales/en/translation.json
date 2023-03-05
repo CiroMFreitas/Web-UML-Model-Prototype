@@ -126,6 +126,8 @@
         }
     },
     "error": {
+        "altering_attribute_not_found": "Attribute given for alteration was not found in the class",
+        "altering_method_not_found": "Method given for alteration was not found in the class",
         "class_already_exists": "Class with given name already exists",
         "class_not_found": "Class not found in the project",
         "invalid_attribute_arguments": "Invalid number of arguments were given to generate attribute",
@@ -137,7 +139,11 @@
         "missing_last_argument": "The last argument is missing",
         "primary_class_not_found": "Primary class not found in the project",
         "relationship_not_found": "Relationship not found in the project",
+        "removing_attribute_not_found": "Attribute given for removal was not found in the class",
         "secondary_class_not_found": "Secondary class not found in the project",
+        "unrecongnized_alter_attribute_action": "Action desired to alter attribute was not recongnized",
+        "unrecongnized_alter_method_action": "Action desired to alter method was not recongnized",
+        "unrecongnized_alter_parameter_action": "Action desired to alter parameter was not recongnized",
         "unrecognized_attribute_visibility": "One of the attributes's visibility was not recognized",
         "unrecognized_command": "Unrecognized command",
         "unrecognized_entity_type": "Entity type not recognized",

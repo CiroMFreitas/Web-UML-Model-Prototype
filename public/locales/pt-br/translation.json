@@ -126,6 +126,8 @@
         }
     },
     "error": {
+        "altering_attribute_not_found": "Atributo solicitado para alteração não foi encontrado na classe",
+        "altering_method_not_found": "Método solicitado para alteração não foi encontrado na classe",
         "class_already_exists": "Uma classe com o nome fornecido já existe",
         "class_not_found": "Classe não foi encontrado no projeto",
         "invalid_attribute_arguments": "Número inválido de argumentos foram fornecidos para gerar o atributo",
@@ -137,7 +139,11 @@
         "missing_last_argument": "O último argumento está ausente",
         "primary_class_not_found": "A primeira classe não foi encontrada no projeto",
         "relationship_not_found": "Relacionamento não foi encontrado no projeto",
+        "removing_attribute_not_found": "Atributo solicitado para remoção não foi encontrado na classe",
         "secondary_class_not_found": "A segunda classe não foi encontrada no projeto",
+        "unrecongnized_alter_attribute_action": "Ação para alterar atributo não foi reconhecido",
+        "unrecongnized_alter_method_action": "Ação para alterar método não foi reconhecido",
+        "unrecongnized_alter_parameter_action": "Ação para alterar parâmetro não foi reconhecido",
         "unrecognized_attribute_visibility": "A visibilidade de um dos atributos não foi reconhecida",
         "unrecognized_command": "Comando não reconhecido",
         "unrecognized_entity_type": "Entidade não reconhecida",

@@ -1,10 +1,7 @@
-import { useTranslation } from 'react-i18next';
-
 import { GetArgumentsValueIndex } from "../UtilityHandlers/DataHandler";
 
 export default function AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities) {
     const handledAlteringRelationship = alteringRelationship;
-    const { t } = useTranslation();
     
     const renameIndex = GetArgumentsValueIndex(commandArray, "-n");
     if(renameIndex !== 0) {
@@ -18,7 +15,7 @@ export default function AlterRelationshipCommandHandler(commandArray, alteringRe
         if(newPrimaryClass) {
             handledAlteringRelationship.primaryClassId = newPrimaryClass;
         } else {
-            throw t("error.class_not_found");
+            throw "error.primary_class_not_found";
         }
     }
 
@@ -28,7 +25,7 @@ export default function AlterRelationshipCommandHandler(commandArray, alteringRe
         if(newSecondaruClass) {
             handledAlteringRelationship.secondaryClassId = newSecondaruClass;
         } else {
-            throw t("error.class_not_found");
+            throw "error.secondary_class_not_found";
         }
     }
 
@@ -40,7 +37,7 @@ export default function AlterRelationshipCommandHandler(commandArray, alteringRe
             handledAlteringRelationship.primaryCardinality = cardinality[0];
             handledAlteringRelationship.secondaryCardinality = cardinality[1];
         } else {
-            throw t("error.invalid_cadinality");
+            throw "error.invalid_cadinality";
         }
     }
 

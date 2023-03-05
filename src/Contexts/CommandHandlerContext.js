@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
 import { useTranslation } from 'react-i18next';
 
-import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES, SUPPORTED_RELATIONSHIP_TYPES } from "../Utils/SupportedKeyWords";
+import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
 import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
 import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
 
