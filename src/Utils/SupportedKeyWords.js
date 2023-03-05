@@ -1,8 +1,5 @@
 export const SUPPORTED_COMMANDS = {
-    create: [
-        "create",
-        "criar"
-    ],
+    create: "create",
     read: [
         "read",
         "ler"
@@ -18,64 +15,26 @@ export const SUPPORTED_COMMANDS = {
 }
 
 export const SUPPORTED_ENTITY_TYPES = {
-    class: [
-        "class",
-        "classe"
-    ],
-    relationship: [
-        "relationship",
-        "relação"
-    ]
+    diagram: "diagram",
+    class: "class",
+    relationship: "relationship"
 };
 
 export const SUPPORTED_RELATIONSHIP_TYPES = {
-    as: [
-        "associative",
-        "associativa"
-    ],
-    da: [
-        "directed association",
-        "associativa direcionada"
-    ],
-    ra: [
-        "reflexive association",
-        "associativa reflexiva"
-    ],
-    mu: [
-        "multiplicity",
-        "multiciplidade"
-    ],
-    ag: [
-        "aggregation",
-        "agregação"
-    ],
-    co: [
-        "composition",
-        "composição"
-    ],
-    in: [
-        "inheritance",
-        "herança"
-    ],
-    re: [
-        "realization",
-        "realização"
-    ]
+    as: "associative",
+    da: "directed_association",
+    ra: "reflexive_association",
+    mu: "multiplicity",
+    ag: "aggregation",
+    co: "composition",
+    in: "inheritance",
+    re: "realization"
 }
 
 export const SUPPORTED_VISIBILITY = {
-    public: [
-        "public",
-        "pública"
-    ],
-    protected: [
-        "protected",
-        "protegida"
-    ],
-    private: [
-        "private",
-        "privada"
-    ]
+    public: "public",
+    protected: "protected",
+    private: "private"
 };
 
 export const SUPPORTED_ALTER_ARGUMENTS = {
