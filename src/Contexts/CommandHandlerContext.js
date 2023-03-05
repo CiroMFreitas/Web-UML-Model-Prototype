@@ -94,7 +94,7 @@ export function CommandHandlerProvider({ children }) {
                 t("command.create.relationship.success_feedback.part5");
     
             default:
-                throw t("error.unrecognised_type");
+                throw "error.unrecognized_type";
         }
     }
 
