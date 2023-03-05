@@ -39,7 +39,7 @@ function CreateAttributesHandler(argumentsArray) {
         // Create attribute depending on the number of arguments and supported visibility
         switch(attributeArgument.length) {
             case 3:
-                if(SUPPORTED_VISIBILITY[attributeArgument[0]] === attributeArgument[0]) {
+                if(SUPPORTED_VISIBILITY[attributeArgument[0]]) {
                     createAttributes.push({
                         visibility: attributeArgument[0],
                         type: validateNameSpace(attributeArgument[1]),
@@ -81,7 +81,7 @@ function CreateMethodsHandler(argumentsArray) {
         // Create methdod depending on the number of arguments and supported visibility
         switch(newMethod.argument.length) {
             case 3:
-                if(SUPPORTED_VISIBILITY[newMethod.argument[0]] === newMethod.argument[0]) {
+                if(SUPPORTED_VISIBILITY[newMethod.argument[0]]) {
                     return {
                         visibility: newMethod.argument[0],
                         type: validateNameSpace(newMethod.argument[1]),
