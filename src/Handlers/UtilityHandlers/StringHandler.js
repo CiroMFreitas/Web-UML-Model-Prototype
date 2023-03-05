@@ -1,5 +1,3 @@
-import { ERROR_INVALID_CHARACTER } from "../../Utils/Errors";
-
 /**
  * Receives a string and returns the same string with it's first letter upper cased.
  * 
@@ -22,7 +20,7 @@ export function upperCaseFirstLetter(toUpperCaseString) {
  */
 export function validateNameSpace(nameSpace) {
     if(!(/^[a-z0-9]+$/i.test(nameSpace))) {
-        throw ERROR_INVALID_CHARACTER;
+        throw "error.invalid_name_space";
     } else {
         return nameSpace;
     }

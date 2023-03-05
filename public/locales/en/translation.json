@@ -126,11 +126,13 @@
         }
     },
     "error": {
+        "class_already_exists": "Class with given name already exists",
         "class_not_found": "Class not found in the project",
         "insufficient_attribute_arguments": "Not enough arguments given to generate attribute",
         "insufficient_method_arguments": "Not enough arguments given to generate method",
         "insufficient_relationship_arguments": "Not enough arguments given to generate relationship",
         "invalid_cadinality": "Given cardinality is invalid",
+        "invalid_name_space": "Given name hs invalid characters",
         "missing_end_pointer": "At least one argument was not properly closed",
         "missing_last_argument": "The last argument is missing",
         "primary_class_not_found": "Primary class not found in the project",
