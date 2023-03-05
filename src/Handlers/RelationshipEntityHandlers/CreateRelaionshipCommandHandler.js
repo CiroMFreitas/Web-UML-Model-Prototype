@@ -13,7 +13,7 @@ export default function CreateRelationshipCommandHandler(commandArray, classEnti
 
     // Checks if a sufficient number of arguments is present
     if(commandArray.length < 3) {
-        throw "error.insufficient_relationship_arguments";
+        throw "error.invalid_relationship_arguments";
     }
 
     // Checks if relationship type is valid

@@ -59,7 +59,7 @@ function CreateAttributesHandler(argumentsArray) {
                 break;
             
             default:
-                throw "error.insufficient_attribute_arguments";
+                throw "error.invalid_attribute_arguments";
         }
     });
 
@@ -101,7 +101,7 @@ function CreateMethodsHandler(argumentsArray) {
                 };
             
             default:
-                throw "error.insufficient_method_arguments";
+                throw "error.invalid_method_arguments";
         }
     });
     
