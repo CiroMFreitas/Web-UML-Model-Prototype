@@ -97,7 +97,7 @@
         }
     },
     "error": {
-        "command_syntax": "Error on command syntax",
+        "unrecognized_command": "Unrecognized command",
         "unrecognised_type": "Entity type not recognised",
         "insufficient_arguments": "Insufficient arguments were given",
         "not_supported_relationship_type": "Given relationship type not supported",

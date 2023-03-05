@@ -29,21 +29,25 @@ export function CommandHandlerProvider({ children }) {
         const commandType = commandArray.shift().toLowerCase();
         const entityType = commandArray.shift().toLowerCase();
         
-        switch(true) {
-            case SUPPORTED_COMMANDS.create.includes(commandType):
-                return createEntityHandler(commandArray, entityType);
-
-            case SUPPORTED_COMMANDS.read.includes(commandType):
-                return readEntityHandler(commandArray, entityType);
-
-            case SUPPORTED_COMMANDS.remove.includes(commandType):
-                return removeEntityHandler(commandArray, entityType);
-
-            case SUPPORTED_COMMANDS.alter.includes(commandType):
-                return alterEntityHandler(commandArray, entityType);
-
-            default:
-                throw t("error.command_syntax");
+        try {
+            switch(true) {
+                case SUPPORTED_COMMANDS.create.includes(commandType):
+                    return createEntityHandler(commandArray, entityType);
+    
+                case SUPPORTED_COMMANDS.read.includes(commandType):
+                    return readEntityHandler(commandArray, entityType);
+    
+                case SUPPORTED_COMMANDS.remove.includes(commandType):
+                    return removeEntityHandler(commandArray, entityType);
+    
+                case SUPPORTED_COMMANDS.alter.includes(commandType):
+                    return alterEntityHandler(commandArray, entityType);
+    
+                default:
+                    throw "error.unrecognized_command";
+            }
+        } catch(error) {
+            throw t(error)
         }
         
     };

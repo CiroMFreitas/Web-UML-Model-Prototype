@@ -97,7 +97,7 @@
         }
     },
     "error": {
-        "command_syntax": "Erro na sintaxe do comando",
+        "unrecognized_command": "Comando não reconhecido",
         "unrecognised_type": "Entidade não reconhecida",
         "insufficient_arguments": "Não foram fornecidos argumentos suficientes",
         "not_supported_relationship_type": "Tipo de relacionamento fornecido não é suportado",
