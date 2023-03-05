@@ -1,17 +1,8 @@
 export const SUPPORTED_COMMANDS = {
     create: "create",
-    read: [
-        "read",
-        "ler"
-    ],
-    remove: [
-        "remove",
-        "remover"
-    ],
-    alter: [
-        "alter",
-        "alterar"
-    ]
+    read: "read",
+    remove: "remove",
+    alter: "alter"
 }
 
 export const SUPPORTED_ENTITY_TYPES = {
@@ -38,16 +29,7 @@ export const SUPPORTED_VISIBILITY = {
 };
 
 export const SUPPORTED_ALTER_ARGUMENTS = {
-    add: [
-        "add",
-        "adicionar"
-    ],
-    remove: [
-        "remove",
-        "remover"
-    ],
-    alter: [
-        "alter",
-        "alterar"
-    ]
+    add: "add",
+    remove: "remove",
+    alter: "alter"
 }
