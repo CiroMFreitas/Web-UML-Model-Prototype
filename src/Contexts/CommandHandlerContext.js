@@ -102,16 +102,29 @@ export function CommandHandlerProvider({ children }) {
     }
 
     function readEntityHandler(commandArray, entityType) {
+        var feedback = [];
+
         switch(true) {
-            case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
-                return ReadClassCommandHandler(commandArray, classEntities);
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
                 return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
+            case SUPPORTED_ENTITY_TYPES.class === entityType:
+                feedback = ReadClassCommandHandler(commandArray, classEntities, relationshipEntities);
                 
+                break;
             default:
                 throw t("error.unrecognised_type");
         }
+
+        const message = feedback.map((snippet) => {
+            if(snippet.type === "locale") {
+                return t(snippet.content);
+            } else {
+                return snippet.content;
+            }
+        });
+
+        return message.toString().replaceAll(",", "").replaceAll(";", ",");
     }
 
     function removeEntityHandler(commandArray, entityType) {
