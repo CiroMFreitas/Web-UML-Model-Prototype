@@ -109,12 +109,14 @@ export function CommandHandlerProvider({ children }) {
             case SUPPORTED_ENTITY_TYPES.diagram === entityType:
                 feedback = ReadDiagramCommandHandler(classEntities);
 
-            case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
-                return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
             case SUPPORTED_ENTITY_TYPES.class === entityType:
                 feedback = ReadClassCommandHandler(commandArray, classEntities, relationshipEntities);
                 
                 break;
+            
+            case SUPPORTED_ENTITY_TYPES.relationship === entityType:
+                return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
+            
             default:
                 throw t("error.unrecognised_type");
         }
