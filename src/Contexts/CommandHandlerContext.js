@@ -15,6 +15,7 @@ import CreateRelationshipCommandHandler from "../Handlers/RelationshipEntityHand
 import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
 import ReadRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
 import RemoveRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/RemoveRelationshipCommandHandler";
+import ReadDiagramCommandHandler from "../Handlers/DiagramHandlers/ReadDiagramCommandHandler";
 
 const CommandHandlerContext = createContext();
 
@@ -105,6 +106,8 @@ export function CommandHandlerProvider({ children }) {
         var feedback = [];
 
         switch(true) {
+            case SUPPORTED_ENTITY_TYPES.diagram === entityType:
+                feedback = ReadDiagramCommandHandler(classEntities);
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
                 return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);

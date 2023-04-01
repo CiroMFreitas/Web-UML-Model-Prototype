@@ -37,9 +37,9 @@
         "read": {
             "diagram": {
                 "empty": "Diagrama não possui nenhuma classe ainda",
-                "singular": "Diagrama possui a classe",
-                "plural": "Diagrama possui as classes",
-                "last": " e "
+                "last": " e ",
+                "singular": "Diagrama possui a classe ",
+                "plural": "Diagrama possui as classes "
             },
             "class": {
                 "not_found": {

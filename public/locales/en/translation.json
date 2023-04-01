@@ -37,8 +37,9 @@
         "read": {
             "diagram": {
                 "empty": "Diagram does not have any classes yet",
-                "singular": "Diagram have the class",
-                "plural": "Diagram have the classes"
+                "Last": " and ",
+                "singular": "Diagram have the class ",
+                "plural": "Diagram have the classes "
             },
             "class": {
                 "not_found": {
