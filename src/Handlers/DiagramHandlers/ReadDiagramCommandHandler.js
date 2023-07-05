@@ -39,7 +39,7 @@ export default function ReadDiagramCommandHandler(classEntities) {
         });
         feedback.push({
             type: "string",
-            content: lassEntities[classAmount - 1].name
+            content: classEntities[classAmount - 1].name
         });
     }
 

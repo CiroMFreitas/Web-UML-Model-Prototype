@@ -20,7 +20,7 @@ export default function ReadRelationshipCommandHandler(commandArray, relationshi
             content: "command.read.relatioship.not_found.part2"
         });
 
-        return feeedback;
+        return feedback;
     }
     
     feedback.push({
