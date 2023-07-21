@@ -1,21 +1,20 @@
 import React, { useContext, useRef, useState } from 'react';
-import { v4 as uuidv4 } from "uuid";
-import { useTranslation } from 'react-i18next'
+//import { useTranslation } from 'react-i18next'
 
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
-import CommandLine from '../CommandLine/CommandLine';
+//import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
 
 export default function CommandPanel() {
   const commandLineRef = useRef();
   const [commands, setCommands] = useState([]);
   const { commandHandler } = useContext(CommandHandlerContext);
-  const { t } = useTranslation();
+  //const { t } = useTranslation();
 
   // Local Handlers
-  function commandLineHandler(event) {
-    if(event.keyCode === 13) {
+  function commandLineHandler(/*event*/) {
+    /*if(event.keyCode === 13) {
       const commandLine = commandLineRef.current.value;
       commandLineRef.current.value = null;
 
@@ -52,21 +51,21 @@ export default function CommandPanel() {
           return updatedCommands
         });
       }
-    }
+    }*/
   }
 
   // Component
   return (
     <div id="CommandPanel">
-      <div id="CommandHistory" aria-live="polite" disabled>
-        {
+      <div id="CommandHistory" aria-live="polite">
+        {/*
           commands.map(command => {
             return <CommandLine key={ command.id } command={ command.line } />
           })
-        }
+        */}
       </div>
       
-      <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label={ t("label.command_console") } autoFocus></input>
+      <input id="CommandConsole" /*ref={ commandLineRef }*/ onKeyUpCapture={ commandLineHandler } /*aria-label={ t("label.command_console") }*/ autoFocus></input>
     </div>
   );
 }

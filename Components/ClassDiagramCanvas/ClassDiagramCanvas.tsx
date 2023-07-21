@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
-import ClassEntity from '../ClassEntity/ClassEntity';
-import RelationshipEntity from '../RelationshipEntity/RelationshipEntity';
+import ClassEntity from '../../OLD/src/Components/ClassEntity/ClassEntity';
+import RelationshipEntity from '../../OLD/src/Components/RelationshipEntity/RelationshipEntity';
 import "./ClassDiagramCanvas.css";
 
 export default function ClassDiagramCanvas() {
@@ -12,7 +12,7 @@ export default function ClassDiagramCanvas() {
   // Component
   return (
     <div id="ClassDiagramCanvas">
-      {
+      {/*
         classEntities.map(classEntity => {
           return <ClassEntity key={ classEntity.id } classEntity={ classEntity } />
         })
@@ -22,7 +22,7 @@ export default function ClassDiagramCanvas() {
         relationshipEntities.map(relationshipEntity => {
           return <RelationshipEntity key={ relationshipEntity.id } relationshipEntity={ relationshipEntity } />
         })
-      }
+      */}
     </div>
   );
 }

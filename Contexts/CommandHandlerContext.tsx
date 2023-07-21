@@ -1,31 +1,35 @@
-import { v4 as uuidv4 } from "uuid";
+//import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
-import { useTranslation } from 'react-i18next';
+//import { useTranslation } from 'react-i18next';
 
-import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../Utils/SupportedKeyWords";
-import { upperCaseFirstLetter } from "../Handlers/UtilityHandlers/StringHandler";
-import { nameAlreadyInUse } from "../Handlers/UtilityHandlers/EntityHandler";
+import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../OLD/src/Utils/SupportedKeyWords";
+import { upperCaseFirstLetter } from "../OLD/src/Handlers/UtilityHandlers/StringHandler";
+import { nameAlreadyInUse } from "../OLD/src/Handlers/UtilityHandlers/EntityHandler";
 
-import CreateClassCommandHandler from "../Handlers/ClassEnityHandlers/CreateClassCommandHandler";
-import ReadClassCommandHandler from "../Handlers/ClassEnityHandlers/ReadClassCommandHandler";
-import alterClassCommandHandler from "../Handlers/ClassEnityHandlers/AlterClassCommandHandler";
-import RemoveClassCommandHandler from "../Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
+import CreateClassCommandHandler from "../OLD/src/Handlers/ClassEnityHandlers/CreateClassCommandHandler";
+import ReadClassCommandHandler from "../OLD/src/Handlers/ClassEnityHandlers/ReadClassCommandHandler";
+import alterClassCommandHandler from "../OLD/src/Handlers/ClassEnityHandlers/AlterClassCommandHandler";
+import RemoveClassCommandHandler from "../OLD/src/Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
 
-import CreateRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
-import AlterRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
-import ReadRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
-import RemoveRelationshipCommandHandler from "../Handlers/RelationshipEntityHandlers/RemoveRelationshipCommandHandler";
-import ReadDiagramCommandHandler from "../Handlers/DiagramHandlers/ReadDiagramCommandHandler";
+import CreateRelationshipCommandHandler from "../OLD/src/Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
+import AlterRelationshipCommandHandler from "../OLD/src/Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
+import ReadRelationshipCommandHandler from "../OLD/src/Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
+import RemoveRelationshipCommandHandler from "../OLD/src/Handlers/RelationshipEntityHandlers/RemoveRelationshipCommandHandler";
+import ReadDiagramCommandHandler from "../OLD/src/Handlers/DiagramHandlers/ReadDiagramCommandHandler";
 
-const CommandHandlerContext = createContext();
+interface IProps {
+    children: React.ReactNode;
+}
 
-export function CommandHandlerProvider({ children }) {
+const CommandHandlerContext = createContext("");
+
+export const CommandHandlerProvider = ({ children }: IProps ) => {
     const [classEntities, setClassEntities] = useState([]);
     const [relationshipEntities, setRelationshipEntities] = useState([]);
-    const { t } = useTranslation();
+    //const { t } = useTranslation();
 
-    const commandHandler = (commandLine) => {
-        const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
+    const commandHandler = (/*commandLine*/) => {
+        /*const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
 
         const commandType = commandArray.shift().toLowerCase();
         const entityType = commandArray.shift().toLowerCase();
@@ -49,11 +53,10 @@ export function CommandHandlerProvider({ children }) {
             }
         } catch(error) {
             throw t(error)
-        }
-        
+        }*/
     };
 
-    function createEntityHandler(commandArray, entityType) {
+    /*function createEntityHandler(commandArray, entityType) {
         const newEntity = {
             id: uuidv4()
         };
@@ -212,10 +215,10 @@ export function CommandHandlerProvider({ children }) {
             default:
                 throw t("error.unrecognised_type");
         }
-    }
+    }*/
 
     return (
-        <CommandHandlerContext.Provider value={{ commandHandler, classEntities, relationshipEntities }}>
+        <CommandHandlerContext.Provider value=""/*{{ commandHandler, classEntities, relationshipEntities }}*/>
             { children }
         </CommandHandlerContext.Provider>
     );
