@@ -8,7 +8,7 @@ export default abstract class DiagramEntity extends DomainObject {
     private toDraw: boolean;
 
     /**
-     * Sets class name and for it to not be drawn on creation.
+     * Sets entity's name and for it to not be drawn on creation.
      * 
      * @param name string
      */
