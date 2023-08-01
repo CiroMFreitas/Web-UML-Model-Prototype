@@ -20,7 +20,7 @@ export default class Diagram {
     public createClassifier(entityType: string, commandLineArray: string[]): Feedback {
         // Gets and checks if a name was given for classifier.
         const classifierName = commandLineArray.shift();
-        if(typeof classifierName === "undefined") {
+        if((typeof classifierName === "undefined") || (classifierName === "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("error.name_missing_for_creation.part_1"));
             errorFeedback.addSnippet(new LocalizationSnippet("error.name_missing_for_creation."+entityType));
