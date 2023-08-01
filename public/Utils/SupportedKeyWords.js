@@ -7,10 +7,14 @@ export const SUPPORTED_COMMANDS = {
 
 export const SUPPORTED_ENTITY_TYPES = {
     diagram: "diagram",
-    class: "class",
+    classifier: [
+        "class",
+        "interface",
+        "abstract",
+    ],
     relationship: "relationship"
 };
-
+/*
 export const SUPPORTED_RELATIONSHIP_TYPES = {
     as: "associative",
     da: "directed_association",
@@ -33,3 +37,4 @@ export const SUPPORTED_ALTER_ARGUMENTS = {
     remove: "remove",
     alter: "alter"
 }
+*/
