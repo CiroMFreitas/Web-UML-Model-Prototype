@@ -31,10 +31,11 @@ interface IProps {
 export const CommandHandlerProvider = ({ children }: IProps ) => {
     // Will hold diagram data for both feedback propouses and canvas drawing.
     const [diagram, setDiagram] = useState(new Diagram());
-    const errorFeedback = new Feedback()
+    let errorFeedback = new Feedback()
     
     // Sends feedback to user.
     const getFeedBack = (commandLine: string) => {
+        errorFeedback = new Feedback()
         try {
             // Breaks command line into an array.
             const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
