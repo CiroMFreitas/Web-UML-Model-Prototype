@@ -4,14 +4,6 @@ import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import * as en from './localization/en.json';
-import * as pt_BR from './localization/pt-BR.json';
-
-const resources = {
-    "en": en,
-    "pt-BR": pt_BR,
-};
-
 i18n
   .use(Backend)
   .use(initReactI18next) 
@@ -25,4 +17,9 @@ i18n
     }
   });
 
+function translate(content: string): string {
+  return i18n.t(content);
+}
+
 export default i18n;
+export { translate };
