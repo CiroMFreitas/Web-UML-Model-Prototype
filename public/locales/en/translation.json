@@ -3,9 +3,33 @@
         "command_console": "Command console selected."
     },
     "error": {
-        "unreconized_command": {
+        "classifier_name_already_in_use": "Provided name for classifier is already in use.",
+        "entity_type_missing_on_creation": "No entity type was given for create command.",
+        "name_missing_for_creation": {
+            "part_1": "No name was provided for ",
+            "part_2": " creation.",
+            "class": "class ",
+            "abstract": "abtract class ",
+            "interface": "interface "
+        },
+        "unhandled_error": "An unexpected error ocurred!",
+        "unknown_error_thrown": "Unkwown error was thrown!",
+        "unrecognized_command": {
             "part_1": "Command ",
-            "part_2": " was not recognized."
+            "part_2": " was not recognized by application."
+        },
+        "unrecognized_entity_type": {
+            "part1": "Entity type ",
+            "part2": " was not recognized by application."
+        }
+    },
+    "feedback": {
+        "create_classifier": {
+            "part_1": "Creation of ",
+            "part_2": " was done with success.",
+            "class": "class ",
+            "abstract": "abtract class ",
+            "interface": "interface "
         }
     }
 }

@@ -1,111 +1,139 @@
-//import { v4 as uuidv4 } from "uuid";
-import { createContext, useState } from "react";
-//import { useTranslation } from 'react-i18next';
+import { createContext, useContext, useState } from "react";
+import { translate } from '../i18n'
 
-import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../OLD/src/Utils/SupportedKeyWords";
-import { upperCaseFirstLetter } from "../OLD/src/Handlers/UtilityHandlers/StringHandler";
-import { nameAlreadyInUse } from "../OLD/src/Handlers/UtilityHandlers/EntityHandler";
+import { SUPPORTED_COMMANDS, SUPPORTED_ENTITY_TYPES } from "../public/Utils/SupportedKeyWords";
 
-import CreateClassCommandHandler from "../OLD/src/Handlers/ClassEnityHandlers/CreateClassCommandHandler";
-import ReadClassCommandHandler from "../OLD/src/Handlers/ClassEnityHandlers/ReadClassCommandHandler";
-import alterClassCommandHandler from "../OLD/src/Handlers/ClassEnityHandlers/AlterClassCommandHandler";
-import RemoveClassCommandHandler from "../OLD/src/Handlers/ClassEnityHandlers/RemoveClassCommandHandler";
+import Diagram from "../Models/Diagram";
+import AppError from "../Models/AppError";
+import Feedback from "../Models/Feedback";
+import LocalizationSnippet from "../Models/LocalizationSnippet";
+import StringSnippet from "../Models/StringSnippet";
 
-import CreateRelationshipCommandHandler from "../OLD/src/Handlers/RelationshipEntityHandlers/CreateRelaionshipCommandHandler";
-import AlterRelationshipCommandHandler from "../OLD/src/Handlers/RelationshipEntityHandlers/AlterRelationshipCommandHandler";
-import ReadRelationshipCommandHandler from "../OLD/src/Handlers/RelationshipEntityHandlers/ReadRelationshipCommandHandler";
-import RemoveRelationshipCommandHandler from "../OLD/src/Handlers/RelationshipEntityHandlers/RemoveRelationshipCommandHandler";
-import ReadDiagramCommandHandler from "../OLD/src/Handlers/DiagramHandlers/ReadDiagramCommandHandler";
+// Setting context up.
+type commandHandlerType = {
+    getFeedBack: (commandLine: string) => string;
+}
+
+const commandHandlerDefaultValues: commandHandlerType = {
+    getFeedBack: () => { return ""; }
+}
+
+const CommandHandlerContext = createContext<commandHandlerType>(commandHandlerDefaultValues);
+
+export function useCommandHandler() {
+    return useContext(CommandHandlerContext);
+}
 
 interface IProps {
     children: React.ReactNode;
 }
 
-const CommandHandlerContext = createContext("");
-
 export const CommandHandlerProvider = ({ children }: IProps ) => {
-    const [classEntities, setClassEntities] = useState([]);
-    const [relationshipEntities, setRelationshipEntities] = useState([]);
-    //const { t } = useTranslation();
-
-    const commandHandler = (/*commandLine*/) => {
-        /*const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
-
-        const commandType = commandArray.shift().toLowerCase();
-        const entityType = commandArray.shift().toLowerCase();
-        
+    // Will hold diagram data for both feedback propouses and canvas drawing.
+    const [diagram, setDiagram] = useState(new Diagram());
+    const errorFeedback = new Feedback()
+    
+    // Sends feedback to user.
+    const getFeedBack = (commandLine: string) => {
         try {
+            // Breaks command line into an array.
+            const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
+
+            // Gets command type, command type will only be undefined if a blank string is sent here.
+            const commandType = commandArray?.shift()?.toLowerCase();
+
+            // Gets entity type
+            const entityType = commandArray?.shift()?.toLowerCase();
+
             switch(true) {
                 case SUPPORTED_COMMANDS.create === commandType:
                     return createEntityHandler(commandArray, entityType);
     
-                case SUPPORTED_COMMANDS.read.includes(commandType):
-                    return readEntityHandler(commandArray, entityType);
+                //case SUPPORTED_COMMANDS.read.includes(commandType):
+                //    return readEntityHandler(commandArray, entityType);
     
-                case SUPPORTED_COMMANDS.remove.includes(commandType):
-                    return removeEntityHandler(commandArray, entityType);
+                //case SUPPORTED_COMMANDS.remove.includes(commandType):
+                //    return removeEntityHandler(commandArray, entityType);
     
-                case SUPPORTED_COMMANDS.alter.includes(commandType):
-                    return alterEntityHandler(commandArray, entityType);
+                //case SUPPORTED_COMMANDS.alter.includes(commandType):
+                //    return alterEntityHandler(commandArray, entityType);
     
                 default:
-                    throw "error.unrecognized_command";
+                    errorFeedback.addSnippet(new LocalizationSnippet("error.unrecognized_command.part_1"));
+                    errorFeedback.addSnippet(new StringSnippet(commandType ? commandType : ""));
+                    errorFeedback.addSnippet(new LocalizationSnippet("error.unrecognized_command.part_2"));
+
+                    throw new AppError(errorFeedback);
             }
         } catch(error) {
-            throw t(error)
-        }*/
-    };
-
-    /*function createEntityHandler(commandArray, entityType) {
-        const newEntity = {
-            id: uuidv4()
-        };
-
-        switch(true) {
-            case SUPPORTED_ENTITY_TYPES.class === entityType:
-                nameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[0].toLowerCase()));
-
-                Object.assign(newEntity, CreateClassCommandHandler(commandArray));
-
-                setClassEntities(prevClassEntities => {
-                    return [
-                        ...prevClassEntities,
-                        newEntity
-                    ];
-                });
-                
-                return t("command.create.class.success_feedback.part1") + newEntity.name + t("command.create.class.success_feedback.part2");
-
-            case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-
-                Object.assign(newEntity, CreateRelationshipCommandHandler(commandArray, classEntities));
-
-                setRelationshipEntities(prevRealtionshipEntities => {
-                    return [
-                        ...prevRealtionshipEntities,
-                        newEntity
-                    ];
-                });
-
-                const primaryClass = classEntities.find((primaryClass) => primaryClass.id === newEntity.primaryClassId);
-                const secondaryClass = classEntities.find((secondaryClassName) => secondaryClassName.id === newEntity.secondaryClassId);
-
-                return t("command.create.relationship.success_feedback.part1") +
-                t("entities.relationship.types." + newEntity.relationshipType) +
-                t("command.create.relationship.success_feedback.part2") +
-                primaryClass.name +
-                t("command.create.relationship.success_feedback.part3") +
-                secondaryClass.name +
-                t("command.create.relationship.success_feedback.part4") +
-                newEntity.name +
-                t("command.create.relationship.success_feedback.part5");
-    
-            default:
-                throw "error.unrecognized_entity_type";
+            if(error instanceof AppError) {
+                return error.getMessage();
+            } else {
+                error instanceof Error ? console.log(error.message) : console.log(translate("error.unknown_error_thrown"));
+                return translate("error.unhandled_error");
+            }
         }
     }
 
-    function readEntityHandler(commandArray, entityType) {
+    const value = {
+        getFeedBack,
+    }
+
+    function createEntityHandler(commandArray: string[], entityType: string | undefined) {
+        if(typeof entityType === "undefined") {
+            errorFeedback.addSnippet(new LocalizationSnippet("error.entity_type_missing_on_creation"));
+            
+            throw new AppError(errorFeedback);
+        } else {
+            switch(true) {
+                case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
+                    //if(diagram.isClassifierNameInUse(commandArray[0].toLowerCase())) {
+                        const classifierCreationFeedback = diagram.createClassifier(entityType, commandArray);
+    
+                        setDiagram(diagram);
+    
+                        return classifierCreationFeedback.toString();
+                        //translate("command.create.class.success_feedback.part1") + "newEntity.name" + translate("command.create.class.success_feedback.part2");
+                    //} else {
+                    //    return commandArray[0] + translate("error.classifier_name_already_in_use");
+                    //}
+    
+                /*case SUPPORTED_ENTITY_TYPES.relationship === entityType:
+    
+                    Object.assign(newEntity, CreateRelationshipCommandHandler(commandArray, classEntities));
+    
+                    setRelationshipEntities(prevRealtionshipEntities => {
+                        return [
+                            ...prevRealtionshipEntities,
+                            newEntity
+                        ];
+                    });
+    
+                    const primaryClass = classEntities.find((primaryClass) => primaryClass.id === newEntity.primaryClassId);
+                    const secondaryClass = classEntities.find((secondaryClassName) => secondaryClassName.id === newEntity.secondaryClassId);
+    
+                    return translate("command.create.relationship.success_feedback.part1") +
+                    translate("entities.relationship.types." + newEntity.relationshipType) +
+                    translate("command.create.relationship.success_feedback.part2") +
+                    primaryClass.name +
+                    translate("command.create.relationship.success_feedback.part3") +
+                    secondaryClass.name +
+                    translate("command.create.relationship.success_feedback.part4") +
+                    newEntity.name +
+                    translate("command.create.relationship.success_feedback.part5");*/
+        
+                default:
+                    errorFeedback.addSnippet(new LocalizationSnippet("error.unrecognized_entity_type.part1"));
+                    errorFeedback.addSnippet(new StringSnippet(entityType));
+                    errorFeedback.addSnippet(new LocalizationSnippet("error.unrecognized_entity_type.part2"));
+                    
+                    throw new AppError(errorFeedback);
+            }
+
+        }
+    }
+
+    /*function readEntityHandler(commandArray, entityType) {
         var feedback = [];
 
         switch(true) {
@@ -121,12 +149,12 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
             
             default:
-                throw t("error.unrecognised_type");
+                throw translate("error.unrecognised_type");
         }
 
         const message = feedback.map((snippet) => {
             if(snippet.type === "locale") {
-                return t(snippet.content);
+                return translate(snippet.content);
             } else {
                 return snippet.content;
             }
@@ -142,17 +170,17 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
                 setClassEntities(handledClassEntities);
 
-                return t("command.remove.class.success_feedback.part1") + commandArray[0] + t("command.remove.class.success_feedback.part2");
+                return translate("command.remove.class.success_feedback.part1") + commandArray[0] + translate("command.remove.class.success_feedback.part2");
 
             case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                 const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
     
                 setRelationshipEntities(handledRelationshipEntities);
     
-                return t("command.remove.relationship.success_feedback.part1") + commandArray[0] + t("command.remove.relationship.success_feedback.part2");
+                return translate("command.remove.relationship.success_feedback.part1") + commandArray[0] + translate("command.remove.relationship.success_feedback.part2");
                 
             default:
-                throw t("error.unrecognised_type");
+                throw translate("error.unrecognised_type");
         }
     }
 
@@ -162,7 +190,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 const alteringClass = classEntities.find((classEntity) => classEntity.name === upperCaseFirstLetter(commandArray[0]));
 
                 if(!alteringClass) {
-                    throw t("error.class_not_found");
+                    throw translate("error.class_not_found");
                 }
 
                 const renameIndex = commandArray.indexOf("-n");
@@ -184,14 +212,14 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     return newClassEntities;
                 });
                 
-                return t("command.alter.class.success_feedback.part1") + alteringClass.name + t("command.alter.class.success_feedback.part2");
+                return translate("command.alter.class.success_feedback.part1") + alteringClass.name + translate("command.alter.class.success_feedback.part2");
 
             case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
-                const relationshipName = commandArray.shift();
+                const relationshipName = commandArray.shiftranslate();
                 const alteringRelationship = relationshipEntities.find((relationship) => relationship.name === relationshipName);
 
                 if(!alteringRelationship) {
-                    throw t("error.relationship_not_found");
+                    throw translate("error.relationship_not_found");
                 }
 
                 const alteredRelationship = AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities);
@@ -208,17 +236,17 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     return newRelationshipEntities;
                 });
 
-                return t("command.alter.relationship.success_feedback.part1") +
+                return translate("command.alter.relationship.success_feedback.part1") +
                     relationshipName +
-                    t("command.alter.relationship.success_feedback.part2");
+                    translate("command.alter.relationship.success_feedback.part2");
 
             default:
-                throw t("error.unrecognised_type");
+                throw translate("error.unrecognised_type");
         }
     }*/
 
     return (
-        <CommandHandlerContext.Provider value=""/*{{ commandHandler, classEntities, relationshipEntities }}*/>
+        <CommandHandlerContext.Provider value={ value }>
             { children }
         </CommandHandlerContext.Provider>
     );
