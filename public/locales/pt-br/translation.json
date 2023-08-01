@@ -1,3 +1,11 @@
 {
-    
+    "label": {
+        "command_console": "Console de comandos selecionado."
+    },
+    "error": {
+        "unreconized_command": {
+            "part_1": "O comando ",
+            "part_2": " não foi reconhecido."
+        }
+    }
 }

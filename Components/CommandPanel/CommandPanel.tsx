@@ -1,9 +1,8 @@
 import React, { KeyboardEvent, useContext, useRef, useState } from 'react';
-//import { useTranslation } from 'react-i18next'
+import { translate } from '../../i18n'
 
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
-//import CommandLine from '../CommandLine/CommandLine';
 import "./CommandPanel.css";
 
 export default function CommandPanel() {
@@ -13,18 +12,16 @@ export default function CommandPanel() {
   const [commandHistoryPosition, setCommandHistoryPosition] = useState(0);
 
   const commandLineRef = useRef<HTMLInputElement>(null);
-  //const { commandHandler } = useContext(CommandHandlerContext);
-  //const { t } = useTranslation();
+  const commandHandler = useContext(CommandHandlerContext);
 
-  /** Checkes each key was pressed in order to excute written comands or check command history
+  /** Checks which key was pressed in order to excute written comands or check command history
    * 
-   * @param event KeyboardEvent
+   * @param event Event which triggered funciton.
    */
-  // Local Handlers
   function commandLineHandler(event: KeyboardEvent): void {
     if(commandLineRef.current !== null) {
       switch(true) {
-        // Clears command line, added said command to history and sends command line to be handled by context
+        // Clears command line, addd command to history and sends it to be handled by context
         case event.key === "Enter":
           const commandLine = commandLineRef.current ? commandLineRef.current.value : "";
           if(commandLine !== "") {
@@ -35,17 +32,19 @@ export default function CommandPanel() {
             setCommandHistory(commandHistory);
             setCommandHistoryPosition(0);
             commandLineRef.current.value = commandHistory[0];
+
+            setFeedback(commandHandler.getFeedBack(commandLine))
           }
         break;
 
-        // Gets previous command on history
+        // Gets previous command in history
         case event.key === "ArrowUp" && commandHistoryPosition+1 < commandHistory.length:
           const upPosition = commandHistoryPosition+1;
           setCommandHistoryPosition(upPosition);
           commandLineRef.current.value = commandHistory[upPosition];
           break;
 
-        // Gets next command on history
+        // Gets next command in history
         case event.key === "ArrowDown" && commandHistoryPosition > 0:
           const downPosition = commandHistoryPosition-1;
           setCommandHistoryPosition(downPosition);
@@ -56,42 +55,6 @@ export default function CommandPanel() {
           break;
       }
     }
-      /*const commandLine = commandLineRef.current.value;
-      commandLineRef.current.value = null;
-
-      if(commandLine.toLowerCase().trim() === "clear") {
-        setCommands([]);
-      } else if(commandLine.trim() !== "") {
-        const command = {
-          id: uuidv4(),
-          line: commandLine + "."
-        };
-
-        setCommands(prevCommands => {
-          let updatedCommands = [
-            ...prevCommands,
-            command
-          ];
-
-          try {
-            const feedback = commandHandler(commandLine);
-            
-            updatedCommands.push({
-              id: uuidv4(),
-              line: feedback + "."
-            });
-          } catch(error) {
-            console.log(error);
-            
-            updatedCommands.push({
-              id: uuidv4(),
-              line: error + "."
-            });
-          }
-
-          return updatedCommands
-        });
-      }*/
   }
 
   // Component
@@ -103,7 +66,7 @@ export default function CommandPanel() {
         }
       </div>
       
-      <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } /*aria-label={ t("label.command_console") }*/ autoComplete="off" autoFocus />
+      <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label={ translate("label.command_console") } autoComplete="off" autoFocus />
     </div>
   );
 }
