@@ -7,10 +7,10 @@ import { CommandHandlerProvider } from "../../Contexts/CommandHandlerContext";
 export default function Home() {
   return (
     <div>
-        <CommandHandlerProvider>
-          <ClassDiagramCanvas />
-          <CommandPanel />
-        </CommandHandlerProvider>
-      </div>
+      <CommandHandlerProvider>
+        <ClassDiagramCanvas />
+        <CommandPanel />
+      </CommandHandlerProvider>
+    </div>
   )
 }
