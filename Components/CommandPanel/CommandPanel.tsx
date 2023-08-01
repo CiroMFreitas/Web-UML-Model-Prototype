@@ -33,7 +33,7 @@ export default function CommandPanel() {
             setCommandHistoryPosition(0);
             commandLineRef.current.value = commandHistory[0];
 
-            setFeedback(commandHandler.getFeedBack(commandLine))
+            setFeedback(commandHandler.getFeedBack(commandLine));
           }
         break;
 
