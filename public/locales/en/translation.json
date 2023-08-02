@@ -43,7 +43,11 @@
                 "part_1": "The name ",
                 "part_2": " have invalide characters."
             },
-            "end_braces_missing": "End braces missing in command."
+            "end_braces_missing": "End braces missing in command.",
+            "invalid_visibility": {
+                "part_1": "The ",
+                "part_2": " visibility is not valid, use public, protected or private instead."
+            }
         }
     },
     "error": {

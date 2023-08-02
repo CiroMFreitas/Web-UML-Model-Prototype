@@ -43,7 +43,11 @@
                 "part_1": "O nome ",
                 "part_2": " possui caracteres inválidos."
             },
-            "end_braces_missing": "Está faltando um colchete no comando."
+            "end_braces_missing": "Está faltando um colchete no comando.",
+            "invalid_visibility": {
+                "part_1": "A visiblidade ",
+                "part_2": " não é valida, use as opções public, protected ou private."
+            }
         }
     },
     "error": {

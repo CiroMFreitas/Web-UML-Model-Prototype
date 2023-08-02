@@ -14,6 +14,21 @@ export const SUPPORTED_ENTITY_TYPES = {
     ],
     relationship: "relationship"
 };
+
+export const SUPPORTED_VISIBILITY = [
+    {
+        name: "public",
+        symbol: "+"
+    },
+    {
+        name: "protected",
+        symbol: "#"
+    },
+    {
+        name: "private",
+        symbol: "-"
+    }
+];
 /*
 export const SUPPORTED_RELATIONSHIP_TYPES = {
     as: "associative",
@@ -25,12 +40,6 @@ export const SUPPORTED_RELATIONSHIP_TYPES = {
     in: "inheritance",
     re: "realization"
 }
-
-export const SUPPORTED_VISIBILITY = {
-    public: "public",
-    protected: "protected",
-    private: "private"
-};
 
 export const SUPPORTED_ALTER_ARGUMENTS = {
     add: "add",
