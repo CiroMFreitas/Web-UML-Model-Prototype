@@ -6,12 +6,12 @@ import LocalizationSnippet from "./LocalizationSnippet";
 export default class Classifier extends DiagramEntity {
     private entityType: string;
     
-    constructor(entitytype: string, classifierName: string, attributeArguments?: string[][]) {
+    constructor(entityType: string, classifierName: string, attributeArguments?: string[][]) {
         // Gets and checks if a name was given for classifier.
         if(classifierName === "") {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.name_missing_for_creation.part_1"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entitytype));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entityType));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.name_missing_for_creation.part_2"));
 
             throw new AppError(errorFeedback);
