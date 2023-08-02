@@ -1,4 +1,8 @@
+import AppError from "./AppError";
 import DomainObject from "./DomainObject";
+import Feedback from "./Feedback";
+import LocalizationSnippet from "./LocalizationSnippet";
+import StringSnippet from "./StringSnippet";
 
 /**
  * All entity which will be drawned on canvas, must inherit this class.
@@ -14,6 +18,15 @@ export default abstract class DiagramEntity extends DomainObject {
      */
     constructor(name: string) {
         super();
+
+        if(!this.validadeNamingString(name)) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.invalid_characters_used_for_name.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.invalid_characters_used_for_name.part_2"));
+
+            throw new AppError(errorFeedback);
+        }
         this.name = name;
         this.toDraw = false;
     }
@@ -57,5 +70,9 @@ export default abstract class DiagramEntity extends DomainObject {
      */
     public undraw(): void {
         this.toDraw = false;
+    }
+
+    protected validadeNamingString(namingString: string): boolean {
+        return /^[a-zA-Z0-9-_]+$/.test(namingString);
     }
 }

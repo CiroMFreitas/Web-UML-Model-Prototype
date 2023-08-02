@@ -35,6 +35,10 @@
                 "part_1": "Command ",
                 "part_2": " was not recognized by application."
             },
+            "invalid_characters_used_for_name": {
+                "part_1": "The name ",
+                "part_2": " have invalide characters."
+            },
             "end_braces_missing": "End braces missing in command."
         }
     },

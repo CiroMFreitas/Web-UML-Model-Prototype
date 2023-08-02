@@ -35,6 +35,10 @@
                 "part_1": "O comando ",
                 "part_2": " não foi reconhecido pela aplicação."
             },
+            "invalid_characters_used_for_name": {
+                "part_1": "O nome ",
+                "part_2": " possui caracteres inválidos."
+            },
             "end_braces_missing": "Está faltando um colchete no comando."
         }
     },
