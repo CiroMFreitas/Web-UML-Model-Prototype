@@ -18,29 +18,19 @@ export default class Diagram {
     }
 
     public createClassifier(entityType: string, commandLineArray: string[]): Feedback {
-        // Gets and checks if a name was given for classifier.
-        const classifierName = commandLineArray.shift();
-        if((typeof classifierName === "undefined") || (classifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.name_missing_for_creation.part_1"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entityType));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.name_missing_for_creation.part_2"));
+        // Checks if given name is already in use.
+        const newClassifier = new Classifier(entityType, commandLineArray);
+        this.isClassifierNameInUse(newClassifier.getName());
 
-            throw new AppError(errorFeedback);
-        } else {
-            // Checks if given name is already in use.
-            this.isClassifierNameInUse(classifierName);
-
-            this.classifiers.push(new Classifier(entityType, classifierName, commandLineArray));
+        this.classifiers.push(newClassifier);
             
-            const feedback = new Feedback();
-            feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_1"));
-            feedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entityType));
-            feedback.addSnippet(new StringSnippet(classifierName));
-            feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
+        const feedback = new Feedback();
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_1"));
+        feedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entityType));
+        feedback.addSnippet(new StringSnippet(newClassifier.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
 
-            return feedback;
-        }
+        return feedback;
     }
 
     /**
