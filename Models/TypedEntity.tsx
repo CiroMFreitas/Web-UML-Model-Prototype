@@ -14,6 +14,8 @@ export default abstract class TypedEntity extends DiagramEntity {
      */
     constructor(name: string, type: string) {
         super(name);
+        this.validadeNamingString(type);
+
         this.type = type;
     }
 
@@ -23,6 +25,7 @@ export default abstract class TypedEntity extends DiagramEntity {
      * @param type New entity's type.
      */
     public setType(type: string): void {
+        this.validadeNamingString(type);
         this.type = type;
     }
 
