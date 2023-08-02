@@ -31,11 +31,9 @@ interface IProps {
 export const CommandHandlerProvider = ({ children }: IProps ) => {
     // Will hold diagram data for both feedback propouses and canvas drawing.
     const [diagram, setDiagram] = useState(new Diagram());
-    let errorFeedback = new Feedback()
     
     // Sends feedback to user.
     const getFeedBack = (commandLine: string) => {
-        errorFeedback = new Feedback()
         try {
             // Breaks command line into an array.
             const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
@@ -59,10 +57,18 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 //case SUPPORTED_COMMANDS.alter.includes(commandType):
                 //    return alterEntityHandler(commandArray, entityType);
     
+                // If command is not found
                 default:
-                    errorFeedback.addSnippet(new LocalizationSnippet("error.unrecognized_command.part_1"));
-                    errorFeedback.addSnippet(new StringSnippet(commandType ? commandType : ""));
-                    errorFeedback.addSnippet(new LocalizationSnippet("error.unrecognized_command.part_2"));
+                    const errorFeedback = new Feedback();
+
+                    // Checks if command type is empty.
+                    if(commandType === "") {
+                        errorFeedback.addSnippet(new StringSnippet(""));
+                    } else {
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_1"));
+                        errorFeedback.addSnippet(new StringSnippet(commandType ? commandType : ""));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_2"));
+                    }
 
                     throw new AppError(errorFeedback);
             }
@@ -81,8 +87,10 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     }
 
     function createEntityHandler(commandArray: string[], entityType: string | undefined) {
+        const errorFeedback = new Feedback();
+
         if((typeof entityType === "undefined") || (entityType === "")) {
-            errorFeedback.addSnippet(new LocalizationSnippet("error.entity_type_missing_on_creation"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.entity_type_missing_on_creation"));
             
             throw new AppError(errorFeedback);
         } else {
@@ -124,9 +132,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     translate("command.create.relationship.success_feedback.part5");*/
         
                 default:
-                    errorFeedback.addSnippet(new LocalizationSnippet("error.unrecognized_entity_type.part1"));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part1"));
                     errorFeedback.addSnippet(new StringSnippet(entityType));
-                    errorFeedback.addSnippet(new LocalizationSnippet("error.unrecognized_entity_type.part2"));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part2"));
                     
                     throw new AppError(errorFeedback);
             }

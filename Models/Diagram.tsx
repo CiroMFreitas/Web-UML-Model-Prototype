@@ -22,9 +22,9 @@ export default class Diagram {
         const classifierName = commandLineArray.shift();
         if((typeof classifierName === "undefined") || (classifierName === "")) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("error.name_missing_for_creation.part_1"));
-            errorFeedback.addSnippet(new LocalizationSnippet("error.name_missing_for_creation."+entityType));
-            errorFeedback.addSnippet(new LocalizationSnippet("error.name_missing_for_creation.part_2"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.name_missing_for_creation.part_1"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.name_missing_for_creation.part_2"));
 
             throw new AppError(errorFeedback);
         } else {
@@ -34,10 +34,10 @@ export default class Diagram {
             this.classifiers.push(new Classifier(entityType, classifierName, commandLineArray));
             
             const feedback = new Feedback();
-            feedback.addSnippet(new LocalizationSnippet("feedback.create_classifier.part_1"));
-            feedback.addSnippet(new LocalizationSnippet("feedback.create_classifier."+entityType));
+            feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_1"));
+            feedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entityType));
             feedback.addSnippet(new StringSnippet(classifierName));
-            feedback.addSnippet(new LocalizationSnippet("feedback.create_classifier.part_2"));
+            feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
 
             return feedback;
         }
@@ -53,7 +53,7 @@ export default class Diagram {
 
         if(classifierExists) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("error.classifier_name_already_in_use"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.classifier_name_already_in_use"));
 
             throw new AppError(errorFeedback);
         }
