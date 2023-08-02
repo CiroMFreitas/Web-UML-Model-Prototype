@@ -19,6 +19,10 @@
                     "name_missing_for_creation": {
                         "part_1": "No name was provided for ",
                         "part_2": " creation."
+                    },
+                    "invalid_number_of_arguments_in_attribute_argument": {
+                        "part_1": "The following attribute has too many or few arguments: ",
+                        "part_2": ", use only 2 or 3 arguments."
                     }
                 }
             },
