@@ -18,15 +18,8 @@ export default abstract class DiagramEntity extends DomainObject {
      */
     constructor(name: string) {
         super();
+        this.validadeNamingString(name);
 
-        if(!this.validadeNamingString(name)) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.invalid_characters_used_for_name.part_1"));
-            errorFeedback.addSnippet(new StringSnippet(name));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.invalid_characters_used_for_name.part_2"));
-
-            throw new AppError(errorFeedback);
-        }
         this.name = name;
         this.toDraw = false;
     }
@@ -37,6 +30,7 @@ export default abstract class DiagramEntity extends DomainObject {
      * @param name New name for entity.
      */
     public setName(name: string): void {
+        this.validadeNamingString(name);
         this.name = name;
     }
 
@@ -72,7 +66,19 @@ export default abstract class DiagramEntity extends DomainObject {
         this.toDraw = false;
     }
 
-    protected validadeNamingString(namingString: string): boolean {
-        return /^[a-zA-Z0-9-_]+$/.test(namingString);
+    /**
+     * Checks if name has only alphanumerics, dashes and underlines, else an error will be thrown,
+     * 
+     * @param namingString Name to be validated.
+     */
+    protected validadeNamingString(namingString: string): void {
+        if(!/^[a-zA-Z0-9-_]+$/.test(namingString)) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.invalid_characters_used_for_naming.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(namingString));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.invalid_characters_used_for_naming.part_2"));
+
+            throw new AppError(errorFeedback);
+        }
     }
 }
