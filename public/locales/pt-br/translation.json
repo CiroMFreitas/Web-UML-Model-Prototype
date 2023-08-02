@@ -34,7 +34,8 @@
             "unrecognized_command": {
                 "part_1": "O comando ",
                 "part_2": " não foi reconhecido pela aplicação."
-            }
+            },
+            "end_braces_missing": "Está faltando um colchete no comando."
         }
     },
     "error": {

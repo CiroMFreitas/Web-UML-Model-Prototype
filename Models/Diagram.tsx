@@ -17,9 +17,10 @@ export default class Diagram {
         this.classifiers = [] as Classifier[];
     }
 
-    public createClassifier(entityType: string, commandLineArray: string[]): Feedback {
+    public createClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
+        const attributeArguments = this.getCommandAttributeArguments(commandLineArray);
         // Checks if given name is already in use.
-        const newClassifier = new Classifier(entityType, commandLineArray);
+        const newClassifier = new Classifier(entityType, commandLineArray[0], attributeArguments);
         this.isClassifierNameInUse(newClassifier.getName());
 
         this.classifiers.push(newClassifier);
@@ -31,6 +32,37 @@ export default class Diagram {
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
 
         return feedback;
+    }
+
+    /**
+     * Gets attributes arguments from command, if '-a' is not found will return undefined. 
+     * 
+     * @param commandLineArray Command line broken into array.
+     * @returns Resulting array or undefined.
+     */
+    private getCommandAttributeArguments(commandLineArray: string[]): string[][] | undefined {
+        // Checks if attributes arguments are present.
+        const attributeArgumentIndex = commandLineArray.findIndex((commandLine) => commandLine === "-a")+1;
+        if(attributeArgumentIndex === 0) {
+            return undefined;
+        }
+
+        // Checks end } is prenset present.
+        const endBracketIndex = commandLineArray.findIndex((commandLine) => commandLine.includes("}"))+1;
+        if(endBracketIndex === 0) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.end_braces_missing"));
+
+            throw new AppError(errorFeedback);
+        }
+
+        // Gets argument while cleaning and spliting it.
+        const attributeArguments = commandLineArray.slice(attributeArgumentIndex, endBracketIndex).map((argument) => {
+            return argument.replace("{", "").replace(",", "").replace("}", "").split(":")
+        });
+        commandLineArray.splice(attributeArgumentIndex, endBracketIndex-attributeArgumentIndex);
+
+        return attributeArguments;
     }
 
     /**

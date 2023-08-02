@@ -34,7 +34,8 @@
             "unrecognized_command": {
                 "part_1": "Command ",
                 "part_2": " was not recognized by application."
-            }
+            },
+            "end_braces_missing": "End braces missing in command."
         }
     },
     "error": {
