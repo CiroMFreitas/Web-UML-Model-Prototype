@@ -75,10 +75,10 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } catch(error) {
             if(error instanceof AppError) {
                 return error.getMessage();
-            } else {
-                error instanceof Error ? console.log(error.message) : console.log(translate("error.unknown_error_thrown"));
-                return translate("error.unhandled_error");
             }
+            
+            error instanceof Error ? console.log(error.message) : console.log(translate("errorunknown_error_thrown"));
+            return translate("error.unhandled_error");
         }
     }
 
