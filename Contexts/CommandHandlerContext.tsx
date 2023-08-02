@@ -96,16 +96,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    //if(diagram.isClassifierNameInUse(commandArray[0].toLowerCase())) {
-                        const classifierCreationFeedback = diagram.createClassifier(entityType, commandArray);
-    
-                        setDiagram(diagram);
-    
-                        return classifierCreationFeedback.toString();
-                        //translate("command.create.class.success_feedback.part1") + "newEntity.name" + translate("command.create.class.success_feedback.part2");
-                    //} else {
-                    //    return commandArray[0] + translate("error.classifier_name_already_in_use");
-                    //}
+                    const classifierCreationFeedback = diagram.createClassifier(entityType, commandArray);
+                    setDiagram(diagram);
+                    return classifierCreationFeedback.toString();
     
                 /*case SUPPORTED_ENTITY_TYPES.relationship === entityType:
     
