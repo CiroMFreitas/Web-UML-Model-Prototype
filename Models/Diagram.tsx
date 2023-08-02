@@ -5,7 +5,7 @@ import LocalizationSnippet from "./LocalizationSnippet";
 import StringSnippet from "./StringSnippet";
 
 /**
- * Object holding all diagram entities.
+ * Object responsible for holding and managing all diagram entities.
  */
 export default class Diagram {
     private classifiers: Classifier[];
