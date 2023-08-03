@@ -5,9 +5,9 @@
     "feedback": {
         "common": {
             "entity_tyoe": {
-                "class": "class ",
-                "abstract": "abtract class ",
-                "interface": "interface "
+                "class": "class",
+                "abstract": "abtract class",
+                "interface": "interface"
             }
         },
         "create": {
@@ -24,13 +24,13 @@
                         "part_1": "There's two or more attributes using the name ",
                         "part_2": "."
                     }
-                },
-                "attribute": {
-                    "error": {
-                        "invalid_attribute_arguments": {
-                            "part_1": "O seguinte atributo possui muitos ou poucos argumentos: ",
-                            "part_2": ", use 2 ou 3 argumentos."
-                        }
+                }
+            },
+            "attribute": {
+                "error": {
+                    "invalid_attribute_arguments": {
+                        "part_1": "The following attribute has too many or few arguments ",
+                        "part_2": ", use 2 or 3 arguments."
                     }
                 }
             },
