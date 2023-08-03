@@ -83,7 +83,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     function createEntityHandler(commandArray: string[], entityType: string | undefined) {
         const errorFeedback = new Feedback();
 
-        if((typeof entityType === "undefined") || (entityType === "")) {
+        if((entityType === undefined) || (entityType === "")) {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.entity_type_missing_on_creation"));
             
             throw new AppError(errorFeedback);
