@@ -97,7 +97,7 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
-     * Checks if given name is already in use by an attribute, if true an error will be thrown.
+     * Checks if given name is already in use by a method, if true an error will be thrown.
      * 
      * @param methodName Name to be checked.
      */
