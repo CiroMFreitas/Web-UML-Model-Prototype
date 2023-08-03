@@ -5,11 +5,21 @@ import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
 import StringSnippet from "./StringSnippet";
 
+/**
+ * Classifiers holding attributes and methods.
+ */
 export default class Classifier extends DiagramEntity {
     private entityType: string;
     private attributes = [] as Attribute[];
     
-    constructor(entityType: string, classifierName: string, attributeArguments?: string[]) {
+    /**
+     * Creates a Classifier.
+     * 
+     * @param entityType Classifer's type, vaid types are, class, abstract and interface.
+     * @param classifierName Classifier's name.
+     * @param attributeArguments Classifier's array of attribute's arguments to be created.
+     */
+    constructor(entityType: string, classifierName: string, attributeArguments?: string[], methodArguments?: string[]) {
         // Gets and checks if a name was given for classifier.
         if(classifierName === "") {
             const errorFeedback = new Feedback();
