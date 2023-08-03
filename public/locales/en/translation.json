@@ -19,6 +19,10 @@
                     "name_missing_for_creation": {
                         "part_1": "No name was provided for ",
                         "part_2": " creation."
+                    },
+                    "attribute_name_already_in_use": {
+                        "part_1": "There's two or more attributes using the name ",
+                        "part_2": "."
                     }
                 },
                 "attribute": {
