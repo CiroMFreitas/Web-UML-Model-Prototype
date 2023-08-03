@@ -17,6 +17,13 @@ export default class Diagram {
         this.classifiers = [] as Classifier[];
     }
 
+    /**
+     * Creates a classifier with command line instructions.
+     * 
+     * @param entityType Which classifier type is being created.
+     * @param commandLineArray Instructions to be handled and executed for classifier creation.
+     * @returns Feedback containing a success message.
+     */
     public createClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
         const attributeArguments = this.getCommandArgumentContent(commandLineArray, "-a");
         // Checks if given name is already in use.
