@@ -36,6 +36,14 @@
                     }
                 }
             },
+            "parameter": {
+                "error": {
+                    "invalid_parameter_arguments": {
+                        "part_1": "O seguinte parâmetro possui muitos ou poucos argumentos ",
+                        "part_2": ", use 2 argumentos."
+                    }
+                }
+            },
             "error": {
                 "entity_type_missing_on_creation": "Nenhum tipo foi fornecido para o comando create.",
                 "unrecognized_entity_type": {

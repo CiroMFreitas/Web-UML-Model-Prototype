@@ -36,6 +36,14 @@
                     }
                 }
             },
+            "parameter": {
+                "error": {
+                    "invalid_parameter_arguments": {
+                        "part_1": "The following parameter has too many or few arguments ",
+                        "part_2": ", use 2 arguments."
+                    }
+                }
+            },
             "error": {
                 "entity_type_missing_on_creation": "No entity type was given for create command.",
                 "unrecognized_entity_type": {
