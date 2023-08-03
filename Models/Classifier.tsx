@@ -23,6 +23,7 @@ export default class Classifier extends DiagramEntity {
         super(classifierName);
         this.entityType = entityType;
 
+        // Cretas attributes if arguments are present.
         if(attributeArguments !== undefined) {
             attributeArguments.forEach((argument) => {
                 const newAttribute = new Attribute(argument);
