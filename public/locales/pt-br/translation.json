@@ -19,10 +19,14 @@
                     "name_missing_for_creation": {
                         "part_1": "Nenhum nome foi fornecido para criação ",
                         "part_2": "."
-                    },
-                    "invalid_number_of_arguments_in_attribute_argument": {
-                        "part_1": "O seguinte atributo possui muitos ou poucos argumentos: ",
-                        "part_2": ", use 2 ou 3 argumentos."
+                    }
+                },
+                "attribute": {
+                    "error": {
+                        "invalid_attribute_arguments": {
+                            "part_1": "O seguinte atributo possui muitos ou poucos argumentos: ",
+                            "part_2": ", use 2 ou 3 argumentos."
+                        }
                     }
                 }
             },

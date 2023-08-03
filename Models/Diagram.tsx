@@ -40,7 +40,7 @@ export default class Diagram {
      * @param commandLineArray Command line broken into array.
      * @returns Resulting array or undefined.
      */
-    private getCommandAttributeArguments(commandLineArray: string[]): string[][] | undefined {
+    private getCommandAttributeArguments(commandLineArray: string[]): string[] | undefined {
         // Checks if attributes arguments are present.
         const attributeArgumentIndex = commandLineArray.findIndex((commandLine) => commandLine === "-a")+1;
         if(attributeArgumentIndex === 0) {
@@ -48,7 +48,7 @@ export default class Diagram {
         }
 
         // Checks end } is prenset present.
-        const endBracketIndex = commandLineArray.findIndex((commandLine) => commandLine.includes("}"))+1;
+        const endBracketIndex = commandLineArray.findIndex((commandLine) => commandLine.includes(";"))+1;
         if(endBracketIndex === 0) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.end_braces_missing"));
@@ -58,7 +58,7 @@ export default class Diagram {
 
         // Gets argument while cleaning and spliting it.
         const attributeArguments = commandLineArray.slice(attributeArgumentIndex, endBracketIndex).map((argument) => {
-            return argument.replace("{", "").replace(",", "").replace("}", "").split(":")
+            return argument.replace(",", "").replace(";", "")
         });
         commandLineArray.splice(attributeArgumentIndex, endBracketIndex-attributeArgumentIndex);
 

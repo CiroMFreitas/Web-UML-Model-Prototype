@@ -9,7 +9,7 @@ export default class Classifier extends DiagramEntity {
     private entityType: string;
     private attributes: Attribute[];
     
-    constructor(entityType: string, classifierName: string, attributeArguments?: string[][]) {
+    constructor(entityType: string, classifierName: string, attributeArguments?: string[]) {
         // Gets and checks if a name was given for classifier.
         if(classifierName === "") {
             const errorFeedback = new Feedback();
@@ -25,18 +25,9 @@ export default class Classifier extends DiagramEntity {
 
         if(attributeArguments !== undefined) {
             attributeArguments.forEach((argument) => {
-                if(argument.length === 3) {
-                    this.attributes.push(new Attribute(argument[1], argument[2], argument[0]));
-                } else if(argument.length === 2) {
-                    this.attributes.push(new Attribute(argument[0], argument[1]));
-                } else {
-                    const errorFeedback = new Feedback();
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.invalid_attribute_argument.part_1"));
-                    errorFeedback.addSnippet(new StringSnippet(argument.toString().replaceAll(",", ":")))
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.invalid_attribute_argument.part_2"));
+                const newAttribute = new Attribute(argument);
 
-                    throw new AppError(errorFeedback)
-                }
+                this.attributes.push(newAttribute);
             });
         }
     }
