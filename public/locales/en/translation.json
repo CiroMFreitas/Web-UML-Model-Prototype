@@ -45,6 +45,10 @@
                 "missing_name_for_entity": {
                     "part_1": "Missing name for ",
                     "part_2": " creation."
+                },
+                "missing_type_for_entity": {
+                    "part_1": "Missing type for ",
+                    "part_2": " creation."
                 }
             }
         },

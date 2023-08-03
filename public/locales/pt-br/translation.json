@@ -45,6 +45,10 @@
                 "missing_name_for_entity": {
                     "part_1": "Está faltando o nome para criação do ",
                     "part_2": "."
+                },
+                "missing_type_for_entity": {
+                    "part_1": "Está faltando o tipo para criação do ",
+                    "part_2": "."
                 }
             }
         },
