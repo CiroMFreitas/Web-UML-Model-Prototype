@@ -5,10 +5,15 @@ import LocalizationSnippet from "./LocalizationSnippet";
 import StringSnippet from "./StringSnippet";
 import VisibleEntity from "./VisibleEntity";
 
+/**
+ * Classifier's attributes.
+ */
 export default class Attribute extends VisibleEntity {
 
     /**
      * Creates attribute.
+     * 
+     * @param attributeArgument A string containg it's attributes divided by :.
      */
     constructor(attributeArgument: string) {
         // Checks if sufficient arguments were given for attribute creation.
@@ -27,10 +32,20 @@ export default class Attribute extends VisibleEntity {
         }
     }
 
+    /**
+     * Stub.
+     * 
+     * @returns Stub.
+     */
     public toText(): string {
         return "";
     }
 
+    /**
+     * Stub.
+     * 
+     * @returns Stub.
+     */
     public toDiagram(): string {
         return "";
     }
