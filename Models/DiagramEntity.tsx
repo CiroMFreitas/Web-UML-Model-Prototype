@@ -18,11 +18,11 @@ export default abstract class DiagramEntity extends DomainObject {
      */
     constructor(name: string) {
         super();
-        if(name === "") {
+        if((name === "") || (name === undefined)) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.missing_name_for_entity.part_1"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common."+this.constructor.name));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.missing_name_for_entity.part_2"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.missing_name_for_entity.part_1"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type."+this.constructor.name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.missing_name_for_entity.part_2"));
 
             throw new AppError(errorFeedback);
         }
