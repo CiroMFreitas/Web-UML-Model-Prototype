@@ -66,8 +66,12 @@
             },
             "parameter": {
                 "error": {
+                    "empty_parameter_argument": "One of the parameter arguments is empty",
                     "invalid_parameter_arguments": {
-                        "part_1": "The following parameter has too many or few arguments ",
+                        "part_1": {
+                            "too_few": "The following parameter has too few arguments ",
+                            "too_many": "The following parameter has too many arguments "
+                        },
                         "part_2": ", use 2 arguments."
                     }
                 }

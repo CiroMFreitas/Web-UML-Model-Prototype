@@ -66,8 +66,12 @@
             },
             "parameter": {
                 "error": {
+                    "empty_parameter_argument": "Um dos argumentos de parâmetro está vazio",
                     "invalid_parameter_arguments": {
-                        "part_1": "O seguinte parâmetro possui muitos ou poucos argumentos ",
+                        "part_1": {
+                            "too_few": "O seguinte parâmetro possui poucos argumentos ",
+                            "too_many": "O seguinte parâmetro possui muitos argumentos "
+                        },
                         "part_2": ", use 2 argumentos."
                     }
                 }
