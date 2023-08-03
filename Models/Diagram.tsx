@@ -26,8 +26,9 @@ export default class Diagram {
      */
     public createClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
         const attributeArguments = this.getCommandArgumentContent(commandLineArray, "-a");
+        const methodArguments = this.getCommandArgumentContent(commandLineArray, "-m");
         // Checks if given name is already in use.
-        const newClassifier = new Classifier(entityType, commandLineArray[0], attributeArguments);
+        const newClassifier = new Classifier(entityType, commandLineArray[0], attributeArguments, methodArguments);
         this.isClassifierNameInUse(newClassifier.getName());
 
         this.classifiers.push(newClassifier);

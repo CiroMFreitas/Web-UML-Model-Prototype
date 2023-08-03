@@ -37,11 +37,11 @@ export default class Method extends VisibleEntity {
 
         // Sets parameters with present.
         this.parameters = [] as Parameter[];
-        if((splitArgument[1] !== undefined) && (splitArgument[1] !== "")) {
-            this.parameters.push(new Parameter(splitArgument[1]))
+        if((argumentStart !== undefined) && (argumentStart[1] !== "")) {
+            this.parameters.push(new Parameter(argumentStart[1].replace(")", "").replace(",", "")))
 
             methodArguments.forEach((parameterArgument) => {
-                this.parameters.push(new Parameter(parameterArgument));
+                this.parameters.push(new Parameter(parameterArgument.replace(")", "").replace(",", "")));
             });
         }
     }

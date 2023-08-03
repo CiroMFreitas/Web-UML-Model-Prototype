@@ -25,6 +25,14 @@
                     "attribute_name_already_in_use": {
                         "part_1": "Há dois ou mais atributos usando o nome ",
                         "part_2": "."
+                    },
+                    "syntax_error_in_method_argument": {
+                        "part_1": "O seguinte argumento de método possui um erro de sintaxe: ",
+                        "part_2": "."
+                    },
+                    "method_name_already_in_use": {
+                        "part_1": "Há dois ou mais métodos usando o nome ",
+                        "part_2": "."
                     }
                 }
             },
