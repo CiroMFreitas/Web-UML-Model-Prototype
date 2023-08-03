@@ -7,7 +7,7 @@ import StringSnippet from "./StringSnippet";
 
 export default class Classifier extends DiagramEntity {
     private entityType: string;
-    private attributes: Attribute[];
+    private attributes = [] as Attribute[];
     
     constructor(entityType: string, classifierName: string, attributeArguments?: string[]) {
         // Gets and checks if a name was given for classifier.
@@ -21,7 +21,6 @@ export default class Classifier extends DiagramEntity {
         }
         super(classifierName);
         this.entityType = entityType;
-        this.attributes = [] as Attribute[];
 
         if(attributeArguments !== undefined) {
             attributeArguments.forEach((argument) => {
