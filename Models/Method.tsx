@@ -38,11 +38,35 @@ export default class Method extends VisibleEntity {
         // Sets parameters with present.
         this.parameters = [] as Parameter[];
         if((argumentStart !== undefined) && (argumentStart[1] !== "")) {
-            this.parameters.push(new Parameter(argumentStart[1].replace(")", "").replace(",", "")))
+            const firstParameter = new Parameter(argumentStart[1].replace(")", "").replace(",", ""));
+            this.isMethodNameInUse(firstParameter.getName());
+
+            this.parameters.push(firstParameter)
 
             methodArguments.forEach((parameterArgument) => {
-                this.parameters.push(new Parameter(parameterArgument.replace(")", "").replace(",", "")));
+                const newParameter = new Parameter(parameterArgument.replace(")", "").replace(",", ""));
+                this.isMethodNameInUse(newParameter.getName());
+
+                this.parameters.push(newParameter);
             });
+        }
+    }
+
+    /**
+     * Checks if given name is already in use by a parameter, if true an error will be thrown.
+     * 
+     * @param parameterName Name to be checked.
+     */
+    private isMethodNameInUse(parameterName: string): void {
+        const methodExists = this.parameters.find((parameter) => parameter.getName() === parameterName);
+
+        if(methodExists) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.methods.error.parameter_name_already_in_use.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(parameterName))
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.methods.error.parameter_name_already_in_use.part_2"));
+
+            throw new AppError(errorFeedback);
         }
     }
 

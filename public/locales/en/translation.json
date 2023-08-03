@@ -44,6 +44,14 @@
                     }
                 }
             },
+            "methods": {
+                "error": {
+                    "parameter_name_already_in_use": {
+                        "part_1": "There's two or more methods using the name ",
+                        "part_2": "."
+                    }
+                }
+            },
             "parameter": {
                 "error": {
                     "invalid_parameter_arguments": {

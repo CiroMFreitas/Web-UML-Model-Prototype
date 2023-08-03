@@ -44,6 +44,14 @@
                     }
                 }
             },
+            "methods": {
+                "error": {
+                    "parameter_name_already_in_use": {
+                        "part_1": "Há dois ou mais parametros usando o nome ",
+                        "part_2": "."
+                    }
+                }
+            },
             "parameter": {
                 "error": {
                     "invalid_parameter_arguments": {
