@@ -48,11 +48,19 @@
                     }
                 }
             },
-            "methods": {
+            "method": {
                 "error": {
                     "parameter_name_already_in_use": {
-                        "part_1": "There's two or more methods using the name ",
+                        "part_1": "There's 2 or more methods with the name ",
                         "part_2": "."
+                    },
+                    "empty_method_argument": "One of the methods arguments is empty",
+                    "invalid_method_arguments": {
+                        "part_1": {
+                            "too_few": "The following method has too few arguments ",
+                            "too_many": "The following method has too many arguments "
+                        },
+                        "part_2": ", use 2 or 3 arguments."
                     }
                 }
             },

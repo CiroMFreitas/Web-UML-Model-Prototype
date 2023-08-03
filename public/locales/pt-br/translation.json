@@ -48,11 +48,19 @@
                     }
                 }
             },
-            "methods": {
+            "method": {
                 "error": {
                     "parameter_name_already_in_use": {
-                        "part_1": "Há dois ou mais parametros usando o nome ",
+                        "part_1": "Há 2 o mais parâmetros com o nome ",
                         "part_2": "."
+                    },
+                    "empty_method_argument": "Um dos argumentos de métodos está vazio",
+                    "invalid_method_arguments": {
+                        "part_1": {
+                            "too_few": "O seguinte método possui poucos argumentos ",
+                            "too_many": "O seguinte método possui muitos argumentos "
+                        },
+                        "part_2": ", use 2 ou 3 argumentos."
                     }
                 }
             },

@@ -28,9 +28,16 @@ export default class Method extends VisibleEntity {
             super(splitArgument[0], splitArgument[1]);
         } else {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_1"));
-            errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_2"));
+            if(splitArgument[0] === "") {
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.empty_method_argument"));
+            } else if(splitArgument.length === 1) {
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.invalid_method_arguments.part_1.too_few"));
+                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+            } else {
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.invalid_method_arguments.part_1.too_many"));
+                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+            }
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.invalid_method_arguments.part_2"));
 
             throw new AppError(errorFeedback)
         }
