@@ -38,8 +38,12 @@
             },
             "attribute": {
                 "error": {
+                    "empty_attribute_argument": "Um dos argumentos de atributo está vazio",
                     "invalid_attribute_arguments": {
-                        "part_1": "O seguinte atributo possui muitos ou poucos argumentos ",
+                        "part_1": {
+                            "too_few": "O seguinte atributo possui poucos argumentos ",
+                            "too_many": "O seguinte atributo possui muitos argumentos "
+                        },
                         "part_2": ", use 2 ou 3 argumentos."
                     }
                 }

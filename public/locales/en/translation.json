@@ -38,8 +38,12 @@
             },
             "attribute": {
                 "error": {
+                    "empty_attribute_argument": "One of the attributes arguments is empty",
                     "invalid_attribute_arguments": {
-                        "part_1": "The following attribute has too many or few arguments ",
+                        "part_1": {
+                            "too_few": "The following attribute has too few arguments ",
+                            "too_many": "The following attribute has too many arguments "
+                        },
                         "part_2": ", use 2 or 3 arguments."
                     }
                 }
