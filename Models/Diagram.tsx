@@ -34,8 +34,8 @@ export default class Diagram {
             
         const feedback = new Feedback();
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_1"));
-        feedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entityType));
-        feedback.addSnippet(new StringSnippet(newClassifier.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+entityType));
+        feedback.addSnippet(new StringSnippet(" "+newClassifier.getName()));
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
 
         return feedback;
