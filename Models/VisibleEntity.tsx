@@ -20,7 +20,7 @@ export default abstract class VisibleEntity extends TypedEntity {
      * @param type Entity's type.
      * @param visibility Entity's visibility.
      */
-    constructor(name: string, type: string, visibility: string | undefined) {
+    constructor(name: string, type: string, visibility?: string) {
         super(name, type);
         
         if((visibility === undefined) || (visibility === "")) {
