@@ -4,7 +4,13 @@
     },
     "feedback": {
         "common": {
-            "entity_tyoe": {
+            "entity_type": {
+                "Classifier": "classifier",
+                "Attribute": "attribute",
+                "Method": "method",
+                "Parameter": "parameter"
+            },
+            "classifier_type": {
                 "class": "class",
                 "abstract": "abtract class",
                 "interface": "interface"
@@ -16,10 +22,6 @@
                 "part_2": " was done with success.",
                 "error": {
                     "classifier_name_already_in_use": "Provided name for classifier is already in use.",
-                    "name_missing_for_creation": {
-                        "part_1": "No name was provided for ",
-                        "part_2": " creation."
-                    },
                     "attribute_name_already_in_use": {
                         "part_1": "There's two or more attributes using the name ",
                         "part_2": "."
@@ -39,6 +41,10 @@
                 "unrecognized_entity_type": {
                     "part1": "Entity type ",
                     "part2": " was not recognized by application."
+                },
+                "missing_name_for_entity": {
+                    "part_1": "Missing name for ",
+                    "part_2": " creation."
                 }
             }
         },

@@ -20,15 +20,6 @@ export default class Classifier extends DiagramEntity {
      * @param attributeArguments Classifier's array of attribute's arguments to be created.
      */
     constructor(entityType: string, classifierName: string, attributeArguments?: string[], methodArguments?: string[]) {
-        // Gets and checks if a name was given for classifier.
-        if(classifierName === "") {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.name_missing_for_creation.part_1"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_tyoe."+entityType));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.name_missing_for_creation.part_2"));
-
-            throw new AppError(errorFeedback);
-        }
         super(classifierName);
         this.entityType = entityType;
 

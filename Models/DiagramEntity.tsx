@@ -18,6 +18,15 @@ export default abstract class DiagramEntity extends DomainObject {
      */
     constructor(name: string) {
         super();
+        if(name === "") {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.missing_name_for_entity.part_1"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common."+this.constructor.name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.missing_name_for_entity.part_2"));
+
+            throw new AppError(errorFeedback);
+        }
+
         this.validadeNamingString(name);
 
         this.name = name;

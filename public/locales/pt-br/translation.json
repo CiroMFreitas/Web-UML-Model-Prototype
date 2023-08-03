@@ -4,7 +4,13 @@
     },
     "feedback": {
         "common": {
-            "entity_tyoe": {
+            "entity_type": {
+                "Classifier": "classificador",
+                "Attribute": "atributo",
+                "Method": "método",
+                "Parameter": "parâmetro"
+            },
+            "classifier_type": {
                 "class": "classe",
                 "abstract": "classe abstrata",
                 "interface": "interface"
@@ -16,10 +22,6 @@
                 "part_2": " foi realizada com sucesso.",
                 "error": {
                     "classifier_name_already_in_use": "Nome fornecido para classificador já está em uso.",
-                    "name_missing_for_creation": {
-                        "part_1": "Nenhum nome foi fornecido para criação ",
-                        "part_2": "."
-                    },
                     "attribute_name_already_in_use": {
                         "part_1": "Há dois ou mais atributos usando o nome ",
                         "part_2": "."
@@ -39,6 +41,10 @@
                 "unrecognized_entity_type": {
                     "part1": "O tipo de entidade ",
                     "part2": " não foi reconhecido pela aplicação."
+                },
+                "missing_name_for_entity": {
+                    "part_1": "Está faltando o nome para criação do ",
+                    "part_2": "."
                 }
             }
         },
