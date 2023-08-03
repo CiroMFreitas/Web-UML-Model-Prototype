@@ -60,15 +60,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 // If command is not found
                 default:
                     const errorFeedback = new Feedback();
-
-                    // Checks if command type is empty.
-                    if(commandType === "") {
-                        errorFeedback.addSnippet(new StringSnippet(""));
-                    } else {
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(commandType ? commandType : ""));
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_2"));
-                    }
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_1"));
+                    errorFeedback.addSnippet(new StringSnippet(commandType ? commandType : ""));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_2"));
 
                     throw new AppError(errorFeedback);
             }
