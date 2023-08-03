@@ -18,7 +18,7 @@ export default class Diagram {
     }
 
     public createClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
-        const attributeArguments = this.getCommandAttributeArguments(commandLineArray);
+        const attributeArguments = this.getCommandArgumentContent(commandLineArray, "-a");
         // Checks if given name is already in use.
         const newClassifier = new Classifier(entityType, commandLineArray[0], attributeArguments);
         this.isClassifierNameInUse(newClassifier.getName());
@@ -35,34 +35,38 @@ export default class Diagram {
     }
 
     /**
-     * Gets attributes arguments from command, if '-a' is not found will return undefined. 
+     * Gets given argument's content from command line, removing said range, if no start is found, undefined
+     * will be returned, if no end is found, an error will be thrown.
      * 
-     * @param commandLineArray Command line broken into array.
-     * @returns Resulting array or undefined.
+     * @param commandLineArray Comand line to be searched.
+     * @param startArgument Start argument to be searched.
+     * @returns Array argument content or undefined.
      */
-    private getCommandAttributeArguments(commandLineArray: string[]): string[] | undefined {
-        // Checks if attributes arguments are present.
-        const attributeArgumentIndex = commandLineArray.findIndex((commandLine) => commandLine === "-a")+1;
-        if(attributeArgumentIndex === 0) {
+    private getCommandArgumentContent(commandLineArray: string[], startArgument: string): string[] | undefined {
+        // Checks if given argument is present.
+        const startIndex = commandLineArray.findIndex((commandLine) => commandLine === startArgument)+1;
+        if(startIndex === 0) {
             return undefined;
         }
 
-        // Checks end } is prenset present.
-        const endBracketIndex = commandLineArray.findIndex((commandLine) => commandLine.includes(";"))+1;
-        if(endBracketIndex === 0) {
+        // Checks if end for an argument is present.
+        const endIndex = commandLineArray.findIndex((commandLine) => commandLine.includes(";"))+1;
+        if(endIndex === 0) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.end_braces_missing"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.no_end_given_for_argument.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(startArgument));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.no_end_given_for_argument.part_2"));
 
             throw new AppError(errorFeedback);
         }
 
-        // Gets argument while cleaning and spliting it.
-        const attributeArguments = commandLineArray.slice(attributeArgumentIndex, endBracketIndex).map((argument) => {
-            return argument.replace(",", "").replace(";", "")
+        // Gets argument while cleaning it.
+        const argumentContents = commandLineArray.slice(startIndex, endIndex).map((content) => {
+            return content.replace(",", "").replace(";", "")
         });
-        commandLineArray.splice(attributeArgumentIndex, endBracketIndex-attributeArgumentIndex);
+        commandLineArray.splice(startIndex, endIndex-startIndex);
 
-        return attributeArguments;
+        return argumentContents;
     }
 
     /**

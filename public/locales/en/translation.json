@@ -51,7 +51,10 @@
                 "part_1": "The following argument ",
                 "part_2": " has invalid characters."
             },
-            "end_braces_missing": "End braces missing in command.",
+            "no_end_given_for_argument": {
+                "part_1": "No end was given for ",
+                "part_2": " argument."
+            },
             "invalid_visibility": {
                 "part_1": "The ",
                 "part_2": " visibility is not valid, use public, protected or private instead."

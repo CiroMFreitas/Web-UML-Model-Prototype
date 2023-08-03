@@ -51,7 +51,10 @@
                 "part_1": "O seguinte argumento ",
                 "part_2": " possui caracteres inválidos."
             },
-            "end_braces_missing": "Está faltando um colchete no comando.",
+            "no_end_given_for_argument": {
+                "part_1": "Não foi provido um final para o argumento ",
+                "part_2": "."
+            },
             "invalid_visibility": {
                 "part_1": "A visiblidade ",
                 "part_2": " não é valida, use as opções public, protected ou private."
