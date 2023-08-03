@@ -25,5 +25,22 @@ export default class Parameter extends TypedEntity {
             throw new AppError(errorFeedback);
         }
     }
+
+    /**
+     * Stub.
+     * 
+     * @returns Stub.
+     */
+    public toText(): string {
+        return "";
+    }
+
+    /**
+     * Stub.
+     * 
+     * @returns Stub.
+     */
+    public toDiagram(): string {
+        return "";
     }
 }
