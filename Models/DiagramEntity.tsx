@@ -76,21 +76,6 @@ export default abstract class DiagramEntity extends DomainObject {
     }
 
     /**
-     * Stub.
-     * 
-     * @returns Stub.
-     */
-
-    public abstract toText(): string;
-
-    /**
-     * Stub.
-     * 
-     * @return
-     */
-    public abstract toDiagram(): string;
-
-    /**
      * Checks if name has only alphanumerics, dashes and underlines, else an error will be thrown,
      * 
      * @param namingString Name to be validated.
