@@ -78,12 +78,39 @@ export default class Method extends VisibleEntity {
     }
 
     /**
-     * Stub.
+     * Creates a feedback all of method's information for a screen reader.
      * 
-     * @returns Stub.
+     * @returns Method data in feedback format..
      */
-    public toText(): string {
-        return "";
+    public toText(): Feedback {
+        const readFeedback = new Feedback();
+        readFeedback.addSnippet(new StringSnippet(this.getName()));
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.with_type"));
+        readFeedback.addSnippet(new StringSnippet(this.getType()));
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.with_visibility"));
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.common.visibility."+this.getVisibility()));
+
+        // Get parametrs feedback,
+        if(this.parameters.length > 0) {
+            if(this.parameters.length === 1) {
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.methods.parameters.singular"));
+                readFeedback.mergeFeedback(this.parameters[0].toText());
+            } else {
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.methods.parameters.plural"));
+                this.parameters.forEach((parameter, index) => {
+                    if(index+1 === this.parameters.length) {
+                        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.methods.parameters.and"));
+                    } else {
+                        readFeedback.addSnippet(new StringSnippet(", "));
+                    }
+                    readFeedback.mergeFeedback(parameter.toText());
+                });
+            }
+        } else {
+            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.methods.parameters.no_parameters"));
+        }
+
+        return readFeedback;
     }
 
     /**

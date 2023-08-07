@@ -123,6 +123,15 @@
                 "with_type": " with type ",
                 "with_visibility": " and visibility "
             },
+            "method": {
+                "with_type": " with type ",
+                "with_visibility": " visibility ",
+                "parameters": {
+                    "singular": " and parameter ",
+                    "plural": " and parameters",
+                    "no_parameter": " and  does not have parameters"
+                }
+            },
             "error": {
                 "entity_type_missing_on_read": "A type was not expecified to be read.",
                 "unrecognized_entity_type": {

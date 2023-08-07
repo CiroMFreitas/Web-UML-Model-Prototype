@@ -123,6 +123,15 @@
                 "with_type": " com tipo ",
                 "with_visibility": " e visibilidade "
             },
+            "method": {
+                "with_type": " com tipo ",
+                "with_visibility": " visibilidade ",
+                "parameters": {
+                    "singular": " e parâmetro ",
+                    "plural": " e parâmetros",
+                    "no_parameter": " e não possui parâmetros"
+                }
+            },
             "error": {
                 "entity_type_missing_on_read": "Não foi especificado um tipo para ser lido.",
                 "unrecognized_entity_type": {
