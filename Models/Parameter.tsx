@@ -34,12 +34,17 @@ export default class Parameter extends TypedEntity {
     }
 
     /**
-     * Stub.
+     * Creates a feedback all of parameter's information for a screen reader.
      * 
-     * @returns Stub.
+     * @returns Parameter data in feedback format..
      */
-    public toText(): string {
-        return "";
+    public toText(): Feedback {
+        const readFeedback = new Feedback();
+        readFeedback.addSnippet(new StringSnippet(this.getName()));
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.parameter.with_type"));
+        readFeedback.addSnippet(new StringSnippet(this.getType()));
+
+        return readFeedback;
     }
 
     /**

@@ -132,6 +132,9 @@
                     "no_parameter": " e não possui parâmetros"
                 }
             },
+            "parameter": {
+                "with_type": " do tipo "
+            },
             "error": {
                 "entity_type_missing_on_read": "Não foi especificado um tipo para ser lido.",
                 "unrecognized_entity_type": {
