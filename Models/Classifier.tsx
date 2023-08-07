@@ -48,6 +48,10 @@ export default class Classifier extends DiagramEntity {
         }
     }
 
+    public getEntityType(): string {
+        return this.entityType;
+    }
+
     /**
      * Checks if given name is already in use by an attribute, if true an error will be thrown.
      * 
@@ -112,10 +116,6 @@ export default class Classifier extends DiagramEntity {
 
             throw new AppError(errorFeedback);
         }
-    }
-
-    public getEntityType(): string {
-        return this.entityType;
     }
 
     /**
