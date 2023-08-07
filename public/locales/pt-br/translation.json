@@ -96,6 +96,12 @@
             "classifier": {
                 "part_1": "O classificador ",
                 "part_2": " do tipo ",
+                "is_present": " está presente no diagrama.",
+                "attributes": {
+                    "singular": ", possui o atributo ",
+                    "plural": ", possui os atributos",
+                    "and": " e "
+                },
                 "error": {
                     "classifier_not_found": {
                         "part_1": "O classificador ",

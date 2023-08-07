@@ -133,6 +133,35 @@ export default class Classifier extends DiagramEntity {
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.part_2"));
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+this.entityType));
 
+        let areArgumentsPresent = false;
+
+        if(commandLineArray.includes("-a")) {
+            areArgumentsPresent = true;
+
+            if(this.attributes.length > 0) {
+                if(this.attributes.length === 1) {
+                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.attributes.singular"));
+                    toTextFeedback.mergeFeedback(this.attributes[0].toText());
+                } else {
+                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.attributes.plural"));
+                    this.attributes.forEach((attribute, index) => {
+                        if(index+1 === this.attributes.length) {
+                            toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.attributes.and"));
+                        } else {
+                            toTextFeedback.addSnippet(new StringSnippet(", "));
+                        }
+                        toTextFeedback.mergeFeedback(attribute.toText());
+                    });
+                }
+            }
+        }
+
+        if(areArgumentsPresent) {
+            toTextFeedback.addSnippet(".");
+        } else {
+            toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.is_present"));
+        }
+
         return toTextFeedback;
     }
 

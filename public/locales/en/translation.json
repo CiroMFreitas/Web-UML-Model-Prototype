@@ -96,6 +96,12 @@
             "classifier": {
                 "part_1": "The classifier ",
                 "part_2": " of type ",
+                "attributes": {
+                    "singular": ", has the attribute ",
+                    "plural": ", has the attributes",
+                    "and": " and "
+                },
+                "is_present": " is present in diagram.",
                 "error": {
                     "classifier_not_found": {
                         "part_1": "The classifier ",
