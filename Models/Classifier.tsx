@@ -119,12 +119,21 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
-     * Stub.
+     * Creates a feedback with classifier's information for a screen reader.
      * 
-     * @returns Stub.
+     * @param commandLineArray Details to be read from classifier.
+     * @returns Classifier data in feedback format..
      */
-    public toText(): string {
-        return "";
+    public toText(commandLineArray: string[]): Feedback {
+        const toTextFeedback = new Feedback()
+  
+        // Start classifier read feedbback.
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.part_1"));
+        toTextFeedback.addSnippet(new StringSnippet(this.getName()));
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.part_2"));
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+this.entityType));
+
+        return toTextFeedback;
     }
 
     /**

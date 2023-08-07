@@ -93,6 +93,9 @@
             }
         },
         "read": {
+            "classifier": {
+                "part_1": "The classifier ",
+                "part_2": " of type ",
                 "error": {
                     "classifier_not_found": {
                         "part_1": "The classifier ",
