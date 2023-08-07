@@ -43,7 +43,7 @@ export default class Classifier extends DiagramEntity {
                 const newMethod = new Method(handledMethod);
                 this.isMethodNameInUse(newMethod.getName());
 
-                this.attributes.push(newMethod);
+                this.methods.push(newMethod);
             });
         }
     }
