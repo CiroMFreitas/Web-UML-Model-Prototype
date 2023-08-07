@@ -50,18 +50,31 @@ export default class Diagram {
      * @returns Feedback containing the desired classifier indormation.
      */
     public readClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
-        const readFeedback = new Feedback();
         const classifierName = commandLineArray?.shift()?.toLowerCase();
 
-        // Checks if classifier is present
+        // Checks if classifier name is present.
         if((classifierName === undefined) || (classifierName === "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.missing_name_for_reading"));
 
             throw new AppError(errorFeedback);
-        }
+        } else {
+            const toReadClassifier = this.classifiers.find((classifier) => classifier.getName() === classifierName)
+            
+            // Checks if classfier is present in diagram.
+            if(toReadClassifier === undefined) {
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.error.classifier_not_found.part_1"));
+                errorFeedback.addSnippet(new StringSnippet(classifierName));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.error.classifier_not_found.part_2"));
+    
+                throw new AppError(errorFeedback);
+            } else {
+                const readFeedback = toReadClassifier.toText(commandLineArray);
 
-        return readFeedback;
+                return readFeedback;
+            }
+        }
     }
 
     /**

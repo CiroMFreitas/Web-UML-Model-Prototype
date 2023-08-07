@@ -93,6 +93,13 @@
             }
         },
         "read": {
+                "error": {
+                    "classifier_not_found": {
+                        "part_1": "O classificador ",
+                        "part_2": " não existe no diagrama."
+                    }
+                }
+            },
             "error": {
                 "entity_type_missing_on_read": "Não foi especificado um tipo para ser lido.",
                 "unrecognized_entity_type": {
