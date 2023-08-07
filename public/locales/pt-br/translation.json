@@ -98,7 +98,8 @@
                 "unrecognized_entity_type": {
                     "part_1": "O tipo ",
                     "part_2": " não pode ser lido pela aplicação."
-                }
+                },
+                "missing_name_for_reading": "Está faltando o nome para o comando read."
             }
         },
         "error": {

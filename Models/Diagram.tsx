@@ -50,7 +50,18 @@ export default class Diagram {
      * @returns Feedback containing the desired classifier indormation.
      */
     public readClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
-        return new Feedback();
+        const readFeedback = new Feedback();
+        const classifierName = commandLineArray?.shift()?.toLowerCase();
+
+        // Checks if classifier is present
+        if((classifierName === undefined) || (classifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.missing_name_for_reading"));
+
+            throw new AppError(errorFeedback);
+        }
+
+        return readFeedback;
     }
 
     /**
