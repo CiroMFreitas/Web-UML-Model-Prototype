@@ -22,6 +22,10 @@
                 "part_2": " was done with success.",
                 "error": {
                     "classifier_name_already_in_use": "Provided name for classifier is already in use.",
+                    "unrecognized_entity_type": {
+                        "part_1": "Entity type ",
+                        "part_2": " was not recognized by application."
+                    },
                     "attribute_name_already_in_use": {
                         "part_1": "There's two or more attributes using the name ",
                         "part_2": "."
@@ -78,10 +82,6 @@
             },
             "error": {
                 "entity_type_missing_on_creation": "No entity type was given for create command.",
-                "unrecognized_entity_type": {
-                    "part1": "Entity type ",
-                    "part2": " was not recognized by application."
-                },
                 "missing_name_for_entity": {
                     "part_1": "Missing name for ",
                     "part_2": " creation."

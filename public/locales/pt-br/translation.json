@@ -22,6 +22,10 @@
                 "part_2": " foi realizada com sucesso.",
                 "error": {
                     "classifier_name_already_in_use": "Nome fornecido para classificador já está em uso.",
+                    "unrecognized_entity_type": {
+                        "part1": "O tipo de entidade ",
+                        "part2": " não foi reconhecido pela aplicação."
+                    },
                     "attribute_name_already_in_use": {
                         "part_1": "Há dois ou mais atributos usando o nome ",
                         "part_2": "."
@@ -78,10 +82,6 @@
             },
             "error": {
                 "entity_type_missing_on_creation": "Nenhum tipo foi fornecido para o comando create.",
-                "unrecognized_entity_type": {
-                    "part1": "O tipo de entidade ",
-                    "part2": " não foi reconhecido pela aplicação."
-                },
                 "missing_name_for_entity": {
                     "part_1": "Está faltando o nome para criação do ",
                     "part_2": "."

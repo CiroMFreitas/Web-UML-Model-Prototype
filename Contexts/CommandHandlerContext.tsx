@@ -119,9 +119,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     translate("command.create.relationship.success_feedback.part5");*/
         
                 default:
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part1"));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part_1"));
                     errorFeedback.addSnippet(new StringSnippet(entityType));
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part2"));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part_2"));
                     
                     throw new AppError(errorFeedback);
             }
