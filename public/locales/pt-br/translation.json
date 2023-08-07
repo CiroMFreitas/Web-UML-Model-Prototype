@@ -107,6 +107,11 @@
                     "plural": ", possui os atributos",
                     "and": " e "
                 },
+                "methods": {
+                    "singular": ", possui o método ",
+                    "plural": ", possui os métodos",
+                    "and": " e "
+                },
                 "error": {
                     "classifier_not_found": {
                         "part_1": "O classificador ",

@@ -156,6 +156,27 @@ export default class Classifier extends DiagramEntity {
             }
         }
 
+        if(commandLineArray.includes("-m")) {
+            areArgumentsPresent = true;
+
+            if(this.methods.length > 0) {
+                if(this.methods.length === 1) {
+                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.singular"));
+                    toTextFeedback.mergeFeedback(this.methods[0].toText());
+                } else {
+                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.plural"));
+                    this.methods.forEach((method, index) => {
+                        if(index+1 === this.methods.length) {
+                            toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.and"));
+                        } else {
+                            toTextFeedback.addSnippet(new StringSnippet(", "));
+                        }
+                        toTextFeedback.mergeFeedback(method.toText());
+                    });
+                }
+            }
+        }
+
         if(areArgumentsPresent) {
             toTextFeedback.addSnippet(".");
         } else {
