@@ -48,13 +48,13 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 case SUPPORTED_COMMANDS.create === commandType:
                     return createEntityHandler(commandArray, entityType);
     
-                //case SUPPORTED_COMMANDS.read.includes(commandType):
-                //    return readEntityHandler(commandArray, entityType);
+                case SUPPORTED_COMMANDS.read === commandType:
+                    return readEntityHandler(commandArray, entityType);
     
-                //case SUPPORTED_COMMANDS.remove.includes(commandType):
+                //case SUPPORTED_COMMANDS.remove === commandType:
                 //    return removeEntityHandler(commandArray, entityType);
     
-                //case SUPPORTED_COMMANDS.alter.includes(commandType):
+                //case SUPPORTED_COMMANDS.alter. === commandType:
                 //    return alterEntityHandler(commandArray, entityType);
     
                 // If command is not found
@@ -129,39 +129,39 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
-    /*function readEntityHandler(commandArray, entityType) {
-        var feedback = [];
+    function readEntityHandler(commandArray: string[], entityType: string | undefined) {
+        const errorFeedback = new Feedback();
 
-        switch(true) {
-            case SUPPORTED_ENTITY_TYPES.diagram === entityType:
-                feedback = ReadDiagramCommandHandler(classEntities);
+        if((entityType === undefined) || (entityType === "")) {
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.entity_type_missing_on_read"));
+            
+            throw new AppError(errorFeedback);
+        } else {
+            switch(true) {
+                //case SUPPORTED_ENTITY_TYPES.diagram === entityType:
+                //    feedback = ReadDiagramCommandHandler(classEntities);
 
-            case SUPPORTED_ENTITY_TYPES.class === entityType:
-                feedback = ReadClassCommandHandler(commandArray, classEntities, relationshipEntities);
+                case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
+                    const classifierReadfeedback = diagram.readClassifierByCommand(entityType, commandArray);
+                    setDiagram(diagram);
+                    return classifierReadfeedback.toString();
                 
-                break;
-            
-            case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
-            
-            default:
-                throw translate("error.unrecognised_type");
-        }
-
-        const message = feedback.map((snippet) => {
-            if(snippet.type === "locale") {
-                return translate(snippet.content);
-            } else {
-                return snippet.content;
+                //case SUPPORTED_ENTITY_TYPES.relationship === entityType:
+                //    return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
+                
+                default:
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_1"));
+                    errorFeedback.addSnippet(new StringSnippet(entityType));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_2"));
+                    
+                    throw new AppError(errorFeedback);
             }
-        });
-
-        return message.toString().replaceAll(",", "").replaceAll(";", ",");
+        }
     }
 
-    function removeEntityHandler(commandArray, entityType) {
+    /*function removeEntityHandler(commandArray, entityType) {
         switch(true) {
-            case SUPPORTED_ENTITY_TYPES.class === entityType:
+            case SUPPORTED_ENTITY_TYPES.cclassifier.includes(entityType):
                 const handledClassEntities = RemoveClassCommandHandler(commandArray, classEntities);
 
                 setClassEntities(handledClassEntities);
@@ -182,7 +182,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
     function alterEntityHandler(commandArray, entityType) {
         switch(true) {
-            case SUPPORTED_ENTITY_TYPES.class.includes(entityType):
+            case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                 const alteringClass = classEntities.find((classEntity) => classEntity.name === upperCaseFirstLetter(commandArray[0]));
 
                 if(!alteringClass) {

@@ -92,6 +92,15 @@
                 }
             }
         },
+        "read": {
+            "error": {
+                "entity_type_missing_on_read": "Não foi especificado um tipo para ser lido.",
+                "unrecognized_entity_type": {
+                    "part_1": "O tipo ",
+                    "part_2": " não pode ser lido pela aplicação."
+                }
+            }
+        },
         "error": {
             "unrecognized_command": {
                 "part_1": "O comando ",

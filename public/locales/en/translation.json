@@ -92,6 +92,15 @@
                 }
             }
         },
+        "read": {
+            "error": {
+                "entity_type_missing_on_read": "A type was not expecified to be read.",
+                "unrecognized_entity_type": {
+                    "part_1": "The ",
+                    "part_2": " type cannot be read by application."
+                }
+            }
+        },
         "error": {
             "unrecognized_command": {
                 "part_1": "Command ",

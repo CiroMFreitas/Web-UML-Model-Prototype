@@ -43,6 +43,17 @@ export default class Diagram {
     }
 
     /**
+     * Read a classifier with command line instructions
+     * 
+     * @param entityType Which classifier type to be read.
+     * @param commandLineArray Instructions to be handled and executed for classifier reading.
+     * @returns Feedback containing the desired classifier indormation.
+     */
+    public readClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
+        return new Feedback();
+    }
+
+    /**
      * Gets given argument's content from command line, removing said range, if no start is found, undefined
      * will be returned, if no end is found, an error will be thrown.
      * 
