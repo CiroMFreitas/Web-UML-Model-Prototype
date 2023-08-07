@@ -114,6 +114,10 @@ export default class Classifier extends DiagramEntity {
         }
     }
 
+    public getEntityType(): string {
+        return this.entityType;
+    }
+
     /**
      * Stub.
      * 
