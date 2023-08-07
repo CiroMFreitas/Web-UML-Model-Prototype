@@ -1,4 +1,5 @@
 import IFeedbackSnippet from "../public/interfaces/IFeedbackSnippet";
+import StringSnippet from "./StringSnippet";
 
 /**
  * Used to return strings and translatable text to user.
@@ -35,5 +36,9 @@ export default class Feedback {
         });
 
         return feedback;
+    }
+
+    public mergeFeedback(toMergeFeedback: Feedback): void {
+        this.feedbackSnippets.push(new StringSnippet(toMergeFeedback.toString()))
     }
 }
