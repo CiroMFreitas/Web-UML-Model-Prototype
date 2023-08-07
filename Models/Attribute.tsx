@@ -47,9 +47,9 @@ export default class Attribute extends VisibleEntity {
     public toText(): Feedback {
         const readFeedback = new Feedback();
         readFeedback.addSnippet(new StringSnippet(this.getName()));
-        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.attribute.with_type"))
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.attribute.with_type"));
         readFeedback.addSnippet(new StringSnippet(this.getType()));
-        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.attribute.with_visibility"))
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.attribute.with_visibility"));
         readFeedback.addSnippet(new LocalizationSnippet("feedback.common.visibility."+this.getVisibility()));
 
         return readFeedback;
