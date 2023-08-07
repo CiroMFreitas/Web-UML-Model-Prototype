@@ -40,12 +40,19 @@ export default class Attribute extends VisibleEntity {
     }
 
     /**
-     * Stub.
+     * Creates a feedback all of attributes's information for a screen reader.
      * 
-     * @returns Stub.
+     * @returns Attribute data in feedback format..
      */
-    public toText(): string {
-        return "";
+    public toText(): Feedback {
+        const readFeedback = new Feedback();
+        readFeedback.addSnippet(new StringSnippet(this.getName()));
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.attribute.with_type"))
+        readFeedback.addSnippet(new StringSnippet(this.getType()));
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.attribute.with_visibility"))
+        readFeedback.addSnippet(new LocalizationSnippet("feedback.common.visibility."+this.getVisibility()));
+
+        return readFeedback;
     }
 
     /**

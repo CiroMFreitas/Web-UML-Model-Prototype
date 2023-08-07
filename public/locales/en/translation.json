@@ -14,6 +14,11 @@
                 "class": "class",
                 "abstract": "abtract class",
                 "interface": "interface"
+            },
+            "visibility": {
+                "public": "public",
+                "private": "private",
+                "protected": "protected"
             }
         },
         "create": {
@@ -108,6 +113,10 @@
                         "part_2": " does not exists in diagram."
                     }
                 }
+            },
+            "attribute": {
+                "with_type": " with type ",
+                "with_visibility": " and visibility "
             },
             "error": {
                 "entity_type_missing_on_read": "A type was not expecified to be read.",

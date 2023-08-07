@@ -14,6 +14,11 @@
                 "class": "classe",
                 "abstract": "classe abstrata",
                 "interface": "interface"
+            },
+            "visibility": {
+                "public": "pública",
+                "private": "privada",
+                "protected": "protegida"
             }
         },
         "create": {
@@ -108,6 +113,10 @@
                         "part_2": " não existe no diagrama."
                     }
                 }
+            },
+            "attribute": {
+                "with_type": " com tipo ",
+                "with_visibility": " e visibilidade "
             },
             "error": {
                 "entity_type_missing_on_read": "Não foi especificado um tipo para ser lido.",
