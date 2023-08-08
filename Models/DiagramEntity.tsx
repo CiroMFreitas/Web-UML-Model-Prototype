@@ -18,15 +18,6 @@ export default abstract class DiagramEntity extends DomainObject {
      */
     constructor(name: string) {
         super();
-        if((name === "") || (name === undefined)) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.missing_name_for_entity.part_1"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type."+this.constructor.name));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.missing_name_for_entity.part_2"));
-
-            throw new AppError(errorFeedback);
-        }
-
         this.validadeNamingString(name);
 
         this.name = name;
@@ -81,6 +72,15 @@ export default abstract class DiagramEntity extends DomainObject {
      * @param namingString Name to be validated.
      */
     protected validadeNamingString(namingString: string): void {
+        if((namingString === "") || (namingString === undefined)) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.missing_name_for_entity.part_1"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type."+this.constructor.name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.missing_name_for_entity.part_2"));
+
+            throw new AppError(errorFeedback);
+        }
+
         if(!/^[a-zA-Z0-9-_]+$/.test(namingString)) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.invalid_characters_used_for_naming.part_1"));
