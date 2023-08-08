@@ -110,6 +110,10 @@ export default class Diagram {
             }
     
             const alterClassifierFeedback = new Feedback();
+            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));
+            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getEntityType()));
+            alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
+            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_2"));
             return alterClassifierFeedback;
         }
     }

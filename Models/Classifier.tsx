@@ -49,6 +49,11 @@ export default class Classifier extends DiagramEntity {
         }
     }
 
+    /**
+     * Get's classifier's type.
+     * 
+     * @returns Classifier's type.
+     */
     public getEntityType(): string {
         return this.entityType;
     }
