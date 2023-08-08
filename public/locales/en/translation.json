@@ -145,6 +145,11 @@
                     "part_2": " was successfully removed."
                 },
                 "error": {
+                    "entity_type_missing_on_remove": "A type was not expecified to be removed.",
+                    "unrecognized_entity_type": {
+                        "part_1": "The ",
+                        "part_2": " type cannot be removed by application."
+                    },
                     "missing_name_for_removal": "No name was provided for classifier removal."
                 }
             }

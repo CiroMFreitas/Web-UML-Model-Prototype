@@ -163,7 +163,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         const errorFeedback = new Feedback();
 
         if((entityType === undefined) || (entityType === "")) {
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.entity_type_missing_on_read"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.entity_type_missing_on_remove"));
             
             throw new AppError(errorFeedback);
         } else {
@@ -181,9 +181,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     return translate("command.remove.relationship.success_feedback.part1") + commandArray[0] + translate("command.remove.relationship.success_feedback.part2");*/
                     
                 default:
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_1"));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.error.unrecognized_entity_type.part_1"));
                     errorFeedback.addSnippet(new StringSnippet(entityType));
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_2"));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.error.unrecognized_entity_type.part_2"));
                     
                     throw new AppError(errorFeedback);
             }
