@@ -76,6 +76,10 @@ export default class Diagram {
             }
         }
     }
+    
+    public removeClassifierByCommand(commandLineArray: string[]): Feedback {
+        return new Feedback()
+    }
 
     /**
      * Gets given argument's content from command line, removing said range, if no start is found, undefined

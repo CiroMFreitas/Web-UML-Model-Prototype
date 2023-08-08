@@ -51,8 +51,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 case SUPPORTED_COMMANDS.read === commandType:
                     return readEntityHandler(commandArray, entityType);
     
-                //case SUPPORTED_COMMANDS.remove === commandType:
-                //    return removeEntityHandler(commandArray, entityType);
+                case SUPPORTED_COMMANDS.remove === commandType:
+                    return removeEntityHandler(commandArray, entityType);
     
                 //case SUPPORTED_COMMANDS.alter. === commandType:
                 //    return alterEntityHandler(commandArray, entityType);
@@ -159,28 +159,38 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
-    /*function removeEntityHandler(commandArray, entityType) {
-        switch(true) {
-            case SUPPORTED_ENTITY_TYPES.cclassifier.includes(entityType):
-                const handledClassEntities = RemoveClassCommandHandler(commandArray, classEntities);
+    function removeEntityHandler(commandArray: string[], entityType: string | undefined) {
+        const errorFeedback = new Feedback();
 
-                setClassEntities(handledClassEntities);
+        if((entityType === undefined) || (entityType === "")) {
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.entity_type_missing_on_read"));
+            
+            throw new AppError(errorFeedback);
+        } else {
+            switch(true) {
+                case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
+                    const removeClassifierFeedback = diagram.removeClassifierByCommand(commandArray);
+                    setDiagram(diagram);
+                    return removeClassifierFeedback.toString();
 
-                return translate("command.remove.class.success_feedback.part1") + commandArray[0] + translate("command.remove.class.success_feedback.part2");
-
-            case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
-    
-                setRelationshipEntities(handledRelationshipEntities);
-    
-                return translate("command.remove.relationship.success_feedback.part1") + commandArray[0] + translate("command.remove.relationship.success_feedback.part2");
-                
-            default:
-                throw translate("error.unrecognised_type");
+                /*case SUPPORTED_ENTITY_TYPES.relationship === entityType:
+                    const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
+        
+                    setRelationshipEntities(handledRelationshipEntities);
+        
+                    return translate("command.remove.relationship.success_feedback.part1") + commandArray[0] + translate("command.remove.relationship.success_feedback.part2");*/
+                    
+                default:
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_1"));
+                    errorFeedback.addSnippet(new StringSnippet(entityType));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_2"));
+                    
+                    throw new AppError(errorFeedback);
+            }
         }
     }
 
-    function alterEntityHandler(commandArray, entityType) {
+    /*function alterEntityHandler(commandArray, entityType) {
         switch(true) {
             case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                 const alteringClass = classEntities.find((classEntity) => classEntity.name === upperCaseFirstLetter(commandArray[0]));
