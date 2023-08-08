@@ -98,7 +98,7 @@ export default class Diagram {
         // Checks if classifier name is present.
         if((classifierName === undefined) || (classifierName === "")) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.error.entity_type_missing_on_alteration"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.entity_type_missing_on_alteration"));
 
             throw new AppError(errorFeedback);
         } else {
