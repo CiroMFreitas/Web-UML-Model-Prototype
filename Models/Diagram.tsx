@@ -65,8 +65,31 @@ export default class Diagram {
         }
     }
     
+    /**
+     * Removes a classifier by command line instructions.
+     * 
+     * @param commandLineArray An array containing the classifier name in first position.
+     * @returns Feedback if the removal was successful..
+     */
     public removeClassifierByCommand(commandLineArray: string[]): Feedback {
-        return new Feedback()
+        const classifierName = commandLineArray?.shift()?.toLowerCase();
+
+        // Checks if classifier name is present.
+        if((classifierName === undefined) || (classifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.error.missing_name_for_removal"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            const toRemoveClassifierIndex = this.getClassifierIndexByName(classifierName);
+            this.classifiers.splice(toRemoveClassifierIndex, 1);
+
+            const removeFeedback = new Feedback();
+            removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
+            removeFeedback.addSnippet(new StringSnippet(classifierName));
+            removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
+            return removeFeedback;
+        }
     }
 
     /**

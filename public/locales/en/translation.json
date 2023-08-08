@@ -138,6 +138,17 @@
                 "missing_name_for_reading": "Name missing for read command."
             }
         },
+        "remove": {
+            "classifier": {
+                "success": {
+                    "part_1": "The Classifier ",
+                    "part_2": " was successfully removed."
+                },
+                "error": {
+                    "missing_name_for_removal": "No name was provided for classifier removal."
+                }
+            }
+        },
         "error": {
             "unrecognized_command": {
                 "part_1": "Command ",
