@@ -45,11 +45,10 @@ export default class Diagram {
     /**
      * Read a classifier with command line instructions
      * 
-     * @param entityType Which classifier type to be read.
      * @param commandLineArray Instructions to be handled and executed for classifier reading.
      * @returns Feedback containing the desired classifier indormation.
      */
-    public readClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
+    public readClassifierByCommand(commandLineArray: string[]): Feedback {
         const classifierName = commandLineArray?.shift()?.toLowerCase();
 
         // Checks if classifier name is present.

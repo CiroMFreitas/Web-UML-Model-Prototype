@@ -142,7 +142,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 //    feedback = ReadDiagramCommandHandler(classEntities);
 
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const classifierReadfeedback = diagram.readClassifierByCommand(entityType, commandArray);
+                    const classifierReadfeedback = diagram.readClassifierByCommand(commandArray);
                     setDiagram(diagram);
                     return classifierReadfeedback.toString();
                 
