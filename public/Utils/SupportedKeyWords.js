@@ -8,6 +8,7 @@ export const SUPPORTED_COMMANDS = {
 export const SUPPORTED_ENTITY_TYPES = {
     diagram: "diagram",
     classifier: [
+        "classifier",
         "class",
         "interface",
         "abstract",

@@ -1,3 +1,4 @@
+import { SUPPORTED_ENTITY_TYPES } from "../public/Utils/SupportedKeyWords";
 import AppError from "./AppError";
 import Attribute from "./Attribute";
 import DiagramEntity from "./DiagramEntity";
@@ -24,7 +25,7 @@ export default class Classifier extends DiagramEntity {
      */
     constructor(entityType: string, classifierName: string, attributeArguments?: string[], methodArguments?: string[]) {
         super(classifierName);
-        this.entityType = entityType;
+        this.entityType = entityType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : entityType;
 
         // Cretas attributes if arguments are present.
         if(attributeArguments !== undefined) {
