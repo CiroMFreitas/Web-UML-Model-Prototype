@@ -159,6 +159,14 @@
                 "success": {
                     "part_1": "The ",
                     "part_2": " was successfully altered."
+                },
+                "attributes": {
+                    "error": {
+                        "missing_alteration_argument": {
+                            "part_1": "The ",
+                            "part_2": " is missing the alteration argument, use add, alter or remove."
+                        }
+                    }
                 }
             },
             "error": {

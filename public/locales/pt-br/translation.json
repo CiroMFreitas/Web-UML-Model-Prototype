@@ -159,6 +159,14 @@
                 "success": {
                     "part_1": "A ",
                     "part_2": " foi alterada com sucesso."
+                },
+                "attributes": {
+                    "error": {
+                        "missing_alteration_argument": {
+                            "part_1": "O argumento ",
+                            "part_2": " está faltando o termo de alteração, use add, alter ou remove."
+                        }
+                    }
                 }
             },
             "error": {
