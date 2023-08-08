@@ -155,6 +155,12 @@
             }
         },
         "alter": {
+            "classifier": {
+                "success": {
+                    "part_1": "The ",
+                    "part_2": " was successfully altered."
+                }
+            },
             "error": {
                 "entity_type_missing_on_alteration": "A type was not expecified to be removed.",
                 "unrecognized_entity_type": {

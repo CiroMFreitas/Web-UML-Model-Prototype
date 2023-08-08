@@ -155,6 +155,12 @@
             }
         },
         "alter": {
+            "classifier": {
+                "success": {
+                    "part_1": "A ",
+                    "part_2": " foi alterada com sucesso."
+                }
+            },
             "error": {
                 "entity_type_missing_on_alteration": "Não foi especificado um tipo para ser alterado.",
                 "unrecognized_entity_type": {
