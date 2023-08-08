@@ -165,6 +165,10 @@
                         "missing_alteration_argument": {
                             "part_1": "The ",
                             "part_2": " is missing the alteration argument, use add, alter or remove."
+                        },
+                        "invalid_alteration_argument": {
+                            "part_1": "The ",
+                            "part_2": " alteration argument is invalid, use add, alter or remove."
                         }
                     }
                 }
