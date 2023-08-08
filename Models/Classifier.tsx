@@ -49,6 +49,9 @@ export default class Classifier extends DiagramEntity {
         }
     }
 
+    public alterAttributes(attributesChanges: string[]): void {
+    }
+
     /**
      * Get's classifier's type.
      * 

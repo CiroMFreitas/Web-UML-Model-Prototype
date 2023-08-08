@@ -108,6 +108,12 @@ export default class Diagram {
             if(nameChangeArgument !== undefined) {
                 toAlterClassifier.setName(nameChangeArgument[0]);
             }
+
+            // Checks and changes classifier's attributes if desired.
+            const attributesChangeArgument = this.getCommandArgumentContent(commandLineArray, "-a");
+            if(attributesChangeArgument !== undefined) {
+                toAlterClassifier.alterAttributes(attributesChangeArgument);
+            }
     
             const alterClassifierFeedback = new Feedback();
             alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));
