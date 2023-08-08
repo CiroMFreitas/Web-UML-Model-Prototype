@@ -169,6 +169,11 @@
                         "invalid_alteration_argument": {
                             "part_1": "O argumento ",
                             "part_2": " não é válido para alteração, use add, alter ou remove."
+                        },
+                        "attribute_not_found": {
+                            "part_1": "O ",
+                            "part_2": " atributo não foi encontrado na ",
+                            "part_3": "."
                         }
                     }
                 }

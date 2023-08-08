@@ -169,6 +169,11 @@
                         "invalid_alteration_argument": {
                             "part_1": "The ",
                             "part_2": " alteration argument is invalid, use add, alter or remove."
+                        },
+                        "attribute_not_found": {
+                            "part_1": "The ",
+                            "part_2": " attribute was not found in ",
+                            "part_3": "."
                         }
                     }
                 }
