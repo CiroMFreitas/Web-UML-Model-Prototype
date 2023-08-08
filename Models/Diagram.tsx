@@ -93,7 +93,26 @@ export default class Diagram {
     }
     
     public alterClassifierByCommand(commandLineArray: string[]): Feedback {
-        return new Feedback();
+        const classifierName = commandLineArray?.shift()?.toLowerCase();
+
+        // Checks if classifier name is present.
+        if((classifierName === undefined) || (classifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.error.entity_type_missing_on_alteration"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            const toAlterClassifier = this.getClassifierByName(classifierName);
+
+            // Checks and changes classifier's name if desired.
+            const nameChangeArgument = this.getCommandArgumentContent(commandLineArray, "-n");
+            if(nameChangeArgument !== undefined) {
+                toAlterClassifier.setName(nameChangeArgument[0]);
+            }
+    
+            const alterClassifierFeedback = new Feedback();
+            return alterClassifierFeedback;
+        }
     }
 
     /**
