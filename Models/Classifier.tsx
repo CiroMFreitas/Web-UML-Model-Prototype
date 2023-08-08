@@ -70,6 +70,11 @@ export default class Classifier extends DiagramEntity {
                         this.attributes.push(newAttribute)
                         break;
 
+                    case alterationArgument === "remove":
+                        const removalIndex = this.getAttributeIndexByName(changeArguments[0]);
+                        this.attributes.splice(removalIndex, 1);
+                        break;
+
                     default:
                         const errorFeedback = new Feedback();
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.invalid_alteration_argument.part_1"));
