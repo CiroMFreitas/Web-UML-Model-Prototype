@@ -18,16 +18,6 @@ export default abstract class TypedEntity extends DiagramEntity {
      */
     constructor(name: string, type: string) {
         super(name);
-        if((type === "") || (type === undefined)) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.missing_type_for_entity.part_1"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type."+this.constructor.name));
-            errorFeedback.addSnippet(new StringSnippet(" "+this.getName()));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.missing_type_for_entity.part_2"));
-
-            throw new AppError(errorFeedback);
-        }
-
         this.validadeNamingString(type);
 
         this.type = type;
