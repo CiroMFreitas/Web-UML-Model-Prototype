@@ -141,4 +141,26 @@ export default class Diagram {
             return searchedClassifier;
         }
     }
+
+    /**
+     * Searchs a classifier's index using it's name, if not found an error will be thrown.
+     * 
+     * @param name Name of the classifier to be searched.
+     * @returns Desired classifier's index.
+     */
+    private getClassifierIndexByName(name: string): number {
+        const searchedClassifierIndex = this.classifiers.findIndex((classifier) => classifier.getName() === name)
+            
+        // Checks if classfier is present in diagram.
+        if(searchedClassifierIndex === -1) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.classifier_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.classifier_not_found.part_2"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return searchedClassifierIndex;
+        }
+    }
 }
