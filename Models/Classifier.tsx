@@ -65,6 +65,11 @@ export default class Classifier extends DiagramEntity {
 
             } else {
                 switch(true) {
+                    case alterationArgument === "add":
+                        const newAttribute = new Attribute(alterationArgument.toString().replaceAll(",", ":"))
+                        this.attributes.push(newAttribute)
+                        break;
+
                     default:
                         const errorFeedback = new Feedback();
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.invalid_alteration_argument.part_1"));
