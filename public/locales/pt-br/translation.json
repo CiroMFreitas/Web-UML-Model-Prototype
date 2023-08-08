@@ -111,12 +111,6 @@
                     "singular": ", possui o método ",
                     "plural": ", possui os métodos",
                     "and": " e "
-                },
-                "error": {
-                    "classifier_not_found": {
-                        "part_1": "O classificador ",
-                        "part_2": " não existe no diagrama."
-                    }
                 }
             },
             "attribute": {
@@ -160,6 +154,10 @@
             "invalid_visibility": {
                 "part_1": "A visiblidade ",
                 "part_2": " não é valida, use as opções public, protected ou private."
+            },
+            "classifier_not_found": {
+                "part_1": "O classificador ",
+                "part_2": " não existe no diagrama."
             }
         }
     },

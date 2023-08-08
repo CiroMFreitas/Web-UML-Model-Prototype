@@ -111,13 +111,7 @@
                     "plural": ", has the methods",
                     "and": " and "
                 },
-                "is_present": " is present in diagram.",
-                "error": {
-                    "classifier_not_found": {
-                        "part_1": "The classifier ",
-                        "part_2": " does not exists in diagram."
-                    }
-                }
+                "is_present": " is present in diagram."
             },
             "attribute": {
                 "with_type": " with type ",
@@ -160,6 +154,10 @@
             "invalid_visibility": {
                 "part_1": "The ",
                 "part_2": " visibility is not valid, use public, protected or private instead."
+            },
+            "classifier_not_found": {
+                "part_1": "The classifier ",
+                "part_2": " does not exists in diagram."
             }
         }
     },

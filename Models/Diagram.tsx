@@ -59,21 +59,9 @@ export default class Diagram {
 
             throw new AppError(errorFeedback);
         } else {
-            const toReadClassifier = this.classifiers.find((classifier) => classifier.getName() === classifierName)
-            
-            // Checks if classfier is present in diagram.
-            if(toReadClassifier === undefined) {
-                const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.error.classifier_not_found.part_1"));
-                errorFeedback.addSnippet(new StringSnippet(classifierName));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.error.classifier_not_found.part_2"));
-    
-                throw new AppError(errorFeedback);
-            } else {
-                const readFeedback = toReadClassifier.toText(commandLineArray);
-
-                return readFeedback;
-            }
+            const toReadClassifier = this.getClassifierByName(classifierName);
+            const readFeedback = toReadClassifier.toText(commandLineArray);
+            return readFeedback;
         }
     }
     
@@ -129,6 +117,22 @@ export default class Diagram {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.classifier_name_already_in_use"));
 
             throw new AppError(errorFeedback);
+        }
+    }
+
+    private getClassifierByName(name: string): Classifier {
+        const searchedClassifier = this.classifiers.find((classifier) => classifier.getName() === name)
+            
+        // Checks if classfier is present in diagram.
+        if(searchedClassifier === undefined) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.classifier_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.classifier_not_found.part_2"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return searchedClassifier;
         }
     }
 }
