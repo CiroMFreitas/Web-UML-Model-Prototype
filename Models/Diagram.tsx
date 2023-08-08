@@ -120,6 +120,12 @@ export default class Diagram {
         }
     }
 
+    /**
+     * Searchs a classifier using it's name, if not found an error will be thrown.
+     * 
+     * @param name Name of the classifier to be searched.
+     * @returns Desired classifier.
+     */
     private getClassifierByName(name: string): Classifier {
         const searchedClassifier = this.classifiers.find((classifier) => classifier.getName() === name)
             
