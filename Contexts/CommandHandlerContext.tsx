@@ -54,8 +54,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 case SUPPORTED_COMMANDS.remove === commandType:
                     return removeEntityHandler(commandArray, entityType);
     
-                //case SUPPORTED_COMMANDS.alter. === commandType:
-                //    return alterEntityHandler(commandArray, entityType);
+                case SUPPORTED_COMMANDS.alter === commandType:
+                    return alterEntityHandler(commandArray, entityType);
     
                 // If command is not found
                 default:
@@ -190,66 +190,55 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
-    /*function alterEntityHandler(commandArray, entityType) {
-        switch(true) {
-            case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                const alteringClass = classEntities.find((classEntity) => classEntity.name === upperCaseFirstLetter(commandArray[0]));
+    function alterEntityHandler(commandArray: string[], entityType: string | undefined) {
+        const errorFeedback = new Feedback();
 
-                if(!alteringClass) {
-                    throw translate("error.class_not_found");
-                }
+        if((entityType === undefined) || (entityType === "")) {
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.entity_type_missing_on_alteration"));
+            
+            throw new AppError(errorFeedback);
+        } else {
+            switch(true) {
+                case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
+                    const alterClassifierFeedback = diagram.alterClassifierByCommand(commandArray);
+                    setDiagram(diagram);
+                    return alterClassifierFeedback.toString();
 
-                const renameIndex = commandArray.indexOf("-n");
-                if(renameIndex !== -1) {
-                    nameAlreadyInUse(classEntities, upperCaseFirstLetter(commandArray[renameIndex + 1].toLowerCase()));
-                }
+                /*case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
+                    const relationshipName = commandArray.shiftranslate();
+                    const alteringRelationship = relationshipEntities.find((relationship) => relationship.name === relationshipName);
 
-                const alteredEntity = alterClassCommandHandler(commandArray, alteringClass, renameIndex);
+                    if(!alteringRelationship) {
+                        throw translate("error.relationship_not_found");
+                    }
 
-                setClassEntities(prevClassEntities => {
-                    const newClassEntities = prevClassEntities.map((prevClassEntity) => {
-                        if(prevClassEntity === alteringClass) {
-                            prevClassEntity = alteredEntity;
-                        }
+                    const alteredRelationship = AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities);
 
-                        return prevClassEntity;
-                    })
+                    setRelationshipEntities(prevRelationshipEntities => {
+                        const newRelationshipEntities = prevRelationshipEntities.map((prevRelationshipEntity) => {
+                            if(prevRelationshipEntity === alteringRelationship) {
+                                prevRelationshipEntity = alteredRelationship;
+                            }
 
-                    return newClassEntities;
-                });
-                
-                return translate("command.alter.class.success_feedback.part1") + alteringClass.name + translate("command.alter.class.success_feedback.part2");
+                            return prevRelationshipEntity;
+                        })
 
-            case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
-                const relationshipName = commandArray.shiftranslate();
-                const alteringRelationship = relationshipEntities.find((relationship) => relationship.name === relationshipName);
+                        return newRelationshipEntities;
+                    });
 
-                if(!alteringRelationship) {
-                    throw translate("error.relationship_not_found");
-                }
+                    return translate("command.alter.relationship.success_feedback.part1") +
+                        relationshipName +
+                        translate("command.alter.relationship.success_feedback.part2");*/
 
-                const alteredRelationship = AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities);
-
-                setRelationshipEntities(prevRelationshipEntities => {
-                    const newRelationshipEntities = prevRelationshipEntities.map((prevRelationshipEntity) => {
-                        if(prevRelationshipEntity === alteringRelationship) {
-                            prevRelationshipEntity = alteredRelationship;
-                        }
-
-                        return prevRelationshipEntity;
-                    })
-
-                    return newRelationshipEntities;
-                });
-
-                return translate("command.alter.relationship.success_feedback.part1") +
-                    relationshipName +
-                    translate("command.alter.relationship.success_feedback.part2");
-
-            default:
-                throw translate("error.unrecognised_type");
+                default:
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.error.unrecognized_entity_type.part_1"));
+                    errorFeedback.addSnippet(new StringSnippet(entityType));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.error.unrecognized_entity_type.part_2"));
+                    
+                    throw new AppError(errorFeedback);
+            }
         }
-    }*/
+    }
 
     return (
         <CommandHandlerContext.Provider value={ value }>
