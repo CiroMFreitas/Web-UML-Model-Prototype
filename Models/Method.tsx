@@ -66,7 +66,17 @@ export default class Method extends VisibleEntity {
      * @param alterations Array containing alterations in the previously stated order.
      */
     public alter(alterations: string[]): void {
-        
+        if((alterations[0] !== "-") && (alterations[0] !== "")) {
+            this.setVisibility(alterations[0]);
+        }
+
+        if((alterations[1] !== "-") && (alterations[1] !== "")) {
+            this.setName(alterations[1]);
+        }
+
+        if((alterations[2] !== "-") && (alterations[2] !== "")) {
+            this.setType(alterations[2]);
+        }
     }
 
     /**
