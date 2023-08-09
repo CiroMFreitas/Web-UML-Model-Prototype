@@ -121,6 +121,11 @@ export default class Classifier extends DiagramEntity {
                 throw new AppError(errorFeedback);
             } else {
                 switch(true) {
+                    case alterationArgument === "add":
+                        const newMethod = new Method([alterationArgument.toString().replaceAll(",", ":")].concat(paramenterChangeArguments));
+                        this.isMethodNameInUse(newMethod.getName());
+                        this.methods.push(newMethod);
+                        break;
 
                     default:
                         const errorFeedback = new Feedback();
