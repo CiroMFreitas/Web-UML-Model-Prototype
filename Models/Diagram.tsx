@@ -90,7 +90,13 @@ export default class Diagram {
             return removeFeedback;
         }
     }
-    
+
+    /**
+     * Alters a classifier following instructions inside an array.
+     * 
+     * @param commandLineArray Array containing instructions to be handled.
+     * @returns Feedback should alteration succeed.
+     */
     public alterClassifierByCommand(commandLineArray: string[]): Feedback {
         const classifierName = commandLineArray?.shift()?.toLowerCase();
 
