@@ -106,9 +106,11 @@ export default class Classifier extends DiagramEntity {
      * @param methodsChanges Array containing instructions.
      */
     public alterMethods(methodsChanges: string[]): void {
-        methodsChanges.forEach((change) => {
-            const changeArguments = change.split(":");
-            const alterationArgument = changeArguments.shift();
+        const handledmethodsChanges = this.handleMethodArguments(methodsChanges);
+        handledmethodsChanges.forEach((change) => {
+            const methodChangeArguments = change[0].split(":");
+            const paramenterChangeArguments = change.splice(1);
+            const alterationArgument = methodChangeArguments.shift();
             
             if((alterationArgument === undefined) || (alterationArgument === "")) {
                 const errorFeedback = new Feedback();
