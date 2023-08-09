@@ -175,6 +175,11 @@
                             "part_1": "The ",
                             "part_2": " method was not found in ",
                             "part_3": "."
+                        },
+                        "parameter_not_found": {
+                            "part_1": "The ",
+                            "part_2": " parameter was not found in method ",
+                            "part_3": "."
                         }
                     }
                 },

@@ -129,6 +129,29 @@ export default class Method extends VisibleEntity {
     }
 
     /**
+     * Searchs a parameter's index using it's name, if not found an error will be thrown.
+     * 
+     * @param name Name of the parameter to be searched.
+     * @returns Desired parameter's index.
+     */
+    private getParameterIndexByName(name: string): number {
+        const parameterIndex = this.parameters.findIndex((parameter) => parameter.getName() === name);
+
+        if(parameterIndex === -1) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_2"));
+            errorFeedback.addSnippet(new StringSnippet(this.getName()));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_3"));
+
+            throw new AppError(errorFeedback);
+        }
+
+        return parameterIndex;
+    }
+
+    /**
      * Creates a feedback all of method's information for a screen reader.
      * 
      * @returns Method data in feedback format..

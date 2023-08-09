@@ -175,6 +175,11 @@
                             "part_1": "O ",
                             "part_2": " método não foi encontrado na ",
                             "part_3": "."
+                        },
+                        "parameter_not_found": {
+                            "part_1": "O ",
+                            "part_2": " parâmetro não foi encontrado no método ",
+                            "part_3": "."
                         }
                     }
                 },
