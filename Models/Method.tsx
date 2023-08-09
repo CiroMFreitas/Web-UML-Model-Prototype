@@ -92,6 +92,11 @@ export default class Method extends VisibleEntity {
                 throw new AppError(errorFeedback);
             } else {
                 switch(true) {
+                    case alterationArgument === "add":
+                        const newParameter = new Parameter(alterationArgument.toString().replaceAll(",", ":"));
+                        this.isParameterNameInUse(newParameter.getName());
+                        this.parameters.push(newParameter);
+                        break;
 
                     default:
                         const errorFeedback = new Feedback();
