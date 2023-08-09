@@ -49,6 +49,12 @@ export default class Classifier extends DiagramEntity {
         }
     }
 
+    /**
+     * Handles instructions for alterations mede to attributes, expects a array containg a string with
+     * instructions separated by ":".
+     * 
+     * @param attributesChanges Array containing instructions.
+     */
     public alterAttributes(attributesChanges: string[]): void {
         attributesChanges.forEach((change) => {
             const changeArguments = change.split(":");
