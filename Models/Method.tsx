@@ -46,13 +46,13 @@ export default class Method extends VisibleEntity {
         this.parameters = [] as Parameter[];
         if((argumentStart !== undefined) && (argumentStart[1] !== "")) {
             const firstParameter = new Parameter(argumentStart[1].replace(")", "").replace(",", ""));
-            this.isMethodNameInUse(firstParameter.getName());
+            this.isParameterNameInUse(firstParameter.getName());
 
             this.parameters.push(firstParameter)
 
             methodArguments.forEach((parameterArgument) => {
                 const newParameter = new Parameter(parameterArgument.replace(")", "").replace(",", ""));
-                this.isMethodNameInUse(newParameter.getName());
+                this.isParameterNameInUse(newParameter.getName());
 
                 this.parameters.push(newParameter);
             });
@@ -110,7 +110,7 @@ export default class Method extends VisibleEntity {
      * 
      * @param parameterName Name to be checked.
      */
-    private isMethodNameInUse(parameterName: string): void {
+    private isParameterNameInUse(parameterName: string): void {
         const methodExists = this.parameters.find((parameter) => parameter.getName() === parameterName);
 
         if(methodExists) {
