@@ -77,6 +77,13 @@ export default class Method extends VisibleEntity {
         if((alterations[2] !== "-") && (alterations[2] !== "")) {
             this.setType(alterations[2]);
         }
+
+        const parameterAlterations = alterations.splice(3);
+        parameterAlterations.forEach((parameterAlteration) => {
+            const changeArguments = parameterAlteration.split(":");
+            const alterationArgument = changeArguments.shift();
+            }
+        });
     }
 
     /**
