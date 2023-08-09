@@ -50,8 +50,8 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
-     * Handles instructions for alterations mede to attributes, expects a array containg a string with
-     * instructions separated by ":".
+     * Handles instructions for alterations to attributes, expects a array containg a string with instructions
+     * separated by ":".
      * 
      * @param attributesChanges Array containing instructions.
      */
