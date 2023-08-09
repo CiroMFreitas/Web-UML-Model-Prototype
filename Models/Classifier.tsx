@@ -127,6 +127,11 @@ export default class Classifier extends DiagramEntity {
                         this.methods.push(newMethod);
                         break;
 
+                    case alterationArgument === "remove":
+                        const removalIndex = this.getMethodIndexByName(methodChangeArguments[0]);
+                        this.methods.splice(removalIndex, 1);
+                        break;
+
                     default:
                         const errorFeedback = new Feedback();
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
@@ -266,6 +271,30 @@ export default class Classifier extends DiagramEntity {
         }
 
         return searchedAttribute;
+    }
+
+    /**
+     * Searchs a method's index using it's name, if not found an error will be thrown.
+     * 
+     * @param name Name of the method to be searched.
+     * @returns Desired method's index.
+     */
+    private getMethodIndexByName(name: string): number {
+        const methodIndex = this.methods.findIndex((method) => method.getName() === name);
+
+        if(methodIndex === -1) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_2"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_3"));
+
+            throw new AppError(errorFeedback);
+        }
+
+        return methodIndex;
     }
 
     /**
