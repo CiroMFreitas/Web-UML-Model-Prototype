@@ -60,6 +60,16 @@ export default class Method extends VisibleEntity {
     }
 
     /**
+     * Changes method's data, expecting data to be organized with the respective order inside array,
+     * visibility, name, type and parameters arguments.
+     * 
+     * @param alterations Array containing alterations in the previously stated order.
+     */
+    public alter(alterations: string[]): void {
+        
+    }
+
+    /**
      * Checks if given name is already in use by a parameter, if true an error will be thrown.
      * 
      * @param parameterName Name to be checked.
