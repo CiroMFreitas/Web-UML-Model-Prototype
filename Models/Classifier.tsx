@@ -142,7 +142,7 @@ export default class Classifier extends DiagramEntity {
             endparameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
         }
 
-        // Checks if there were left overs, menaing tha methods were not properly declared.
+        // Checks if there were left overs, meaning the methods were not properly declared.
         if(methodArguments.length > 0) {
             // rebuilds method for error feedback.
             const errorMethod = "";
