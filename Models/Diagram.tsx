@@ -120,6 +120,12 @@ export default class Diagram {
             if(attributesChangeArgument !== undefined) {
                 toAlterClassifier.alterAttributes(attributesChangeArgument);
             }
+
+            // Checks and changes classifier's methods if desired.
+            const methodsChangeArgument = this.getCommandArgumentContent(commandLineArray, "-m");
+            if(methodsChangeArgument !== undefined) {
+                toAlterClassifier.alterMethods(methodsChangeArgument);
+            }
     
             const alterClassifierFeedback = new Feedback();
             alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));

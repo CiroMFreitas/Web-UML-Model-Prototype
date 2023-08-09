@@ -100,6 +100,15 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
+     * Handles instructions for alterations to attributes, expects a array containg a string with instructions
+     * separated by ":".
+     * 
+     * @param methodsChanges Array containing instructions.
+     */
+    public alterMethods(methodsChanges: string[]): void {
+    }
+
+    /**
      * Get's classifier's type.
      * 
      * @returns Classifier's type.
