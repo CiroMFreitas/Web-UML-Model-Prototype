@@ -187,6 +187,30 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
+     * Searchs a attribute using it's name, if not found an error will be thrown.
+     * 
+     * @param name Name of the attribute to be searched.
+     * @returns Desired attribute.
+     */
+    private getAttributeByName(name: string): Attribute {
+        const searchedAttribute = this.attributes.find((attribute) => attribute.getName() === name);
+
+        if(searchedAttribute === undefined) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_2"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_3"));
+
+            throw new AppError(errorFeedback);
+        }
+
+        return searchedAttribute;
+    }
+
+    /**
      * Creates a feedback with classifier's information for a screen reader.
      * 
      * @param commandLineArray Details to be read from classifier.
