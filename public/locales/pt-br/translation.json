@@ -162,10 +162,6 @@
                 },
                 "attributes": {
                     "error": {
-                        "missing_alteration_argument": {
-                            "part_1": "O argumento ",
-                            "part_2": " está faltando o termo de alteração, use add, alter ou remove."
-                        },
                         "invalid_alteration_argument": {
                             "part_1": "O argumento ",
                             "part_2": " não é válido para alteração, use add, alter ou remove."
@@ -175,6 +171,12 @@
                             "part_2": " atributo não foi encontrado na ",
                             "part_3": "."
                         }
+                    }
+                },
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "O argumento ",
+                        "part_2": " está faltando o termo de alteração, use add, alter ou remove."
                     }
                 }
             },
