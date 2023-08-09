@@ -60,8 +60,7 @@ export default class Classifier extends DiagramEntity {
             const changeArguments = change.split(":");
             const alterationArgument = changeArguments.shift();
             
-            if((alterationArgument === undefined) || (alterationArgument === ""))
-            {
+            if((alterationArgument === undefined) || (alterationArgument === "")) {
                 const errorFeedback = new Feedback();
                 errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.missing_alteration_argument.part_1"));
                 errorFeedback.addSnippet(new StringSnippet(":" + changeArguments.toString().replaceAll(",", ":")));
