@@ -98,6 +98,11 @@ export default class Method extends VisibleEntity {
                         this.parameters.push(newParameter);
                         break;
 
+                    case alterationArgument === "remove":
+                        const removalIndex = this.getParameterIndexByName(changeArguments[0]);
+                        this.parameters.splice(removalIndex, 1);
+                        break;
+
                     default:
                         const errorFeedback = new Feedback();
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
