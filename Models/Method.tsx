@@ -82,6 +82,14 @@ export default class Method extends VisibleEntity {
         parameterAlterations.forEach((parameterAlteration) => {
             const changeArguments = parameterAlteration.split(":");
             const alterationArgument = changeArguments.shift();
+            
+            if((alterationArgument === undefined) || (alterationArgument === "")) {
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
+                errorFeedback.addSnippet(new StringSnippet(":" + changeArguments.toString().replaceAll(",", ":")));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
+
+                throw new AppError(errorFeedback);
             }
         });
     }
