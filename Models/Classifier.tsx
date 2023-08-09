@@ -62,9 +62,9 @@ export default class Classifier extends DiagramEntity {
             
             if((alterationArgument === undefined) || (alterationArgument === "")) {
                 const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.missing_alteration_argument.part_1"));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
                 errorFeedback.addSnippet(new StringSnippet(":" + changeArguments.toString().replaceAll(",", ":")));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.missing_alteration_argument.part_2"));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
 
                 throw new AppError(errorFeedback);
 
