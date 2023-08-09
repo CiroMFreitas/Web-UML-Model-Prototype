@@ -162,6 +162,12 @@ export default class Classifier extends DiagramEntity {
         }
     }
 
+    /**
+     * Searchs a attribute's index using it's name, if not found an error will be thrown.
+     * 
+     * @param name Name of the attribute to be searched.
+     * @returns Desired attribute's index.
+     */
     private getAttributeIndexByName(name: string): number {
         const attributeIndex = this.attributes.findIndex((attribute) => attribute.getName() === name);
 
