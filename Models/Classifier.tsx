@@ -71,9 +71,9 @@ export default class Classifier extends DiagramEntity {
             } else {
                 switch(true) {
                     case alterationArgument === "add":
-                        const newAttribute = new Attribute(alterationArgument.toString().replaceAll(",", ":"))
+                        const newAttribute = new Attribute(alterationArgument.toString().replaceAll(",", ":"));
                         this.isAttributeNameInUse(newAttribute.getName());
-                        this.attributes.push(newAttribute)
+                        this.attributes.push(newAttribute);
                         break;
 
                     case alterationArgument === "remove":
