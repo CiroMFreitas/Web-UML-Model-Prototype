@@ -38,6 +38,11 @@ export default class Feedback {
         return feedback;
     }
 
+    /**
+     * Merges parameter feedback into this feedback.
+     * 
+     * @param toMergeFeedback Feedback to be merged.
+     */
     public mergeFeedback(toMergeFeedback: Feedback): void {
         this.feedbackSnippets.push(new StringSnippet(toMergeFeedback.toString()))
     }
