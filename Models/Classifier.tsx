@@ -126,6 +126,12 @@ export default class Classifier extends DiagramEntity {
         }
     }
 
+    /**
+     * Handles arguments for methods creation.
+     * 
+     * @param methodArguments Arguments to be handled.
+     * @returns Handled arguments.
+     */
     private handleMethodArguments(methodArguments: string[]): string[][] {
         // Breaks method arguments into arrays for method creation
         const handledMethodArguments = [[]] as string[][];
