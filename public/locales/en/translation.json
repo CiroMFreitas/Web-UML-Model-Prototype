@@ -15,6 +15,14 @@
                 "abstract": "abtract class",
                 "interface": "interface"
             },
+            "realtionship_type": {
+                "associative": "associative",
+                "directed_association": "directed association",
+                "reflexive_association": "reflexive association",
+                "aggregation": "aggregation",
+                "composition": "composition",
+                "inheritance": "inheritance"
+            },
             "visibility": {
                 "public": "public",
                 "private": "private",
@@ -86,6 +94,13 @@
                 }
             },
             "relationship": {
+                "success": {
+                    "part_1": "The ",
+                    "part_2": " relationship between classifiers ",
+                    "part_3": " and ",
+                    "part_4": " named ",
+                    "part_5": " was created successfully."
+                },
                 "error": {
                     "source_classifier_missing": "No source classifier was given for relationship creation.",
                     "target_classifier_missing": "No target classifier was given for relationship creation.",

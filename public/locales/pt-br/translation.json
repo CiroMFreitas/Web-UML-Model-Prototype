@@ -15,6 +15,14 @@
                 "abstract": "classe abstrata",
                 "interface": "interface"
             },
+            "realtionship_type": {
+                "associative": "associativo",
+                "directed_association": "associativo direcionado",
+                "reflexive_association": "associativo reflexivo",
+                "aggregation": "agregado",
+                "composition": "composto",
+                "inheritance": "de herança"
+            },
             "visibility": {
                 "public": "pública",
                 "private": "privada",
@@ -86,6 +94,13 @@
                 }
             },
             "relationship": {
+                "success": {
+                    "part_1": "O relacionamento ",
+                    "part_2": " entre os classificadores ",
+                    "part_3": " e ",
+                    "part_4": " com o nome ",
+                    "part_5": " foi criado com sucesso."
+                },
                 "error": {
                     "source_classifier_missing": "Não foi fornecido um classificador fonte para criação do relacionamento.",
                     "target_classifier_missing": "Não foi fornecido um classificador alvo para criação do relacionamento.",
