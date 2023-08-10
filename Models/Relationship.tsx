@@ -9,10 +9,10 @@ export default class Relationship extends DiagramEntity {
     private attribute: Attribute;
 
     constructor(relationshipCreationData: ICreateRelationshipDTO){
-        super("")
+        super(relationshipCreationData.name)
+        this.sourceClassifierId = relationshipCreationData.sourceClassifierId;
+        this.targetClassifierId = relationshipCreationData.targetClassifierId;
         this.relatioshipType = "";
-        this.sourceClassifierId = "";
-        this.targetClassifierId = "";
         this.attribute = new Attribute("");
     }
 }
