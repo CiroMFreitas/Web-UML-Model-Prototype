@@ -138,8 +138,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
             throw new AppError(errorFeedback);
         } else {
             switch(true) {
-                //case SUPPORTED_ENTITY_TYPES.diagram === entityType:
-                //    feedback = ReadDiagramCommandHandler(classEntities);
+                case SUPPORTED_ENTITY_TYPES.diagram === entityType:
+                    const diagramFeedback = diagram.readDiagram();
+                    return diagramFeedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const classifierReadfeedback = diagram.readClassifierByCommand(commandArray);

@@ -136,6 +136,12 @@ export default class Diagram {
         }
     }
 
+    public readDiagram(): Feedback {
+        const readDiagramFeedback = new Feedback()
+
+        return readDiagramFeedback;
+    }
+
     /**
      * Gets given argument's content from command line, removing said range, if no start is found, undefined
      * will be returned, if no end is found, an error will be thrown.
