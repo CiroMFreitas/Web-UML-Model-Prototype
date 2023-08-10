@@ -40,4 +40,16 @@ export default class Relationship extends DiagramEntity {
             this.attribute = new Attribute(relationshipCreationData.attribute);
         }
     }
+
+    public getSourceClassifierId(): string {
+        return this.sourceClassifierId;
+    }
+
+    public getTargetClassifierId(): string {
+        return this.targetClassifierId;
+    }
+
+    public getRelationshipType(): string {
+        return this.relatioshipType;
+    }
 }
