@@ -285,6 +285,11 @@ export default class Diagram {
                         });
             
                         throw new AppError(errorFeedback);
+                    } else {
+                        const removalIndex = classifiersRelationshipsIndexes[0];
+                        if(removalIndex !== undefined) {
+                            this.relationships.splice(removalIndex, 1);
+                        }
                     }
                 }
                 break;
