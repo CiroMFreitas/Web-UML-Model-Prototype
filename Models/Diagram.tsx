@@ -1,7 +1,9 @@
+import ICreateRelationshipDTO from "../public/DTO/ICreateRelationshipDTO";
 import AppError from "./AppError";
 import Classifier from "./Classifier";
 import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
+import Relationship from "./Relationship";
 import StringSnippet from "./StringSnippet";
 
 /**
@@ -9,6 +11,7 @@ import StringSnippet from "./StringSnippet";
  */
 export default class Diagram {
     private classifiers = [] as Classifier[];
+    private relationships = [] as Relationship[];
 
     /**
      * Sets an empty diagram.
@@ -181,6 +184,9 @@ export default class Diagram {
                 relatioshipType: relatioshipType ? relatioshipType[0] : undefined,
                 attribute: attribute ? attribute[0] : undefined
             }
+
+            const newRelationship = new Relationship(preRelaionshipData);
+            this.relationships.push(newRelationship);
         }
 
         const relationshipCreationFeedback = new Feedback();
