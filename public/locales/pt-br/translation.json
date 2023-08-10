@@ -189,6 +189,11 @@
                     },
                     "missing_name_for_removal": "Nenhum nome for fornecido para remoção do classificador."
                 }
+            },
+            "relationship": {
+                "error": {
+                    "invalid_direction": "Direção inválida para remoção de relacionamento, use os argumentos 'named' ou 'between'."
+                }
             }
         },
         "alter": {

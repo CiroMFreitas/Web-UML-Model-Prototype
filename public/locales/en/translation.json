@@ -189,6 +189,11 @@
                     },
                     "missing_name_for_removal": "No name was provided for classifier removal."
                 }
+            },
+            "relationship": {
+                "error": {
+                    "invalid_direction": "Invalid direction given for relationship removal, use the arguments 'named' or 'between'."
+                }
             }
         },
         "alter": {

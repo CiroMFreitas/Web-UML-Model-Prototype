@@ -217,8 +217,24 @@ export default class Diagram {
      * @returns Feedback if the removal was successful..
      */
     public removeRelatioshipByCommand(commandLineArray: string[]): Feedback {
-            const removeFeedback = new Feedback();
-            return removeFeedback;
+        const removalDirection = commandLineArray?.shift()?.toLowerCase();
+
+        switch(removalDirection) {
+            case "named":
+                break;
+
+            case "between":
+                break;
+            
+            default:
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.invalid_direction"));
+    
+                throw new AppError(errorFeedback);
+        }
+        
+        const removeFeedback = new Feedback();
+        return removeFeedback;
     }
 
     /**
