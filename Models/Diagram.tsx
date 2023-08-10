@@ -222,7 +222,7 @@ export default class Diagram {
         switch(removalDirection) {
             // Removal by relationship name.
             case "named":
-                const removingRelationshipName = commandLineArray?.shift()?.toLowerCase();
+                const removingRelationshipName = commandLineArray?.shift();
                 if((removingRelationshipName === undefined) || (removingRelationshipName === "")) {
                     const errorFeedback = new Feedback();
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_relationship_name_for_removal"));
