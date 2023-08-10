@@ -85,6 +85,12 @@
                     }
                 }
             },
+            "relationship": {
+                "error": {
+                    "source_classifier_missing": "No source classifier was given for relationship creation.",
+                    "target_classifier_missing": "No target classifier was given for relationship creation."
+                }
+            },
             "error": {
                 "entity_type_missing_on_creation": "No entity type was given for create command.",
                 "missing_name_for_entity": {

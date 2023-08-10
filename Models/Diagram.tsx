@@ -135,6 +135,21 @@ export default class Diagram {
     }
 
     public createRelationshipByCommand(commandLineArray: string[]): Feedback {
+        const desiredSourceClassifierName = commandLineArray.shift();
+        const desiredTargetClassifierName = commandLineArray.shift();
+
+        if((desiredSourceClassifierName === undefined) || (desiredSourceClassifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.error.source_classifier_missing"));
+
+            throw new AppError(errorFeedback);
+        } else if((desiredTargetClassifierName === undefined) || (desiredTargetClassifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.error.target_classifier_missing"));
+
+            throw new AppError(errorFeedback);;
+        }
+
         const relationshipCreationFeedback = new Feedback();
         return relationshipCreationFeedback;
     }

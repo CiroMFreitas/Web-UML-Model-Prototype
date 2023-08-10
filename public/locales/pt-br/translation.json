@@ -85,6 +85,12 @@
                     }
                 }
             },
+            "relationship": {
+                "error": {
+                    "source_classifier_missing": "Não foi fornecido um classificador fonte para criação do relacionamento.",
+                    "target_classifier_missing": "Não foi fornecido um classificador alvo para criação do relacionamento."
+                }
+            },
             "error": {
                 "entity_type_missing_on_creation": "Nenhum tipo foi fornecido para o comando create.",
                 "missing_name_for_entity": {
