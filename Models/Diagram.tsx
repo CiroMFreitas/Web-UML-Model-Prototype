@@ -8,14 +8,12 @@ import StringSnippet from "./StringSnippet";
  * Object responsible for holding and managing all diagram entities.
  */
 export default class Diagram {
-    private classifiers: Classifier[];
+    private classifiers = [] as Classifier[];
 
     /**
      * Sets an empty diagram.
      */
-    constructor() {
-        this.classifiers = [] as Classifier[];
-    }
+    constructor() { }
 
     /**
      * Creates a classifier with command line instructions.
