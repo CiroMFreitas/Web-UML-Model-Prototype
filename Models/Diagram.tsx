@@ -209,6 +209,17 @@ export default class Diagram {
             return relationshipCreationFeedback;
         }
     }
+    
+    /**
+     * Removes a relationship by command line instructions.
+     * 
+     * @param commandLineArray An array containing the instruvtions for relationship removal.
+     * @returns Feedback if the removal was successful..
+     */
+    public removeRelatioshipByCommand(commandLineArray: string[]): Feedback {
+            const removeFeedback = new Feedback();
+            return removeFeedback;
+    }
 
     /**
      * Returns a feedback containing the names of all classifiers in the diagram, if any.

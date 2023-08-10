@@ -155,8 +155,11 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     setDiagram(diagram);
                     return removeClassifierFeedback.toString();
 
-                /*case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                    const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
+                case SUPPORTED_ENTITY_TYPES.relationship === entityType:
+                    const removeRelationshipFeedback = diagram.removeRelatioshipByCommand(commandArray);
+                    return removeRelationshipFeedback.toString();
+                
+                    /*const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
         
                     setRelationshipEntities(handledRelationshipEntities);
         
