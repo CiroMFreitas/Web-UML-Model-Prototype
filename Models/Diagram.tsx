@@ -147,7 +147,7 @@ export default class Diagram {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.error.target_classifier_missing"));
 
-            throw new AppError(errorFeedback);;
+            throw new AppError(errorFeedback);
         }
 
         const relationshipCreationFeedback = new Feedback();
