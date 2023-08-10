@@ -96,29 +96,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const relationshipCreationFeedback = diagram.createRelationshipByCommand(commandArray);
+                    setDiagram(diagram);
                     return relationshipCreationFeedback.toString();
-    
-                    /*Object.assign(newEntity, CreateRelationshipCommandHandler(commandArray, classEntities));
-    
-                    setRelationshipEntities(prevRealtionshipEntities => {
-                        return [
-                            ...prevRealtionshipEntities,
-                            newEntity
-                        ];
-                    });
-    
-                    const primaryClass = classEntities.find((primaryClass) => primaryClass.id === newEntity.primaryClassId);
-                    const secondaryClass = classEntities.find((secondaryClassName) => secondaryClassName.id === newEntity.secondaryClassId);
-    
-                    return translate("command.create.relationship.success_feedback.part1") +
-                    translate("entities.relationship.types." + newEntity.relationshipType) +
-                    translate("command.create.relationship.success_feedback.part2") +
-                    primaryClass.name +
-                    translate("command.create.relationship.success_feedback.part3") +
-                    secondaryClass.name +
-                    translate("command.create.relationship.success_feedback.part4") +
-                    newEntity.name +
-                    translate("command.create.relationship.success_feedback.part5");*/
         
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part_1"));
