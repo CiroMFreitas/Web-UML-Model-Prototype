@@ -88,7 +88,11 @@
             "relationship": {
                 "error": {
                     "source_classifier_missing": "Não foi fornecido um classificador fonte para criação do relacionamento.",
-                    "target_classifier_missing": "Não foi fornecido um classificador alvo para criação do relacionamento."
+                    "target_classifier_missing": "Não foi fornecido um classificador alvo para criação do relacionamento.",
+                    "relationship_name_already_in_use": {
+                        "part_'": "O nome ",
+                        "part_2": " para relacionamento já está em uso."
+                    }
                 }
             },
             "error": {

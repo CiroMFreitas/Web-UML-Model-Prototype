@@ -88,7 +88,11 @@
             "relationship": {
                 "error": {
                     "source_classifier_missing": "No source classifier was given for relationship creation.",
-                    "target_classifier_missing": "No target classifier was given for relationship creation."
+                    "target_classifier_missing": "No target classifier was given for relationship creation.",
+                    "relationship_name_already_in_use": {
+                        "part_'": "The name ",
+                        "part_2": " for relationship is already in use."
+                    }
                 }
             },
             "error": {
