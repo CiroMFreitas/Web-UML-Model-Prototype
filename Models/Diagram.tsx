@@ -249,6 +249,13 @@ export default class Diagram {
         
                     throw new AppError(errorFeedback);
                 } else {
+                    const sourceClassifier = this.getClassifierByName(sourceClassifierName);
+                    const targetClassifier = this.getClassifierByName(targetClassifierName);
+                    const classifiersRelationshipsIndexes = this.relationships.map((relationship, index) => {
+                        if((relationship.getSourceClassifierId() === sourceClassifier.getId()) && (relationship.getTargetClassifierId() === targetClassifier.getId())) {
+                            return index;
+                        }
+                    });
                 }
                 break;
             
