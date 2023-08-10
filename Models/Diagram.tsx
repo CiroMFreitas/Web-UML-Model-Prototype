@@ -136,6 +136,11 @@ export default class Diagram {
         }
     }
 
+    public createRelationshipByCommand(commandLineArray: string[]): Feedback {
+        const relationshipCreationFeedback = new Feedback();
+        return relationshipCreationFeedback;
+    }
+
     /**
      * Returns a feedback containing the names of all classifiers in the diagram, if any.
      * 

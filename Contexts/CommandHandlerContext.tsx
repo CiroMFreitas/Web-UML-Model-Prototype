@@ -94,9 +94,11 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     setDiagram(diagram);
                     return classifierCreationFeedback.toString();
     
-                /*case SUPPORTED_ENTITY_TYPES.relationship === entityType:
+                case SUPPORTED_ENTITY_TYPES.relationship === entityType:
+                    const relationshipCreationFeedback = diagram.createRelationshipByCommand(commandArray);
+                    return relationshipCreationFeedback.toString();
     
-                    Object.assign(newEntity, CreateRelationshipCommandHandler(commandArray, classEntities));
+                    /*Object.assign(newEntity, CreateRelationshipCommandHandler(commandArray, classEntities));
     
                     setRelationshipEntities(prevRealtionshipEntities => {
                         return [
