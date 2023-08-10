@@ -137,6 +137,12 @@ export default class Diagram {
         }
     }
 
+    /**
+     * Creates a relationship with command line instructions.
+     * 
+     * @param commandLineArray Instructions to be handled and executed for relationship creation.
+     * @returns Feedback containing a success message 
+     */
     public createRelationshipByCommand(commandLineArray: string[]): Feedback {
         // Checks if classifiers's names were given.
         const desiredSourceClassifierName = commandLineArray.shift();
