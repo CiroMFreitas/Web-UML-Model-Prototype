@@ -32,35 +32,31 @@ export const SUPPORTED_VISIBILITY = [
 ];
 
 export const SUPPORTED_RELATIONSHIP_TYPES = [
-    associative = {
+    {
         name: "associative",
         code: "as"
     },
-    directed_association = {
+    {
         name: "directed_association",
         code: "da"
     },
-    reflexive_association = {
+    {
         name: "reflexive_association",
         code: "ra"
     },
-    multiplicity = {
-        name: "multiplicity",
-        code: "mu"
-    },
-    aggregation = {
+    {
         name: "aggregation",
         code: "ag"
     },
-    composition = {
+    {
         name: "composition",
         code: "co"
     },
-    associative = {
+    {
         name: "inheritance",
         code: "in"
     },
-    associative = {
+    {
         name: "realization",
         code: "re"
     }
