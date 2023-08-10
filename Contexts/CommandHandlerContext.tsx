@@ -157,6 +157,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const removeRelationshipFeedback = diagram.removeRelatioshipByCommand(commandArray);
+                    setDiagram(diagram);
                     return removeRelationshipFeedback.toString();
                 
                     /*const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
