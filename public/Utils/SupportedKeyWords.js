@@ -30,18 +30,42 @@ export const SUPPORTED_VISIBILITY = [
         symbol: "-"
     }
 ];
-/*
-export const SUPPORTED_RELATIONSHIP_TYPES = {
-    as: "associative",
-    da: "directed_association",
-    ra: "reflexive_association",
-    mu: "multiplicity",
-    ag: "aggregation",
-    co: "composition",
-    in: "inheritance",
-    re: "realization"
-}
 
+export const SUPPORTED_RELATIONSHIP_TYPES = [
+    associative = {
+        name: "associative",
+        code: "as"
+    },
+    directed_association = {
+        name: "directed_association",
+        code: "da"
+    },
+    reflexive_association = {
+        name: "reflexive_association",
+        code: "ra"
+    },
+    multiplicity = {
+        name: "multiplicity",
+        code: "mu"
+    },
+    aggregation = {
+        name: "aggregation",
+        code: "ag"
+    },
+    composition = {
+        name: "composition",
+        code: "co"
+    },
+    associative = {
+        name: "inheritance",
+        code: "in"
+    },
+    associative = {
+        name: "realization",
+        code: "re"
+    }
+]
+/*
 export const SUPPORTED_ALTER_ARGUMENTS = {
     add: "add",
     remove: "remove",
