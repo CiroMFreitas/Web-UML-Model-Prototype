@@ -192,7 +192,8 @@
             },
             "relationship": {
                 "error": {
-                    "invalid_direction": "Invalid direction given for relationship removal, use the arguments 'named' or 'between'."
+                    "invalid_direction": "Invalid direction given for relationship removal, use the arguments 'named' or 'between'.",
+                    "missing_relationship_name_for_removal": "No relationship name was given for removal."
                 }
             }
         },

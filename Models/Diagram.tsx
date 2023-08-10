@@ -220,7 +220,18 @@ export default class Diagram {
         const removalDirection = commandLineArray?.shift()?.toLowerCase();
 
         switch(removalDirection) {
+            // Removal by relationship name.
             case "named":
+                const removingRelationshipName = commandLineArray?.shift()?.toLowerCase();
+                if((removingRelationshipName === undefined) || (removingRelationshipName === "")) {
+                    const errorFeedback = new Feedback();
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_relationship_name_for_removal"));
+        
+                    throw new AppError(errorFeedback);
+                } else {
+                    const removingRelationshipIndex = this.getRelationshipIndexByName(removingRelationshipName);
+                    this.relationships.splice(removingRelationshipIndex, 1);
+                }
                 break;
 
             case "between":
