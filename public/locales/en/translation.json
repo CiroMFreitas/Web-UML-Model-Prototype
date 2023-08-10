@@ -200,6 +200,12 @@
                         "part_1": "There is no relationship between classifiers ",
                         "part_2": " and ",
                         "part_3": " in diagram."
+                    },
+                    "multiple_relationship_found_with_classifiers": {
+                        "part_1": "Multiple relationship between classifiers ",
+                        "part_2": " and ",
+                        "part_3": " were found, their names are",
+                        "part_4": ", use the argument 'named' followed by the desired relationship's name for removal."
                     }
                 }
             }

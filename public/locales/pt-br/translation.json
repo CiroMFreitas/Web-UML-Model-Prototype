@@ -200,6 +200,12 @@
                         "part_1": "Não há relacionamentos entre os classificadores ",
                         "part_2": " e ",
                         "part_3": " no diagrama."
+                    },
+                    "multiple_relationship_found_with_classifiers": {
+                        "part_1": "Múltiplos relacionamentos entre os classificadores ",
+                        "part_2": " e ",
+                        "part_3": " foram encontrados no diagrama, seus nomes são:",
+                        "part_4": ", use o argumento 'named' seguido do nome do relacionamento desejado para remoção."
                     }
                 }
             }

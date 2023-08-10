@@ -266,6 +266,25 @@ export default class Diagram {
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_3"));
             
                         throw new AppError(errorFeedback);
+                    } else if(classifiersRelationshipsIndexes.length > 1) {
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_1"));
+                        errorFeedback.addSnippet(new StringSnippet(sourceClassifierName));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_2"));
+                        errorFeedback.addSnippet(new StringSnippet(targetClassifierName));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_3"));
+                        classifiersRelationshipsIndexes.forEach((relationshipIndex, index) => {
+                            if(relationshipIndex !== undefined) {
+                                if(classifiersRelationshipsIndexes.length > index+1) {
+                                    errorFeedback.addSnippet(new StringSnippet(", " + this.relationships[relationshipIndex].getName()));
+                                } else {
+                                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_2"));
+                                    errorFeedback.addSnippet(new StringSnippet(this.relationships[relationshipIndex].getName()))
+                                }
+                            }
+                        });
+            
+                        throw new AppError(errorFeedback);
                     }
                 }
                 break;
