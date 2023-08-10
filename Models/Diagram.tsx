@@ -139,6 +139,22 @@ export default class Diagram {
     public readDiagram(): Feedback {
         const readDiagramFeedback = new Feedback()
 
+        readDiagramFeedback.addSnippet(new LocalizationSnippet("feedaback.read.diagram.start"));
+        if(this.classifiers.length > 0) {
+            if(this.classifiers.length > 0) {
+                readDiagramFeedback.addSnippet(new LocalizationSnippet("feedaback.read.diagram.classifiers_present.singular"));
+                readDiagramFeedback.addSnippet(new StringSnippet(this.classifiers[0].getName()));
+            } else {
+                readDiagramFeedback.addSnippet(new LocalizationSnippet("feedaback.read.diagram.classifiers_present.plural"));
+                this.classifiers.forEach((classifier) => {
+                    readDiagramFeedback.addSnippet(new StringSnippet(", " + classifier.getName()));
+                });
+            }
+        } else {
+            readDiagramFeedback.addSnippet(new LocalizationSnippet("feedaback.read.diagram.no_classifiers_present"));
+        }
+        readDiagramFeedback.addSnippet(new StringSnippet("."));
+
         return readDiagramFeedback;
     }
 

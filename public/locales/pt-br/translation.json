@@ -98,6 +98,14 @@
             }
         },
         "read": {
+            "diagram": {
+                "start": "O diagrama",
+                "classifiers_present": {
+                    "singular": "possui o classificador",
+                    "plural": "possui os classificadores"
+                },
+                "no_classifiers_present": "não possui classificadores"
+            },
             "classifier": {
                 "part_1": "O classificador ",
                 "part_2": " do tipo ",
