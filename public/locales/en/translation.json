@@ -193,7 +193,9 @@
             "relationship": {
                 "error": {
                     "invalid_direction": "Invalid direction given for relationship removal, use the arguments 'named' or 'between'.",
-                    "missing_relationship_name_for_removal": "No relationship name was given for removal."
+                    "missing_relationship_name_for_removal": "No relationship name was given for removal.",
+                    "missing_source_classifier_name_for_removal": "No source classifier name given for relationship removal.",
+                    "missing_target_classifier_name_for_removal": "No target classifier name given for relationship removal."
                 }
             }
         },
