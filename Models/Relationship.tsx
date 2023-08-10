@@ -11,7 +11,7 @@ export default class Relationship extends DiagramEntity {
     private sourceClassifierId: string;
     private targetClassifierId: string;
     private relatioshipType: string;
-    private attribute: Attribute;
+    private attribute?: Attribute;
 
     constructor(relationshipCreationData: ICreateRelationshipDTO){
         super(relationshipCreationData.name)
@@ -35,6 +35,9 @@ export default class Relationship extends DiagramEntity {
             }
         }
         
-        this.attribute = new Attribute("");
+        // Creates attribute if argument is present.
+        if(relationshipCreationData.attribute !== undefined) {
+            this.attribute = new Attribute(relationshipCreationData.attribute);
+        }
     }
 }
