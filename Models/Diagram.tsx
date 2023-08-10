@@ -376,4 +376,26 @@ export default class Diagram {
             return searchedClassifierIndex;
         }
     }
+
+    /**
+     * Searchs a relationship's index using it's name, if not found an error will be thrown.
+     * 
+     * @param name Name of the relationship to be searched.
+     * @returns Desired relationship's index.
+     */
+    private getRelationshipIndexByName(name: string): number {
+        const searchedRelationship = this.relationships.findIndex((relationship) => relationship.getName() === name)
+            
+        // Checks if relationship is present in diagram.
+        if(searchedRelationship === -1) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.relationship_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.relationship_not_found.part_2"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return searchedRelationship;
+        }
+    }
 }

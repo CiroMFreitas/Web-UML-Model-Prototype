@@ -264,6 +264,10 @@
             "classifier_not_found": {
                 "part_1": "O classificador ",
                 "part_2": " não existe no diagrama."
+            },
+            "relationship_not_found": {
+                "part_1": "O relacionamento ",
+                "part_2": " não existe no diagrama."
             }
         }
     },
