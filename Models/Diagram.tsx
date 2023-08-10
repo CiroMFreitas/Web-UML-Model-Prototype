@@ -136,6 +136,11 @@ export default class Diagram {
         }
     }
 
+    /**
+     * Returns a feedback containing the names of all classifiers in the diagram, if any.
+     * 
+     * @returns Classfiers's names if present.
+     */
     public readDiagram(): Feedback {
         const readDiagramFeedback = new Feedback()
 
