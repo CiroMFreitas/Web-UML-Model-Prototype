@@ -256,6 +256,17 @@ export default class Diagram {
                             return index;
                         }
                     });
+
+                    if(classifiersRelationshipsIndexes.length === 0) {
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_1"));
+                        errorFeedback.addSnippet(new StringSnippet(sourceClassifierName));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_2"));
+                        errorFeedback.addSnippet(new StringSnippet(targetClassifierName));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_3"));
+            
+                        throw new AppError(errorFeedback);
+                    }
                 }
                 break;
             

@@ -195,7 +195,12 @@
                     "invalid_direction": "Direção inválida para remoção de relacionamento, use os argumentos 'named' ou 'between'.",
                     "missing_relationship_name_for_removal": "Nenhum nome de relacinamento for fornecido para remoação.",
                     "missing_source_classifier_name_for_removal": "Não foi fornecido o nome do classificador fonte para remoção do relacionamento.",
-                    "missing_target_classifier_name_for_removal": "Não foi fornecido o nome do classificador alvo para remoção do relacionamento."
+                    "missing_target_classifier_name_for_removal": "Não foi fornecido o nome do classificador alvo para remoção do relacionamento.",
+                    "no_relationship_found_with_classifiers": {
+                        "part_1": "Não há relacionamentos entre os classificadores ",
+                        "part_2": " e ",
+                        "part_3": " no diagrama."
+                    }
                 }
             }
         },
