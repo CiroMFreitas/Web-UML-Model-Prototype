@@ -470,7 +470,7 @@ export default class Diagram {
         if(searchedClassifier === undefined) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.classifier_not_found.part_1"));
-            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new StringSnippet(id));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.classifier_not_found.part_2"));
 
             throw new AppError(errorFeedback);
