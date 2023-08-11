@@ -458,6 +458,28 @@ export default class Diagram {
     }
 
     /**
+     * Searchs for a classifier using it's id, if not found an error will be thrown.
+     * 
+     * @param id Id of the classifier to be searched.
+     * @returns Desired classifier.
+     */
+    private getClassifierById(id: string): Classifier {
+        const searchedClassifier = this.classifiers.find((classifier) => classifier.getId() === id)
+            
+        // Checks if classfier is present in diagram.
+        if(searchedClassifier === undefined) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.classifier_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(name));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.classifier_not_found.part_2"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return searchedClassifier;
+        }
+    }
+
+    /**
      * Searchs for a realationship using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the relationship to be searched.
