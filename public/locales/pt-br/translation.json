@@ -168,7 +168,11 @@
             },
             "relationship": {
                 "error": {
-                    "missing_read_form_argument": "Não foi fornecido uma forma de leitura, use os argumentos 'named' ou 'between'."
+                    "missing_read_form_argument": "Não foi fornecido uma forma de leitura, use os argumentos 'named' ou 'between'.",
+                    "invalid_read_form_argument": {
+                        "part_1": "A forma de leitura ",
+                        "part_2": " não é suportada pela aplicação, use os argumentos 'named' ou 'between'."
+                    }
                 }
             },
             "error": {
