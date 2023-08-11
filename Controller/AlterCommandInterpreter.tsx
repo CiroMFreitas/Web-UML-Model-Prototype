@@ -15,10 +15,12 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.missing_relationship_name"));
 
             throw new AppError(errorFeedback);
-        } else {        
+        } else {
+            const newName = this.getCommandArgumentContent(commandLine, "-n");
     
             return {
-                relationshipName: relationshipName
+                relationshipName: relationshipName,
+                newName: newName !== undefined ? newName[0] : undefined
             }
         }
     }
