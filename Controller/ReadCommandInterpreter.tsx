@@ -4,11 +4,12 @@ import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
+import CommandInterpreter from "./CommandInterpreter";
 
 /**
  * Class responsible for handling user's read commands into DTOs.
  */
-export default class ReadCommandInterpreter {
+export default class ReadCommandInterpreter extends CommandInterpreter {
     /**
      * Handles a read relationship command line.
      * 
