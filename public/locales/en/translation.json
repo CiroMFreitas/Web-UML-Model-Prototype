@@ -172,7 +172,8 @@
                     "invalid_read_form_argument": {
                         "part_1": "The read form ",
                         "part_2": " is not supported by the application, use 'named' or 'between' arguments."
-                    }
+                    },
+                    "missing_relationship_name": "No relationship name was given to be read."
                 }
             },
             "error": {

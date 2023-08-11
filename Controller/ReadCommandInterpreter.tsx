@@ -24,13 +24,21 @@ export default class ReadCommandInterpreter {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.error.missing_read_form_argument"));
 
             throw new AppError(errorFeedback);
-        }
         } else {
             switch(readForm) {
                 case "named":
+                    const relationshipName = commandLine.shift();
+
+                    if((relationshipName === undefined) || (relationshipName === "")) {
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.error.missing_relationship_name"));
+                        
+                        throw new AppError(errorFeedback)
+                    } else {
                         return {
-                            relationshipName: ""
+                            relationshipName: relationshipName
                         };
+                    }
 
                 case "between":
                     return {
@@ -46,5 +54,6 @@ export default class ReadCommandInterpreter {
                     
                     throw new AppError(errorFeedback);
             }
+        }
     }
 }
