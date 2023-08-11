@@ -309,6 +309,7 @@ export default class Diagram {
     public readRelationship(readInstrunctions: IReadRelationshipByNamedDTO | IReadRelationshipByBetweenDTO): Feedback {
         const readFeedback = new Feedback();
         const namedReadInstruction = readInstrunctions as IReadRelationshipByNamedDTO;
+        const betweenReadInstruction = readInstrunctions as IReadRelationshipByBetweenDTO;
 
         switch(true) {
             case namedReadInstruction.relationshipName !== undefined:
@@ -322,6 +323,22 @@ export default class Diagram {
                 readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
                 readFeedback.addSnippet(new StringSnippet(targetClassifierByNamed.getName()));
                 readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
+                break;
+
+            case betweenReadInstruction.sourceClassifierName !== undefined &&
+            betweenReadInstruction !== undefined:
+                const sourceClassifierByBetween = this.getClassifierByName(betweenReadInstruction.sourceClassifierName);
+                const targetClassifierByBetween = this.getClassifierByName(betweenReadInstruction.targetClassifierName);
+
+                const classifiersRelationships = this.getClassifiersRelationships(sourceClassifierByBetween.getId(), targetClassifierByBetween.getId())
+
+                if(classifiersRelationships.length === 0) {
+                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.not_found.part_1"));
+                    readFeedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
+                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.not_found.part_2"));
+                    readFeedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
+                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.not_found.part_3"));
+                }
                 break;
 
             default:

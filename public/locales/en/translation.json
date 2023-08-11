@@ -175,6 +175,13 @@
                     "part_2": " and ",
                     "part_3": "."
                 },
+                "classifiers_relationships": {
+                    "not_found": {
+                        "part_1": "There were no relationships found between classifiers ",
+                        "part_2": " and ",
+                        "part_3": "."
+                    }
+                },
                 "error": {
                     "missing_read_form_argument": "No read form was given, use 'named' or 'between' arguments.",
                     "invalid_read_form_argument": {
