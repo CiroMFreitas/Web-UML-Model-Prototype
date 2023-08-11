@@ -8,6 +8,7 @@ import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
+import ReadCommandInterpreter from "../Controller/ReadCommandInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
@@ -36,26 +37,26 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     const getFeedBack = (commandLine: string) => {
         try {
             // Breaks command line into an array.
-            const commandArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
+            const commandLineArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
 
             // Gets command type, command type will only be undefined if a blank string is sent here.
-            const commandType = commandArray?.shift()?.toLowerCase();
+            const commandType = commandLineArray?.shift()?.toLowerCase();
 
             // Gets entity type
-            const entityType = commandArray?.shift()?.toLowerCase();
+            const entityType = commandLineArray?.shift()?.toLowerCase();
 
             switch(true) {
                 case SUPPORTED_COMMANDS.create === commandType:
-                    return createEntityHandler(commandArray, entityType);
+                    return createEntityHandler(commandLineArray, entityType);
     
                 case SUPPORTED_COMMANDS.read === commandType:
-                    return readEntityHandler(commandArray, entityType);
+                    return readEntityHandler(commandLineArray, entityType);
     
                 case SUPPORTED_COMMANDS.remove === commandType:
-                    return removeEntityHandler(commandArray, entityType);
+                    return removeEntityHandler(commandLineArray, entityType);
     
                 case SUPPORTED_COMMANDS.alter === commandType:
-                    return alterEntityHandler(commandArray, entityType);
+                    return alterEntityHandler(commandLineArray, entityType);
     
                 // If command is not found
                 default:
@@ -80,7 +81,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         getFeedBack,
     }
 
-    function createEntityHandler(commandArray: string[], entityType: string | undefined) {
+    function createEntityHandler(commandLine: string[], entityType: string | undefined) {
         const errorFeedback = new Feedback();
 
         if((entityType === undefined) || (entityType === "")) {
@@ -90,12 +91,12 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const classifierCreationFeedback = diagram.createClassifierByCommand(entityType, commandArray);
+                    const classifierCreationFeedback = diagram.createClassifierByCommand(entityType, commandLine);
                     setDiagram(diagram);
                     return classifierCreationFeedback.toString();
     
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                    const relationshipCreationFeedback = diagram.createRelationshipByCommand(commandArray);
+                    const relationshipCreationFeedback = diagram.createRelationshipByCommand(commandLine);
                     setDiagram(diagram);
                     return relationshipCreationFeedback.toString();
         
@@ -110,7 +111,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
-    function readEntityHandler(commandArray: string[], entityType: string | undefined) {
+    function readEntityHandler(commandLine: string[], entityType: string | undefined) {
         const errorFeedback = new Feedback();
 
         if((entityType === undefined) || (entityType === "")) {
@@ -124,7 +125,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     return diagramFeedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const classifierReadfeedback = diagram.readClassifierByCommand(commandArray);
+                    const classifierReadfeedback = diagram.readClassifierByCommand(commandLine);
                     setDiagram(diagram);
                     return classifierReadfeedback.toString();
                 
@@ -141,7 +142,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
-    function removeEntityHandler(commandArray: string[], entityType: string | undefined) {
+    function removeEntityHandler(commandLine: string[], entityType: string | undefined) {
         const errorFeedback = new Feedback();
 
         if((entityType === undefined) || (entityType === "")) {
@@ -151,20 +152,20 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const removeClassifierFeedback = diagram.removeClassifierByCommand(commandArray);
+                    const removeClassifierFeedback = diagram.removeClassifierByCommand(commandLine);
                     setDiagram(diagram);
                     return removeClassifierFeedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                    const removeRelationshipFeedback = diagram.removeRelatioshipByCommand(commandArray);
+                    const removeRelationshipFeedback = diagram.removeRelatioshipByCommand(commandLine);
                     setDiagram(diagram);
                     return removeRelationshipFeedback.toString();
                 
-                    /*const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandArray, relationshipEntities);
+                    /*const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandLine, relationshipEntities);
         
                     setRelationshipEntities(handledRelationshipEntities);
         
-                    return translate("command.remove.relationship.success_feedback.part1") + commandArray[0] + translate("command.remove.relationship.success_feedback.part2");*/
+                    return translate("command.remove.relationship.success_feedback.part1") + commandLine[0] + translate("command.remove.relationship.success_feedback.part2");*/
                     
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.error.unrecognized_entity_type.part_1"));
@@ -176,7 +177,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
-    function alterEntityHandler(commandArray: string[], entityType: string | undefined) {
+    function alterEntityHandler(commandLine: string[], entityType: string | undefined) {
         const errorFeedback = new Feedback();
 
         if((entityType === undefined) || (entityType === "")) {
@@ -186,19 +187,19 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const alterClassifierFeedback = diagram.alterClassifierByCommand(commandArray);
+                    const alterClassifierFeedback = diagram.alterClassifierByCommand(commandLine);
                     setDiagram(diagram);
                     return alterClassifierFeedback.toString();
 
                 /*case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
-                    const relationshipName = commandArray.shiftranslate();
+                    const relationshipName = commandLine.shiftranslate();
                     const alteringRelationship = relationshipEntities.find((relationship) => relationship.name === relationshipName);
 
                     if(!alteringRelationship) {
                         throw translate("error.relationship_not_found");
                     }
 
-                    const alteredRelationship = AlterRelationshipCommandHandler(commandArray, alteringRelationship, classEntities);
+                    const alteredRelationship = AlterRelationshipCommandHandler(commandLine, alteringRelationship, classEntities);
 
                     setRelationshipEntities(prevRelationshipEntities => {
                         const newRelationshipEntities = prevRelationshipEntities.map((prevRelationshipEntity) => {
