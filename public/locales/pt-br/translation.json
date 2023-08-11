@@ -185,7 +185,8 @@
                             },
                             "plural": {
                                 "start": "Os seguintes relacionamentos ",
-                                "end": " existem entre os classificadores "
+                                "end": " existem entre os classificadores ",
+                                "and": " e "
                             }
                         }
                     },

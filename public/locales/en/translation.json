@@ -185,7 +185,8 @@
                             },
                             "plural": {
                                 "start": "The following relationships ",
-                                "end": " exists between classifiers "
+                                "end": " exists between classifiers ",
+                                "and": " and "
                             }
                         }
                     },

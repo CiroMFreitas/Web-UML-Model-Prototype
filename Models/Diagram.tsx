@@ -339,6 +339,20 @@ export default class Diagram {
                     readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.start"));
                     readFeedback.mergeFeedback(classifiersRelationships[0].toText())
                     readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.end"));
+                } else {
+                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.start"));
+
+                    classifiersRelationships.forEach((classifiersRelationship, index) => {
+                        if(classifiersRelationships.length !== index+1) {
+                            readFeedback.addSnippet(new StringSnippet(", "))
+                            readFeedback.mergeFeedback(classifiersRelationship.toText())
+                        } else {
+                            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.and"))
+                            readFeedback.mergeFeedback(classifiersRelationship.toText())
+                        }
+                    });
+
+                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.end"));
                 }
                 readFeedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
                 readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_2"));
