@@ -1,4 +1,6 @@
 import ICreateRelationshipDTO from "../public/DTO/ICreateRelationshipDTO";
+import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
+import IReadRelationshipByNamed from "../public/DTO/IReadRelationshipByNamed";
 import AppError from "./AppError";
 import Classifier from "./Classifier";
 import Feedback from "./Feedback";
@@ -303,6 +305,12 @@ export default class Diagram {
         
         const removeFeedback = new Feedback();
         return removeFeedback;
+    }
+    
+    public readRelationship(readInstrunctions: IReadRelationshipByNamed | IReadRelationshipByBetweenDTO): Feedback {
+        const readFeedback = new Feedback();
+
+        return readFeedback;
     }
 
     /**
