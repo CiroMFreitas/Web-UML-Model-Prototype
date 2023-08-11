@@ -67,4 +67,26 @@ export default class Relationship extends DiagramEntity {
     public getRelationshipType(): string {
         return this.relatioshipType;
     }
+
+    /**
+     * Creates a feedback with classifier's information for a screen reader.
+     * 
+     * @param commandLineArray Details to be read from classifier.
+     * @returns Classifier data in feedback format..
+     */
+    public toText(): Feedback {
+        const toTextFeedback = new Feedback()
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.start"));
+        toTextFeedback.addSnippet(new StringSnippet(this.getName()));
+
+        if(this.attribute !== undefined) {
+            toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.attribute_is_present"));
+            toTextFeedback.mergeFeedback(this.attribute.toText());
+        }
+
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.of_tyoe"));
+        toTextFeedback.addSnippet(new StringSnippet(this.relatioshipType));
+
+        return toTextFeedback;
+    }
 }

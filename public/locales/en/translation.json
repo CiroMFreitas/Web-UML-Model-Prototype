@@ -167,6 +167,9 @@
                 "with_type": " of type "
             },
             "relationship": {
+                "start": "There's the relationship ",
+                "attribute_is_present": ", with attribute ",
+                "of_type": " of type ",
                 "error": {
                     "missing_read_form_argument": "No read form was given, use 'named' or 'between' arguments.",
                     "invalid_read_form_argument": {

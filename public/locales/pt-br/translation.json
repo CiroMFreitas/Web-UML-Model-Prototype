@@ -167,6 +167,9 @@
                 "with_type": " do tipo "
             },
             "relationship": {
+                "start": "O relacionamento ",
+                "attribute_is_present": ", com o atributo ",
+                "of_type": ", do tipo ",
                 "error": {
                     "missing_read_form_argument": "Não foi fornecido uma forma de leitura, use os argumentos 'named' ou 'between'.",
                     "invalid_read_form_argument": {
