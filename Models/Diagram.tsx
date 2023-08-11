@@ -313,14 +313,14 @@ export default class Diagram {
         switch(true) {
             case namedReadInstruction.relationshipName !== undefined:
                 const toReadRelationship = this.getRelationshipByName(namedReadInstruction.relationshipName);
-                const sourceClassifier = this.getClassifierById(toReadRelationship.getSourceClassifierId());
-                const targetClassifier = this.getClassifierById(toReadRelationship.getTargetClassifierId());
+                const sourceClassifierByNamed = this.getClassifierById(toReadRelationship.getSourceClassifierId());
+                const targetClassifierByNamed = this.getClassifierById(toReadRelationship.getTargetClassifierId());
                 
                 readFeedback.mergeFeedback(toReadRelationship.toText());
                 readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_1"));
-                readFeedback.addSnippet(new StringSnippet(sourceClassifier.getName()));
+                readFeedback.addSnippet(new StringSnippet(sourceClassifierByNamed.getName()));
                 readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
-                readFeedback.addSnippet(new StringSnippet(targetClassifier.getName()));
+                readFeedback.addSnippet(new StringSnippet(targetClassifierByNamed.getName()));
                 readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
                 break;
 
