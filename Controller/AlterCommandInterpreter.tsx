@@ -17,10 +17,14 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             throw new AppError(errorFeedback);
         } else {
             const newName = this.getCommandArgumentContent(commandLine, "-n");
+            const newSourceClassifierName = this.getCommandArgumentContent(commandLine, "-sc");
+            const newTargetClassifierName = this.getCommandArgumentContent(commandLine, "-tc");
     
             return {
                 relationshipName: relationshipName,
-                newName: newName !== undefined ? newName[0] : undefined
+                newName: newName !== undefined ? newName[0] : undefined,
+                newSourceClassifierName: newSourceClassifierName !== undefined ? newSourceClassifierName[0] : undefined,
+                newTargetClassifierName: newTargetClassifierName !== undefined ? newTargetClassifierName[0] : undefined,
             }
         }
     }
