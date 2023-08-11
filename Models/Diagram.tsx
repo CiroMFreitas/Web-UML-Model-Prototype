@@ -317,6 +317,7 @@ export default class Diagram {
                 const sourceClassifierByNamed = this.getClassifierById(toReadRelationship.getSourceClassifierId());
                 const targetClassifierByNamed = this.getClassifierById(toReadRelationship.getTargetClassifierId());
                 
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.start"));
                 readFeedback.mergeFeedback(toReadRelationship.toText());
                 readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_1"));
                 readFeedback.addSnippet(new StringSnippet(sourceClassifierByNamed.getName()));

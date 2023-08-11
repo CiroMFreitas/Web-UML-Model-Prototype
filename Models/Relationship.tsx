@@ -76,7 +76,6 @@ export default class Relationship extends DiagramEntity {
      */
     public toText(): Feedback {
         const toTextFeedback = new Feedback()
-        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.start"));
         toTextFeedback.addSnippet(new StringSnippet(this.getName()));
 
         if(this.attribute !== undefined) {
