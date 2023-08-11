@@ -306,6 +306,12 @@ export default class Diagram {
         return removeFeedback;
     }
     
+    /**
+     * Reads one or more relationships in diagram following given instructions.
+     * 
+     * @param readInstrunctions Handled instrunctions.
+     * @returns Feedback containg relationship(s) information.
+     */
     public readRelationship(readInstrunctions: IReadRelationshipByNamedDTO | IReadRelationshipByBetweenDTO): Feedback {
         const readFeedback = new Feedback();
         const namedReadInstruction = readInstrunctions as IReadRelationshipByNamedDTO;
