@@ -277,6 +277,11 @@
                         }
                     }
                 },
+                "relationship": {
+                    "error": {
+                        "missing_relationship_name": "No name was given for the desired relationship to be changed."
+                    }
+                },
                 "error": {
                     "missing_alteration_argument": {
                         "part_1": "The ",

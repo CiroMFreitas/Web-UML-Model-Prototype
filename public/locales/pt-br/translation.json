@@ -277,6 +277,11 @@
                         }
                     }
                 },
+                "relationship": {
+                    "error": {
+                        "missing_relationship_name": "Não fornecido o nome do relacionamento que deseja alterar."
+                    }
+                },
                 "error": {
                     "missing_alteration_argument": {
                         "part_1": "O argumento ",
