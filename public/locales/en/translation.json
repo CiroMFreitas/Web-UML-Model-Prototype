@@ -173,7 +173,9 @@
                         "part_1": "The read form ",
                         "part_2": " is not supported by the application, use 'named' or 'between' arguments."
                     },
-                    "missing_relationship_name": "No relationship name was given to be read."
+                    "missing_relationship_name": "No relationship name was given to be read.",
+                    "missing_source_classifier_relationship_name": "No source classifier name was given to be read.",
+                    "missing_target_classifier_relationship_name": "No target classifier name was given to be read."
                 }
             },
             "error": {

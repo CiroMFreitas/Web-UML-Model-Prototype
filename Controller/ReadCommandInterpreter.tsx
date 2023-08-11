@@ -41,9 +41,24 @@ export default class ReadCommandInterpreter {
                     }
 
                 case "between":
-                    return {
-                        sourceClassifierName: "",
-                        targetClassifierName: ""
+                    const sourceClassifierName = commandLine.shift();
+                    const targetClassifierName = commandLine.shift();
+
+                    if((sourceClassifierName === undefined) || (sourceClassifierName === "")) {
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.error.missing_source_classifier_relationship_name"));
+                        
+                        throw new AppError(errorFeedback)
+                    } else if((targetClassifierName === undefined) || (targetClassifierName === "")) {
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.error.missing_target_classifier_relationship_name"));
+                        
+                        throw new AppError(errorFeedback)
+                    } else {
+                        return {
+                            sourceClassifierName: sourceClassifierName,
+                            targetClassifierName: targetClassifierName
+                        };
                     }
 
                 default:

@@ -173,7 +173,9 @@
                         "part_1": "A forma de leitura ",
                         "part_2": " não é suportada pela aplicação, use os argumentos 'named' ou 'between'."
                     },
-                    "missing_relationship_name": "O nome do relacionamento não foi fornecido para leitura."
+                    "missing_relationship_name": "O nome do relacionamento não foi fornecido para leitura.",
+                    "missing_source_classifier_relationship_name": "O nome do classificador fonte não foi fornecido para leitura.",
+                    "missing_target_classifier_relationship_name": "O nome do classificador alvo não foi fornecido para leitura."
                 }
             },
             "error": {
