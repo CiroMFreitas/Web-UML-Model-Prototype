@@ -308,8 +308,22 @@ export default class Diagram {
     
     public readRelationship(readInstrunctions: IReadRelationshipByNamedDTO | IReadRelationshipByBetweenDTO): Feedback {
         const readFeedback = new Feedback();
+        const namedReadInstruction = readInstrunctions as IReadRelationshipByNamedDTO;
 
         switch(true) {
+            case namedReadInstruction.relationshipName !== undefined:
+                const toReadRelationship = this.getRelationshipByName(namedReadInstruction.relationshipName);
+                const sourceClassifier = this.getClassifierById(toReadRelationship.getSourceClassifierId());
+                const targetClassifier = this.getClassifierById(toReadRelationship.getTargetClassifierId());
+                
+                readFeedback.mergeFeedback(toReadRelationship.toText());
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_1"));
+                readFeedback.addSnippet(new StringSnippet(sourceClassifier.getName()));
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
+                readFeedback.addSnippet(new StringSnippet(targetClassifier.getName()));
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
+                break;
+
             default:
                 throw "In Diagram.tsx, readRelationship method an invalid read instruction was given.";
         }

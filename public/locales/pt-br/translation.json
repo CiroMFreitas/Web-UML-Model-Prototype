@@ -167,9 +167,14 @@
                 "with_type": " do tipo "
             },
             "relationship": {
-                "start": "O relacionamento ",
+                "start": "Há o relacionamento ",
                 "attribute_is_present": ", com o atributo ",
                 "of_type": ", do tipo ",
+                "classifiers": {
+                    "part_1": ", entre os classficadores ",
+                    "part_2": " e ",
+                    "part_3": "."
+                },
                 "error": {
                     "missing_read_form_argument": "Não foi fornecido uma forma de leitura, use os argumentos 'named' ou 'between'.",
                     "invalid_read_form_argument": {
