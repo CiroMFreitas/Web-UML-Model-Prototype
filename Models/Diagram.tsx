@@ -334,12 +334,16 @@ export default class Diagram {
                 const classifiersRelationships = this.getClassifiersRelationships(sourceClassifierByBetween.getId(), targetClassifierByBetween.getId())
 
                 if(classifiersRelationships.length === 0) {
-                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.not_found.part_1"));
-                    readFeedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
-                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.not_found.part_2"));
-                    readFeedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
-                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.not_found.part_3"));
+                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.not_found"));
+                } else if(classifiersRelationships.length === 1) {
+                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.start"));
+                    readFeedback.mergeFeedback(classifiersRelationships[0].toText())
+                    readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.end"));
                 }
+                readFeedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_2"));
+                readFeedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_3"));
                 break;
 
             default:

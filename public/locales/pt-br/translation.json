@@ -176,11 +176,21 @@
                     "part_3": "."
                 },
                 "classifiers_relationships": {
-                    "not_found": {
-                        "part_1": "Não foram encontrados relacionamentos entre os classificadores ",
-                        "part_2": " e ",
-                        "part_3": "."
-                    }
+                    "part_1": {
+                        "not_foun": "Não foram encontrados relacionamentos entre os classificadores ",
+                        "found": {
+                            "singular": {
+                                "start": "O seguinte relacionamento ",
+                                "end": " existe entre os classificadores "
+                            },
+                            "plural": {
+                                "start": "Os seguintes relacionamentos ",
+                                "end": " existem entre os classificadores "
+                            }
+                        }
+                    },
+                    "part_2": " e ",
+                    "part_3": "."
                 },
                 "error": {
                     "missing_read_form_argument": "Não foi fornecido uma forma de leitura, use os argumentos 'named' ou 'between'.",
