@@ -4,7 +4,7 @@ import CommandInterpreter from "./CommandInterpreter";
 /**
  * Class responsible for handling user's alter commands into DTOs.
  */
-export default class ReadCommandInterpreter extends CommandInterpreter {
+export default class AlterCommandInterpreter extends CommandInterpreter {
     public static interpretAlterRelationship(commandLine: string[]): IAlterRelationshipDTO {
         
         return { relationshipName: "" }
