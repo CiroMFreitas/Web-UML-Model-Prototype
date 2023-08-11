@@ -128,8 +128,10 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const classifierReadfeedback = diagram.readClassifierByCommand(commandLine);
                     return classifierReadfeedback.toString();
                 
-                //case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                //    return ReadRelationshipCommandHandler(commandArray, relationshipEntities, classEntities);
+                case SUPPORTED_ENTITY_TYPES.relationship === entityType:
+                    const readInstructions = ReadCommandInterpreter.interpretReadRelationship(commandLine);
+                    const readFeedback = diagram.readRelationship(readInstructions);
+                    return readFeedback.toString();
                 
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_1"));
