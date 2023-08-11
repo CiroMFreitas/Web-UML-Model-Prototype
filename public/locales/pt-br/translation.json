@@ -166,6 +166,11 @@
             "parameter": {
                 "with_type": " do tipo "
             },
+            "relationship": {
+                "error": {
+                    "missing_read_form_argument": "Não foi fornecido uma forma de leitura, use os argumentos 'named' ou 'between'."
+                }
+            },
             "error": {
                 "entity_type_missing_on_read": "Não foi especificado um tipo para ser lido.",
                 "unrecognized_entity_type": {

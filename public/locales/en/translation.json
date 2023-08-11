@@ -166,6 +166,11 @@
             "parameter": {
                 "with_type": " of type "
             },
+            "relationship": {
+                "error": {
+                    "missing_read_form_argument": "No read form was given, use 'named' or 'between' arguments."
+                }
+            },
             "error": {
                 "entity_type_missing_on_read": "A type was not expecified to be read.",
                 "unrecognized_entity_type": {
