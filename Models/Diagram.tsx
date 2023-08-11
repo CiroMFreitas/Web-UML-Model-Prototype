@@ -494,6 +494,21 @@ export default class Diagram {
     }
 
     /**
+     * Gets all realtionships between both source and target classifier, using their ids, will return an empty 
+     * array if no relationships are found.
+     * 
+     * @param sourceId Source classifier's id.
+     * @param targetId Target classifier's id.
+     * @returns Found relationships.
+     */
+    private getClassifiersRelationships(sourceId: string, targetId: string): Relationship[] {
+        return this.relationships.filter((relationship) => 
+            relationship.getSourceClassifierId() === sourceId &&
+            relationship.getTargetClassifierId() === targetId 
+        );
+    }
+
+    /**
      * Searchs for a realationship using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the relationship to be searched.
