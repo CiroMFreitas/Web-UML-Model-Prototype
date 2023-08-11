@@ -414,7 +414,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs a classifier using it's name, if not found an error will be thrown.
+     * Searchs for a classifier using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the classifier to be searched.
      * @returns Desired classifier.
@@ -436,7 +436,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs a classifier's index using it's name, if not found an error will be thrown.
+     * Searchs for a classifier's index using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the classifier to be searched.
      * @returns Desired classifier's index.
@@ -480,7 +480,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs a relationship's index using it's name, if not found an error will be thrown.
+     * Searchs for a relationship's index using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the relationship to be searched.
      * @returns Desired relationship's index.
