@@ -18,7 +18,7 @@ export default class ReadCommandInterpreter {
         const readForm = commandLine.shift();
 
         // Checks if read form is present.
-        if((readForm !== undefined) || (readForm !== "")) {
+        if((readForm === undefined) || (readForm === "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.error.missing_read_form_argument"));
 
