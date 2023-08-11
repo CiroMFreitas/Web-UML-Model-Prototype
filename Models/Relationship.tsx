@@ -41,14 +41,29 @@ export default class Relationship extends DiagramEntity {
         }
     }
 
+    /**
+     * Gets relationship's source classifier's id.
+     * 
+     * @returns Source classifier's id.
+     */
     public getSourceClassifierId(): string {
         return this.sourceClassifierId;
     }
 
+    /**
+     * Gets relationship's target classifier's id.
+     * 
+     * @returns Target classifier's id.
+     */
     public getTargetClassifierId(): string {
         return this.targetClassifierId;
     }
 
+    /**
+     * Gets relationship's type.
+     * 
+     * @returns Target classifier's type.
+     */
     public getRelationshipType(): string {
         return this.relatioshipType;
     }
