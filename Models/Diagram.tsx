@@ -309,6 +309,11 @@ export default class Diagram {
     public readRelationship(readInstrunctions: IReadRelationshipByNamedDTO | IReadRelationshipByBetweenDTO): Feedback {
         const readFeedback = new Feedback();
 
+        switch(true) {
+            default:
+                throw "In Diagram.tsx, readRelationship method an invalid read instruction was given.";
+        }
+
         return readFeedback;
     }
 
