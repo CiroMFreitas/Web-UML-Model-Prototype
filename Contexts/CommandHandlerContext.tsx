@@ -161,12 +161,6 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const removeRelationshipFeedback = diagram.removeRelatioshipByCommand(commandLine);
                     setDiagram(diagram);
                     return removeRelationshipFeedback.toString();
-                
-                    /*const handledRelationshipEntities = RemoveRelationshipCommandHandler(commandLine, relationshipEntities);
-        
-                    setRelationshipEntities(handledRelationshipEntities);
-        
-                    return translate("command.remove.relationship.success_feedback.part1") + commandLine[0] + translate("command.remove.relationship.success_feedback.part2");*/
                     
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.error.unrecognized_entity_type.part_1"));
