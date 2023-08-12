@@ -71,15 +71,18 @@ export default class Relationship extends DiagramEntity {
 
         let numberOfAttributeArgument = 0;
 
-        if(alterInstructions.attributeAlterInstructions.alterAttributes.length > 0) {
-            const alterAttributeInstructions = alterInstructions.attributeAlterInstructions.alterAttributes[0];
-            if(this.attribute !== undefined) {
-                this.attribute.alter([
-                    alterAttributeInstructions.newVisibility,
-                    alterAttributeInstructions.newName,
-                    alterAttributeInstructions.newType
+        if(alterInstructions.attributeAlterInstructions.createAttributes.length > 0) {
+            const createAttributeInstructions = alterInstructions.attributeAlterInstructions.createAttributes[0];
+            if(this.attribute === undefined) {
+                const visibility = createAttributeInstructions.visibility !== undefined ?
+                createAttributeInstructions.visibility + ":" : 
+                ""
+                this.attribute = new Attribute(
+                    visibility +
+                    createAttributeInstructions.name + ":" +
+                    createAttributeInstructions.type
     
-                ]);
+                );
             } else {
                 const errorFeedback = new Feedback();
                 errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.attribute_doe_not_exist"));
