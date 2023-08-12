@@ -1,4 +1,4 @@
-import IAlterAttributeDTO from "./IAlterAttributeDTO";
+import IAttributeChangesDTO from "./IAttributeChangesDTO";
 
 /**
  * Alterates the relaionship if the given name, with the optinal date if given.
@@ -8,5 +8,5 @@ export default interface IAlterRelationshipDTO {
     newName?: string;
     newSourceClassifierName?: string;
     newTargetClassifierName?: string;
-    attributeAlterInstructions?: IAlterAttributeDTO;
+    attributeAlterInstructions: IAttributeChangesDTO;
 }

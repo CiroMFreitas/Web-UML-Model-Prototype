@@ -1,16 +1,10 @@
 /**
- * Necessaru fields are dependent on instruction typas as following:
- * 
- * add -> At least one of the new attributes.
- * 
- * remove -> Attribute name only.
- * 
- * alter -> Attribute Name and at least one of the others.
+ * Expects the to be altered attrbiute's name followed by the desired changes, if a field is not desired to 
+ * vhange, use '-' character in it's place.
  */
 export default interface IAlterAttributeDTO {
-    instruction: string;
-    attributeName?: string;
-    newVisibility?: string;
-    newName?: string;
-    newType?: string;
+    attributeName: string;
+    newVisibility: string;
+    newName: string;
+    newType: string;
 }
