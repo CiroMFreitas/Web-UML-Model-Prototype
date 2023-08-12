@@ -13,6 +13,12 @@ import CommandInterpreter from "./CommandInterpreter";
  * Class responsible for handling user's alter commands into DTOs.
  */
 export default class AlterCommandInterpreter extends CommandInterpreter {
+    /**
+     * Interprets a command line into a DTO.
+     * 
+     * @param commandLine Command to be interpreted.
+     * @returns Handled coomand line to be executed.
+     */
     public static interpretAlterRelationship(commandLine: string[]): IAlterRelationshipDTO {
         const relationshipName = commandLine.shift();
         if((relationshipName === undefined) || (relationshipName === "")) {
