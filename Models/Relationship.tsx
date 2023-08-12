@@ -74,7 +74,7 @@ export default class Relationship extends DiagramEntity {
         if(alterInstructions.attributeAlterInstructions.alterAttributes.length > 0) {
             const alterAttributeInstructions = alterInstructions.attributeAlterInstructions.alterAttributes[0];
             if(this.attribute !== undefined) {
-                this.attribute?.alter([
+                this.attribute.alter([
                     alterAttributeInstructions.newVisibility,
                     alterAttributeInstructions.newName,
                     alterAttributeInstructions.newType
