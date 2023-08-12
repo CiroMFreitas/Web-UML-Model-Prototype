@@ -2,6 +2,7 @@ import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
+import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 
 /**
  * Hold static methods that useful to multiple command interpreters classes.
@@ -41,5 +42,40 @@ export default abstract class CommandInterpreter {
         commandLine.splice(startIndex, endIndex-startIndex);
 
         return argumentContents;
+    }
+
+    /**
+     * Handles attribute argument into a create attribute DTO.
+     * 
+     * @param splitArgument Attribute argument split into an array.
+     * @returns The handled argument into a DTO.
+     */
+    protected static handleCreateAttributeArgument(splitArgument: string[]): ICreateAttributeDTO {
+        if(splitArgument.length === 3) {
+            return {
+                visibility: splitArgument[0],
+                name: splitArgument[1],
+                type: splitArgument[2]
+            };
+        } else if(splitArgument.length === 2) {
+            return {
+                name: splitArgument[0],
+                type: splitArgument[1]
+            };
+        } else if(splitArgument.length < 2) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_1.too_few"));
+            errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_2"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_1.too_many"));
+            errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_2"));
+
+            throw new AppError(errorFeedback);
+        }
     }
 }
