@@ -24,12 +24,16 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             const newName = this.getCommandArgumentContent(commandLine, "-n");
             const newSourceClassifierName = this.getCommandArgumentContent(commandLine, "-sc");
             const newTargetClassifierName = this.getCommandArgumentContent(commandLine, "-tc");
+
+            const attributeArgument = this.getCommandArgumentContent(commandLine, "-a");
+            const attributeAlterInstructions = this.handleAttributeChanges(attributeArgument);
     
             return {
                 relationshipName: relationshipName,
                 newName: newName !== undefined ? newName[0] : undefined,
                 newSourceClassifierName: newSourceClassifierName !== undefined ? newSourceClassifierName[0] : undefined,
                 newTargetClassifierName: newTargetClassifierName !== undefined ? newTargetClassifierName[0] : undefined,
+                attributeAlterInstructions: attributeAlterInstructions
             }
         }
     }
