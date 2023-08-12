@@ -99,6 +99,12 @@ export default class Relationship extends DiagramEntity {
             numberOfAttributeArgument++;
         }
 
+        if(numberOfAttributeArgument > 1) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.only_one_attribute_argument_allowed"));
+
+            throw new AppError(errorFeedback);
+        }
 
         const alterFeedback = new Feedback();
 
