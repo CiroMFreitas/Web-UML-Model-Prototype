@@ -276,21 +276,18 @@
                             "part_3": "."
                         }
                     }
-                },
-                "attribute": {
-                    "missing_alteration_argument": {
-                        "part_1": "The ",
-                        "part_2": " is missing the alteration argument, use add, alter or remove."
-                    }
-                },
+                }
+            },
+            "attribute": {
                 "error": {
                     "missing_alteration_argument": {
-                        "part_1": "O argumento ",
+                        "part_1": "O argumento de attributo ",
                         "part_2": " está faltando o termo de alteração, use add, alter ou remove."
                     },
                     "invalid_alteration_argument": {
-                        "part_1": "O argumento ",
-                        "part_2": " não é válido para alteração, use add, alter ou remove."
+                        "part_1": "O argumento de alteração ",
+                        "part_2": " no argumento de atributo ",
+                        "part_3": " é inválido, use add, alter ou remove."
                     }
                 }
             },
