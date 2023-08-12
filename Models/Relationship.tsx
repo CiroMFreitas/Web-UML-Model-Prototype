@@ -57,6 +57,10 @@ export default class Relationship extends DiagramEntity {
      * @returns Feedback should the alteration succeed.
      */
     public alter(alterInstructions: IAlterRelationshipDTO): Feedback {
+        if(alterInstructions.newName !== undefined) {
+            this.setName(alterInstructions.newName);
+        }
+
         const alterFeedback = new Feedback();
 
         return alterFeedback;
