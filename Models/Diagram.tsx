@@ -1,3 +1,4 @@
+import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
 import AppError from "./AppError";
@@ -371,6 +372,18 @@ export default class Diagram {
         }
 
         return readFeedback;
+    }
+
+    /**
+     * Alters a classifier following instructions DTO.
+     * 
+     * @param commandLineArray DTO containing instructions to be executed.
+     * @returns Feedback should alteration succeed.
+     */
+    public alterRelationship(alterInstructions: IAlterRelationshipDTO): Feedback {
+        const toAlterRelationship = this.getRelationshipByName(alterInstructions.relationshipName)
+        const alterFeedback = toAlterRelationship.alter(alterInstructions);
+        return alterFeedback;
     }
 
     /**
