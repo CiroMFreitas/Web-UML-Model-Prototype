@@ -9,6 +9,7 @@ import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import ReadCommandInterpreter from "../Controller/ReadCommandInterpreter";
+import AlterCommandInterpreter from "../Controller/AlterCommandInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
@@ -186,31 +187,11 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     setDiagram(diagram);
                     return alterClassifierFeedback.toString();
 
-                /*case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
-                    const relationshipName = commandLine.shiftranslate();
-                    const alteringRelationship = relationshipEntities.find((relationship) => relationship.name === relationshipName);
-
-                    if(!alteringRelationship) {
-                        throw translate("error.relationship_not_found");
-                    }
-
-                    const alteredRelationship = AlterRelationshipCommandHandler(commandLine, alteringRelationship, classEntities);
-
-                    setRelationshipEntities(prevRelationshipEntities => {
-                        const newRelationshipEntities = prevRelationshipEntities.map((prevRelationshipEntity) => {
-                            if(prevRelationshipEntity === alteringRelationship) {
-                                prevRelationshipEntity = alteredRelationship;
-                            }
-
-                            return prevRelationshipEntity;
-                        })
-
-                        return newRelationshipEntities;
-                    });
-
-                    return translate("command.alter.relationship.success_feedback.part1") +
-                        relationshipName +
-                        translate("command.alter.relationship.success_feedback.part2");*/
+                case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
+                    const alterRelationshipInstructions = AlterCommandInterpreter.interpretAlterRelationship(commandLine);
+                    const alterRelationshipFeedback = diagram.alterRelationship(alterRelationshipInstructions);
+                    setDiagram(diagram);
+                    return alterRelationshipFeedback.toString();
 
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.error.unrecognized_entity_type.part_1"));
