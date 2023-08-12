@@ -1,6 +1,7 @@
 import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
+import StringSnippet from "../Models/StringSnippet";
 import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
@@ -37,6 +38,20 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
         const createAttributes = [] as ICreateAttributeDTO[];
         const removeAttributes = [] as IRemoveAttributeDTO[];
         const alterAttributes = [] as IAlterAttributeDTO[];
+
+        attributeArguments.forEach((attributeArgument) => {
+            const splitArgument = attributeArgument.split(":");
+
+            switch(splitArgument[0]) {
+                default:
+                    const errorFeedback = new Feedback();
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_1"));
+                    errorFeedback.addSnippet(new StringSnippet(attributeArgument));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_2"));
+
+                    throw new AppError(errorFeedback);
+            }
+        });
 
         return {
             createAttributes: createAttributes,
