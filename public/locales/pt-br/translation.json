@@ -277,9 +277,10 @@
                         }
                     }
                 },
-                "relationship": {
-                    "error": {
-                        "missing_relationship_name": "Não fornecido o nome do relacionamento que deseja alterar."
+                "attribute": {
+                    "missing_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " is missing the alteration argument, use add, alter or remove."
                     }
                 },
                 "error": {
@@ -291,6 +292,11 @@
                         "part_1": "O argumento ",
                         "part_2": " não é válido para alteração, use add, alter ou remove."
                     }
+                }
+            },
+            "relationship": {
+                "error": {
+                    "missing_relationship_name": "Não fornecido o nome do relacionamento que deseja alterar."
                 }
             },
             "error": {
