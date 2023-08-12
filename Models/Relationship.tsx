@@ -1,3 +1,4 @@
+import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import ICreateRelationshipDTO from "../public/DTO/ICreateRelationshipDTO";
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../public/Utils/SupportedKeyWords";
 import AppError from "./AppError";
@@ -39,6 +40,12 @@ export default class Relationship extends DiagramEntity {
         if(relationshipCreationData.attribute !== undefined) {
             this.attribute = new Attribute(relationshipCreationData.attribute);
         }
+    }
+
+    public alter(alterInstructions: IAlterRelationshipDTO): Feedback {
+        const alterFeedback = new Feedback();
+
+        return alterFeedback;
     }
 
     /**
