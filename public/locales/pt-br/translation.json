@@ -295,6 +295,10 @@
                             "too_many": "O seguinte atributo possui muitos argumentos "
                         },
                         "part_2": "."
+                    },
+                    "invalid_remove_attribute_arguments": {
+                        "part_1": "O seguinte atributo possui poucos argumentos ",
+                        "part_2": "."
                     }
                 }
             },

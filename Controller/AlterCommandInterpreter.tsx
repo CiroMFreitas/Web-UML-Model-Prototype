@@ -65,9 +65,15 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
                     break;
 
                 case "remove":
-                    removeAttributes.push({
-                        attributeName: splitArgument[1]
-                    });
+                    if(splitArgument.length === 2) {
+                        removeAttributes.push({
+                            attributeName: splitArgument[1]
+                        });
+                    } else {
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_remove_attribute_arguments.part_1"));
+                        errorFeedback.addSnippet(new StringSnippet(attributeArgument))
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_remove_attribute_arguments.part_2"));
+                    }
                     break;
 
                 case "alter":

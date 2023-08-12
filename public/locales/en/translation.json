@@ -295,6 +295,10 @@
                             "too_many": "The following attribute has too many arguments "
                         },
                         "part_2": "."
+                    },
+                    "invalid_remove_attribute_arguments": {
+                        "part_1": "The following attribute has too many arguments ",
+                        "part_2": "."
                     }
                 }
             },
