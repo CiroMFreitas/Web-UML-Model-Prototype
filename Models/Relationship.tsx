@@ -56,9 +56,17 @@ export default class Relationship extends DiagramEntity {
      * @param alterInstructions Alterations instructions to be executed.
      * @returns Feedback should the alteration succeed.
      */
-    public alter(alterInstructions: IAlterRelationshipDTO): Feedback {
+    public alter(alterInstructions: IAlterRelationshipDTO, newSourceClassifierId?: string, newTargetClassifierId?: string): Feedback {
         if(alterInstructions.newName !== undefined) {
             this.setName(alterInstructions.newName);
+        }
+
+        if(newSourceClassifierId) {
+            this.sourceClassifierId = newSourceClassifierId;
+        }
+        
+        if(newTargetClassifierId) {
+            this.targetClassifierId = newTargetClassifierId;
         }
 
         const alterFeedback = new Feedback();

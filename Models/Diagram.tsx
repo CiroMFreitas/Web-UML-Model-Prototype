@@ -381,8 +381,21 @@ export default class Diagram {
      * @returns Feedback should alteration succeed.
      */
     public alterRelationship(alterInstructions: IAlterRelationshipDTO): Feedback {
-        const toAlterRelationship = this.getRelationshipByName(alterInstructions.relationshipName)
-        const alterFeedback = toAlterRelationship.alter(alterInstructions);
+        const toAlterRelationship = this.getRelationshipByName(alterInstructions.relationshipName);
+
+        let newSourceClassifier;
+        if(alterInstructions.newSourceClassifierName !== undefined) {
+            newSourceClassifier = this.getClassifierByName(alterInstructions.newSourceClassifierName);
+        }
+
+        let newTargetClassifier;
+        if(alterInstructions.newTargetClassifierName !== undefined) {
+            newTargetClassifier = this.getClassifierByName(alterInstructions.newTargetClassifierName);
+        }
+
+        const alterFeedback = toAlterRelationship.alter(alterInstructions,
+            newSourceClassifier ? newSourceClassifier.getId() : undefined,
+            newTargetClassifier ? newTargetClassifier.getId() : undefined);
         return alterFeedback;
     }
 
