@@ -71,12 +71,29 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
                     break;
 
                 case "alter":
-                    alterAttributes.push({
-                        attributeName: splitArgument[1],
-                        newVisibility: splitArgument[2],
-                        newName: splitArgument[3],
-                        newType: splitArgument[4],
-                    });
+                    if(splitArgument.length === 5) {
+                        alterAttributes.push({
+                            attributeName: splitArgument[1],
+                            newVisibility: splitArgument[2],
+                            newName: splitArgument[3],
+                            newType: splitArgument[4],
+                        });
+                    } else if(splitArgument.length === 4) {
+                        alterAttributes.push({
+                            attributeName: "",
+                            newVisibility: splitArgument[1],
+                            newName: splitArgument[2],
+                            newType: splitArgument[3],
+                        });
+                    } else if(splitArgument.length < 4) {
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alter_attribute_arguments.part_1.too_few"));
+                        errorFeedback.addSnippet(new StringSnippet(attributeArgument))
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alter_attribute_arguments.part_2"));
+                    } else {
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alter_attribute_arguments.part_1.too_few"));
+                        errorFeedback.addSnippet(new StringSnippet(attributeArgument))
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alter_attribute_arguments.part_2"));
+                    }
                     break;
 
                 case "":

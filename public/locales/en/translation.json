@@ -288,6 +288,13 @@
                         "part_1": "The ",
                         "part_2": " alteration argument in ",
                         "part_3": " is invalid, use add, alter or remove."
+                    },
+                    "invalid_alter_attribute_arguments": {
+                        "part_1": {
+                            "too_few": "The following attribute has too few arguments ",
+                            "too_many": "The following attribute has too many arguments "
+                        },
+                        "part_2": "."
                     }
                 }
             },

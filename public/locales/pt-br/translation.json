@@ -288,6 +288,13 @@
                         "part_1": "O argumento de alteração ",
                         "part_2": " no argumento de atributo ",
                         "part_3": " é inválido, use add, alter ou remove."
+                    },
+                    "invalid_alter_attribute_arguments": {
+                        "part_1": {
+                            "too_few": "O seguinte atributo possui poucos argumentos ",
+                            "too_many": "O seguinte atributo possui muitos argumentos "
+                        },
+                        "part_2": "."
                     }
                 }
             },
