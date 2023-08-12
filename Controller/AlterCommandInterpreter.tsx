@@ -48,6 +48,21 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
                     createAttributes.push(this.handleCreateAttributeArgument(splitArgument.splice(1)))
                     break;
 
+                case "remove":
+                    removeAttributes.push({
+                        attributeName: splitArgument[1]
+                    });
+                    break;
+
+                case "alter":
+                    alterAttributes.push({
+                        attributeName: splitArgument[1],
+                        newVisibility: splitArgument[2],
+                        newName: splitArgument[3],
+                        newType: splitArgument[4],
+                    });
+                    break;
+
                 case "":
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.missing_alteration_argument.part_1"));
                     errorFeedback.addSnippet(new StringSnippet(attributeArgument));
