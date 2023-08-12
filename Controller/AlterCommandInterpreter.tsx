@@ -41,13 +41,22 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
 
         attributeArguments.forEach((attributeArgument) => {
             const splitArgument = attributeArgument.split(":");
+            const errorFeedback = new Feedback();
 
             switch(splitArgument[0]) {
-                default:
-                    const errorFeedback = new Feedback();
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_1"));
+                case "":
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.missing_alteration_argument.part_1"));
                     errorFeedback.addSnippet(new StringSnippet(attributeArgument));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.missing_alteration_argument.part_2"));
+
+                    throw new AppError(errorFeedback);
+
+                default:
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_1"));
+                    errorFeedback.addSnippet(new StringSnippet(splitArgument[0]));
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_2"));
+                    errorFeedback.addSnippet(new StringSnippet(attributeArgument));
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_3"));
 
                     throw new AppError(errorFeedback);
             }
