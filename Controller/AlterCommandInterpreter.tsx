@@ -44,6 +44,10 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             const errorFeedback = new Feedback();
 
             switch(splitArgument[0]) {
+                case "add":
+                    createAttributes.push(this.handleCreateAttributeArgument(splitArgument.splice(1)))
+                    break;
+
                 case "":
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.missing_alteration_argument.part_1"));
                     errorFeedback.addSnippet(new StringSnippet(attributeArgument));
