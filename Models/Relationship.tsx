@@ -93,6 +93,12 @@ export default class Relationship extends DiagramEntity {
             numberOfAttributeArgument++;
         }
 
+        if(alterInstructions.attributeAlterInstructions.removeAttributes.length > 0) {
+            this.attribute = undefined;
+
+            numberOfAttributeArgument++;
+        }
+
 
         const alterFeedback = new Feedback();
 
