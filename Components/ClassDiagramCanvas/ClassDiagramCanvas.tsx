@@ -1,28 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
-
-import ClassEntity from '../../OLD/src/Components/ClassEntity/ClassEntity';
-import RelationshipEntity from '../../OLD/src/Components/RelationshipEntity/RelationshipEntity';
 import "./ClassDiagramCanvas.css";
 
 export default function ClassDiagramCanvas() {
-  const { classEntities, relationshipEntities } = useContext(CommandHandlerContext);
 
   // Component
   return (
     <div id="ClassDiagramCanvas">
-      {/*
-        classEntities.map(classEntity => {
-          return <ClassEntity key={ classEntity.id } classEntity={ classEntity } />
-        })
-      }
-
-      {
-        relationshipEntities.map(relationshipEntity => {
-          return <RelationshipEntity key={ relationshipEntity.id } relationshipEntity={ relationshipEntity } />
-        })
-      */}
     </div>
   );
 }
