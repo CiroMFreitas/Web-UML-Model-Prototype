@@ -8,12 +8,20 @@ import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
 import StringSnippet from "./StringSnippet";
 
+/**
+ * Represents relationships between classifiers in diagram.
+ */
 export default class Relationship extends DiagramEntity {
     private sourceClassifierId: string;
     private targetClassifierId: string;
     private relatioshipType: string;
     private attribute?: Attribute;
 
+    /**
+     * Creates a relationship between classifiers following DTO instrucitons.
+     * 
+     * @param relationshipCreationData Instructions for relationship creation.
+     */
     constructor(relationshipCreationData: ICreateRelationshipDTO){
         super(relationshipCreationData.name)
         this.sourceClassifierId = relationshipCreationData.sourceClassifierId;
@@ -42,6 +50,12 @@ export default class Relationship extends DiagramEntity {
         }
     }
 
+    /**
+     * Alter relationship's data following DTO instructions.
+     * 
+     * @param alterInstructions Alterations instructions to be executed.
+     * @returns Feedback should the alteration succeed.
+     */
     public alter(alterInstructions: IAlterRelationshipDTO): Feedback {
         const alterFeedback = new Feedback();
 
