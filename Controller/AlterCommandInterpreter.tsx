@@ -34,6 +34,12 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
         }
     }
 
+    /**
+     * Handles attribute arguments into DTOs.
+     * 
+     * @param attributeArguments An array arguments to be handled. 
+     * @returns Handled arguments, some may be empty if no instruction of said type was given.
+     */
     private static handleAttributeChanges(attributeArguments: string[]): IAttributeChangesDTO {
         const createAttributes = [] as ICreateAttributeDTO[];
         const removeAttributes = [] as IRemoveAttributeDTO[];
