@@ -1,153 +1,350 @@
 {
     "label": {
-        "command_console": "Console de Comandos"
+        "command_console": "Console de comandos selecionado."
     },
-    "entities": {
-        "relationship": {
-            "types": {
-                "associative": "associativa",
-                "directed_association": "associativa direcionada",
-                "reflexive_association": "associativa reflexiva",
-                "multiplicity": "multiplicativa",
-                "aggregation": "agregada",
-                "composition": "composta",
-                "inheritance": "herança",
-                "realization": "realização"
+    "feedback": {
+        "common": {
+            "entity_type": {
+                "Classifier": "classificador",
+                "Attribute": "atributo",
+                "Method": "método",
+                "Parameter": "parâmetro"
+            },
+            "classifier_type": {
+                "class": "classe",
+                "abstract": "classe abstrata",
+                "interface": "interface"
+            },
+            "realtionship_type": {
+                "associative": "associativo",
+                "directed_association": "associativo direcionado",
+                "reflexive_association": "associativo reflexivo",
+                "aggregation": "agregado",
+                "composition": "composto",
+                "inheritance": "de herança"
+            },
+            "visibility": {
+                "public": "pública",
+                "private": "privada",
+                "protected": "protegida"
             }
-        }
-    },
-    "command": {
+        },
         "create": {
-            "class": {
-                "success_feedback": {
-                    "part1": "A classe ",
-                    "part2": " foi criada com sucesso"
+            "classifier": {
+                "part_1": "Criação da ",
+                "part_2": " foi realizada com sucesso.",
+                "error": {
+                    "classifier_name_already_in_use": "Nome fornecido para classificador já está em uso.",
+                    "unrecognized_entity_type": {
+                        "part1": "O tipo de entidade ",
+                        "part2": " não foi reconhecido pela aplicação."
+                    },
+                    "attribute_name_already_in_use": {
+                        "part_1": "Há dois ou mais atributos usando o nome ",
+                        "part_2": "."
+                    },
+                    "syntax_error_in_method_argument": {
+                        "part_1": "O seguinte argumento de método possui um erro de sintaxe: ",
+                        "part_2": "."
+                    },
+                    "method_name_already_in_use": {
+                        "part_1": "Há dois ou mais métodos usando o nome ",
+                        "part_2": "."
+                    }
+                }
+            },
+            "attribute": {
+                "error": {
+                    "empty_attribute_argument": "Um dos argumentos de atributo está vazio",
+                    "invalid_attribute_arguments": {
+                        "part_1": {
+                            "too_few": "O seguinte atributo possui poucos argumentos ",
+                            "too_many": "O seguinte atributo possui muitos argumentos "
+                        },
+                        "part_2": ", use 2 ou 3 argumentos."
+                    }
+                }
+            },
+            "method": {
+                "error": {
+                    "parameter_name_already_in_use": {
+                        "part_1": "Há 2 o mais parâmetros com o nome ",
+                        "part_2": "."
+                    },
+                    "empty_method_argument": "Um dos argumentos de métodos está vazio",
+                    "invalid_method_arguments": {
+                        "part_1": {
+                            "too_few": "O seguinte método possui poucos argumentos ",
+                            "too_many": "O seguinte método possui muitos argumentos "
+                        },
+                        "part_2": ", use 2 ou 3 argumentos."
+                    }
+                }
+            },
+            "parameter": {
+                "error": {
+                    "empty_parameter_argument": "Um dos argumentos de parâmetro está vazio",
+                    "invalid_parameter_arguments": {
+                        "part_1": {
+                            "too_few": "O seguinte parâmetro possui poucos argumentos ",
+                            "too_many": "O seguinte parâmetro possui muitos argumentos "
+                        },
+                        "part_2": ", use 2 argumentos."
+                    }
                 }
             },
             "relationship": {
-                "success_feedback": {
-                    "part1": "Um relacionamento ",
-                    "part2": " entre as classes ",
-                    "part3": " e ",
-                    "part4": " chamadado ",
-                    "part5": " foi criado com sucesso"
+                "success": {
+                    "part_1": "O relacionamento ",
+                    "part_2": " entre os classificadores ",
+                    "part_3": " e ",
+                    "part_4": " com o nome ",
+                    "part_5": " foi criado com sucesso."
+                },
+                "error": {
+                    "source_classifier_missing": "Não foi fornecido um classificador fonte para criação do relacionamento.",
+                    "target_classifier_missing": "Não foi fornecido um classificador alvo para criação do relacionamento.",
+                    "relationship_name_already_in_use": {
+                        "part_'": "O nome ",
+                        "part_2": " para relacionamento já está em uso."
+                    },
+                    "invalid_relationship_code": {
+                        "part_'": "O código de relacionamento ",
+                        "part_2": " não é suportado pela aplicação."
+                    }
+                }
+            },
+            "error": {
+                "entity_type_missing_on_creation": "Nenhum tipo foi fornecido para o comando create.",
+                "missing_name_for_entity": {
+                    "part_1": "Está faltando o nome para criação do ",
+                    "part_2": "."
+                },
+                "missing_type_for_entity": {
+                    "part_1": "Está faltando o tipo para criação do ",
+                    "part_2": "."
                 }
             }
         },
         "read": {
             "diagram": {
-                "empty": "Diagrama não possui nenhuma classe ainda",
-                "last": " e ",
-                "singular": "Diagrama possui a classe ",
-                "plural": "Diagrama possui as classes "
-            },
-            "class": {
-                "not_found": {
-                    "part1": "A classe ",
-                    "part2": " não foi encontrada no projeto"
+                "start": "O diagrama",
+                "classifiers_present": {
+                    "singular": "possui o classificador",
+                    "plural": "possui os classificadores"
                 },
-                "feedback": {
-                    "start": "A classe ",
-                    "exists": " existe no projeto",
-                    "attribute": {
-                        "none": "; não possui atributos",
-                        "singular": "; possui o atributo",
-                        "plural": "; possui os atributos"
-                    },
-                    "method": {
-                        "none": "; não possui métodos",
-                        "singular": "; possui o método",
-                        "plural": "; possui os métodos"
-                    },
-                    "parameter": {
-                        "none": "; e não possui parâmetros",
-                        "singular": "; que possui o parâmetro",
-                        "plural": "; que possui os parâmetros",
-                        "last": "; que é o último parâmetro"
-                    },
-                    "relationship": {
-                        "empty": "; não possui relacionamentos",
-                        "found": "; possui o relacionamento ",
-                        "with": " com a classe ",
-                        "cardinality": " e cardinalidade ",
-                        "no_cardinality": " e nenhuma cardinalidade",
-                        "to_cardinality": " para ",
-                        "not_specified_cardinality": "não especificada"
-                    }
+                "no_classifiers_present": "não possui classificadores"
+            },
+            "classifier": {
+                "part_1": "O classificador ",
+                "part_2": " do tipo ",
+                "is_present": " está presente no diagrama.",
+                "attributes": {
+                    "singular": ", possui o atributo ",
+                    "plural": ", possui os atributos",
+                    "and": " e "
+                },
+                "methods": {
+                    "singular": ", possui o método ",
+                    "plural": ", possui os métodos",
+                    "and": " e "
                 }
+            },
+            "attribute": {
+                "with_type": " com tipo ",
+                "with_visibility": " e visibilidade "
+            },
+            "method": {
+                "with_type": " com tipo ",
+                "with_visibility": " visibilidade ",
+                "parameters": {
+                    "singular": " e parâmetro ",
+                    "plural": " e parâmetros",
+                    "no_parameter": " e não possui parâmetros"
+                }
+            },
+            "parameter": {
+                "with_type": " do tipo "
             },
             "relationship": {
-                "not_found": {
-                    "part1": "O relacionamento ",
-                    "part2": " não foi encontrado no projeto"
+                "start": "Há o relacionamento ",
+                "attribute_is_present": ", com o atributo ",
+                "of_type": ", do tipo ",
+                "classifiers": {
+                    "part_1": ", entre os classficadores ",
+                    "part_2": " e ",
+                    "part_3": "."
                 },
-                "feedback": {
-                    "start": "O relacionamento ",
-                    "named": " com nome ",
-                    "reflexive": " da classe ",
-                    "between": " entre as classes ",
-                    "cardinality": {
-                        "no": " sem cardinalidade",
-                        "yes": " com cardinalidade ",
-                        "no_origin": " sem origem especificada",
-                        "to": " para ",
-                        "no_destination": " sem destino especificado"
-                    }
+                "classifiers_relationships": {
+                    "part_1": {
+                        "not_foun": "Não foram encontrados relacionamentos entre os classificadores ",
+                        "found": {
+                            "singular": {
+                                "start": "O seguinte relacionamento ",
+                                "end": " existe entre os classificadores "
+                            },
+                            "plural": {
+                                "start": "Os seguintes relacionamentos ",
+                                "end": " existem entre os classificadores ",
+                                "and": " e "
+                            }
+                        }
+                    },
+                    "part_2": " e ",
+                    "part_3": "."
+                },
+                "error": {
+                    "missing_read_form_argument": "Não foi fornecido uma forma de leitura, use os argumentos 'named' ou 'between'.",
+                    "invalid_read_form_argument": {
+                        "part_1": "A forma de leitura ",
+                        "part_2": " não é suportada pela aplicação, use os argumentos 'named' ou 'between'."
+                    },
+                    "missing_relationship_name": "O nome do relacionamento não foi fornecido para leitura.",
+                    "missing_source_classifier_relationship_name": "O nome do classificador fonte não foi fornecido para leitura.",
+                    "missing_target_classifier_relationship_name": "O nome do classificador alvo não foi fornecido para leitura."
                 }
+            },
+            "error": {
+                "entity_type_missing_on_read": "Não foi especificado um tipo para ser lido.",
+                "unrecognized_entity_type": {
+                    "part_1": "O tipo ",
+                    "part_2": " não pode ser lido pela aplicação."
+                },
+                "missing_name_for_reading": "Está faltando o nome para o comando read."
             }
         },
         "remove": {
-            "class": {
-                "success_feedback": {
-                    "part1": "A classe ",
-                    "part2": " foi removida com sucesso"
+            "classifier": {
+                "success": {
+                    "part_1": "O classificador ",
+                    "part_2": " foi removido com sucesso."
                 },
-                "relationship": {
-                    "success_feedback": {
-                        "part1": "O relacionamento ",
-                        "part2": " foi removida com sucesso"
+                "error": {
+                    "entity_type_missing_on_remove": "Não foi especificado um tipo para ser removido.",
+                    "unrecognized_entity_type": {
+                        "part_1": "O tipo ",
+                        "part_2": " não pode ser removido pela aplicação."
+                    },
+                    "missing_name_for_removal": "Nenhum nome for fornecido para remoção do classificador."
+                }
+            },
+            "relationship": {
+                "error": {
+                    "invalid_direction": "Direção inválida para remoção de relacionamento, use os argumentos 'named' ou 'between'.",
+                    "missing_relationship_name_for_removal": "Nenhum nome de relacinamento for fornecido para remoação.",
+                    "missing_source_classifier_name_for_removal": "Não foi fornecido o nome do classificador fonte para remoção do relacionamento.",
+                    "missing_target_classifier_name_for_removal": "Não foi fornecido o nome do classificador alvo para remoção do relacionamento.",
+                    "no_relationship_found_with_classifiers": {
+                        "part_1": "Não há relacionamentos entre os classificadores ",
+                        "part_2": " e ",
+                        "part_3": " no diagrama."
+                    },
+                    "multiple_relationship_found_with_classifiers": {
+                        "part_1": "Múltiplos relacionamentos entre os classificadores ",
+                        "part_2": " e ",
+                        "part_3": " foram encontrados no diagrama, seus nomes são:",
+                        "part_4": ", use o argumento 'named' seguido do nome do relacionamento desejado para remoção."
                     }
                 }
             }
         },
         "alter": {
-            "class": {
-                "success_feedback": {
-                    "part1": "A classe ",
-                    "part2": " foi alterada com sucesso"
+            "classifier": {
+                "success": {
+                    "part_1": "A ",
+                    "part_2": " foi alterada com sucesso."
                 },
-                "relationship": {
-                    "success_feedback": {
-                        "part1": "O relacionamento ",
-                        "part2": " foi alterada com sucesso"
+                "attributes": {
+                    "error": {
+                        "attribute_not_found": {
+                            "part_1": "O ",
+                            "part_2": " atributo não foi encontrado na ",
+                            "part_3": "."
+                        }
+                    }
+                },
+                "methods": {
+                    "error": {
+                        "method_not_found": {
+                            "part_1": "O ",
+                            "part_2": " método não foi encontrado na ",
+                            "part_3": "."
+                        },
+                        "parameter_not_found": {
+                            "part_1": "O ",
+                            "part_2": " parâmetro não foi encontrado no método ",
+                            "part_3": "."
+                        }
                     }
                 }
+            },
+            "attribute": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "O argumento de attributo ",
+                        "part_2": " está faltando o termo de alteração, use add, alter ou remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "O argumento de alteração ",
+                        "part_2": " no argumento de atributo ",
+                        "part_3": " é inválido, use add, alter ou remove."
+                    },
+                    "invalid_alter_attribute_arguments": {
+                        "part_1": {
+                            "too_few": "O seguinte atributo possui poucos argumentos ",
+                            "too_many": "O seguinte atributo possui muitos argumentos "
+                        },
+                        "part_2": "."
+                    },
+                    "invalid_remove_attribute_arguments": {
+                        "part_1": "O seguinte atributo possui poucos argumentos ",
+                        "part_2": "."
+                    }
+                }
+            },
+            "relationship": {
+                "error": {
+                    "missing_relationship_name": "Não fornecido o nome do relacionamento que deseja alterar.",
+                    "attribute_doe_not_exist": "O relacionamento não possui atributo associativo."
+                }
+            },
+            "error": {
+                "entity_type_missing_on_alteration": "Não foi especificado um tipo para ser alterado.",
+                "unrecognized_entity_type": {
+                    "part_1": "O tipo ",
+                    "part_2": " não pode ser alterado pela aplicação."
+                }
+            }
+        },
+        "error": {
+            "unrecognized_command": {
+                "part_1": "O comando ",
+                "part_2": " não foi reconhecido pela aplicação."
+            },
+            "invalid_characters_used_for_naming": {
+                "part_1": "O seguinte argumento ",
+                "part_2": " possui caracteres inválidos."
+            },
+            "no_end_given_for_argument": {
+                "part_1": "Não foi provido um final para o argumento ",
+                "part_2": "."
+            },
+            "invalid_visibility": {
+                "part_1": "A visiblidade ",
+                "part_2": " não é valida, use as opções public, protected ou private."
+            },
+            "classifier_not_found": {
+                "part_1": "O classificador ",
+                "part_2": " não existe no diagrama."
+            },
+            "relationship_not_found": {
+                "part_1": "O relacionamento ",
+                "part_2": " não existe no diagrama."
             }
         }
     },
     "error": {
-        "altering_attribute_not_found": "Atributo solicitado para alteração não foi encontrado na classe",
-        "altering_method_not_found": "Método solicitado para alteração não foi encontrado na classe",
-        "class_already_exists": "Uma classe com o nome fornecido já existe",
-        "class_not_found": "Classe não foi encontrado no projeto",
-        "invalid_attribute_arguments": "Número inválido de argumentos foram fornecidos para gerar o atributo",
-        "invalid_cadinality": "Cardinalidade fornecida é invalida",
-        "invalid_method_arguments": "Número inválido de argumentos foram fornecidos suficientes para gerar o método",
-        "invalid_name_space": "Nome fornecido possui caracteres inválidos",
-        "invalid_relationship_arguments": "Número inválido de argumentos foram fornecidos suficientes para gerar o relacionamento",
-        "missing_end_pointer": "Pelo menos um argumento não foi fechado apropiadamente",
-        "missing_last_argument": "O último argumento está ausente",
-        "primary_class_not_found": "A primeira classe não foi encontrada no projeto",
-        "relationship_not_found": "Relacionamento não foi encontrado no projeto",
-        "removing_attribute_not_found": "Atributo solicitado para remoção não foi encontrado na classe",
-        "secondary_class_not_found": "A segunda classe não foi encontrada no projeto",
-        "unrecongnized_alter_attribute_action": "Ação para alterar atributo não foi reconhecido",
-        "unrecongnized_alter_method_action": "Ação para alterar método não foi reconhecido",
-        "unrecongnized_alter_parameter_action": "Ação para alterar parâmetro não foi reconhecido",
-        "unrecognized_attribute_visibility": "A visibilidade de um dos atributos não foi reconhecida",
-        "unrecognized_command": "Comando não reconhecido",
-        "unrecognized_entity_type": "Entidade não reconhecida",
-        "unrecognized_method_visibility": "A visibilidade de um dos métodos não foi reconhecida",
-        "unrecognized_relationship_type": "Tipo de relacionamento não reconhecido"
+        "unhandled_error": "Um erro inesperado ocorreu!",
+        "unknown_error_thrown": "Erro desconhecido foi lançado!"
     }
 }

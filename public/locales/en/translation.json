@@ -1,154 +1,350 @@
 {
     "label": {
-        "command_console": "Command Console"
+        "command_console": "Command console selected."
     },
-    "entities": {
-        "relationship": {
-            "types": {
+    "feedback": {
+        "common": {
+            "entity_type": {
+                "Classifier": "classifier",
+                "Attribute": "attribute",
+                "Method": "method",
+                "Parameter": "parameter"
+            },
+            "classifier_type": {
+                "class": "class",
+                "abstract": "abtract class",
+                "interface": "interface"
+            },
+            "realtionship_type": {
                 "associative": "associative",
-                "directed_association": "directed_association",
-                "reflexive_association": "reflexive_association",
-                "multiplicity": "multiplicity",
+                "directed_association": "directed association",
+                "reflexive_association": "reflexive association",
                 "aggregation": "aggregation",
                 "composition": "composition",
-                "inheritance": "inheritance",
-                "realization": "realization"
+                "inheritance": "inheritance"
+            },
+            "visibility": {
+                "public": "public",
+                "private": "private",
+                "protected": "protected"
             }
-        }
-    },
-    "command": {
+        },
         "create": {
-            "class": {
-                "success_feedback": {
-                    "part1": "",
-                    "part2": " class was successfully created"
+            "classifier": {
+                "part_1": "Creation of ",
+                "part_2": " was done with success.",
+                "error": {
+                    "classifier_name_already_in_use": "Provided name for classifier is already in use.",
+                    "unrecognized_entity_type": {
+                        "part_1": "Entity type ",
+                        "part_2": " was not recognized by application."
+                    },
+                    "attribute_name_already_in_use": {
+                        "part_1": "There's two or more attributes using the name ",
+                        "part_2": "."
+                    },
+                    "syntax_error_in_method_argument": {
+                        "part_1": "The following method argument has a syntax error: ",
+                        "part_2": "."
+                    },
+                    "method_name_already_in_use": {
+                        "part_1": "There's two or more methods using the name ",
+                        "part_2": "."
+                    }
+                }
+            },
+            "attribute": {
+                "error": {
+                    "empty_attribute_argument": "One of the attributes arguments is empty",
+                    "invalid_attribute_arguments": {
+                        "part_1": {
+                            "too_few": "The following attribute has too few arguments ",
+                            "too_many": "The following attribute has too many arguments "
+                        },
+                        "part_2": ", use 2 or 3 arguments."
+                    }
+                }
+            },
+            "method": {
+                "error": {
+                    "parameter_name_already_in_use": {
+                        "part_1": "There's 2 or more methods with the name ",
+                        "part_2": "."
+                    },
+                    "empty_method_argument": "One of the methods arguments is empty",
+                    "invalid_method_arguments": {
+                        "part_1": {
+                            "too_few": "The following method has too few arguments ",
+                            "too_many": "The following method has too many arguments "
+                        },
+                        "part_2": ", use 2 or 3 arguments."
+                    }
+                }
+            },
+            "parameter": {
+                "error": {
+                    "empty_parameter_argument": "One of the parameter arguments is empty",
+                    "invalid_parameter_arguments": {
+                        "part_1": {
+                            "too_few": "The following parameter has too few arguments ",
+                            "too_many": "The following parameter has too many arguments "
+                        },
+                        "part_2": ", use 2 arguments."
+                    }
                 }
             },
             "relationship": {
-                "success_feedback": {
-                    "part1": "A ",
-                    "part2": " relationship between ",
-                    "part3": " and ",
-                    "part4": " named ",
-                    "part5": " was successfully created"
+                "success": {
+                    "part_1": "The ",
+                    "part_2": " relationship between classifiers ",
+                    "part_3": " and ",
+                    "part_4": " named ",
+                    "part_5": " was created successfully."
+                },
+                "error": {
+                    "source_classifier_missing": "No source classifier was given for relationship creation.",
+                    "target_classifier_missing": "No target classifier was given for relationship creation.",
+                    "relationship_name_already_in_use": {
+                        "part_'": "The name ",
+                        "part_2": " for relationship is already in use."
+                    },
+                    "invalid_relationship_code": {
+                        "part_'": "The relationship type code ",
+                        "part_2": " is not supported by the applicatiob."
+                    }
+                }
+            },
+            "error": {
+                "entity_type_missing_on_creation": "No entity type was given for create command.",
+                "missing_name_for_entity": {
+                    "part_1": "Missing name for ",
+                    "part_2": " creation."
+                },
+                "missing_type_for_entity": {
+                    "part_1": "Missing type for ",
+                    "part_2": " creation."
                 }
             }
         },
         "read": {
             "diagram": {
-                "empty": "Diagram does not have any classes yet",
-                "Last": " and ",
-                "singular": "Diagram have the class ",
-                "plural": "Diagram have the classes "
-            },
-            "class": {
-                "not_found": {
-                    "part1": "Class ",
-                    "part2": " was not found in the project"
+                "start": "The diagram ",
+                "classifiers_present": {
+                    "singular": "have the classifier",
+                    "plural": "have the classifiers"
                 },
-                "feedback": {
-                    "start": "Class ",
-                    "exists": " is present in the project",
-                    "attribute": {
-                        "none": "; does not have attributes",
-                        "singular": "; has the attribute",
-                        "plural": "; has the attributes"
-                    },
-                    "method": {
-                        "none": "; does not have methods",
-                        "singular": "; has the method",
-                        "plural": "; has the methods",
-                        "last": " and "
-                    },
-                    "parameter": {
-                        "none": "; and does not have parameters",
-                        "singular": "; which has the parameter",
-                        "plural": "; which has the parameters",
-                        "last": "; which is the last parameter"
-                    },
-                    "relationship": {
-                        "empty": "; does not have relationships",
-                        "found": "; have a relationthip ",
-                        "with": " with class ",
-                        "cardinality": " and cardinality ",
-                        "no_cardinality": " and no cardinality",
-                        "to_cardinality": " to ",
-                        "not_specified_cardinality": "not specified"
-                    }
+                "no_classifiers_present": "does not have any classifiers"
+            },
+            "classifier": {
+                "part_1": "The classifier ",
+                "part_2": " of type ",
+                "attributes": {
+                    "singular": ", has the attribute ",
+                    "plural": ", has the attributes",
+                    "and": " and "
+                },
+                "methods": {
+                    "singular": ", has the method ",
+                    "plural": ", has the methods",
+                    "and": " and "
+                },
+                "is_present": " is present in diagram."
+            },
+            "attribute": {
+                "with_type": " with type ",
+                "with_visibility": " and visibility "
+            },
+            "method": {
+                "with_type": " with type ",
+                "with_visibility": " visibility ",
+                "parameters": {
+                    "singular": " and parameter ",
+                    "plural": " and parameters",
+                    "no_parameter": " and  does not have parameters"
                 }
+            },
+            "parameter": {
+                "with_type": " of type "
             },
             "relationship": {
-                "not_found": {
-                    "part1": "Relationship ",
-                    "part2": " was not found in the project"
+                "start": "There's the relationship ",
+                "attribute_is_present": ", with attribute ",
+                "of_type": " of type ",
+                "classifiers": {
+                    "part_1": ", between classifiers ",
+                    "part_2": " and ",
+                    "part_3": "."
                 },
-                "feedback": {
-                    "start": "Relationship ",
-                    "named": " named ",
-                    "reflexive": " of ",
-                    "between": " between ",
-                    "cardinality": {
-                        "no": " without cardinality",
-                        "yes": " with cardinality ",
-                        "no_origin": " with no specified origin",
-                        "to": " to ",
-                        "no_destination": " with no specified destination"
-                    }
+                "classifiers_relationships": {
+                    "part_1": {
+                        "not_found": "There were no relationships found between classifiers ",
+                        "found": {
+                            "singular": {
+                                "start": "The following relationship ",
+                                "end": " exists between classifiers "
+                            },
+                            "plural": {
+                                "start": "The following relationships ",
+                                "end": " exists between classifiers ",
+                                "and": " and "
+                            }
+                        }
+                    },
+                    "part_2": " and ",
+                    "part_3": "."
+                },
+                "error": {
+                    "missing_read_form_argument": "No read form was given, use 'named' or 'between' arguments.",
+                    "invalid_read_form_argument": {
+                        "part_1": "The read form ",
+                        "part_2": " is not supported by the application, use 'named' or 'between' arguments."
+                    },
+                    "missing_relationship_name": "No relationship name was given to be read.",
+                    "missing_source_classifier_relationship_name": "No source classifier name was given to be read.",
+                    "missing_target_classifier_relationship_name": "No target classifier name was given to be read."
                 }
+            },
+            "error": {
+                "entity_type_missing_on_read": "A type was not expecified to be read.",
+                "unrecognized_entity_type": {
+                    "part_1": "The ",
+                    "part_2": " type cannot be read by application."
+                },
+                "missing_name_for_reading": "Name missing for read command."
             }
         },
         "remove": {
-            "class": {
-                "success_feedback": {
-                    "part1": "Class ",
-                    "part2": " was successfully removed"
+            "classifier": {
+                "success": {
+                    "part_1": "The Classifier ",
+                    "part_2": " was successfully removed."
+                },
+                "error": {
+                    "entity_type_missing_on_remove": "A type was not expecified to be removed.",
+                    "unrecognized_entity_type": {
+                        "part_1": "The ",
+                        "part_2": " type cannot be removed by application."
+                    },
+                    "missing_name_for_removal": "No name was provided for classifier removal."
                 }
             },
             "relationship": {
-                "success_feedback": {
-                    "part1": "Relationship ",
-                    "part2": " was successfully removed"
+                "error": {
+                    "invalid_direction": "Invalid direction given for relationship removal, use the arguments 'named' or 'between'.",
+                    "missing_relationship_name_for_removal": "No relationship name was given for removal.",
+                    "missing_source_classifier_name_for_removal": "No source classifier name given for relationship removal.",
+                    "missing_target_classifier_name_for_removal": "No target classifier name given for relationship removal.",
+                    "no_relationship_found_with_classifiers": {
+                        "part_1": "There is no relationship between classifiers ",
+                        "part_2": " and ",
+                        "part_3": " in diagram."
+                    },
+                    "multiple_relationship_found_with_classifiers": {
+                        "part_1": "Multiple relationship between classifiers ",
+                        "part_2": " and ",
+                        "part_3": " were found, their names are",
+                        "part_4": ", use the argument 'named' followed by the desired relationship's name for removal."
+                    }
                 }
             }
         },
         "alter": {
-            "class": {
-                "success_feedback": {
-                    "part1": "Class ",
-                    "part2": " was successfully altered"
+            "classifier": {
+                "success": {
+                    "part_1": "The ",
+                    "part_2": " was successfully altered."
+                },
+                "attributes": {
+                    "error": {
+                        "attribute_not_found": {
+                            "part_1": "The ",
+                            "part_2": " attribute was not found in ",
+                            "part_3": "."
+                        }
+                    }
+                },
+                "methods": {
+                    "error": {
+                        "method_not_found": {
+                            "part_1": "The ",
+                            "part_2": " method was not found in ",
+                            "part_3": "."
+                        },
+                        "parameter_not_found": {
+                            "part_1": "The ",
+                            "part_2": " parameter was not found in method ",
+                            "part_3": "."
+                        }
+                    }
+                }
+            },
+            "attribute": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " attribute argument is missing the alteration argument, use add, alter or remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " alteration argument in ",
+                        "part_3": " is invalid, use add, alter or remove."
+                    },
+                    "invalid_alter_attribute_arguments": {
+                        "part_1": {
+                            "too_few": "The following attribute has too few arguments ",
+                            "too_many": "The following attribute has too many arguments "
+                        },
+                        "part_2": "."
+                    },
+                    "invalid_remove_attribute_arguments": {
+                        "part_1": "The following attribute has too many arguments ",
+                        "part_2": "."
+                    }
                 }
             },
             "relationship": {
-                "success_feedback": {
-                    "part1": "Relationship ",
-                    "part2": " was successfully altered"
+                "error": {
+                    "missing_relationship_name": "No name was given for the desired relationship to be changed.",
+                    "attribute_doe_not_exist": "Relationship does not have associative attribute."
                 }
+            },
+            "error": {
+                "entity_type_missing_on_alteration": "A type was not expecified to be removed.",
+                "unrecognized_entity_type": {
+                    "part_1": "The ",
+                    "part_2": " type cannot be removed by application."
+                }
+            }
+        },
+        "error": {
+            "unrecognized_command": {
+                "part_1": "Command ",
+                "part_2": " was not recognized by application."
+            },
+            "invalid_characters_used_for_naming": {
+                "part_1": "The following argument ",
+                "part_2": " has invalid characters."
+            },
+            "no_end_given_for_argument": {
+                "part_1": "No end was given for ",
+                "part_2": " argument."
+            },
+            "invalid_visibility": {
+                "part_1": "The ",
+                "part_2": " visibility is not valid, use public, protected or private instead."
+            },
+            "classifier_not_found": {
+                "part_1": "The classifier ",
+                "part_2": " does not exists in diagram."
+            },
+            "relationship_not_found": {
+                "part_1": "The relationship ",
+                "part_2": " does not exists in diagram."
             }
         }
     },
     "error": {
-        "altering_attribute_not_found": "Attribute given for alteration was not found in the class",
-        "altering_method_not_found": "Method given for alteration was not found in the class",
-        "class_already_exists": "Class with given name already exists",
-        "class_not_found": "Class not found in the project",
-        "invalid_attribute_arguments": "Invalid number of arguments were given to generate attribute",
-        "invalid_cadinality": "Given cardinality is invalid",
-        "invalid_method_arguments": "Invalid number of arguments were given to generate method",
-        "invalid_name_space": "Given name hs invalid characters",
-        "invalid_relationship_arguments": "Invalid number of arguments were given to generate relationship",
-        "missing_end_pointer": "At least one argument was not properly closed",
-        "missing_last_argument": "The last argument is missing",
-        "primary_class_not_found": "Primary class not found in the project",
-        "relationship_not_found": "Relationship not found in the project",
-        "removing_attribute_not_found": "Attribute given for removal was not found in the class",
-        "secondary_class_not_found": "Secondary class not found in the project",
-        "unrecongnized_alter_attribute_action": "Action desired to alter attribute was not recongnized",
-        "unrecongnized_alter_method_action": "Action desired to alter method was not recongnized",
-        "unrecongnized_alter_parameter_action": "Action desired to alter parameter was not recongnized",
-        "unrecognized_attribute_visibility": "One of the attributes's visibility was not recognized",
-        "unrecognized_command": "Unrecognized command",
-        "unrecognized_entity_type": "Entity type not recognized",
-        "unrecognized_method_visibility": "One of the methods's visibility was not recognized",
-        "unrecognized_relationship_type": "Relationship type not recognized"
+        "unhandled_error": "An unexpected error ocurred!",
+        "unknown_error_thrown": "Unkwown error was thrown!"
     }
 }
