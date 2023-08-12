@@ -9,18 +9,18 @@ import StringSnippet from "../Models/StringSnippet";
 export default abstract class CommandInterpreter {
 
     /**
-     * Gets given argument's content from command line, removing said range, if no start is found, undefined
-     * will be returned, if no end is found, an error will be thrown.
+     * Gets given argument's content from command line, removing said range, if no start is found an empty
+     * array will be returned, if no end is found, an error will be thrown.
      * 
      * @param commandLine Comand line to be searched.
      * @param startArgument Start argument to be searched.
      * @returns Array argument content or undefined.
      */
-    protected static getCommandArgumentContent(commandLine: string[], startArgument: string): string[] | undefined {
+    protected static getCommandArgumentContent(commandLine: string[], startArgument: string): string[] {
         // Checks if given argument is present.
         const startIndex = commandLine.findIndex((commandLine) => commandLine === startArgument)+1;
         if(startIndex === 0) {
-            return undefined;
+            return [];
         }
 
         // Checks if end for an argument is present.
