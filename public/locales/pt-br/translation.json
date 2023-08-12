@@ -304,7 +304,8 @@
             },
             "relationship": {
                 "error": {
-                    "missing_relationship_name": "Não fornecido o nome do relacionamento que deseja alterar."
+                    "missing_relationship_name": "Não fornecido o nome do relacionamento que deseja alterar.",
+                    "attribute_doe_not_exist": "O relacionamento não possui atributo associativo."
                 }
             },
             "error": {

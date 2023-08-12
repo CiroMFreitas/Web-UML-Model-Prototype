@@ -69,6 +69,28 @@ export default class Relationship extends DiagramEntity {
             this.targetClassifierId = newTargetClassifierId;
         }
 
+        let numberOfAttributeArgument = 0;
+
+        if(alterInstructions.attributeAlterInstructions.alterAttributes.length > 0) {
+            const alterAttributeInstructions = alterInstructions.attributeAlterInstructions.alterAttributes[0];
+            if(this.attribute !== undefined) {
+                this.attribute?.alter([
+                    alterAttributeInstructions.newVisibility,
+                    alterAttributeInstructions.newName,
+                    alterAttributeInstructions.newType
+    
+                ]);
+            } else {
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.attribute_doe_not_exist"));
+
+                throw new AppError(errorFeedback);
+            }
+
+            numberOfAttributeArgument++;
+        }
+
+
         const alterFeedback = new Feedback();
 
         return alterFeedback;

@@ -304,7 +304,8 @@
             },
             "relationship": {
                 "error": {
-                    "missing_relationship_name": "No name was given for the desired relationship to be changed."
+                    "missing_relationship_name": "No name was given for the desired relationship to be changed.",
+                    "attribute_doe_not_exist": "Relationship does not have associative attribute."
                 }
             },
             "error": {
