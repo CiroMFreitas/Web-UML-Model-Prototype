@@ -1,7 +1,11 @@
 import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
+import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
+import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
+import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
+import IRemoveAttributeDTO from "../public/DTO/IRemoveAttributeDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
 /**
@@ -27,5 +31,17 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
                 newTargetClassifierName: newTargetClassifierName !== undefined ? newTargetClassifierName[0] : undefined,
             }
         }
+    }
+
+    private static handleAttributeChanges(attributeArguments: string[]): IAttributeChangesDTO {
+        const createAttributes = [] as ICreateAttributeDTO[];
+        const removeAttributes = [] as IRemoveAttributeDTO[];
+        const alterAttributes = [] as IAlterAttributeDTO[];
+
+        return {
+            createAttributes: createAttributes,
+            removeAttributes: removeAttributes,
+            alterAttributes: alterAttributes
+        };
     }
 }
