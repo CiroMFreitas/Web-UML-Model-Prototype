@@ -36,7 +36,7 @@ export default class Diagram {
             
         const feedback = new Feedback();
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_1"));
-        feedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+newClassifier.getEntityType()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+newClassifier.getClassifierType()));
         feedback.addSnippet(new StringSnippet(" "+newClassifier.getName()));
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
 
@@ -130,7 +130,7 @@ export default class Diagram {
     
             const alterClassifierFeedback = new Feedback();
             alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));
-            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getEntityType()));
+            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
             alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
             alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_2"));
             return alterClassifierFeedback;
