@@ -47,10 +47,11 @@ export default abstract class CommandInterpreter {
     /**
      * Handles attribute argument into a create attribute DTO.
      * 
-     * @param splitArgument Attribute argument split into an array.
+     * @param argument Attribute argument to be handled.
      * @returns The handled argument into a DTO.
      */
-    protected static handleCreateAttributeArgument(splitArgument: string[]): ICreateAttributeDTO {
+    protected static handleCreateAttributeArgument(argument: string): ICreateAttributeDTO {
+        const splitArgument = argument.split(":");
         if(splitArgument.length === 3) {
             return {
                 visibility: splitArgument[0],
