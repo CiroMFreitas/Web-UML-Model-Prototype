@@ -29,15 +29,13 @@ export default class Classifier extends DiagramEntity {
         // If classifier is the given type it will be saved as a class.
         this.classifierType = creationInstructions.classifierType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : creationInstructions.classifierType;
 
-        // Cretas attributes if arguments are present.
-        if(attributeArguments !== undefined) {
-            attributeArguments.forEach((argument) => {
-                const newAttribute = new Attribute(argument);
-                this.isAttributeNameInUse(newAttribute.getName());
+        // Cretas attributes if any arguments are present.
+        creationInstructions.attributes.forEach((attributeInstructions) => {
+            const newAttribute = new Attribute(attributeInstructions);
+            this.isAttributeNameInUse(newAttribute.getName());
 
-                this.attributes.push(newAttribute);
-            });
-        }
+            this.attributes.push(newAttribute);
+        });
 
         // Cretas methods if arguments are present.
         if(methodArguments !== undefined) {
