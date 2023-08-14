@@ -3,6 +3,7 @@ import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
+import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
 /**
@@ -30,14 +31,20 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
             attributeArguments.forEach((argument) => {
                 attributes.push(this.handleCreateAttributeArgument(argument));
             });
+
+            const methods = [] as ICreateMethodDTO[];
+            const methodArguments = this.getCommandArgumentContent(commandLine, "-m");
+            const handledMethodArgument = this.handleMethodArguments(methodArguments);
+            handledMethodArgument.forEach((handeldArgument) => {
+                methods.push(this.handleCreateMethodArgument(handeldArgument));
             });
 
             return {
                 classifierType: entityType,
                 classifierName: classifierName,
                 attributes: attributes,
-                methods: [],
-            }
+                methods: methods,
+            };
         }
     }
 }
