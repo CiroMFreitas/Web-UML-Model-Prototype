@@ -1,6 +1,7 @@
 import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
+import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
@@ -24,10 +25,16 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
 
             throw new AppError(errorFeedback);
         } else {
+            const attributes = [] as ICreateAttributeDTO[];
+            const attributeArguments = this.getCommandArgumentContent(commandLine, "-a");
+            attributeArguments.forEach((argument) => {
+                attributes.push(this.handleCreateAttributeArgument(argument.split(":")));
+            });
+
             return {
                 classifierType: entityType,
                 classifierName: classifierName,
-                attributes: [],
+                attributes: attributes,
                 methods: [],
             }
         }
