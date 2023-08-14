@@ -2,6 +2,7 @@ import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
+import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
 import CommandInterpreter from "./CommandInterpreter";
@@ -10,6 +11,14 @@ import CommandInterpreter from "./CommandInterpreter";
  * Class responsible for handling user's read commands into DTOs.
  */
 export default class ReadCommandInterpreter extends CommandInterpreter {
+    public static interpretReadClassifier(commandLine: string[]): IReadClassifierDTO {
+        return {
+            classifierName: "",
+            readAttributes: false,
+            readMethods: false
+        };
+    }
+
     /**
      * Handles a read relationship command line.
      * 
