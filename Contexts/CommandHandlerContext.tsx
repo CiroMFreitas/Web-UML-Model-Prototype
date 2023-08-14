@@ -10,6 +10,7 @@ import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import ReadCommandInterpreter from "../Controller/ReadCommandInterpreter";
 import AlterCommandInterpreter from "../Controller/AlterCommandInterpreter";
+import CreateCommandInterpreter from "../Controller/CreateCommandInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
@@ -92,6 +93,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
+                    const createClassifierInstructions = CreateCommandInterpreter.interpretCreateClassifier(commandLine, entityType);
                     const classifierCreationFeedback = diagram.createClassifierByCommand(entityType, commandLine);
                     setDiagram(diagram);
                     return classifierCreationFeedback.toString();
