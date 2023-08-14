@@ -1,3 +1,4 @@
+import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import { SUPPORTED_ENTITY_TYPES } from "../public/Utils/SupportedKeyWords";
 import AppError from "./AppError";
 import Attribute from "./Attribute";
@@ -23,9 +24,10 @@ export default class Classifier extends DiagramEntity {
      * @param attributeArguments Classifier's array of attribute's arguments to be created.
      * @param methodArguments Classifier's array of method's arguments to be created.
      */
-    constructor(entityType: string, classifierName: string, attributeArguments?: string[], methodArguments?: string[]) {
-        super(classifierName);
-        this.entityType = entityType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : entityType;
+    constructor(creationInstructions: ICreateClassifierDTO) {
+        super(creationInstructions.classifierName);
+        // If classifier is the given type it will be saved as a class.
+        this.classifierType = creationInstructions.classifierType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : creationInstructions.classifierType;
 
         // Cretas attributes if arguments are present.
         if(attributeArguments !== undefined) {
