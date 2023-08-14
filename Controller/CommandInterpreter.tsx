@@ -3,6 +3,8 @@ import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
+import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
+import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
 
 /**
  * Hold static methods that useful to multiple command interpreters classes.
@@ -78,6 +80,42 @@ export default abstract class CommandInterpreter {
 
             throw new AppError(errorFeedback);
         }
+    }
+
+    /**
+     * Handles arguments for methods creation.
+     * 
+     * @param methodArguments Arguments to be handled.
+     * @returns Handled arguments.
+     */
+    protected static handleMethodArguments(methodArguments: string[]): string[][] {
+        // Breaks method arguments into arrays for method creation
+        const handledMethodArguments = [[]] as string[][];
+        let endparameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
+        while(endparameter !== 0) {
+            handledMethodArguments.push(methodArguments.splice(0, endparameter))
+            
+            endparameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
+        }
+
+        // Checks if there were left overs, meaning the methods were not properly declared.
+        if(methodArguments.length > 0) {
+            // rebuilds method for error feedback.
+            const errorMethod = "";
+            handledMethodArguments.forEach((handledMethod) => {
+                errorMethod.concat(handledMethod.toString().replaceAll(",", " "));
+            });
+            errorMethod.concat(methodArguments.toString().replaceAll(",", " "));
+
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.syntax_error_in_method_argument.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(errorMethod))
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.syntax_error_in_method_argument.part_2"));
+
+            throw new AppError(errorFeedback);
+        }
+
+        return handledMethodArguments;
     }
 
     /**
