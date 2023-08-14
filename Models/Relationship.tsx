@@ -20,24 +20,24 @@ export default class Relationship extends DiagramEntity {
     /**
      * Creates a relationship between classifiers following DTO instrucitons.
      * 
-     * @param relationshipCreationData Instructions for relationship creation.
+     * @param creationInstructions Instructions for relationship creation.
      */
-    constructor(relationshipCreationData: ICreateRelationshipDTO){
-        super(relationshipCreationData.name)
-        this.sourceClassifierId = relationshipCreationData.sourceClassifierId;
-        this.targetClassifierId = relationshipCreationData.targetClassifierId;
+    constructor(creationInstructions: ICreateRelationshipDTO){
+        super(creationInstructions.relationshipName)
+        this.sourceClassifierId = creationInstructions.sourceClassifierId;
+        this.targetClassifierId = creationInstructions.targetClassifierId;
 
         // Checks and possibly defaults realtionship type.
-        if(relationshipCreationData.relatioshipType === undefined) {
+        if(creationInstructions.relatioshipType === undefined) {
             this.relatioshipType = SUPPORTED_RELATIONSHIP_TYPES[0].name;
         } else {
-            const supportedRelationshipType = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.code === relationshipCreationData.relatioshipType);
+            const supportedRelationshipType = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.code === creationInstructions.relatioshipType);
             if (supportedRelationshipType !== undefined) {
                 this.relatioshipType = supportedRelationshipType.name;
             } else {
                 const errorFeedback = new Feedback();
                 errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_1."));
-                errorFeedback.addSnippet(new StringSnippet(relationshipCreationData.relatioshipType));
+                errorFeedback.addSnippet(new StringSnippet(creationInstructions.relatioshipType));
                 errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_2."));
 
                 throw new AppError(errorFeedback);
@@ -45,8 +45,8 @@ export default class Relationship extends DiagramEntity {
         }
         
         // Creates attribute if argument is present.
-        if(relationshipCreationData.attribute !== undefined) {
-            this.attribute = new Attribute(relationshipCreationData.attribute);
+        if(creationInstructions.attribute !== undefined) {
+            this.attribute = new Attribute(creationInstructions.attribute);
         }
     }
 
