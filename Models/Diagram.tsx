@@ -1,6 +1,7 @@
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import IDiagramCreateRelationshipDTO from "../public/DTO/IDiagramCreateRelationshipDTO";
+import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
 import AppError from "./AppError";
@@ -45,25 +46,15 @@ export default class Diagram {
     }
 
     /**
-     * Read a classifier with command line instructions
+     * Read a classifier with command line instructions.
      * 
-     * @param commandLineArray Instructions to be handled and executed for classifier reading.
+     * @param readClassifierInstructions Instructions to be executed for classifier reading.
      * @returns Feedback containing the desired classifier indormation.
      */
-    public readClassifierByCommand(commandLineArray: string[]): Feedback {
-        const classifierName = commandLineArray?.shift()?.toLowerCase();
-
-        // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.missing_name_for_reading"));
-
-            throw new AppError(errorFeedback);
-        } else {
-            const toReadClassifier = this.getClassifierByName(classifierName);
-            const readFeedback = toReadClassifier.toText(commandLineArray);
-            return readFeedback;
-        }
+    public readClassifier(readClassifierInstructions: IReadClassifierDTO): Feedback {
+        const toReadClassifier = this.getClassifierByName(readClassifierInstructions.classifierName);
+        const readFeedback = toReadClassifier.toText(readClassifierInstructions);
+        return readFeedback;
     }
     
     /**
