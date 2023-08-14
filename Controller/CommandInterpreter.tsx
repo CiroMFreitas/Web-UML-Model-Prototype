@@ -80,6 +80,61 @@ export default abstract class CommandInterpreter {
     }
 
     /**
+     * Handles methods arguments into create method DTO.
+     * 
+     * @param methodArguments Handled argument to be further handled into a DTO.
+     * @returns Method creation instructions.
+     */
+    protected static handleCreateMethodArgument(methodArguments: string[]): ICreateMethodDTO {
+        // Gets first method argument and possibly first parameter.
+        const argumentStart = methodArguments?.shift()?.split("(");
+
+        // Sets parameters with present.
+        const parameters = [] as ICreateParameterDTO[];
+        if((argumentStart !== undefined) && (argumentStart[1] !== "")) {
+            const firstParameter = this.handleCreateParameterArgument(argumentStart[1].replace(")", "").replace(",", ""));
+            parameters.push(firstParameter)
+
+            methodArguments.forEach((parameterArgument) => {
+                const newParameter = this.handleCreateParameterArgument(parameterArgument.replace(")", "").replace(",", ""));
+
+                parameters.push(newParameter);
+            });
+        }
+
+        // Checks if enogh arguments ware given for method creation.
+        const splitArgument = argumentStart !== undefined ? argumentStart[0].split(":") : [""];
+        if(splitArgument.length === 3) {
+            return {
+                visibility: splitArgument[0],
+                name: splitArgument[1],
+                type: splitArgument[2],
+                parameters: parameters
+            };
+        } else if(splitArgument.length === 2) {
+            return {
+                name: splitArgument[0],
+                type: splitArgument[1],
+                parameters: parameters
+            };
+        } else {
+            const errorFeedback = new Feedback();
+            if(splitArgument[0] === "") {
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.empty_method_argument"));
+            } else if(splitArgument.length < 2) {
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.invalid_method_arguments.part_1.too_few"));
+                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+            } else {
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.invalid_method_arguments.part_1.too_many"));
+                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+            }
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.invalid_method_arguments.part_2"));
+
+            throw new AppError(errorFeedback)
+        }
+    }
+
+    /**
      * Handles parameter argument in the following format 'name:type' into a DTO.
      * 
      * @param argument Argument to be handled.
