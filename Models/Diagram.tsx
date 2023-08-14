@@ -1,4 +1,5 @@
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
+import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
 import AppError from "./AppError";
@@ -21,17 +22,14 @@ export default class Diagram {
     constructor() { }
 
     /**
-     * Creates a classifier with command line instructions.
+     * Creates a classifier inside the diagram.
      * 
-     * @param entityType Which classifier type is being created.
-     * @param commandLineArray Instructions to be handled and executed for classifier creation.
+     * @param classifierCreationInstructions Instructions to be handled and executed for classifier creation.
      * @returns Feedback containing a success message.
      */
-    public createClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
-        const attributeArguments = this.getCommandArgumentContent(commandLineArray, "-a");
-        const methodArguments = this.getCommandArgumentContent(commandLineArray, "-m");
+    public createClassifier(classifierCreationInstructions: ICreateClassifierDTO): Feedback {
         // Checks if given name is already in use.
-        const newClassifier = new Classifier(entityType, commandLineArray[0], attributeArguments, methodArguments);
+        const newClassifier = new Classifier(classifierCreationInstructions);
         this.isClassifierNameInUse(newClassifier.getName());
 
         this.classifiers.push(newClassifier);
