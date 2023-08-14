@@ -13,7 +13,7 @@ export default class Parameter extends TypedEntity {
     /**
      * Creates parameter.
      * 
-     * @param creationInstructions DTO with creation instructions.
+     * @param creationInstructions DTO with parameter creation instructions.
      */
     constructor(creationInstructions: ICreateParameterDTO) {
         super(creationInstructions.name, creationInstructions.type);

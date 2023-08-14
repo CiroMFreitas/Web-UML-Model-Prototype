@@ -19,10 +19,7 @@ export default class Classifier extends DiagramEntity {
     /**
      * Creates a Classifier.
      * 
-     * @param entityType Classifer's type, vaid types are, class, abstract and interface.
-     * @param classifierName Classifier's name.
-     * @param attributeArguments Classifier's array of attribute's arguments to be created.
-     * @param methodArguments Classifier's array of method's arguments to be created.
+     * @param creationInstructions DTO contaning instructions for classifier creation.
      */
     constructor(creationInstructions: ICreateClassifierDTO) {
         super(creationInstructions.classifierName);

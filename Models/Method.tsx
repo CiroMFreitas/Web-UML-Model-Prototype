@@ -15,7 +15,7 @@ export default class Method extends VisibleEntity {
     /**
      * Creates a method.
      * 
-     * @param methodArguments An array containing method's arguments and it's paramenter's.
+     * @param creationInstructions DTO containing instructions for mwthod creation.
      */
     constructor(creationInstructions: ICreateMethodDTO) {
         super(creationInstructions.name, creationInstructions.type, creationInstructions.visibility);
