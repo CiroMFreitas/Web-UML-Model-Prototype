@@ -78,4 +78,30 @@ export default abstract class CommandInterpreter {
             throw new AppError(errorFeedback);
         }
     }
+
+    /**
+     * Handles parameter argument in the following format 'name:type' into a DTO.
+     * 
+     * @param argument Argument to be handled.
+     * @returns DTO containning instructions for parameter creation.
+     */
+    protected static handleCreateParameterArgument(argument: string): ICreateParameterDTO {
+        const splitArgument = argument.split(":");
+        const errorFeedback = new Feedback();
+        if(splitArgument.length > 2) {
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_method_arguments.part_1.too_many"));
+            errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+        } else if(splitArgument.length < 2) {
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_method_arguments.part_1.too_few"));
+            errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+        } else {
+            return {
+                name: argument[0],
+                type: argument[1]
+            };
+        }
+        errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_method_arguments.part_2"));
+
+        throw new AppError(errorFeedback)
+    }
 }
