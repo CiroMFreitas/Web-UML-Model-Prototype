@@ -28,7 +28,8 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
             const attributes = [] as ICreateAttributeDTO[];
             const attributeArguments = this.getCommandArgumentContent(commandLine, "-a");
             attributeArguments.forEach((argument) => {
-                attributes.push(this.handleCreateAttributeArgument(argument.split(":")));
+                attributes.push(this.handleCreateAttributeArgument(argument));
+            });
             });
 
             return {
