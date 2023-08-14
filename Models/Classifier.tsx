@@ -37,16 +37,13 @@ export default class Classifier extends DiagramEntity {
             this.attributes.push(newAttribute);
         });
 
-        // Cretas methods if arguments are present.
-        if(methodArguments !== undefined) {
-            const handledMethodArguments = this.handleMethodArguments(methodArguments);
-            handledMethodArguments.forEach((handledMethod) => {
-                const newMethod = new Method(handledMethod);
-                this.isMethodNameInUse(newMethod.getName());
+        // Cretas methods if any arguments are present.
+        creationInstructions.methods.forEach((methodInstructions) => {
+            const newMethod = new Method(methodInstructions);
+            this.isMethodNameInUse(newMethod.getName());
 
-                this.methods.push(newMethod);
-            });
-        }
+            this.methods.push(newMethod);
+        });
     }
 
     /**
