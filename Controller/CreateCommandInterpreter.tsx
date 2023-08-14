@@ -3,7 +3,7 @@ import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
-import IDiagramCreateRelationshipDTO from "../public/DTO/ICreateDiagramRelationshipDTO";
+import IDiagramCreateRelationshipDTO from "../public/DTO/IDiagramCreateRelationshipDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
 import CommandInterpreter from "./CommandInterpreter";
 

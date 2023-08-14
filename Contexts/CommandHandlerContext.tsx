@@ -100,7 +100,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const createRelationshipInstructions = CreateCommandInterpreter.interpretCreateRelationship(commandLine);
-                    const relationshipCreationFeedback = diagram.createRelationshipByCommand(commandLine);
+                    const relationshipCreationFeedback = diagram.createRelationship(createRelationshipInstructions);
                     setDiagram(diagram);
                     return relationshipCreationFeedback.toString();
         
