@@ -1,3 +1,6 @@
+import AppError from "../Models/AppError";
+import Feedback from "../Models/Feedback";
+import LocalizationSnippet from "../Models/LocalizationSnippet";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
@@ -12,11 +15,21 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
      * @returns Handled coomand line into a DTO to be executed.
      */
     public static interpretCreateClassifier(commandLine: string[], entityType: string): ICreateClassifierDTO {
-        return {
-            classifierType: "",
-            classifierName: "",
-            attributes: [],
-            methods: [],
+        const classifierName = commandLine.shift();
+        if((classifierName === undefined) || (classifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.missing_name_argument.part_1"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type."+entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.missing_name_argument.part_2"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return {
+                classifierType: entityType,
+                classifierName: classifierName,
+                attributes: [],
+                methods: [],
+            }
         }
     }
 }

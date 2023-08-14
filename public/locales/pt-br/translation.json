@@ -34,6 +34,10 @@
                 "part_1": "Criação da ",
                 "part_2": " foi realizada com sucesso.",
                 "error": {
+                    "missing_name_argument": {
+                        "part_1": "Não foi fornecido um nome para criação de ",
+                        "part_2": "."
+                    },
                     "classifier_name_already_in_use": "Nome fornecido para classificador já está em uso.",
                     "unrecognized_entity_type": {
                         "part1": "O tipo de entidade ",

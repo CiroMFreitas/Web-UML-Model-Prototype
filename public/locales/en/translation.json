@@ -34,6 +34,10 @@
                 "part_1": "Creation of ",
                 "part_2": " was done with success.",
                 "error": {
+                    "missing_name_argument": {
+                        "part_1": "No name was given for ",
+                        "part_2": " creation."
+                    },
                     "classifier_name_already_in_use": "Provided name for classifier is already in use.",
                     "unrecognized_entity_type": {
                         "part_1": "Entity type ",
