@@ -11,7 +11,7 @@ import StringSnippet from "./StringSnippet";
  * Classifiers holding attributes and methods.
  */
 export default class Classifier extends DiagramEntity {
-    private entityType: string;
+    private classifierType: string;
     private attributes = [] as Attribute[];
     private methods = [] as Method[];
     
@@ -155,8 +155,8 @@ export default class Classifier extends DiagramEntity {
      * 
      * @returns Classifier's type.
      */
-    public getEntityType(): string {
-        return this.entityType;
+    public getClassifierType(): string {
+        return this.classifierType;
     }
 
     /**
@@ -245,7 +245,7 @@ export default class Classifier extends DiagramEntity {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_2"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.classifierType));
             errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_3"));
 
@@ -269,7 +269,7 @@ export default class Classifier extends DiagramEntity {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_2"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.classifierType));
             errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_3"));
 
@@ -293,7 +293,7 @@ export default class Classifier extends DiagramEntity {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_2"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.classifierType));
             errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_3"));
 
@@ -317,7 +317,7 @@ export default class Classifier extends DiagramEntity {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.attribute_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.attribute_not_found.part_2"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.classifierType));
             errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.attribute_not_found.part_3"));
 
@@ -340,7 +340,7 @@ export default class Classifier extends DiagramEntity {
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.part_1"));
         toTextFeedback.addSnippet(new StringSnippet(this.getName()));
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.part_2"));
-        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+this.entityType));
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+this.classifierType));
 
         let areArgumentsPresent = false;
 
