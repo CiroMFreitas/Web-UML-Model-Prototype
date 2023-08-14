@@ -1,4 +1,5 @@
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
+import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import { SUPPORTED_ENTITY_TYPES } from "../public/Utils/SupportedKeyWords";
 import AppError from "./AppError";
 import Attribute from "./Attribute";
@@ -324,10 +325,10 @@ export default class Classifier extends DiagramEntity {
     /**
      * Creates a feedback with classifier's information for a screen reader.
      * 
-     * @param commandLineArray Details to be read from classifier.
+     * @param readInstructions Instructions for readaing classifier.
      * @returns Classifier data in feedback format..
      */
-    public toText(commandLineArray: string[]): Feedback {
+    public toText(readInstructions: IReadClassifierDTO): Feedback {
         const toTextFeedback = new Feedback()
   
         // Start classifier read feedbback.
@@ -336,11 +337,7 @@ export default class Classifier extends DiagramEntity {
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.part_2"));
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+this.classifierType));
 
-        let areArgumentsPresent = false;
-
-        if(commandLineArray.includes("-a")) {
-            areArgumentsPresent = true;
-
+        if(readInstructions.readAttributes) {
             if(this.attributes.length > 0) {
                 if(this.attributes.length === 1) {
                     toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.attributes.singular"));
@@ -359,9 +356,7 @@ export default class Classifier extends DiagramEntity {
             }
         }
 
-        if(commandLineArray.includes("-m")) {
-            areArgumentsPresent = true;
-
+        if(readInstructions.readMethods) {
             if(this.methods.length > 0) {
                 if(this.methods.length === 1) {
                     toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.singular"));
@@ -380,7 +375,7 @@ export default class Classifier extends DiagramEntity {
             }
         }
 
-        if(areArgumentsPresent) {
+        if(readInstructions.readAttributes || readInstructions.readMethods) {
             toTextFeedback.addSnippet(".");
         } else {
             toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.is_present"));
