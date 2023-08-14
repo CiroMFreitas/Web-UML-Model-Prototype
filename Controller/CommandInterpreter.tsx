@@ -15,7 +15,7 @@ export default abstract class CommandInterpreter {
      * 
      * @param commandLine Comand line to be searched.
      * @param startArgument Start argument to be searched.
-     * @returns Array argument content or undefined.
+     * @returns Array argument content.
      */
     protected static getCommandArgumentContent(commandLine: string[], startArgument: string): string[] {
         // Checks if given argument is present.
