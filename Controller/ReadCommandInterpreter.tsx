@@ -11,12 +11,31 @@ import CommandInterpreter from "./CommandInterpreter";
  * Class responsible for handling user's read commands into DTOs.
  */
 export default class ReadCommandInterpreter extends CommandInterpreter {
+    /**
+     * Handles read classifier command into a DTO.
+     * 
+     * @param commandLine Command line to be handled.
+     * @returns DTO containing read classifier instructions.
+     */
     public static interpretReadClassifier(commandLine: string[]): IReadClassifierDTO {
-        return {
-            classifierName: "",
-            readAttributes: false,
-            readMethods: false
-        };
+        const classifierName = commandLine.shift();
+
+        // Checks if classifier name is present.
+        if((classifierName === undefined) || (classifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.missing_name_for_reading"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            const readAttributes = commandLine.find((snippet) => snippet === "=a");
+            const readMethods = commandLine.find((snippet) => snippet === "=m");
+
+            return {
+                classifierName: classifierName,
+                readAttributes: readAttributes ? true : false,
+                readMethods: readMethods ? true : false
+            };
+        }
     }
 
     /**
