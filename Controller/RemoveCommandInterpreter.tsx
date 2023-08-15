@@ -37,8 +37,16 @@ export default class RemoveCommandInterpreter extends CommandInterpreter {
      * @returns DTO with relationship removal instructions.
      */
     public static interpretRemoveRelationship(commandLine: string[]): IRemoveRelationshipDTO {
-        return {
-            direction: ""
-        };
+        const removalDirection = commandLine.shift();
+        if((removalDirection === undefined) || (removalDirection == "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_direction"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return {
+                direction: ""
+            };
+        }
     }
 }
