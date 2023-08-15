@@ -8,6 +8,12 @@ import CommandInterpreter from "./CommandInterpreter";
  * Class responsible for handling user's remove commands into DTOs.
  */
 export default class RemoveCommandInterpreter extends CommandInterpreter {
+    /**
+     * Handles a remove classifier command into a DTO.
+     * 
+     * @param commandLine Command to be handled.
+     * @returns DTO with classifier removal instructions.
+     */
     public static interpretRemoveClassifier(commandLine: string[]): IRemoveClassifierDTO {
         const classifierName = commandLine.shift();
 
