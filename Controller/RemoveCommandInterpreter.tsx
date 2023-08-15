@@ -2,6 +2,7 @@ import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import IRemoveClassifierDTO from "../public/DTO/IRemoveClassifierDTO";
+import IRemoveRelationshipDTO from "../public/DTO/IRemoveRelationshipDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
 /**
@@ -28,5 +29,16 @@ export default class RemoveCommandInterpreter extends CommandInterpreter {
                 classifierName: classifierName
             };
         }
+    }
+    /**
+     * Handles a remove relationship command into a DTO.
+     * 
+     * @param commandLine Command to be handled.
+     * @returns DTO with relationship removal instructions.
+     */
+    public static interpretRemoveRelationship(commandLine: string[]): IRemoveRelationshipDTO {
+        return {
+            direction: ""
+        };
     }
 }
