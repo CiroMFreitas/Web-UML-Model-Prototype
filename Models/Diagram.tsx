@@ -4,6 +4,7 @@ import IDiagramCreateRelationshipDTO from "../public/DTO/IDiagramCreateRelations
 import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
+import IRemoveClassifierDTO from "../public/DTO/IRemoveClassifierDTO";
 import AppError from "./AppError";
 import Classifier from "./Classifier";
 import Feedback from "./Feedback";
@@ -58,30 +59,33 @@ export default class Diagram {
     }
     
     /**
-     * Removes a classifier by command line instructions.
+     * Removes a classifier by command line instructions, note will also remove any relationship associated 
+     * with the to be removed classifier.
      * 
      * @param commandLineArray An array containing the classifier name in first position.
      * @returns Feedback if the removal was successful..
      */
-    public removeClassifierByCommand(commandLineArray: string[]): Feedback {
-        const classifierName = commandLineArray?.shift()?.toLowerCase();
+    public removeClassifier(removeClassifierInstructions: IRemoveClassifierDTO): Feedback {
+        // Get to be removed Classifier's relationships.
+        const toRemoveClassifier = this.getClassifierByName(removeClassifierInstructions.classifierName);
+        const toRemoveRelationships = this.relationships.filter((relationship) =>
+        relationship.getSourceClassifierId() === toRemoveClassifier.getId() ||
+        relationship.getTargetClassifierId() === toRemoveClassifier.getId());
+        toRemoveRelationships.forEach((toRemoveRelationship) => {
+            const toRemoveRelationshipIndex = this.getRelationshipIndexByName(toRemoveRelationship.getName());
+            this.relationships.splice(toRemoveRelationshipIndex, 1);
+        });
 
-        // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.error.missing_name_for_removal"));
+        // Removes Classifier.
+        const toRemoveClassifierIndex = this.getClassifierIndexByName(removeClassifierInstructions.classifierName);
+        this.classifiers.splice(toRemoveClassifierIndex, 1);
 
-            throw new AppError(errorFeedback);
-        } else {
-            const toRemoveClassifierIndex = this.getClassifierIndexByName(classifierName);
-            this.classifiers.splice(toRemoveClassifierIndex, 1);
-
-            const removeFeedback = new Feedback();
-            removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
-            removeFeedback.addSnippet(new StringSnippet(classifierName));
-            removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
-            return removeFeedback;
-        }
+        const removeFeedback = new Feedback();
+        removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
+        removeFeedback.addSnippet(new StringSnippet(removeClassifierInstructions.classifierName));
+        removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
+        
+        return removeFeedback;
     }
 
     /**

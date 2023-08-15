@@ -160,7 +160,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const removeClassifierInstructions = RemoveCommandInterpreter.interpretRemoveClassifier(commandLine);
-                    const removeClassifierFeedback = diagram.removeClassifierByCommand(commandLine);
+                    const removeClassifierFeedback = diagram.removeClassifier(removeClassifierInstructions);
                     setDiagram(diagram);
                     return removeClassifierFeedback.toString();
 
