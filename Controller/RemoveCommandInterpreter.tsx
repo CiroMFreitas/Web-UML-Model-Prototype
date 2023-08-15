@@ -62,6 +62,28 @@ export default class RemoveCommandInterpreter extends CommandInterpreter {
                         };
                     }
 
+                case "between":
+                    const sourceClassifierName = commandLine.shift();
+                    const targetClassifierName = commandLine.shift();
+                    
+                    if((sourceClassifierName === undefined) || (sourceClassifierName === "")) {
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_source_classifier_name_for_removal"));
+            
+                        throw new AppError(errorFeedback);
+                    } else if((targetClassifierName === undefined) || (targetClassifierName === "")) {
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_target_classifier_name_for_removal"));
+            
+                        throw new AppError(errorFeedback);
+                    } else {
+                        return {
+                            direction: removalDirection,
+                            sourceClassifierName: sourceClassifierName,
+                            targetClassifierName: targetClassifierName
+                        };
+                    }
+
                 default:
                     const errorFeedback = new Feedback();
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.invalid_direction"));
