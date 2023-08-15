@@ -11,6 +11,7 @@ import StringSnippet from "../Models/StringSnippet";
 import ReadCommandInterpreter from "../Controller/ReadCommandInterpreter";
 import AlterCommandInterpreter from "../Controller/AlterCommandInterpreter";
 import CreateCommandInterpreter from "../Controller/CreateCommandInterpreter";
+import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
@@ -158,6 +159,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
+                    const removeClassifierInstructions = RemoveCommandInterpreter.interpretRemoveClassifier(commandLine);
                     const removeClassifierFeedback = diagram.removeClassifierByCommand(commandLine);
                     setDiagram(diagram);
                     return removeClassifierFeedback.toString();
