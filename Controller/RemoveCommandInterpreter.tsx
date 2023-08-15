@@ -30,6 +30,7 @@ export default class RemoveCommandInterpreter extends CommandInterpreter {
             };
         }
     }
+
     /**
      * Handles a remove relationship command into a DTO.
      * 
@@ -38,15 +39,20 @@ export default class RemoveCommandInterpreter extends CommandInterpreter {
      */
     public static interpretRemoveRelationship(commandLine: string[]): IRemoveRelationshipDTO {
         const removalDirection = commandLine.shift();
+
         if((removalDirection === undefined) || (removalDirection == "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_direction"));
 
             throw new AppError(errorFeedback);
         } else {
-            return {
-                direction: ""
-            };
+            switch(removalDirection) {
+                default:
+                    const errorFeedback = new Feedback();
+                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.invalid_direction"));
+        
+                    throw new AppError(errorFeedback);
+            }
         }
     }
 }
