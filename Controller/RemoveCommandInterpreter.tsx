@@ -47,6 +47,21 @@ export default class RemoveCommandInterpreter extends CommandInterpreter {
             throw new AppError(errorFeedback);
         } else {
             switch(removalDirection) {
+                case "named":
+                    const removingRelationshipName = commandLine.shift();
+
+                    if((removingRelationshipName === undefined) || (removingRelationshipName === "")) {
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_relationship_name_for_removal"));
+                
+                        throw new AppError(errorFeedback);
+                    } else {
+                        return {
+                            direction: removalDirection,
+                            relationshipName: removingRelationshipName
+                        };
+                    }
+
                 default:
                     const errorFeedback = new Feedback();
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.invalid_direction"));
