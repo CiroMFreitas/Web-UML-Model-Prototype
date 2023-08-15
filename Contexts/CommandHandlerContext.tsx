@@ -166,7 +166,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const removerRelationshipInstructions = RemoveCommandInterpreter.interpretRemoveRelationship(commandLine);
-                    const removeRelationshipFeedback = diagram.removeRelatioshipByCommand(commandLine);
+                    const removeRelationshipFeedback = diagram.removeRelatioship(removerRelationshipInstructions);
                     setDiagram(diagram);
                     return removeRelationshipFeedback.toString();
                     

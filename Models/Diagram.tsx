@@ -5,6 +5,7 @@ import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
 import IRemoveClassifierDTO from "../public/DTO/IRemoveClassifierDTO";
+import IRemoveRelationshipDTO from "../public/DTO/IRemoveRelationshipDTO";
 import AppError from "./AppError";
 import Classifier from "./Classifier";
 import Feedback from "./Feedback";
@@ -194,41 +195,27 @@ export default class Diagram {
      * @param commandLineArray An array containing the instruvtions for relationship removal.
      * @returns Feedback if the removal was successful..
      */
-    public removeRelatioshipByCommand(commandLineArray: string[]): Feedback {
-        const removalDirection = commandLineArray?.shift()?.toLowerCase();
-
-        switch(removalDirection) {
+    public removeRelatioship(removerRelationshipInstructions: IRemoveRelationshipDTO): Feedback {
+        switch(removerRelationshipInstructions.direction) {
             // Removal by relationship name.
             case "named":
-                const removingRelationshipName = commandLineArray?.shift();
-                if((removingRelationshipName === undefined) || (removingRelationshipName === "")) {
-                    const errorFeedback = new Feedback();
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_relationship_name_for_removal"));
-        
-                    throw new AppError(errorFeedback);
+                if(removerRelationshipInstructions.relationshipName === undefined) {
+                    throw "In Diagram.tsx, removeRelationship method an empty relationship name was given.";
                 } else {
-                    const removingRelationshipIndex = this.getRelationshipIndexByName(removingRelationshipName);
+                    const removingRelationshipIndex = this.getRelationshipIndexByName(removerRelationshipInstructions.relationshipName);
                     this.relationships.splice(removingRelationshipIndex, 1);
                 }
                 break;
 
             // Reoval by related classifiers name.
             case "between":
-                const sourceClassifierName = commandLineArray?.shift();
-                const targetClassifierName = commandLineArray?.shift();
-                if((sourceClassifierName === undefined) || (sourceClassifierName === "")) {
-                    const errorFeedback = new Feedback();
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_source_classifier_name_for_removal"));
-        
-                    throw new AppError(errorFeedback);
-                } else if((targetClassifierName === undefined) || (targetClassifierName === "")) {
-                    const errorFeedback = new Feedback();
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_target_classifier_name_for_removal"));
-        
-                    throw new AppError(errorFeedback);
+                if(removerRelationshipInstructions.sourceClassifierName === undefined) {
+                    throw "In Diagram.tsx, removeRelationship method an empty source classifier name was given.";
+                } else if(removerRelationshipInstructions.targetClassifierName === undefined) {
+                    throw "In Diagram.tsx, removeRelationship method an empty target classifier name was given.";
                 } else {
-                    const sourceClassifier = this.getClassifierByName(sourceClassifierName);
-                    const targetClassifier = this.getClassifierByName(targetClassifierName);
+                    const sourceClassifier = this.getClassifierByName(removerRelationshipInstructions.sourceClassifierName);
+                    const targetClassifier = this.getClassifierByName(removerRelationshipInstructions.targetClassifierName);
                     const classifiersRelationshipsIndexes = this.relationships.map((relationship, index) => {
                         if((relationship.getSourceClassifierId() === sourceClassifier.getId()) && (relationship.getTargetClassifierId() === targetClassifier.getId())) {
                             return index;
@@ -238,18 +225,18 @@ export default class Diagram {
                     if((classifiersRelationshipsIndexes === undefined) || (classifiersRelationshipsIndexes.length === 0)) {
                         const errorFeedback = new Feedback();
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(sourceClassifierName));
+                        errorFeedback.addSnippet(new StringSnippet(removerRelationshipInstructions.sourceClassifierName));
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_2"));
-                        errorFeedback.addSnippet(new StringSnippet(targetClassifierName));
+                        errorFeedback.addSnippet(new StringSnippet(removerRelationshipInstructions.targetClassifierName));
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_3"));
             
                         throw new AppError(errorFeedback);
                     } else if(classifiersRelationshipsIndexes.length > 1) {
                         const errorFeedback = new Feedback();
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(sourceClassifierName));
+                        errorFeedback.addSnippet(new StringSnippet(removerRelationshipInstructions.sourceClassifierName));
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_2"));
-                        errorFeedback.addSnippet(new StringSnippet(targetClassifierName));
+                        errorFeedback.addSnippet(new StringSnippet(removerRelationshipInstructions.targetClassifierName));
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_3"));
                         classifiersRelationshipsIndexes.forEach((relationshipIndex, index) => {
                             if(relationshipIndex !== undefined) {
