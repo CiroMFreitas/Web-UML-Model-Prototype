@@ -1,3 +1,6 @@
+import AppError from "../Models/AppError";
+import Feedback from "../Models/Feedback";
+import LocalizationSnippet from "../Models/LocalizationSnippet";
 import IRemoveClassifierDTO from "../public/DTO/IRemoveClassifierDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
@@ -6,8 +9,18 @@ import CommandInterpreter from "./CommandInterpreter";
  */
 export default class RemoveCommandInterpreter extends CommandInterpreter {
     public static interpretRemoveClassifier(commandLine: string[]): IRemoveClassifierDTO {
-        return {
-            classifierName: ""
-        };
+        const classifierName = commandLine.shift();
+
+        // Checks if classifier name is present.
+        if((classifierName === undefined) || (classifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.error.missing_name_for_removal"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return {
+                classifierName: classifierName
+            };
+        }
     }
 }
