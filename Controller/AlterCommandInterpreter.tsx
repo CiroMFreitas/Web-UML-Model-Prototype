@@ -7,6 +7,7 @@ import IAlterClassifierDTO from "../public/DTO/IAlterClassifierDTO";
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
+import IMethodChangesDTO from "../public/DTO/IMethodChangesDTO";
 import IRemoveAttributeDTO from "../public/DTO/IRemoveAttributeDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
@@ -41,16 +42,19 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
                 attributeAlterations = this.handleAttributeChanges(attributesChangeArgument);
             }
 
+            // Checks and changes classifier's attributes if desired.
+            const methodsChangeArgument = this.getCommandArgumentContent(commandLine, "-a");
+            let methodAlterations = {} as IMethodChangesDTO;
+            if(attributesChangeArgument !== undefined) {
+                methodAlterations = this.handleMethodChanges(methodsChangeArgument);
+            }
+
             return {
                 classifierName: classifierName,
                 newClassifierName: newClassifeirName.length !== 0 ? newClassifeirName[0] : undefined,
                 newClassifierType: newClassifeirType.length !== 0 ? newClassifeirType[0] : undefined,
                 attributeAlterations: attributeAlterations,
-                methodAlterations: {
-                    create: [],
-                    remove: [],
-                    alter: []
-                }
+                methodAlterations: methodAlterations
             };
         }
     }
@@ -175,5 +179,19 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             remove: remove,
             alter: alter
         };
+    }
+
+    /**
+     * Handles mwthod arguments into DTOs.
+     * 
+     * @param methodArguments An array arguments to be handled. 
+     * @returns Handled arguments, some may be empty if no instruction of said type were given.
+     */
+    private static handleMethodChanges(methodArguments: string[]): IMethodChangesDTO {
+        return {
+            create: [],
+            remove: [],
+            alter: []
+        }
     }
 }
