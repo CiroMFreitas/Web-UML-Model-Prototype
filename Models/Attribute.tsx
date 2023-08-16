@@ -22,10 +22,9 @@ export default class Attribute extends VisibleEntity {
     }
 
     /**
-     * Changes attribute's data, expecting data to be organized with the respective order inside array,
-     * visibility, name and type.
+     * Changes attribute's data, following DTO instructions.
      * 
-     * @param alterations Array containing alterations in the previously stated order.
+     * @param alterations DTO containing alterations instructions.
      */
     public alter(alterations: IAlterAttributeDTO): void {
         if((alterations.newVisibility !== "-") && (alterations.newVisibility !== "")) {
