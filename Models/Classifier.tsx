@@ -1,3 +1,4 @@
+import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import { SUPPORTED_ENTITY_TYPES } from "../public/Utils/SupportedKeyWords";
