@@ -91,9 +91,9 @@ export default class Diagram {
     }
 
     /**
-     * Alters a classifier following instructions inside an array.
+     * Alters a classifier following instructions inside an DTO.
      * 
-     * @param alterClassifierInstructions Array containing instructions to be handled.
+     * @param alterClassifierInstructions DTO containing instructions to be executed.
      * @returns Feedback should alteration succeed.
      */
     public alterClassifier(alterClassifierInstructions: IAlterClassifierDTO): Feedback {
