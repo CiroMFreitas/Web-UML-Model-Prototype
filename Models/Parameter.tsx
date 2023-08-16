@@ -1,3 +1,4 @@
+import IAlterParameterDTO from "../public/DTO/IAlterParamenterDTO";
 import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
 import AppError from "./AppError";
 import Feedback from "./Feedback";
@@ -20,18 +21,17 @@ export default class Parameter extends TypedEntity {
     }
 
     /**
-     * Changes parameter's data, expecting data to be organized with the respective order inside array,
-     * name and type.
+     * Changes parameter's data following DTO instructions.
      * 
-     * @param alterations Array containing alterations in the previously stated order.
+     * @param alterations DTO containing alterations to be executed.
      */
-    public alter(alterations: string[]): void {
-        if((alterations[0] !== "-") && (alterations[0] !== "")) {
-            this.setName(alterations[0]);
+    public alter(alterations: IAlterParameterDTO): void {
+        if((alterations.newParameterName !== "-") && (alterations.newParameterName !== "")) {
+            this.setName(alterations.newParameterName);
         }
 
-        if((alterations[1] !== "-") && (alterations[1] !== "")) {
-            this.setType(alterations[1]);
+        if((alterations.newParameterType !== "-") && (alterations.newParameterType !== "")) {
+            this.setType(alterations.newParameterType);
         }
     }
 
