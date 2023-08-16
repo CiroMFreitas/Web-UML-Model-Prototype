@@ -48,15 +48,15 @@ export default class Method extends VisibleEntity {
             this.setType(alterations.newMethodType);
         }
         
+        alterations.parameterAlteraions.remove.forEach((removeParameter) => {
+            const toRemoveParameterIndex = this.getParameterIndexByName(removeParameter.paramaterName);
+            this.parameters.splice(toRemoveParameterIndex, 1);
+        });
+        
         alterations.parameterAlteraions.create.forEach((createParameter) => {
             const newParameter = new Parameter(createParameter);
             this.isParameterNameInUse(newParameter.getName());
             this.parameters.push(newParameter);
-        });
-        
-        alterations.parameterAlteraions.remove.forEach((removeParameter) => {
-            const toRemoveParameterIndex = this.getParameterIndexByName(removeParameter.paramaterName);
-            this.parameters.splice(toRemoveParameterIndex, 1);
         });
         
         alterations.parameterAlteraions.alter.forEach((alterParameter) => {

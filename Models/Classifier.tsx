@@ -52,15 +52,15 @@ export default class Classifier extends DiagramEntity {
      * @param attributesChanges DTO containing instructions.
      */
     public alterAttributes(alterationInstructions: IAttributeChangesDTO): void {
+        alterationInstructions.remove.forEach((removeAttribute) => {
+            const toRemoveAttributeIndex = this.getAttributeIndexByName(removeAttribute.attributeName);
+            this.attributes.splice(toRemoveAttributeIndex, 1);
+        });
+
         alterationInstructions.create.forEach((createAttribute) => {
             const newAttribute = new Attribute(createAttribute);
             this.isAttributeNameInUse(newAttribute.getName());
             this.attributes.push(newAttribute);
-        });
-
-        alterationInstructions.remove.forEach((removeAttribute) => {
-            const toRemoveAttributeIndex = this.getAttributeIndexByName(removeAttribute.attributeName);
-            this.attributes.splice(toRemoveAttributeIndex, 1);
         });
 
         alterationInstructions.alter.forEach((alterAttribute) => {
@@ -76,15 +76,15 @@ export default class Classifier extends DiagramEntity {
      * @param methodsChanges DTO containing instructions.
      */
     public alterMethods(alterationInstructions: IMethodChangesDTO): void {
+        alterationInstructions.remove.forEach((removeMethod) => {
+            const toRemoveMethoIndex = this.getMethodIndexByName(removeMethod.methodName);
+            this.methods.splice(toRemoveMethoIndex, 1);
+        });
+
         alterationInstructions.create.forEach((createMethod) => {
             const newMethod = new Method(createMethod);
             this.isMethodNameInUse(newMethod.getName());
             this.methods.push(newMethod);
-        });
-
-        alterationInstructions.remove.forEach((removeMethod) => {
-            const toRemoveMethoIndex = this.getMethodIndexByName(removeMethod.methodName);
-            this.methods.splice(toRemoveMethoIndex, 1);
         });
 
         alterationInstructions.alter.forEach((alterMethod) => {
