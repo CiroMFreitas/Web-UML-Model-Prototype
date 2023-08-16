@@ -4,11 +4,15 @@ import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
 import IAlterClassifierDTO from "../public/DTO/IAlterClassifierDTO";
+import IAlterMethodDTO from "../public/DTO/IAlterMethodDTO";
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
+import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
 import IMethodChangesDTO from "../public/DTO/IMethodChangesDTO";
+import IParameterChangesDTO from "../public/DTO/IParameterChangesDTO";
 import IRemoveAttributeDTO from "../public/DTO/IRemoveAttributeDTO";
+import IRemoveMethodDTO from "../public/DTO/IRemoveMethodDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
 /**
@@ -188,6 +192,64 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
      * @returns Handled arguments, some may be empty if no instruction of said type were given.
      */
     private static handleMethodChanges(methodArguments: string[]): IMethodChangesDTO {
+        const createMethods = [] as ICreateMethodDTO[];
+        const removeMethods = [] as IRemoveMethodDTO[];
+        const alterMethods = [] as IAlterMethodDTO[];
+
+        const handledmethodsChanges = this.handleMethodArguments(methodArguments);
+        handledmethodsChanges.forEach((change) => {
+            const methodChangeArguments = change[0].split(":");
+            const paramenterChangeArguments = change.splice(1);
+            const alterationArgument = methodChangeArguments.shift();
+            
+            if((alterationArgument === undefined) || (alterationArgument === "")) {
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
+                errorFeedback.addSnippet(new StringSnippet(":" + methodChangeArguments.toString().replaceAll(",", ":") + ".."));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
+
+                throw new AppError(errorFeedback);
+            } else {
+                switch(alterationArgument) {
+                    case "add":
+                        createMethods.push(this.handleCreateMethodArgument([alterationArgument.toString().replaceAll(",", ":")].concat(paramenterChangeArguments)));
+                        break;
+
+                    case "remove":
+                        removeMethods.push({
+                            methodName: methodChangeArguments[0]
+                        });
+                        break;
+
+                    case "alter":
+                        const parameterChanges = this.handleParameterChanges(paramenterChangeArguments);
+                        alterMethods.push({
+                            methodName: methodChangeArguments[0],
+                            newMethodVisibility: methodChangeArguments[1],
+                            newMethodName: methodChangeArguments[2],
+                            newMethodType: methodChangeArguments[3],
+                            parameterAlteraions: parameterChanges
+                        });
+                        break;
+
+                    default:
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
+                        errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + methodChangeArguments.toString().replaceAll(",", ":") + ".."));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
+    
+                        throw new AppError(errorFeedback);
+                }
+            }
+        });
+
+        return {
+            create: createMethods,
+            remove: removeMethods,
+            alter: alterMethods
+        }
+    }
+
     /**
      * Handles parameter arguments into DTOs.
      * 
