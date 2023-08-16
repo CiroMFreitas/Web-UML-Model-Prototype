@@ -21,19 +21,38 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
      * @returns Handled coomand line.
      */
     public static interpretAlterClassifier(commandLine: string[]): IAlterClassifierDTO {
-        return {
-            classifierName: "",
-            attributeAlterations: {
-                create: [],
-                remove: [],
-                alter: []
-            },
-            methodAlterations: {
-                create: [],
-                remove: [],
-                alter: []
+        const classifierName = commandLine.shift();
+
+        // Checks if classifier name is present.
+        if((classifierName === undefined) || (classifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.entity_type_missing_on_alteration"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            // Checks for classifier's name and type change.
+            const newClassifeirName = this.getCommandArgumentContent(commandLine, "-n");
+            const newClassifeirType = this.getCommandArgumentContent(commandLine, "-t");
+
+            // Checks and changes classifier's attributes if desired.
+            const attributesChangeArgument = this.getCommandArgumentContent(commandLine, "-a");
+            let attributeAlterations = {} as IAttributeChangesDTO;
+            if(attributesChangeArgument !== undefined) {
+                attributeAlterations = this.handleAttributeChanges(attributesChangeArgument);
             }
-        };
+
+            return {
+                classifierName: classifierName,
+                newClassifierName: newClassifeirName.length !== 0 ? newClassifeirName[0] : undefined,
+                newClassifierType: newClassifeirType.length !== 0 ? newClassifeirType[0] : undefined,
+                attributeAlterations: attributeAlterations,
+                methodAlterations: {
+                    create: [],
+                    remove: [],
+                    alter: []
+                }
+            };
+        }
     }
 
     /**
@@ -74,9 +93,9 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
      * @returns Handled arguments, some may be empty if no instruction of said type was given.
      */
     private static handleAttributeChanges(attributeArguments: string[]): IAttributeChangesDTO {
-        const createAttributes = [] as ICreateAttributeDTO[];
-        const removeAttributes = [] as IRemoveAttributeDTO[];
-        const alterAttributes = [] as IAlterAttributeDTO[];
+        const create = [] as ICreateAttributeDTO[];
+        const remove = [] as IRemoveAttributeDTO[];
+        const alter = [] as IAlterAttributeDTO[];
 
         attributeArguments.forEach((attributeArgument) => {
             const splitArgument = attributeArgument.split(":");
