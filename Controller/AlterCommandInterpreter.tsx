@@ -93,7 +93,7 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
     /**
      * Handles attribute arguments into DTOs.
      * 
-     * @param attributeArguments An array arguments to be handled. 
+     * @param attributeArguments An array of arguments to be handled. 
      * @returns Handled arguments, some may be empty if no instruction of said type were given.
      */
     private static handleAttributeChanges(attributeArguments: string[]): IAttributeChangesDTO {
@@ -182,9 +182,9 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
     }
 
     /**
-     * Handles mwthod arguments into DTOs.
+     * Handles method arguments into DTOs.
      * 
-     * @param methodArguments An array arguments to be handled. 
+     * @param methodArguments An array of arguments to be handled. 
      * @returns Handled arguments, some may be empty if no instruction of said type were given.
      */
     private static handleMethodChanges(methodArguments: string[]): IMethodChangesDTO {
