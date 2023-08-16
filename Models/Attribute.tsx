@@ -1,4 +1,6 @@
 
+import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
+import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import AppError from "./AppError";
 import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
@@ -13,49 +15,28 @@ export default class Attribute extends VisibleEntity {
     /**
      * Creates attribute.
      * 
-     * @param attributeArgument A string containg it's attributes divided by :.
+     * @param creationInstructions DTO if instructions for attribute creation.
      */
-    constructor(attributeArgument: string) {
-        // Checks if sufficient arguments were given for attribute creation.
-        const splitArgument = attributeArgument.split(":");
-        if(splitArgument.length === 3) {
-            super(splitArgument[1], splitArgument[2], splitArgument[0]);
-        } else if(splitArgument.length === 2) {
-            super(splitArgument[0], splitArgument[1]);
-        } else {
-            const errorFeedback = new Feedback();
-            if(splitArgument[0] === "") {
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.empty_attribute_argument"));
-            } else if(splitArgument.length === 1) {
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_1.too_few"));
-                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
-            } else {
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_1.too_many"));
-                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
-            }
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.invalid_attribute_arguments.part_2"));
-
-            throw new AppError(errorFeedback)
-        }
+    constructor(creationInstructions: ICreateAttributeDTO) {
+        super(creationInstructions.name, creationInstructions.type, creationInstructions.visibility);
     }
 
     /**
-     * Changes attribute's data, expecting data to be organized with the respective order inside array,
-     * visibility, name and type.
+     * Changes attribute's data, following DTO instructions.
      * 
-     * @param alterations Array containing alterations in the previously stated order.
+     * @param alterations DTO containing alterations instructions.
      */
-    public alter(alterations: string[]): void {
-        if((alterations[0] !== "-") && (alterations[0] !== "")) {
-            this.setVisibility(alterations[0]);
+    public alter(alterations: IAlterAttributeDTO): void {
+        if((alterations.newVisibility !== "-") && (alterations.newVisibility !== "")) {
+            this.setVisibility(alterations.newVisibility);
         }
 
-        if((alterations[1] !== "-") && (alterations[1] !== "")) {
-            this.setName(alterations[1]);
+        if((alterations.newName !== "-") && (alterations.newName !== "")) {
+            this.setName(alterations.newName);
         }
 
-        if((alterations[2] !== "-") && (alterations[2] !== "")) {
-            this.setType(alterations[2]);
+        if((alterations.newType !== "-") && (alterations.newType !== "")) {
+            this.setType(alterations.newType);
         }
     }
 

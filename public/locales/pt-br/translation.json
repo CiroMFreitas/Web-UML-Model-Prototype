@@ -34,6 +34,10 @@
                 "part_1": "Criação da ",
                 "part_2": " foi realizada com sucesso.",
                 "error": {
+                    "missing_name_argument": {
+                        "part_1": "Não foi fornecido um nome para criação de ",
+                        "part_2": "."
+                    },
                     "classifier_name_already_in_use": "Nome fornecido para classificador já está em uso.",
                     "unrecognized_entity_type": {
                         "part1": "O tipo de entidade ",
@@ -230,7 +234,8 @@
             },
             "relationship": {
                 "error": {
-                    "invalid_direction": "Direção inválida para remoção de relacionamento, use os argumentos 'named' ou 'between'.",
+                    "missing_direction": "Não foi fornecido uma direção para a remoção de relacionamento, use as direções 'named' ou 'between'.",
+                    "invalid_direction": "Direção inválida para remoção de relacionamento, use as direções 'named' ou 'between'.",
                     "missing_relationship_name_for_removal": "Nenhum nome de relacinamento for fornecido para remoação.",
                     "missing_source_classifier_name_for_removal": "Não foi fornecido o nome do classificador fonte para remoção do relacionamento.",
                     "missing_target_classifier_name_for_removal": "Não foi fornecido o nome do classificador alvo para remoção do relacionamento.",
@@ -276,6 +281,12 @@
                             "part_3": "."
                         }
                     }
+                },
+                "error": {
+                    "invalid_classifiier_type": {
+                        "part_1": "O tipo de classificador fornecido ",
+                        "part_2": " é inválido, use class, abstract ou interface."
+                    }
                 }
             },
             "attribute": {
@@ -302,10 +313,39 @@
                     }
                 }
             },
+            "method": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "O argumento de attributo ",
+                        "part_2": " está faltando o termo de alteração, use add, alter ou remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "O argumento de alteração ",
+                        "part_2": " é inválido, use add, alter ou remove."
+                    }
+                }
+            },
+            "parameter": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "O argumento de parametro ",
+                        "part_2": " está faltando o termo de alteração, use add, alter ou remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "O argumento de alteração ",
+                        "part_2": " é inválido, use add, alter ou remove."
+                    }
+                }
+            },
             "relationship": {
+                "success": {
+                    "part_1": "O relacionamento ",
+                    "part_2": " foi alterado com sucesso."
+                },
                 "error": {
                     "missing_relationship_name": "Não fornecido o nome do relacionamento que deseja alterar.",
-                    "attribute_doe_not_exist": "O relacionamento não possui atributo associativo."
+                    "attribute_already_exists": "O relacionamento já possui um atribute, o altere ou o remova antes de adicionar um novo atributo.",
+                    "attribute_does_not_exist": "O relacionamento não possui atributo associativo."
                 }
             },
             "error": {

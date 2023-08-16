@@ -2,6 +2,7 @@ import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
+import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
 import CommandInterpreter from "./CommandInterpreter";
@@ -10,6 +11,33 @@ import CommandInterpreter from "./CommandInterpreter";
  * Class responsible for handling user's read commands into DTOs.
  */
 export default class ReadCommandInterpreter extends CommandInterpreter {
+    /**
+     * Handles read classifier command into a DTO.
+     * 
+     * @param commandLine Command line to be handled.
+     * @returns DTO containing read classifier instructions.
+     */
+    public static interpretReadClassifier(commandLine: string[]): IReadClassifierDTO {
+        const classifierName = commandLine.shift();
+
+        // Checks if classifier name is present.
+        if((classifierName === undefined) || (classifierName === "")) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.missing_name_for_reading"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            const readAttributes = commandLine.find((snippet) => snippet === "=a");
+            const readMethods = commandLine.find((snippet) => snippet === "=m");
+
+            return {
+                classifierName: classifierName,
+                readAttributes: readAttributes ? true : false,
+                readMethods: readMethods ? true : false
+            };
+        }
+    }
+
     /**
      * Handles a read relationship command line.
      * 

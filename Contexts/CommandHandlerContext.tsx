@@ -10,6 +10,8 @@ import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import ReadCommandInterpreter from "../Controller/ReadCommandInterpreter";
 import AlterCommandInterpreter from "../Controller/AlterCommandInterpreter";
+import CreateCommandInterpreter from "../Controller/CreateCommandInterpreter";
+import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
@@ -92,12 +94,14 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const classifierCreationFeedback = diagram.createClassifierByCommand(entityType, commandLine);
+                    const createClassifierInstructions = CreateCommandInterpreter.interpretCreateClassifier(commandLine, entityType);
+                    const classifierCreationFeedback = diagram.createClassifier(createClassifierInstructions);
                     setDiagram(diagram);
                     return classifierCreationFeedback.toString();
     
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                    const relationshipCreationFeedback = diagram.createRelationshipByCommand(commandLine);
+                    const createRelationshipInstructions = CreateCommandInterpreter.interpretCreateRelationship(commandLine);
+                    const relationshipCreationFeedback = diagram.createRelationship(createRelationshipInstructions);
                     setDiagram(diagram);
                     return relationshipCreationFeedback.toString();
         
@@ -126,7 +130,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     return diagramFeedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const classifierReadfeedback = diagram.readClassifierByCommand(commandLine);
+                    const readClassifierInstructions = ReadCommandInterpreter.interpretReadClassifier(commandLine);
+                    const classifierReadfeedback = diagram.readClassifier(readClassifierInstructions);
                     return classifierReadfeedback.toString();
                 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
@@ -154,12 +159,14 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const removeClassifierFeedback = diagram.removeClassifierByCommand(commandLine);
+                    const removeClassifierInstructions = RemoveCommandInterpreter.interpretRemoveClassifier(commandLine);
+                    const removeClassifierFeedback = diagram.removeClassifier(removeClassifierInstructions);
                     setDiagram(diagram);
                     return removeClassifierFeedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                    const removeRelationshipFeedback = diagram.removeRelatioshipByCommand(commandLine);
+                    const removerRelationshipInstructions = RemoveCommandInterpreter.interpretRemoveRelationship(commandLine);
+                    const removeRelationshipFeedback = diagram.removeRelatioship(removerRelationshipInstructions);
                     setDiagram(diagram);
                     return removeRelationshipFeedback.toString();
                     
@@ -183,7 +190,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
-                    const alterClassifierFeedback = diagram.alterClassifierByCommand(commandLine);
+                    const alterClassifierInstructions = AlterCommandInterpreter.interpretAlterClassifier(commandLine);
+                    const alterClassifierFeedback = diagram.alterClassifier(alterClassifierInstructions);
                     setDiagram(diagram);
                     return alterClassifierFeedback.toString();
 

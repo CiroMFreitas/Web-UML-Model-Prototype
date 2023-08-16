@@ -1,3 +1,7 @@
+import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
+import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
+import IMethodChangesDTO from "../public/DTO/IMethodChangesDTO";
+import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import { SUPPORTED_ENTITY_TYPES } from "../public/Utils/SupportedKeyWords";
 import AppError from "./AppError";
 import Attribute from "./Attribute";
@@ -11,142 +15,82 @@ import StringSnippet from "./StringSnippet";
  * Classifiers holding attributes and methods.
  */
 export default class Classifier extends DiagramEntity {
-    private entityType: string;
+    private classifierType: string;
     private attributes = [] as Attribute[];
     private methods = [] as Method[];
     
     /**
      * Creates a Classifier.
      * 
-     * @param entityType Classifer's type, vaid types are, class, abstract and interface.
-     * @param classifierName Classifier's name.
-     * @param attributeArguments Classifier's array of attribute's arguments to be created.
-     * @param methodArguments Classifier's array of method's arguments to be created.
+     * @param creationInstructions DTO contaning instructions for classifier creation.
      */
-    constructor(entityType: string, classifierName: string, attributeArguments?: string[], methodArguments?: string[]) {
-        super(classifierName);
-        this.entityType = entityType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : entityType;
+    constructor(creationInstructions: ICreateClassifierDTO) {
+        super(creationInstructions.classifierName);
+        // If classifier is the given type it will be saved as a class.
+        this.classifierType = creationInstructions.classifierType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : creationInstructions.classifierType;
 
-        // Cretas attributes if arguments are present.
-        if(attributeArguments !== undefined) {
-            attributeArguments.forEach((argument) => {
-                const newAttribute = new Attribute(argument);
-                this.isAttributeNameInUse(newAttribute.getName());
+        // Cretas attributes if any arguments are present.
+        creationInstructions.attributes.forEach((attributeInstructions) => {
+            const newAttribute = new Attribute(attributeInstructions);
+            this.isAttributeNameInUse(newAttribute.getName());
 
-                this.attributes.push(newAttribute);
-            });
-        }
+            this.attributes.push(newAttribute);
+        });
 
-        // Cretas methods if arguments are present.
-        if(methodArguments !== undefined) {
-            const handledMethodArguments = this.handleMethodArguments(methodArguments);
-            handledMethodArguments.forEach((handledMethod) => {
-                const newMethod = new Method(handledMethod);
-                this.isMethodNameInUse(newMethod.getName());
+        // Cretas methods if any arguments are present.
+        creationInstructions.methods.forEach((methodInstructions) => {
+            const newMethod = new Method(methodInstructions);
+            this.isMethodNameInUse(newMethod.getName());
 
-                this.methods.push(newMethod);
-            });
-        }
-    }
-
-    /**
-     * Handles instructions for alterations to attributes, expects a array containg a string with instructions
-     * separated by ":".
-     * 
-     * @param attributesChanges Array containing instructions.
-     */
-    public alterAttributes(attributesChanges: string[]): void {
-        attributesChanges.forEach((change) => {
-            const changeArguments = change.split(":");
-            const alterationArgument = changeArguments.shift();
-            
-            if((alterationArgument === undefined) || (alterationArgument === "")) {
-                const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
-                errorFeedback.addSnippet(new StringSnippet(":" + changeArguments.toString().replaceAll(",", ":")));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
-
-                throw new AppError(errorFeedback);
-
-            } else {
-                switch(true) {
-                    case alterationArgument === "add":
-                        const newAttribute = new Attribute(alterationArgument.toString().replaceAll(",", ":"));
-                        this.isAttributeNameInUse(newAttribute.getName());
-                        this.attributes.push(newAttribute);
-                        break;
-
-                    case alterationArgument === "remove":
-                        const removalIndex = this.getAttributeIndexByName(changeArguments[0]);
-                        this.attributes.splice(removalIndex, 1);
-                        break;
-
-                    case alterationArgument === "alter":
-                        const alteringAttribute = this.getAttributeByName(changeArguments[0]);
-                        this.isAttributeNameInUse(changeArguments[2])
-                        alteringAttribute.alter(changeArguments.splice(1));
-                        break;
-
-                    default:
-                        const errorFeedback = new Feedback();
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + changeArguments.toString().replaceAll(",", ":")));
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
-    
-                        throw new AppError(errorFeedback);
-                }
-            }
+            this.methods.push(newMethod);
         });
     }
 
     /**
-     * Handles instructions for alterations to attributes, expects a array containg a string with instructions
-     * separated by ":".
+     * Execute classifier's attribute alterations.
      * 
-     * @param methodsChanges Array containing instructions.
+     * @param attributesChanges DTO containing instructions.
      */
-    public alterMethods(methodsChanges: string[]): void {
-        const handledmethodsChanges = this.handleMethodArguments(methodsChanges);
-        handledmethodsChanges.forEach((change) => {
-            const methodChangeArguments = change[0].split(":");
-            const paramenterChangeArguments = change.splice(1);
-            const alterationArgument = methodChangeArguments.shift();
-            
-            if((alterationArgument === undefined) || (alterationArgument === "")) {
-                const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
-                errorFeedback.addSnippet(new StringSnippet(":" + methodChangeArguments.toString().replaceAll(",", ":") + ".."));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
+    public alterAttributes(alterationInstructions: IAttributeChangesDTO): void {
+        alterationInstructions.remove.forEach((removeAttribute) => {
+            const toRemoveAttributeIndex = this.getAttributeIndexByName(removeAttribute.attributeName);
+            this.attributes.splice(toRemoveAttributeIndex, 1);
+        });
 
-                throw new AppError(errorFeedback);
-            } else {
-                switch(true) {
-                    case alterationArgument === "add":
-                        const newMethod = new Method([alterationArgument.toString().replaceAll(",", ":")].concat(paramenterChangeArguments));
-                        this.isMethodNameInUse(newMethod.getName());
-                        this.methods.push(newMethod);
-                        break;
+        alterationInstructions.create.forEach((createAttribute) => {
+            const newAttribute = new Attribute(createAttribute);
+            this.isAttributeNameInUse(newAttribute.getName());
+            this.attributes.push(newAttribute);
+        });
 
-                    case alterationArgument === "remove":
-                        const removalIndex = this.getMethodIndexByName(methodChangeArguments[0]);
-                        this.methods.splice(removalIndex, 1);
-                        break;
+        alterationInstructions.alter.forEach((alterAttribute) => {
+            const toAlterAttribute = this.getAttributeByName(alterAttribute.attributeName);
+            toAlterAttribute.alter(alterAttribute);
+            this.isAttributeNameInUse(toAlterAttribute.getName());
+        });
+    }
 
-                    case alterationArgument === "alter":
-                        const alteringMethod = this.getMethodByName(methodChangeArguments[0]);
-                        this.isAttributeNameInUse(methodChangeArguments[2])
-                        alteringMethod.alter(methodChangeArguments.splice(1));
-                        break;
+    /**
+     * Execute classifier's methods alterations.
+     * 
+     * @param methodsChanges DTO containing instructions.
+     */
+    public alterMethods(alterationInstructions: IMethodChangesDTO): void {
+        alterationInstructions.remove.forEach((removeMethod) => {
+            const toRemoveMethoIndex = this.getMethodIndexByName(removeMethod.methodName);
+            this.methods.splice(toRemoveMethoIndex, 1);
+        });
 
-                    default:
-                        const errorFeedback = new Feedback();
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + methodChangeArguments.toString().replaceAll(",", ":") + ".."));
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
-    
-                        throw new AppError(errorFeedback);
-                }
-            }
+        alterationInstructions.create.forEach((createMethod) => {
+            const newMethod = new Method(createMethod);
+            this.isMethodNameInUse(newMethod.getName());
+            this.methods.push(newMethod);
+        });
+
+        alterationInstructions.alter.forEach((alterMethod) => {
+            const toAlterMethod = this.getMethodByName(alterMethod.methodName);
+            toAlterMethod.alter(alterMethod);
+            this.isMethodNameInUse(toAlterMethod.getName());
         });
     }
 
@@ -155,8 +99,26 @@ export default class Classifier extends DiagramEntity {
      * 
      * @returns Classifier's type.
      */
-    public getEntityType(): string {
-        return this.entityType;
+    public getClassifierType(): string {
+        return this.classifierType;
+    }
+
+    /**
+     * Set's classifier's type.
+     * 
+     */
+    public setClassifierType(classifierType: string): void {
+        if(!SUPPORTED_ENTITY_TYPES.classifier.includes(classifierType)) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_classifiier_type.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(classifierType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_classifiier_type.part_2"));
+            
+            throw new AppError(errorFeedback);
+        }
+
+        // If classifier is the given type it will be saved as a class.
+        this.classifierType = classifierType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : classifierType;
     }
 
     /**
@@ -245,7 +207,7 @@ export default class Classifier extends DiagramEntity {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_2"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.classifierType));
             errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_3"));
 
@@ -269,7 +231,7 @@ export default class Classifier extends DiagramEntity {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_2"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.classifierType));
             errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.attributes.error.attribute_not_found.part_3"));
 
@@ -293,7 +255,7 @@ export default class Classifier extends DiagramEntity {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_2"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.classifierType));
             errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.method_not_found.part_3"));
 
@@ -317,7 +279,7 @@ export default class Classifier extends DiagramEntity {
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.attribute_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.attribute_not_found.part_2"));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.entityType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type." + this.classifierType));
             errorFeedback.addSnippet(new StringSnippet(" " + this.getName()));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.attribute_not_found.part_3"));
 
@@ -330,23 +292,19 @@ export default class Classifier extends DiagramEntity {
     /**
      * Creates a feedback with classifier's information for a screen reader.
      * 
-     * @param commandLineArray Details to be read from classifier.
+     * @param readInstructions Instructions for readaing classifier.
      * @returns Classifier data in feedback format..
      */
-    public toText(commandLineArray: string[]): Feedback {
+    public toText(readInstructions: IReadClassifierDTO): Feedback {
         const toTextFeedback = new Feedback()
   
         // Start classifier read feedbback.
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.part_1"));
         toTextFeedback.addSnippet(new StringSnippet(this.getName()));
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.part_2"));
-        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+this.entityType));
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+this.classifierType));
 
-        let areArgumentsPresent = false;
-
-        if(commandLineArray.includes("-a")) {
-            areArgumentsPresent = true;
-
+        if(readInstructions.readAttributes) {
             if(this.attributes.length > 0) {
                 if(this.attributes.length === 1) {
                     toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.attributes.singular"));
@@ -365,9 +323,7 @@ export default class Classifier extends DiagramEntity {
             }
         }
 
-        if(commandLineArray.includes("-m")) {
-            areArgumentsPresent = true;
-
+        if(readInstructions.readMethods) {
             if(this.methods.length > 0) {
                 if(this.methods.length === 1) {
                     toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.singular"));
@@ -386,7 +342,7 @@ export default class Classifier extends DiagramEntity {
             }
         }
 
-        if(areArgumentsPresent) {
+        if(readInstructions.readAttributes || readInstructions.readMethods) {
             toTextFeedback.addSnippet(".");
         } else {
             toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.is_present"));

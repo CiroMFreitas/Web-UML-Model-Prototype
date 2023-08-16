@@ -34,6 +34,10 @@
                 "part_1": "Creation of ",
                 "part_2": " was done with success.",
                 "error": {
+                    "missing_name_argument": {
+                        "part_1": "No name was given for ",
+                        "part_2": " creation."
+                    },
                     "classifier_name_already_in_use": "Provided name for classifier is already in use.",
                     "unrecognized_entity_type": {
                         "part_1": "Entity type ",
@@ -230,7 +234,8 @@
             },
             "relationship": {
                 "error": {
-                    "invalid_direction": "Invalid direction given for relationship removal, use the arguments 'named' or 'between'.",
+                    "missing_direction": "No direction for relationship removal was given, use the directions 'named' or 'between'.",
+                    "invalid_direction": "Invalid direction given for relationship removal, use the directions 'named' or 'between'.",
                     "missing_relationship_name_for_removal": "No relationship name was given for removal.",
                     "missing_source_classifier_name_for_removal": "No source classifier name given for relationship removal.",
                     "missing_target_classifier_name_for_removal": "No target classifier name given for relationship removal.",
@@ -276,6 +281,12 @@
                             "part_3": "."
                         }
                     }
+                },
+                "error": {
+                    "invalid_classifiier_type": {
+                        "part_1": "Given classifier type ",
+                        "part_2": " is invalid, use class, abstract or interface."
+                    }
                 }
             },
             "attribute": {
@@ -302,10 +313,39 @@
                     }
                 }
             },
+            "method": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " method argument is missing the alteration argument, use add, alter or remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " alteration argument is invalid, use add, alter or remove."
+                    }
+                }
+            },
+            "parameter": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " parameter argument is missing the alteration argument, use add, alter or remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " alteration argument is invalid, use add, alter or remove."
+                    }
+                }
+            },
             "relationship": {
+                "success": {
+                    "part_1": "The relationship ",
+                    "part_2": " was successfully altered."
+                },
                 "error": {
                     "missing_relationship_name": "No name was given for the desired relationship to be changed.",
-                    "attribute_doe_not_exist": "Relationship does not have associative attribute."
+                    "attribute_already_exists": "Relationship already has an attribute, use alter to change it or remove it before adding a new one.",
+                    "attribute_does_not_exist": "Relationship does not have associative attribute."
                 }
             },
             "error": {

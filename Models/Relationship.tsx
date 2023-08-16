@@ -20,24 +20,24 @@ export default class Relationship extends DiagramEntity {
     /**
      * Creates a relationship between classifiers following DTO instrucitons.
      * 
-     * @param relationshipCreationData Instructions for relationship creation.
+     * @param creationInstructions Instructions for relationship creation.
      */
-    constructor(relationshipCreationData: ICreateRelationshipDTO){
-        super(relationshipCreationData.name)
-        this.sourceClassifierId = relationshipCreationData.sourceClassifierId;
-        this.targetClassifierId = relationshipCreationData.targetClassifierId;
+    constructor(creationInstructions: ICreateRelationshipDTO){
+        super(creationInstructions.relationshipName)
+        this.sourceClassifierId = creationInstructions.sourceClassifierId;
+        this.targetClassifierId = creationInstructions.targetClassifierId;
 
         // Checks and possibly defaults realtionship type.
-        if(relationshipCreationData.relatioshipType === undefined) {
+        if(creationInstructions.relatioshipType === undefined) {
             this.relatioshipType = SUPPORTED_RELATIONSHIP_TYPES[0].name;
         } else {
-            const supportedRelationshipType = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.code === relationshipCreationData.relatioshipType);
+            const supportedRelationshipType = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.code === creationInstructions.relatioshipType);
             if (supportedRelationshipType !== undefined) {
                 this.relatioshipType = supportedRelationshipType.name;
             } else {
                 const errorFeedback = new Feedback();
                 errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_1."));
-                errorFeedback.addSnippet(new StringSnippet(relationshipCreationData.relatioshipType));
+                errorFeedback.addSnippet(new StringSnippet(creationInstructions.relatioshipType));
                 errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_2."));
 
                 throw new AppError(errorFeedback);
@@ -45,8 +45,8 @@ export default class Relationship extends DiagramEntity {
         }
         
         // Creates attribute if argument is present.
-        if(relationshipCreationData.attribute !== undefined) {
-            this.attribute = new Attribute(relationshipCreationData.attribute);
+        if(creationInstructions.attribute !== undefined) {
+            this.attribute = new Attribute(creationInstructions.attribute);
         }
     }
 
@@ -71,21 +71,19 @@ export default class Relationship extends DiagramEntity {
 
         let numberOfAttributeArgument = 0;
 
-        if(alterInstructions.attributeAlterInstructions.createAttributes.length > 0) {
-            const createAttributeInstructions = alterInstructions.attributeAlterInstructions.createAttributes[0];
+        if(alterInstructions.attributeAlterInstructions.remove[0] !== undefined) {
+            this.attribute = undefined;
+
+            numberOfAttributeArgument++;
+        }
+
+        if(alterInstructions.attributeAlterInstructions.create[0] !== undefined) {
             if(this.attribute === undefined) {
-                const visibility = createAttributeInstructions.visibility !== undefined ?
-                createAttributeInstructions.visibility + ":" : 
-                ""
-                this.attribute = new Attribute(
-                    visibility +
-                    createAttributeInstructions.name + ":" +
-                    createAttributeInstructions.type
-    
-                );
+                const createAttributeInstructions = alterInstructions.attributeAlterInstructions.create[0];
+                this.attribute = new Attribute(createAttributeInstructions);
             } else {
                 const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.attribute_doe_not_exist"));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.attribute_already_exists"));
 
                 throw new AppError(errorFeedback);
             }
@@ -93,8 +91,16 @@ export default class Relationship extends DiagramEntity {
             numberOfAttributeArgument++;
         }
 
-        if(alterInstructions.attributeAlterInstructions.removeAttributes.length > 0) {
-            this.attribute = undefined;
+        if(alterInstructions.attributeAlterInstructions.alter[0] !== undefined) {
+            if(this.attribute !== undefined) {
+                const alterAttributeInstructions = alterInstructions.attributeAlterInstructions.alter[0];
+                this.attribute.alter(alterAttributeInstructions);
+            } else {
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.attribute_does_not_exist"));
+
+                throw new AppError(errorFeedback);
+            }
 
             numberOfAttributeArgument++;
         }
@@ -107,6 +113,9 @@ export default class Relationship extends DiagramEntity {
         }
 
         const alterFeedback = new Feedback();
+        alterFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.success.part_1"));
+        alterFeedback.addSnippet(new StringSnippet(this.getName()));
+        alterFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.success.part_2"));
 
         return alterFeedback;
     }

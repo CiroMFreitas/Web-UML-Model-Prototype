@@ -1,3 +1,5 @@
+import IAlterParameterDTO from "../public/DTO/IAlterParamenterDTO";
+import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
 import AppError from "./AppError";
 import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
@@ -10,42 +12,26 @@ import TypedEntity from "./TypedEntity";
 export default class Parameter extends TypedEntity {
     
     /**
-     * Creates Parameter.
+     * Creates parameter.
+     * 
+     * @param creationInstructions DTO with parameter creation instructions.
      */
-    constructor(parameterArguments: string) {
-        const splitArgument = parameterArguments.split(":");
-        if(splitArgument.length === 2) {
-            super(splitArgument[0], splitArgument[1]);
-        } else {
-            const errorFeedback = new Feedback();
-            if(splitArgument[0] === "") {
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.empty_parameter_argument"));
-            } else if(splitArgument.length === 1) {
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_parameter_arguments.part_1.too_few"));
-                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
-            } else {
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_parameter_arguments.part_1.too_many"));
-                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
-            }
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_parameter_arguments.part_2"));
-
-            throw new AppError(errorFeedback);
-        }
+    constructor(creationInstructions: ICreateParameterDTO) {
+        super(creationInstructions.name, creationInstructions.type);
     }
 
     /**
-     * Changes parameter's data, expecting data to be organized with the respective order inside array,
-     * name and type.
+     * Changes parameter's data following DTO instructions.
      * 
-     * @param alterations Array containing alterations in the previously stated order.
+     * @param alterations DTO containing alterations to be executed.
      */
-    public alter(alterations: string[]): void {
-        if((alterations[0] !== "-") && (alterations[0] !== "")) {
-            this.setName(alterations[0]);
+    public alter(alterations: IAlterParameterDTO): void {
+        if((alterations.newParameterName !== "-") && (alterations.newParameterName !== "")) {
+            this.setName(alterations.newParameterName);
         }
 
-        if((alterations[1] !== "-") && (alterations[1] !== "")) {
-            this.setType(alterations[1]);
+        if((alterations.newParameterType !== "-") && (alterations.newParameterType !== "")) {
+            this.setType(alterations.newParameterType);
         }
     }
 

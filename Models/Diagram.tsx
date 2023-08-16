@@ -1,6 +1,12 @@
+import IAlterClassifierDTO from "../public/DTO/IAlterClassifierDTO";
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
+import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
+import IDiagramCreateRelationshipDTO from "../public/DTO/IDiagramCreateRelationshipDTO";
+import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
 import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
+import IRemoveClassifierDTO from "../public/DTO/IRemoveClassifierDTO";
+import IRemoveRelationshipDTO from "../public/DTO/IRemoveRelationshipDTO";
 import AppError from "./AppError";
 import Classifier from "./Classifier";
 import Feedback from "./Feedback";
@@ -21,24 +27,21 @@ export default class Diagram {
     constructor() { }
 
     /**
-     * Creates a classifier with command line instructions.
+     * Creates a classifier inside the diagram.
      * 
-     * @param entityType Which classifier type is being created.
-     * @param commandLineArray Instructions to be handled and executed for classifier creation.
+     * @param classifierCreationInstructions Instructions to be handled and executed for classifier creation.
      * @returns Feedback containing a success message.
      */
-    public createClassifierByCommand(entityType: string, commandLineArray: string[]): Feedback {
-        const attributeArguments = this.getCommandArgumentContent(commandLineArray, "-a");
-        const methodArguments = this.getCommandArgumentContent(commandLineArray, "-m");
+    public createClassifier(classifierCreationInstructions: ICreateClassifierDTO): Feedback {
         // Checks if given name is already in use.
-        const newClassifier = new Classifier(entityType, commandLineArray[0], attributeArguments, methodArguments);
+        const newClassifier = new Classifier(classifierCreationInstructions);
         this.isClassifierNameInUse(newClassifier.getName());
 
         this.classifiers.push(newClassifier);
             
         const feedback = new Feedback();
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_1"));
-        feedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+newClassifier.getEntityType()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+newClassifier.getClassifierType()));
         feedback.addSnippet(new StringSnippet(" "+newClassifier.getName()));
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
 
@@ -46,170 +49,131 @@ export default class Diagram {
     }
 
     /**
-     * Read a classifier with command line instructions
+     * Read a classifier with command line instructions.
      * 
-     * @param commandLineArray Instructions to be handled and executed for classifier reading.
+     * @param readClassifierInstructions Instructions to be executed for classifier reading.
      * @returns Feedback containing the desired classifier indormation.
      */
-    public readClassifierByCommand(commandLineArray: string[]): Feedback {
-        const classifierName = commandLineArray?.shift()?.toLowerCase();
-
-        // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.missing_name_for_reading"));
-
-            throw new AppError(errorFeedback);
-        } else {
-            const toReadClassifier = this.getClassifierByName(classifierName);
-            const readFeedback = toReadClassifier.toText(commandLineArray);
-            return readFeedback;
-        }
+    public readClassifier(readClassifierInstructions: IReadClassifierDTO): Feedback {
+        const toReadClassifier = this.getClassifierByName(readClassifierInstructions.classifierName);
+        const readFeedback = toReadClassifier.toText(readClassifierInstructions);
+        return readFeedback;
     }
     
     /**
-     * Removes a classifier by command line instructions.
+     * Removes a classifier by command line instructions, note will also remove any relationship associated 
+     * with the to be removed classifier.
      * 
      * @param commandLineArray An array containing the classifier name in first position.
      * @returns Feedback if the removal was successful..
      */
-    public removeClassifierByCommand(commandLineArray: string[]): Feedback {
-        const classifierName = commandLineArray?.shift()?.toLowerCase();
+    public removeClassifier(removeClassifierInstructions: IRemoveClassifierDTO): Feedback {
+        // Get to be removed Classifier's relationships.
+        const toRemoveClassifier = this.getClassifierByName(removeClassifierInstructions.classifierName);
+        const toRemoveRelationships = this.relationships.filter((relationship) =>
+        relationship.getSourceClassifierId() === toRemoveClassifier.getId() ||
+        relationship.getTargetClassifierId() === toRemoveClassifier.getId());
+        toRemoveRelationships.forEach((toRemoveRelationship) => {
+            const toRemoveRelationshipIndex = this.getRelationshipIndexByName(toRemoveRelationship.getName());
+            this.relationships.splice(toRemoveRelationshipIndex, 1);
+        });
 
-        // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.error.missing_name_for_removal"));
+        // Removes Classifier.
+        const toRemoveClassifierIndex = this.getClassifierIndexByName(removeClassifierInstructions.classifierName);
+        this.classifiers.splice(toRemoveClassifierIndex, 1);
 
-            throw new AppError(errorFeedback);
-        } else {
-            const toRemoveClassifierIndex = this.getClassifierIndexByName(classifierName);
-            this.classifiers.splice(toRemoveClassifierIndex, 1);
-
-            const removeFeedback = new Feedback();
-            removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
-            removeFeedback.addSnippet(new StringSnippet(classifierName));
-            removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
-            return removeFeedback;
-        }
+        const removeFeedback = new Feedback();
+        removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
+        removeFeedback.addSnippet(new StringSnippet(removeClassifierInstructions.classifierName));
+        removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
+        
+        return removeFeedback;
     }
 
     /**
-     * Alters a classifier following instructions inside an array.
+     * Alters a classifier following instructions inside an DTO.
      * 
-     * @param commandLineArray Array containing instructions to be handled.
+     * @param alterClassifierInstructions DTO containing instructions to be executed.
      * @returns Feedback should alteration succeed.
      */
-    public alterClassifierByCommand(commandLineArray: string[]): Feedback {
-        const classifierName = commandLineArray?.shift()?.toLowerCase();
+    public alterClassifier(alterClassifierInstructions: IAlterClassifierDTO): Feedback {
+        const toAlterClassifier = this.getClassifierByName(alterClassifierInstructions.classifierName);
 
-        // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.entity_type_missing_on_alteration"));
-
-            throw new AppError(errorFeedback);
-        } else {
-            const toAlterClassifier = this.getClassifierByName(classifierName);
-
-            // Checks and changes classifier's name if desired.
-            const nameChangeArgument = this.getCommandArgumentContent(commandLineArray, "-n");
-            if(nameChangeArgument !== undefined) {
-                toAlterClassifier.setName(nameChangeArgument[0]);
-            }
-
-            // Checks and changes classifier's attributes if desired.
-            const attributesChangeArgument = this.getCommandArgumentContent(commandLineArray, "-a");
-            if(attributesChangeArgument !== undefined) {
-                toAlterClassifier.alterAttributes(attributesChangeArgument);
-            }
-
-            // Checks and changes classifier's methods if desired.
-            const methodsChangeArgument = this.getCommandArgumentContent(commandLineArray, "-m");
-            if(methodsChangeArgument !== undefined) {
-                toAlterClassifier.alterMethods(methodsChangeArgument);
-            }
-    
-            const alterClassifierFeedback = new Feedback();
-            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));
-            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getEntityType()));
-            alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
-            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_2"));
-            return alterClassifierFeedback;
+        // Checks and changes classifier's name if desired.
+        if(alterClassifierInstructions.newClassifierName !== undefined) {
+            toAlterClassifier.setName(alterClassifierInstructions.newClassifierName);
         }
+
+        // Checks and changes classifier's name if desired.
+        if(alterClassifierInstructions.newClassifierType !== undefined) {
+            toAlterClassifier.setName(alterClassifierInstructions.newClassifierType);
+        }
+
+        // Checks and changes classifier's attributes and methods if any.
+        toAlterClassifier.alterAttributes(alterClassifierInstructions.attributeAlterations);
+        toAlterClassifier.alterMethods(alterClassifierInstructions.methodAlterations);
+    
+        const alterClassifierFeedback = new Feedback();
+        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));
+        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
+        alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
+        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_2"));
+        return alterClassifierFeedback;
     }
 
     /**
-     * Creates a relationship with command line instructions.
+     * Creates a relationship in diagram following DTO instructions.
      * 
-     * @param commandLineArray Instructions to be handled and executed for relationship creation.
-     * @returns Feedback containing a success message 
+     * @param relationshipCreationInstructions Instructions to be handled and executed for relationship
+     * creation.
+     * @returns Feedback containing a success message.
      */
-    public createRelationshipByCommand(commandLineArray: string[]): Feedback {
+    public createRelationship(relationshipCreationInstructions: IDiagramCreateRelationshipDTO): Feedback {
         // Checks if classifiers's names were given.
-        const desiredSourceClassifierName = commandLineArray.shift();
-        const desiredTargetClassifierName = commandLineArray.shift();
-        if((desiredSourceClassifierName === undefined) || (desiredSourceClassifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.error.source_classifier_missing"));
-
-            throw new AppError(errorFeedback);
-        } else if((desiredTargetClassifierName === undefined) || (desiredTargetClassifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.error.target_classifier_missing"));
-
-            throw new AppError(errorFeedback);
+        const desiredSourceClassifier = this.getClassifierByName(relationshipCreationInstructions.sourceClassifierName);
+        const desiredTargetClassifier = this.getClassifierByName(relationshipCreationInstructions.targetClassifierName);
+        
+        // Checks if name was given, if not generates a name.
+        let autoGeneratedName = "";
+        if(relationshipCreationInstructions.relationshipName === undefined) {
+            let nameInUse = false;
+            autoGeneratedName = desiredSourceClassifier.getName() + "_" + desiredTargetClassifier.getName();
+            let count = 0;
+            do {
+                const relationshipExists = this.relationships.find((relationship) => relationship.getName() === autoGeneratedName);
+                if(relationshipExists) {
+                    autoGeneratedName = desiredSourceClassifier.getName() + "_" + desiredTargetClassifier.getName() + (count > 0 ? "_" + count : "");
+                    count++;
+                    nameInUse = true;
+                } else {
+                    nameInUse = false;
+                }
+            } while(nameInUse)
         } else {
-            // Checks if name was given, if not generates a name.
-            const relationshipName = this.getCommandArgumentContent(commandLineArray, "-n");
-            let autoGeneratedName = ""
-            if(relationshipName === undefined) {
-                let nameInUse = false;
-                autoGeneratedName = desiredTargetClassifierName + "_" + desiredTargetClassifierName;
-                let count = 0;
-                do {
-                    const relationshipExists = this.relationships.find((relationship) => relationship.getName() === autoGeneratedName);
-                    if(relationshipExists) {
-                        autoGeneratedName = desiredTargetClassifierName + "_" + desiredTargetClassifierName + (count > 0 ? "_" + count : "");
-                        count++;
-                        nameInUse = true;
-                    } else {
-                        nameInUse = false;
-                    }
-                } while(nameInUse)
-            } else {
-                this.isRelationshipNameInUse(relationshipName[0]);
-            }
-
-            // Gets the other possible arguments
-            const sourceClassifier = this.getClassifierByName(desiredSourceClassifierName);
-            const targetClassifier = this.getClassifierByName(desiredTargetClassifierName);
-            const relatioshipType = this.getCommandArgumentContent(commandLineArray, "-t");
-            const attribute = this.getCommandArgumentContent(commandLineArray, "-a");
-
-            const preRelaionshipData = {
-                name: relationshipName ? relationshipName[0] : autoGeneratedName,
-                sourceClassifierId: sourceClassifier.getId(),
-                targetClassifierId: targetClassifier.getId(),
-                relatioshipType: relatioshipType ? relatioshipType[0] : undefined,
-                attribute: attribute ? attribute[0] : undefined
-            }
-
-            const newRelationship = new Relationship(preRelaionshipData);
-            this.relationships.push(newRelationship);
-
-            const relationshipCreationFeedback = new Feedback();
-            relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_1"));
-            relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.common.relationship_type."+newRelationship.getRelationshipType()));
-            relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_2"));
-            relationshipCreationFeedback.addSnippet(new StringSnippet(sourceClassifier.getName()));
-            relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_3"));
-            relationshipCreationFeedback.addSnippet(new StringSnippet(targetClassifier.getName()));
-            relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_4"));
-            relationshipCreationFeedback.addSnippet(new StringSnippet(newRelationship.getName()));
-            relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_5"));
-            return relationshipCreationFeedback;
+            this.isRelationshipNameInUse(relationshipCreationInstructions.relationshipName);
         }
+
+        const newRelationship = new Relationship({
+            relationshipName: relationshipCreationInstructions.relationshipName !== undefined ? relationshipCreationInstructions.relationshipName : autoGeneratedName,
+            sourceClassifierId: desiredSourceClassifier.getId(),
+            targetClassifierId: desiredTargetClassifier.getId(),
+            relatioshipType: relationshipCreationInstructions.relatioshipType,
+            attribute: relationshipCreationInstructions.attribute
+        });
+        this.relationships.push(newRelationship);
+
+        const relationshipCreationFeedback = new Feedback();
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_1"));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.common.relationship_type."+newRelationship.getRelationshipType()));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_2"));
+        relationshipCreationFeedback.addSnippet(new StringSnippet(desiredSourceClassifier.getName()));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_3"));
+        relationshipCreationFeedback.addSnippet(new StringSnippet(desiredTargetClassifier.getName()));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_4"));
+        relationshipCreationFeedback.addSnippet(new StringSnippet(newRelationship.getName()));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_5"));
+
+        return relationshipCreationFeedback;
     }
     
     /**
@@ -218,41 +182,27 @@ export default class Diagram {
      * @param commandLineArray An array containing the instruvtions for relationship removal.
      * @returns Feedback if the removal was successful..
      */
-    public removeRelatioshipByCommand(commandLineArray: string[]): Feedback {
-        const removalDirection = commandLineArray?.shift()?.toLowerCase();
-
-        switch(removalDirection) {
+    public removeRelatioship(removerRelationshipInstructions: IRemoveRelationshipDTO): Feedback {
+        switch(removerRelationshipInstructions.direction) {
             // Removal by relationship name.
             case "named":
-                const removingRelationshipName = commandLineArray?.shift();
-                if((removingRelationshipName === undefined) || (removingRelationshipName === "")) {
-                    const errorFeedback = new Feedback();
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_relationship_name_for_removal"));
-        
-                    throw new AppError(errorFeedback);
+                if(removerRelationshipInstructions.relationshipName === undefined) {
+                    throw "In Diagram.tsx, removeRelationship method an empty relationship name was given.";
                 } else {
-                    const removingRelationshipIndex = this.getRelationshipIndexByName(removingRelationshipName);
+                    const removingRelationshipIndex = this.getRelationshipIndexByName(removerRelationshipInstructions.relationshipName);
                     this.relationships.splice(removingRelationshipIndex, 1);
                 }
                 break;
 
             // Reoval by related classifiers name.
             case "between":
-                const sourceClassifierName = commandLineArray?.shift();
-                const targetClassifierName = commandLineArray?.shift();
-                if((sourceClassifierName === undefined) || (sourceClassifierName === "")) {
-                    const errorFeedback = new Feedback();
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_source_classifier_name_for_removal"));
-        
-                    throw new AppError(errorFeedback);
-                } else if((targetClassifierName === undefined) || (targetClassifierName === "")) {
-                    const errorFeedback = new Feedback();
-                    errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.missing_target_classifier_name_for_removal"));
-        
-                    throw new AppError(errorFeedback);
+                if(removerRelationshipInstructions.sourceClassifierName === undefined) {
+                    throw "In Diagram.tsx, removeRelationship method an empty source classifier name was given.";
+                } else if(removerRelationshipInstructions.targetClassifierName === undefined) {
+                    throw "In Diagram.tsx, removeRelationship method an empty target classifier name was given.";
                 } else {
-                    const sourceClassifier = this.getClassifierByName(sourceClassifierName);
-                    const targetClassifier = this.getClassifierByName(targetClassifierName);
+                    const sourceClassifier = this.getClassifierByName(removerRelationshipInstructions.sourceClassifierName);
+                    const targetClassifier = this.getClassifierByName(removerRelationshipInstructions.targetClassifierName);
                     const classifiersRelationshipsIndexes = this.relationships.map((relationship, index) => {
                         if((relationship.getSourceClassifierId() === sourceClassifier.getId()) && (relationship.getTargetClassifierId() === targetClassifier.getId())) {
                             return index;
@@ -262,18 +212,18 @@ export default class Diagram {
                     if((classifiersRelationshipsIndexes === undefined) || (classifiersRelationshipsIndexes.length === 0)) {
                         const errorFeedback = new Feedback();
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(sourceClassifierName));
+                        errorFeedback.addSnippet(new StringSnippet(removerRelationshipInstructions.sourceClassifierName));
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_2"));
-                        errorFeedback.addSnippet(new StringSnippet(targetClassifierName));
+                        errorFeedback.addSnippet(new StringSnippet(removerRelationshipInstructions.targetClassifierName));
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.no_relationship_found_with_classifiers.part_3"));
             
                         throw new AppError(errorFeedback);
                     } else if(classifiersRelationshipsIndexes.length > 1) {
                         const errorFeedback = new Feedback();
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(sourceClassifierName));
+                        errorFeedback.addSnippet(new StringSnippet(removerRelationshipInstructions.sourceClassifierName));
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_2"));
-                        errorFeedback.addSnippet(new StringSnippet(targetClassifierName));
+                        errorFeedback.addSnippet(new StringSnippet(removerRelationshipInstructions.targetClassifierName));
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.relationship.error.multiple_relationship_found_with_classifiers.part_3"));
                         classifiersRelationshipsIndexes.forEach((relationshipIndex, index) => {
                             if(relationshipIndex !== undefined) {
