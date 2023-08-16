@@ -71,21 +71,19 @@ export default class Relationship extends DiagramEntity {
 
         let numberOfAttributeArgument = 0;
 
-        if(alterInstructions.attributeAlterInstructions.createAttributes.length > 0) {
-            const createAttributeInstructions = alterInstructions.attributeAlterInstructions.createAttributes[0];
+        if(alterInstructions.attributeAlterInstructions.remove[0] !== undefined) {
+            this.attribute = undefined;
+
+            numberOfAttributeArgument++;
+        }
+
+        if(alterInstructions.attributeAlterInstructions.create[0] !== undefined) {
             if(this.attribute === undefined) {
-                const visibility = createAttributeInstructions.visibility !== undefined ?
-                createAttributeInstructions.visibility + ":" : 
-                ""
-                this.attribute = new Attribute(
-                    visibility +
-                    createAttributeInstructions.name + ":" +
-                    createAttributeInstructions.type
-    
-                );
+                const createAttributeInstructions = alterInstructions.attributeAlterInstructions.create[0];
+                this.attribute = new Attribute(createAttributeInstructions);
             } else {
                 const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.attribute_doe_not_exist"));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.attribute_already_exists"));
 
                 throw new AppError(errorFeedback);
             }
@@ -93,8 +91,16 @@ export default class Relationship extends DiagramEntity {
             numberOfAttributeArgument++;
         }
 
-        if(alterInstructions.attributeAlterInstructions.removeAttributes.length > 0) {
-            this.attribute = undefined;
+        if(alterInstructions.attributeAlterInstructions.alter[0] !== undefined) {
+            if(this.attribute !== undefined) {
+                const alterAttributeInstructions = alterInstructions.attributeAlterInstructions.alter[0];
+                this.attribute.alter(alterAttributeInstructions);
+            } else {
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.error.attribute_does_not_exist"));
+
+                throw new AppError(errorFeedback);
+            }
 
             numberOfAttributeArgument++;
         }
@@ -107,6 +113,9 @@ export default class Relationship extends DiagramEntity {
         }
 
         const alterFeedback = new Feedback();
+        alterFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.success.part_1"));
+        alterFeedback.addSnippet(new StringSnippet(this.getName()));
+        alterFeedback.addSnippet(new LocalizationSnippet("feedback.alter.relationship.success.part_2"));
 
         return alterFeedback;
     }
