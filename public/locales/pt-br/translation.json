@@ -307,6 +307,18 @@
                     }
                 }
             },
+            "method": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "O argumento de attributo ",
+                        "part_2": " está faltando o termo de alteração, use add, alter ou remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "O argumento de alteração ",
+                        "part_2": " é inválido, use add, alter ou remove."
+                    }
+                }
+            },
             "parameter": {
                 "error": {
                     "missing_alteration_argument": {

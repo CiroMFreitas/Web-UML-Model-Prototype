@@ -207,9 +207,9 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             
             if((alterationArgument === undefined) || (alterationArgument === "")) {
                 const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.method.error.missing_alteration_argument.part_1"));
                 errorFeedback.addSnippet(new StringSnippet(":" + methodChangeArguments.toString().replaceAll(",", ":") + ".."));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.method.error.missing_alteration_argument.part_2"));
 
                 throw new AppError(errorFeedback);
             } else {
@@ -237,9 +237,9 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
 
                     default:
                         const errorFeedback = new Feedback();
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.method.error.invalid_alteration_argument.part_1"));
                         errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + methodChangeArguments.toString().replaceAll(",", ":") + ".."));
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.method.error.invalid_alteration_argument.part_2"));
     
                         throw new AppError(errorFeedback);
                 }
@@ -300,9 +300,9 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
 
                     default:
                         const errorFeedback = new Feedback();
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.parameter.error.invalid_alteration_argument.part_1"));
                         errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + changeArguments.toString().replaceAll(",", ":")));
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.parameter.error.invalid_alteration_argument.part_2"));
     
                         throw new AppError(errorFeedback);
                 }
