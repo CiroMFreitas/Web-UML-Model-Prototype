@@ -1,7 +1,5 @@
-import IAlterMethodDTO from "./IAlterMethodDTO";
 import IAttributeChangesDTO from "./IAttributeChangesDTO";
-import ICreateMethodDTO from "./ICreateMethodDTO";
-import IRemoveMethodDTO from "./IRemoveMethodDTO";
+import IMethodChangesDTO from "./IMethodChangesDTO";
 
 /**
  * Carries instructions for classifier alteraiton.
@@ -11,9 +9,5 @@ export default interface IAlterClassifierDTO {
     newClassifierType?: string;
     newClassifierName?: string;
     attributeAlterations: IAttributeChangesDTO;
-    methodAlterations: {
-        create: ICreateMethodDTO[];
-        remove: IRemoveMethodDTO[];
-        alter: IAlterMethodDTO[];
-    }
+    methodAlterations: IMethodChangesDTO;
 }

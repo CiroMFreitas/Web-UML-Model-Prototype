@@ -1,6 +1,4 @@
-import IAlterParameterDTO from "./IAlterParamenterDTO";
-import ICreateParameterDTO from "./ICreateParameterDTO";
-import IRemoveParameterDTO from "./IRemoveParamenterDTO";
+import IMethodChangesDTO from "./IMethodChangesDTO";
 
 /**
  * Carries instructions for method alteration.
@@ -10,9 +8,5 @@ export default interface IAlterMethodDTO {
     newMethodName?: string;
     newMethodType?: string;
     newMethodVisibility?: string;
-    parameterAlteraions: {
-        create: ICreateParameterDTO[];
-        remove: IRemoveParameterDTO[];
-        alter: IAlterParameterDTO[];
-    };
+    parameterAlteraions: IMethodChangesDTO;
 }
