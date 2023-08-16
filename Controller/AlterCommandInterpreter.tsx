@@ -188,10 +188,18 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
      * @returns Handled arguments, some may be empty if no instruction of said type were given.
      */
     private static handleMethodChanges(methodArguments: string[]): IMethodChangesDTO {
+    /**
+     * Handles parameter arguments into DTOs.
+     * 
+     * @param parameterArguments An array of arguments to be handled. 
+     * @returns Handled arguments, some may be empty if no instruction of said type were given.
+     */
+    private static handleParameterChanges(parameterArguments: string[]): IParameterChangesDTO {
         return {
             create: [],
             remove: [],
             alter: []
-        }
+        };
+
     }
 }

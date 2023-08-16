@@ -1,4 +1,4 @@
-import IMethodChangesDTO from "./IMethodChangesDTO";
+import IParameterChangesDTO from "./IParameterChangesDTO";
 
 /**
  * Carries instructions for method alteration.
@@ -8,5 +8,5 @@ export default interface IAlterMethodDTO {
     newMethodName?: string;
     newMethodType?: string;
     newMethodVisibility?: string;
-    parameterAlteraions: IMethodChangesDTO;
+    parameterAlteraions: IParameterChangesDTO;
 }
