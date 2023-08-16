@@ -191,7 +191,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const alterClassifierInstructions = AlterCommandInterpreter.interpretAlterClassifier(commandLine);
-                    const alterClassifierFeedback = diagram.alterClassifierByCommand(commandLine);
+                    const alterClassifierFeedback = diagram.alterClassifier(alterClassifierInstructions);
                     setDiagram(diagram);
                     return alterClassifierFeedback.toString();
 

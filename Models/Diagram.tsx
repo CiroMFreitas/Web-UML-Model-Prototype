@@ -1,3 +1,4 @@
+import IAlterClassifierDTO from "../public/DTO/IAlterClassifierDTO";
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import IDiagramCreateRelationshipDTO from "../public/DTO/IDiagramCreateRelationshipDTO";
@@ -92,46 +93,32 @@ export default class Diagram {
     /**
      * Alters a classifier following instructions inside an array.
      * 
-     * @param commandLineArray Array containing instructions to be handled.
+     * @param alterClassifierInstructions Array containing instructions to be handled.
      * @returns Feedback should alteration succeed.
      */
-    public alterClassifierByCommand(commandLineArray: string[]): Feedback {
-        const classifierName = commandLineArray?.shift()?.toLowerCase();
+    public alterClassifier(alterClassifierInstructions: IAlterClassifierDTO): Feedback {
+        const toAlterClassifier = this.getClassifierByName(alterClassifierInstructions.classifierName);
 
-        // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.entity_type_missing_on_alteration"));
-
-            throw new AppError(errorFeedback);
-        } else {
-            const toAlterClassifier = this.getClassifierByName(classifierName);
-
-            // Checks and changes classifier's name if desired.
-            const nameChangeArgument = this.getCommandArgumentContent(commandLineArray, "-n");
-            if(nameChangeArgument !== undefined) {
-                toAlterClassifier.setName(nameChangeArgument[0]);
-            }
-
-            // Checks and changes classifier's attributes if desired.
-            const attributesChangeArgument = this.getCommandArgumentContent(commandLineArray, "-a");
-            if(attributesChangeArgument !== undefined) {
-                toAlterClassifier.alterAttributes(attributesChangeArgument);
-            }
-
-            // Checks and changes classifier's methods if desired.
-            const methodsChangeArgument = this.getCommandArgumentContent(commandLineArray, "-m");
-            if(methodsChangeArgument !== undefined) {
-                toAlterClassifier.alterMethods(methodsChangeArgument);
-            }
-    
-            const alterClassifierFeedback = new Feedback();
-            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));
-            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
-            alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
-            alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_2"));
-            return alterClassifierFeedback;
+        // Checks and changes classifier's name if desired.
+        if(alterClassifierInstructions.newClassifierName !== undefined) {
+            toAlterClassifier.setName(alterClassifierInstructions.newClassifierName);
         }
+
+        // Checks and changes classifier's name if desired.
+        if(alterClassifierInstructions.newClassifierType !== undefined) {
+            toAlterClassifier.setName(alterClassifierInstructions.newClassifierType);
+        }
+
+        // Checks and changes classifier's attributes and methods if any.
+        toAlterClassifier.alterAttributes(alterClassifierInstructions.attributeAlterations);
+        toAlterClassifier.alterMethods(alterClassifierInstructions.methodAlterations);
+    
+        const alterClassifierFeedback = new Feedback();
+        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));
+        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
+        alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
+        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_2"));
+        return alterClassifierFeedback;
     }
 
     /**
