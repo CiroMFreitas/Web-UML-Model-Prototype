@@ -6,7 +6,7 @@ import IRemoveAttributeDTO from "./IRemoveAttributeDTO";
  * Holds all attributes changes in a alter command.
  */
 export default interface IAttributeChangesDTO {
-    createAttributes: ICreateAttributeDTO[];
-    removeAttributes: IRemoveAttributeDTO[];
-    alterAttributes: IAlterAttributeDTO[];
+    create: ICreateAttributeDTO[];
+    remove: IRemoveAttributeDTO[];
+    alter: IAlterAttributeDTO[];
 }

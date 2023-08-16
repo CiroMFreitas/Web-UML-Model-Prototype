@@ -84,16 +84,18 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
 
             switch(splitArgument[0]) {
                 case "add":
-                    createAttributes.push(this.handleCreateAttributeArgument(splitArgument.splice(1)))
+                    create.push(this.handleCreateAttributeArgument(splitArgument.toString().replace(",", ":")));
                     break;
 
                 case "remove":
+                    // Remove attribute from a classifier have 2 arguments.
                     if(splitArgument.length === 2) {
-                        removeAttributes.push({
+                        remove.push({
                             attributeName: splitArgument[1]
                         });
+                    // Remove attribute from a relationship have 1 arguments.
                     } else if(splitArgument.length === 1) {
-                        removeAttributes.push({
+                        remove.push({
                             attributeName: ""
                         });
                     } else {
@@ -104,15 +106,17 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
                     break;
 
                 case "alter":
+                    // Alter attribute from a classifier have 5 arguments.
                     if(splitArgument.length === 5) {
-                        alterAttributes.push({
+                        alter.push({
                             attributeName: splitArgument[1],
                             newVisibility: splitArgument[2],
                             newName: splitArgument[3],
                             newType: splitArgument[4],
                         });
+                    // Alter attribute from a relationship have 4 arguments.
                     } else if(splitArgument.length === 4) {
-                        alterAttributes.push({
+                        alter.push({
                             attributeName: "",
                             newVisibility: splitArgument[1],
                             newName: splitArgument[2],
@@ -148,9 +152,9 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
         });
 
         return {
-            createAttributes: createAttributes,
-            removeAttributes: removeAttributes,
-            alterAttributes: alterAttributes
+            create: create,
+            remove: remove,
+            alter: alter
         };
     }
 }
