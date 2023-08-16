@@ -1,5 +1,6 @@
 import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
+import IMethodChangesDTO from "../public/DTO/IMethodChangesDTO";
 import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import { SUPPORTED_ENTITY_TYPES } from "../public/Utils/SupportedKeyWords";
 import AppError from "./AppError";
@@ -46,103 +47,50 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
-     * Handles instructions for alterations to attributes, expects a array containg a string with instructions
-     * separated by ":".
+     * Execute classifier's attribute alterations.
      * 
-     * @param attributesChanges Array containing instructions.
+     * @param attributesChanges DTO containing instructions.
      */
-    public alterAttributes(attributesChanges: string[]): void {
-        attributesChanges.forEach((change) => {
-            const changeArguments = change.split(":");
-            const alterationArgument = changeArguments.shift();
-            
-            if((alterationArgument === undefined) || (alterationArgument === "")) {
-                const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
-                errorFeedback.addSnippet(new StringSnippet(":" + changeArguments.toString().replaceAll(",", ":")));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
+    public alterAttributes(alterationInstructions: IAttributeChangesDTO): void {
+        alterationInstructions.create.forEach((createAttribute) => {
+            const newAttribute = new Attribute(createAttribute);
+            this.isAttributeNameInUse(newAttribute.getName());
+            this.attributes.push(newAttribute);
+        });
 
-                throw new AppError(errorFeedback);
+        alterationInstructions.remove.forEach((removeAttribute) => {
+            const toRemoveAttributeIndex = this.getAttributeIndexByName(removeAttribute.attributeName);
+            this.attributes.splice(toRemoveAttributeIndex, 1);
+        });
 
-            } else {
-                switch(true) {
-                    case alterationArgument === "add":
-                        const newAttribute = new Attribute(alterationArgument.toString().replaceAll(",", ":"));
-                        this.isAttributeNameInUse(newAttribute.getName());
-                        this.attributes.push(newAttribute);
-                        break;
-
-                    case alterationArgument === "remove":
-                        const removalIndex = this.getAttributeIndexByName(changeArguments[0]);
-                        this.attributes.splice(removalIndex, 1);
-                        break;
-
-                    case alterationArgument === "alter":
-                        const alteringAttribute = this.getAttributeByName(changeArguments[0]);
-                        this.isAttributeNameInUse(changeArguments[2])
-                        alteringAttribute.alter(changeArguments.splice(1));
-                        break;
-
-                    default:
-                        const errorFeedback = new Feedback();
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + changeArguments.toString().replaceAll(",", ":")));
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
-    
-                        throw new AppError(errorFeedback);
-                }
-            }
+        alterationInstructions.alter.forEach((alterAttribute) => {
+            const toAlterAttribute = this.getAttributeByName(alterAttribute.attributeName);
+            toAlterAttribute.alter(alterAttribute);
+            this.isAttributeNameInUse(toAlterAttribute.getName());
         });
     }
 
     /**
-     * Handles instructions for alterations to attributes, expects a array containg a string with instructions
-     * separated by ":".
+     * Execute classifier's methods alterations.
      * 
-     * @param methodsChanges Array containing instructions.
+     * @param methodsChanges DTO containing instructions.
      */
-    public alterMethods(methodsChanges: string[]): void {
-        const handledmethodsChanges = this.handleMethodArguments(methodsChanges);
-        handledmethodsChanges.forEach((change) => {
-            const methodChangeArguments = change[0].split(":");
-            const paramenterChangeArguments = change.splice(1);
-            const alterationArgument = methodChangeArguments.shift();
-            
-            if((alterationArgument === undefined) || (alterationArgument === "")) {
-                const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
-                errorFeedback.addSnippet(new StringSnippet(":" + methodChangeArguments.toString().replaceAll(",", ":") + ".."));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
+    public alterMethods(alterationInstructions: IMethodChangesDTO): void {
+        alterationInstructions.create.forEach((createMethod) => {
+            const newMethod = new Method(createMethod);
+            this.isMethodNameInUse(newMethod.getName());
+            this.methods.push(newMethod);
+        });
 
-                throw new AppError(errorFeedback);
-            } else {
-                switch(true) {
-                    case alterationArgument === "add":
-                        const newMethod = new Method([alterationArgument.toString().replaceAll(",", ":")].concat(paramenterChangeArguments));
-                        this.isMethodNameInUse(newMethod.getName());
-                        this.methods.push(newMethod);
-                        break;
+        alterationInstructions.remove.forEach((removeMethod) => {
+            const toRemoveMethoIndex = this.getMethodIndexByName(removeMethod.methodName);
+            this.methods.splice(toRemoveMethoIndex, 1);
+        });
 
-                    case alterationArgument === "remove":
-                        const removalIndex = this.getMethodIndexByName(methodChangeArguments[0]);
-                        this.methods.splice(removalIndex, 1);
-                        break;
-
-                    case alterationArgument === "alter":
-                        const alteringMethod = this.getMethodByName(methodChangeArguments[0]);
-                        this.isAttributeNameInUse(methodChangeArguments[2])
-                        alteringMethod.alter(methodChangeArguments.splice(1));
-                        break;
-
-                    default:
-                        const errorFeedback = new Feedback();
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + methodChangeArguments.toString().replaceAll(",", ":") + ".."));
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
-    
-                        throw new AppError(errorFeedback);
-                }
-            }
+        alterationInstructions.alter.forEach((alterMethod) => {
+            const toAlterMethod = this.getMethodByName(alterMethod.methodName);
+            toAlterMethod.alter(alterMethod);
+            this.isMethodNameInUse(toAlterMethod.getName());
         });
     }
 
