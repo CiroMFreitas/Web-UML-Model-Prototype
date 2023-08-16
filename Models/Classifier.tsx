@@ -155,6 +155,15 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
+     * Set's classifier's type.
+     * 
+     */
+    public setClassifierType(classifierType: string): void {
+        // If classifier is the given type it will be saved as a class.
+        this.classifierType = classifierType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : classifierType;
+    }
+
+    /**
      * Checks if given name is already in use by an attribute, if true an error will be thrown.
      * 
      * @param attributeName Name to be checked.
