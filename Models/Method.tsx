@@ -1,3 +1,4 @@
+import IAlterMethodDTO from "../public/DTO/IAlterMethodDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
 import AppError from "./AppError";
 import Feedback from "./Feedback";
@@ -30,64 +31,38 @@ export default class Method extends VisibleEntity {
     }
 
     /**
-     * Changes method's data, expecting data to be organized with the respective order inside array,
-     * visibility, name, type and parameters arguments.
+     * Changes method's data following DTO instructions.
      * 
-     * @param alterations Array containing alterations in the previously stated order.
+     * @param alterations DTO containing alterations instructions.
      */
-    public alter(alterations: string[]): void {
-        if((alterations[0] !== "-") && (alterations[0] !== "")) {
-            this.setVisibility(alterations[0]);
+    public alter(alterations: IAlterMethodDTO): void {
+        if((alterations.newMethodVisibility !== "-") && (alterations.newMethodVisibility !== "")) {
+            this.setVisibility(alterations.newMethodVisibility);
         }
 
-        if((alterations[1] !== "-") && (alterations[1] !== "")) {
-            this.setName(alterations[1]);
+        if((alterations.newMethodName !== "-") && (alterations.newMethodName !== "")) {
+            this.setName(alterations.newMethodName);
         }
 
-        if((alterations[2] !== "-") && (alterations[2] !== "")) {
-            this.setType(alterations[2]);
+        if((alterations.newMethodType !== "-") && (alterations.newMethodType !== "")) {
+            this.setType(alterations.newMethodType);
         }
-
-        const parameterAlterations = alterations.splice(3);
-        parameterAlterations.forEach((parameterAlteration) => {
-            const changeArguments = parameterAlteration.split(":");
-            const alterationArgument = changeArguments.shift();
-            
-            if((alterationArgument === undefined) || (alterationArgument === "")) {
-                const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_1"));
-                errorFeedback.addSnippet(new StringSnippet(":" + changeArguments.toString().replaceAll(",", ":")));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.missing_alteration_argument.part_2"));
-
-                throw new AppError(errorFeedback);
-            } else {
-                switch(true) {
-                    case alterationArgument === "add":
-                        const newParameter = new Parameter(alterationArgument.toString().replaceAll(",", ":"));
-                        this.isParameterNameInUse(newParameter.getName());
-                        this.parameters.push(newParameter);
-                        break;
-
-                    case alterationArgument === "remove":
-                        const removalIndex = this.getParameterIndexByName(changeArguments[0]);
-                        this.parameters.splice(removalIndex, 1);
-                        break;
-
-                    case alterationArgument === "alter":
-                        const alteringParameter = this.getParameterByName(changeArguments[0]);
-                        this.isParameterNameInUse(changeArguments[2])
-                        alteringParameter.alter(changeArguments.splice(1));
-                        break;
-
-                    default:
-                        const errorFeedback = new Feedback();
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
-                        errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + changeArguments.toString().replaceAll(",", ":")));
-                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
-    
-                        throw new AppError(errorFeedback);
-                }
-            }
+        
+        alterations.parameterAlteraions.create.forEach((createParameter) => {
+            const newParameter = new Parameter(createParameter);
+            this.isParameterNameInUse(newParameter.getName());
+            this.parameters.push(newParameter);
+        });
+        
+        alterations.parameterAlteraions.remove.forEach((removeParameter) => {
+            const toRemoveParameterIndex = this.getParameterIndexByName(removeParameter.paramaterName);
+            this.parameters.splice(toRemoveParameterIndex, 1);
+        });
+        
+        alterations.parameterAlteraions.alter.forEach((alterParameter) => {
+            const toAlterParameter = this.getParameterByName(alterParameter.parameterName);
+            toAlterParameter.alter(alterParameter);
+            this.isParameterNameInUse(toAlterParameter.getName());
         });
     }
 
