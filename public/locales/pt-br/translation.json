@@ -281,6 +281,12 @@
                             "part_3": "."
                         }
                     }
+                },
+                "error": {
+                    "invalid_classifiier_type": {
+                        "part_1": "O tipo de classificador fornecido ",
+                        "part_2": " é inválido, use class, abstract ou interface."
+                    }
                 }
             },
             "attribute": {

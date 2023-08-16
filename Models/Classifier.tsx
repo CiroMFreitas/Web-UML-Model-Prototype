@@ -159,6 +159,15 @@ export default class Classifier extends DiagramEntity {
      * 
      */
     public setClassifierType(classifierType: string): void {
+        if(!SUPPORTED_ENTITY_TYPES.classifier.includes(classifierType)) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_classifiier_type.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(classifierType));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_classifiier_type.part_2"));
+            
+            throw new AppError(errorFeedback);
+        }
+
         // If classifier is the given type it will be saved as a class.
         this.classifierType = classifierType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : classifierType;
     }

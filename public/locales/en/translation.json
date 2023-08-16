@@ -281,6 +281,12 @@
                             "part_3": "."
                         }
                     }
+                },
+                "error": {
+                    "invalid_classifiier_type": {
+                        "part_1": "Given classifier type ",
+                        "part_2": " is invalid, use class, abstract or interface."
+                    }
                 }
             },
             "attribute": {
