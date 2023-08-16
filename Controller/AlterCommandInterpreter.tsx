@@ -3,6 +3,7 @@ import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
+import IAlterClassifierDTO from "../public/DTO/IAlterClassifierDTO";
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
@@ -13,6 +14,28 @@ import CommandInterpreter from "./CommandInterpreter";
  * Class responsible for handling user's alter commands into DTOs.
  */
 export default class AlterCommandInterpreter extends CommandInterpreter {
+    /**
+     * Interprets a alter classifier command into a DTO.
+     * 
+     * @param commandLine Command to be interpreted.
+     * @returns Handled coomand line.
+     */
+    public static interpretAlterClassifier(commandLine: string[]): IAlterClassifierDTO {
+        return {
+            classifierName: "",
+            attributeAlterations: {
+                create: [],
+                remove: [],
+                alter: []
+            },
+            methodAlterations: {
+                create: [],
+                remove: [],
+                alter: []
+            }
+        };
+    }
+
     /**
      * Interprets a command line into a DTO.
      * 
