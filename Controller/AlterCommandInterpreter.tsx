@@ -5,14 +5,17 @@ import StringSnippet from "../Models/StringSnippet";
 import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
 import IAlterClassifierDTO from "../public/DTO/IAlterClassifierDTO";
 import IAlterMethodDTO from "../public/DTO/IAlterMethodDTO";
+import IAlterParameterDTO from "../public/DTO/IAlterParamenterDTO";
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
+import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
 import IMethodChangesDTO from "../public/DTO/IMethodChangesDTO";
 import IParameterChangesDTO from "../public/DTO/IParameterChangesDTO";
 import IRemoveAttributeDTO from "../public/DTO/IRemoveAttributeDTO";
 import IRemoveMethodDTO from "../public/DTO/IRemoveMethodDTO";
+import IRemoveParameterDTO from "../public/DTO/IRemoveParamenterDTO";
 import CommandInterpreter from "./CommandInterpreter";
 
 /**
@@ -257,10 +260,59 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
      * @returns Handled arguments, some may be empty if no instruction of said type were given.
      */
     private static handleParameterChanges(parameterArguments: string[]): IParameterChangesDTO {
+        const createParameters = [] as ICreateParameterDTO[];
+        const removeParameters = [] as IRemoveParameterDTO[];
+        const alterParameters = [] as IAlterParameterDTO[];
+        
+        parameterArguments.forEach((argument) => {
+            const changeArguments = argument.split(":");
+            const alterationArgument = changeArguments.shift();
+            
+            if((alterationArgument === undefined) || (alterationArgument === "")) {
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.parameter.error.missing_alteration_argument.part_1"));
+                errorFeedback.addSnippet(new StringSnippet(":" + changeArguments.toString().replaceAll(",", ":")));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.parameter.error.missing_alteration_argument.part_2"));
+
+                throw new AppError(errorFeedback);
+            } else {
+                switch(true) {
+                    case alterationArgument === "add":
+                        createParameters.push({
+                            name: argument[0],
+                            type: argument[1]
+                        });
+                        break;
+
+                    case alterationArgument === "remove":
+                        removeParameters.push({
+                            paramaterName: argument[0]
+                        });
+                        break;
+
+                    case alterationArgument === "alter":
+                        alterParameters.push({
+                            parameterName: argument[0],
+                            newParameterName: argument[1],
+                            newParameterType: argument[2]
+                        });
+                        break;
+
+                    default:
+                        const errorFeedback = new Feedback();
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_1"));
+                        errorFeedback.addSnippet(new StringSnippet(alterationArgument + ":" + changeArguments.toString().replaceAll(",", ":")));
+                        errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.invalid_alteration_argument.part_2"));
+    
+                        throw new AppError(errorFeedback);
+                }
+            }
+        });
+
         return {
-            create: [],
-            remove: [],
-            alter: []
+            create: createParameters,
+            remove: removeParameters,
+            alter: alterParameters
         };
 
     }

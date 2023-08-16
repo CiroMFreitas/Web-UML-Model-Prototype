@@ -307,6 +307,18 @@
                     }
                 }
             },
+            "parameter": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "O argumento de parametro ",
+                        "part_2": " está faltando o termo de alteração, use add, alter ou remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "O argumento de alteração ",
+                        "part_2": " é inválido, use add, alter ou remove."
+                    }
+                }
+            },
             "relationship": {
                 "error": {
                     "missing_relationship_name": "Não fornecido o nome do relacionamento que deseja alterar.",

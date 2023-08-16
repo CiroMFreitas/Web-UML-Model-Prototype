@@ -307,6 +307,18 @@
                     }
                 }
             },
+            "parameter": {
+                "error": {
+                    "missing_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " parameter argument is missing the alteration argument, use add, alter or remove."
+                    },
+                    "invalid_alteration_argument": {
+                        "part_1": "The ",
+                        "part_2": " alteration argument is invalid, use add, alter or remove."
+                    }
+                }
+            },
             "relationship": {
                 "error": {
                     "missing_relationship_name": "No name was given for the desired relationship to be changed.",
