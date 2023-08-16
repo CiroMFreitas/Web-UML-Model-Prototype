@@ -5,8 +5,8 @@ import IParameterChangesDTO from "./IParameterChangesDTO";
  */
 export default interface IAlterMethodDTO {
     methodName: string;
-    newMethodName?: string;
-    newMethodType?: string;
-    newMethodVisibility?: string;
+    newMethodName: string;
+    newMethodType: string;
+    newMethodVisibility: string;
     parameterAlteraions: IParameterChangesDTO;
 }
