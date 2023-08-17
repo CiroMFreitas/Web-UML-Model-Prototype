@@ -15,7 +15,7 @@ import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
-    getFeedBack: (commandLine: string) => string;
+    getFeedBack: (commandLine: string[]) => string;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
@@ -37,29 +37,26 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     const [diagram, setDiagram] = useState(new Diagram());
     
     // Sends feedback to user.
-    const getFeedBack = (commandLine: string) => {
+    const getFeedBack = (commandLine: string[]) => {
         try {
-            // Breaks command line into an array.
-            const commandLineArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
-
             // Gets command type, command type will only be undefined if a blank string is sent here.
-            const commandArgument = commandLineArray?.shift()?.toLowerCase();
+            const commandArgument = commandLine?.shift()?.toLowerCase();
 
             // Gets he following argument
-            const followingArgument = commandLineArray?.shift()?.toLowerCase();
+            const followingArgument = commandLine?.shift()?.toLowerCase();
 
             switch(true) {
                 case SUPPORTED_COMMANDS.create === commandArgument:
-                    return createEntityHandler(commandLineArray, followingArgument);
+                    return createEntityHandler(commandLine, followingArgument);
     
                 case SUPPORTED_COMMANDS.read === commandArgument:
-                    return readEntityHandler(commandLineArray, followingArgument);
+                    return readEntityHandler(commandLine, followingArgument);
     
                 case SUPPORTED_COMMANDS.remove === commandArgument:
-                    return removeEntityHandler(commandLineArray, followingArgument);
+                    return removeEntityHandler(commandLine, followingArgument);
     
                 case SUPPORTED_COMMANDS.alter === commandArgument:
-                    return alterEntityHandler(commandLineArray, followingArgument);
+                    return alterEntityHandler(commandLine, followingArgument);
     
                 // If command is not found
                 default:

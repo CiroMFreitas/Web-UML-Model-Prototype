@@ -33,7 +33,10 @@ export default function CommandPanel() {
             setCommandHistoryPosition(0);
             commandLineRef.current.value = commandHistory[0];
 
-            setFeedback(commandHandler.getFeedBack(commandLine));
+            // Breaks command line into an array.
+            const commandLineArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
+
+            setFeedback(commandHandler.getFeedBack(commandLineArray));
           }
         break;
 
