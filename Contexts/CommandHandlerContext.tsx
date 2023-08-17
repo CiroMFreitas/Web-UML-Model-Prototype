@@ -43,29 +43,29 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
             const commandLineArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
 
             // Gets command type, command type will only be undefined if a blank string is sent here.
-            const commandType = commandLineArray?.shift()?.toLowerCase();
+            const commandArgument = commandLineArray?.shift()?.toLowerCase();
 
-            // Gets entity type
-            const entityType = commandLineArray?.shift()?.toLowerCase();
+            // Gets he following argument
+            const followingArgument = commandLineArray?.shift()?.toLowerCase();
 
             switch(true) {
-                case SUPPORTED_COMMANDS.create === commandType:
-                    return createEntityHandler(commandLineArray, entityType);
+                case SUPPORTED_COMMANDS.create === commandArgument:
+                    return createEntityHandler(commandLineArray, followingArgument);
     
-                case SUPPORTED_COMMANDS.read === commandType:
-                    return readEntityHandler(commandLineArray, entityType);
+                case SUPPORTED_COMMANDS.read === commandArgument:
+                    return readEntityHandler(commandLineArray, followingArgument);
     
-                case SUPPORTED_COMMANDS.remove === commandType:
-                    return removeEntityHandler(commandLineArray, entityType);
+                case SUPPORTED_COMMANDS.remove === commandArgument:
+                    return removeEntityHandler(commandLineArray, followingArgument);
     
-                case SUPPORTED_COMMANDS.alter === commandType:
-                    return alterEntityHandler(commandLineArray, entityType);
+                case SUPPORTED_COMMANDS.alter === commandArgument:
+                    return alterEntityHandler(commandLineArray, followingArgument);
     
                 // If command is not found
                 default:
                     const errorFeedback = new Feedback();
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_1"));
-                    errorFeedback.addSnippet(new StringSnippet(commandType ? commandType : ""));
+                    errorFeedback.addSnippet(new StringSnippet(commandArgument ? commandArgument : ""));
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_2"));
 
                     throw new AppError(errorFeedback);
