@@ -4,6 +4,7 @@ import { translate } from '../../i18n'
 import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
 import "./CommandPanel.css";
+import { SUPPORTED_COMMANDS } from '../../public/Utils/SupportedKeyWords';
 
 export default function CommandPanel() {
   
@@ -36,8 +37,11 @@ export default function CommandPanel() {
 
                         // Breaks command line into an array.
                         const commandLineArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
-
-                        setFeedback(commandHandler.getFeedBack(commandLineArray));
+                        if(commandLineArray[0] === SUPPORTED_COMMANDS.import) {
+                            fileRef.current?.click();
+                        } else {
+                            setFeedback(commandHandler.getFeedBack(commandLineArray));
+                        }
                     }
                     break;
 
@@ -61,6 +65,19 @@ export default function CommandPanel() {
         }
     }
 
+    /**
+     * Sends xml content of a file to be handled by contex and sets feedback after import handling.
+     */
+    function importHandler(): void {
+        const files = fileRef.current?.files;
+        if((files !== null) && (files !== undefined)) {
+            files[0].text().then((xmlContent) => {
+                const commandLineArray = ["import", xmlContent]
+                setFeedback(commandHandler.getFeedBack(commandLineArray));
+            });
+        }
+    }
+
     // Component
     return (
         <div id="CommandPanel">
@@ -71,6 +88,8 @@ export default function CommandPanel() {
             </div>
       
             <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label={ translate("label.command_console") } autoComplete="off" autoFocus />
+
+            <input id="UploadXML" ref={ fileRef } type="file" onChange={ () => importHandler() } accept="text/xml" aria-hidden="true" hidden />
         </div>
     );
 }
