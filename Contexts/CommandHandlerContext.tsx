@@ -12,6 +12,7 @@ import ReadCommandInterpreter from "../Controller/ReadCommandInterpreter";
 import AlterCommandInterpreter from "../Controller/AlterCommandInterpreter";
 import CreateCommandInterpreter from "../Controller/CreateCommandInterpreter";
 import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
+import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
@@ -57,6 +58,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     
                 case SUPPORTED_COMMANDS.alter === commandArgument:
                     return alterEntityHandler(commandLine, followingArgument);
+    
+                    case SUPPORTED_COMMANDS.import === commandArgument:
+                        return importDiagramHandler(followingArgument ? followingArgument : "");
     
                 // If command is not found
                 default:
@@ -206,6 +210,12 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     throw new AppError(errorFeedback);
             }
         }
+    }
+
+    function importDiagramHandler(xmlImport: string) {
+        const diagramImportInstructions = ImportCommandInterpreter.interpretImportXML(xmlImport);
+
+        return "";
     }
 
     return (
