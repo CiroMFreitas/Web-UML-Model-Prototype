@@ -23,7 +23,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
 
         parseString(xmlImport, (err, result) => {
             // Get diagram content
-            const diagramContent = result.mxfile.diagram[0].mxGraphModel[0].root[0].mxCell.slice(2);
+            const diagramContent = result.mxfile.diagram[0].mxgraphmodel[0].root[0].mxcell.slice(2);
         });
 
         return {
