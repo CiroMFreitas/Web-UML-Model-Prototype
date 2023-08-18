@@ -23,7 +23,7 @@ export default class Relationship extends DiagramEntity {
      * @param creationInstructions Instructions for relationship creation.
      */
     constructor(creationInstructions: ICreateRelationshipDTO){
-        super(creationInstructions.relationshipName, creationInstructions.Id)
+        super(creationInstructions.relationshipName, creationInstructions.id)
         this.sourceClassifierId = creationInstructions.sourceClassifierId;
         this.targetClassifierId = creationInstructions.targetClassifierId;
 

@@ -5,7 +5,7 @@ import ICreateParameterDTO from "./ICreateParameterDTO";
  * array.
  */
 export default interface ICreateMethodDTO {
-    Id?: string;
+    id?: string;
     visibility?: string;
     name: string;
     type: string;

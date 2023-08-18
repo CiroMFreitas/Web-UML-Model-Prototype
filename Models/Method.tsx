@@ -19,7 +19,7 @@ export default class Method extends VisibleEntity {
      * @param creationInstructions DTO containing instructions for mwthod creation.
      */
     constructor(creationInstructions: ICreateMethodDTO) {
-        super(creationInstructions.name, creationInstructions.type, creationInstructions.visibility, creationInstructions.Id);
+        super(creationInstructions.name, creationInstructions.type, creationInstructions.visibility, creationInstructions.id);
 
         // Sets parameters if any arguments are present.
         creationInstructions.parameters.forEach((parameterInstructions) => {

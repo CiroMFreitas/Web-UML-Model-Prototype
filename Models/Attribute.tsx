@@ -18,7 +18,7 @@ export default class Attribute extends VisibleEntity {
      * @param creationInstructions DTO if instructions for attribute creation.
      */
     constructor(creationInstructions: ICreateAttributeDTO) {
-        super(creationInstructions.name, creationInstructions.type, creationInstructions.visibility, creationInstructions.Id);
+        super(creationInstructions.name, creationInstructions.type, creationInstructions.visibility, creationInstructions.id);
     }
 
     /**
