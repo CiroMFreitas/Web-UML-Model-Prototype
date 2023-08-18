@@ -18,10 +18,10 @@ export default class ReadCommandInterpreter extends CommandInterpreter {
      * @returns DTO containing read classifier instructions.
      */
     public static interpretReadClassifier(commandLine: string[]): IReadClassifierDTO {
-        const classifierName = commandLine.shift();
+        const name = commandLine.shift();
 
         // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
+        if((name === undefined) || (name === "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.missing_name_for_reading"));
 
@@ -31,7 +31,7 @@ export default class ReadCommandInterpreter extends CommandInterpreter {
             const readMethods = commandLine.find((snippet) => snippet === "=m");
 
             return {
-                classifierName: classifierName,
+                name: name,
                 readAttributes: readAttributes ? true : false,
                 readMethods: readMethods ? true : false
             };

@@ -55,7 +55,7 @@ export default class Diagram {
      * @returns Feedback containing the desired classifier indormation.
      */
     public readClassifier(readClassifierInstructions: IReadClassifierDTO): Feedback {
-        const toReadClassifier = this.getClassifierByName(readClassifierInstructions.classifierName);
+        const toReadClassifier = this.getClassifierByName(readClassifierInstructions.name);
         const readFeedback = toReadClassifier.toText(readClassifierInstructions);
         return readFeedback;
     }
@@ -69,7 +69,7 @@ export default class Diagram {
      */
     public removeClassifier(removeClassifierInstructions: IRemoveClassifierDTO): Feedback {
         // Get to be removed Classifier's relationships.
-        const toRemoveClassifier = this.getClassifierByName(removeClassifierInstructions.classifierName);
+        const toRemoveClassifier = this.getClassifierByName(removeClassifierInstructions.name);
         const toRemoveRelationships = this.relationships.filter((relationship) =>
         relationship.getSourceClassifierId() === toRemoveClassifier.getId() ||
         relationship.getTargetClassifierId() === toRemoveClassifier.getId());
@@ -79,12 +79,12 @@ export default class Diagram {
         });
 
         // Removes Classifier.
-        const toRemoveClassifierIndex = this.getClassifierIndexByName(removeClassifierInstructions.classifierName);
+        const toRemoveClassifierIndex = this.getClassifierIndexByName(removeClassifierInstructions.name);
         this.classifiers.splice(toRemoveClassifierIndex, 1);
 
         const removeFeedback = new Feedback();
         removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
-        removeFeedback.addSnippet(new StringSnippet(removeClassifierInstructions.classifierName));
+        removeFeedback.addSnippet(new StringSnippet(removeClassifierInstructions.name));
         removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
         
         return removeFeedback;
@@ -97,7 +97,7 @@ export default class Diagram {
      * @returns Feedback should alteration succeed.
      */
     public alterClassifier(alterClassifierInstructions: IAlterClassifierDTO): Feedback {
-        const toAlterClassifier = this.getClassifierByName(alterClassifierInstructions.classifierName);
+        const toAlterClassifier = this.getClassifierByName(alterClassifierInstructions.name);
 
         // Checks and changes classifier's name if desired.
         if(alterClassifierInstructions.newClassifierName !== undefined) {
@@ -414,10 +414,10 @@ export default class Diagram {
     /**
      * Checks if given name is already in use by a classifier, if true an error will be thrown.
      * 
-     * @param classifierName Name to be checked.
+     * @param name Name to be checked.
      */
-    private isClassifierNameInUse(classifierName: string): void {
-        const classifierExists = this.classifiers.find((classifier) => classifier.getName() === classifierName);
+    private isClassifierNameInUse(name: string): void {
+        const classifierExists = this.classifiers.find((classifier) => classifier.getName() === name);
 
         if(classifierExists) {
             const errorFeedback = new Feedback();

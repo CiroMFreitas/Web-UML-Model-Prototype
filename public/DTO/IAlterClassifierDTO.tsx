@@ -5,7 +5,7 @@ import IMethodChangesDTO from "./IMethodChangesDTO";
  * Carries instructions for classifier alteraiton.
  */
 export default interface IAlterClassifierDTO {
-    classifierName: string;
+    name: string;
     newClassifierType?: string;
     newClassifierName?: string;
     attributeAlterations: IAttributeChangesDTO;

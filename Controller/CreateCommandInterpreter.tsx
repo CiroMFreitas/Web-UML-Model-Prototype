@@ -18,8 +18,8 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
      * @returns Handled coomand line into a DTO to be executed.
      */
     public static interpretCreateClassifier(commandLine: string[], entityType: string): ICreateClassifierDTO {
-        const classifierName = commandLine.shift();
-        if((classifierName === undefined) || (classifierName === "")) {
+        const name = commandLine.shift();
+        if((name === undefined) || (name === "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.missing_name_argument.part_1"));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type."+entityType));
@@ -42,7 +42,7 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
 
             return {
                 classifierType: entityType,
-                classifierName: classifierName,
+                name: name,
                 attributes: attributes,
                 methods: methods,
             };

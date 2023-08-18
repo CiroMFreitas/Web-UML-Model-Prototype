@@ -16,17 +16,17 @@ export default class RemoveCommandInterpreter extends CommandInterpreter {
      * @returns DTO with classifier removal instructions.
      */
     public static interpretRemoveClassifier(commandLine: string[]): IRemoveClassifierDTO {
-        const classifierName = commandLine.shift();
+        const name = commandLine.shift();
 
         // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
+        if((name === undefined) || (name === "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.error.missing_name_for_removal"));
 
             throw new AppError(errorFeedback);
         } else {
             return {
-                classifierName: classifierName
+                name: name
             };
         }
     }

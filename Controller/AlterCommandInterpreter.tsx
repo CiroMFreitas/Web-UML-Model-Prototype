@@ -29,10 +29,10 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
      * @returns Handled coomand line.
      */
     public static interpretAlterClassifier(commandLine: string[]): IAlterClassifierDTO {
-        const classifierName = commandLine.shift();
+        const name = commandLine.shift();
 
         // Checks if classifier name is present.
-        if((classifierName === undefined) || (classifierName === "")) {
+        if((name === undefined) || (name === "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.error.entity_type_missing_on_alteration"));
 
@@ -57,7 +57,7 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             }
 
             return {
-                classifierName: classifierName,
+                name: name,
                 newClassifierName: newClassifeirName.length !== 0 ? newClassifeirName[0] : undefined,
                 newClassifierType: newClassifeirType.length !== 0 ? newClassifeirType[0] : undefined,
                 attributeAlterations: attributeAlterations,
