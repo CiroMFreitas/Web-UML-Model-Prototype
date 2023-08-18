@@ -6,6 +6,7 @@ import ICreateMethodDTO from "./ICreateMethodDTO";
  * accepts empty arrays if none of said instructions are present.
  */
 export default interface ICreateClassifierDTO {
+    classifierId?: string;
     classifierType: string;
     classifierName: string;
     attributes: ICreateAttributeDTO[];

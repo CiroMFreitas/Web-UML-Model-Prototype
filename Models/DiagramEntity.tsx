@@ -14,10 +14,11 @@ export default abstract class DiagramEntity extends DomainObject {
     /**
      * Sets entity's name and for it to not be drawn on creation.
      * 
-     * @param name string
+     * @param name Entity's name.
+     * @param id Entity's id.
      */
-    constructor(name: string) {
-        super();
+    constructor(name: string, id?: string) {
+        super(id);
         this.validadeNamingString(name);
 
         this.name = name;

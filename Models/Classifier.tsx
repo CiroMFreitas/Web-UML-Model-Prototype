@@ -25,7 +25,7 @@ export default class Classifier extends DiagramEntity {
      * @param creationInstructions DTO contaning instructions for classifier creation.
      */
     constructor(creationInstructions: ICreateClassifierDTO) {
-        super(creationInstructions.classifierName);
+        super(creationInstructions.classifierName, creationInstructions.classifierId);
         // If classifier is the given type it will be saved as a class.
         this.classifierType = creationInstructions.classifierType === SUPPORTED_ENTITY_TYPES.classifier[0] ? SUPPORTED_ENTITY_TYPES.classifier[1] : creationInstructions.classifierType;
 
