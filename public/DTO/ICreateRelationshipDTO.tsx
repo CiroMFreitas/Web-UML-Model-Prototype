@@ -5,7 +5,7 @@ import ICreateAttributeDTO from "./ICreateAttributeDTO";
  */
 export default interface ICreateRelationshipDTO {
     id?: string;
-    relationshipName: string,
+    relationshipName?: string,
     sourceClassifierId: string;
     targetClassifierId: string;
     relatioshipType?: string;
