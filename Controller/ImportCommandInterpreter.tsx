@@ -33,9 +33,18 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                 const contentParentId = content.parent;
                     
                 switch(true) {
+                    // Relationships have a source and target
+                    case content.source !== undefined && content.target !== undefined:
+                        diagramImportInstructions.relationships.push({
+                            id: content.id,
+                            sourceClassifierId: content.source,
+                            targetClassifierId: content.target,
+                            relationshipName: undefined
+                        });
+                        break;
+
                     // Classifiers have parent id 1 nad have no source or target
                     case contentParentId === "1":
-                        console.log(content);
                         const [classifierType, name] = this.handleClassifierTypeAndName(content.value);
                         diagramImportInstructions.classifiers.push({
                             id: content.id,
