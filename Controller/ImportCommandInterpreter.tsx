@@ -5,6 +5,8 @@ import IImportDiagramDTO from "../public/DTO/IImportDiagramDTO";
 import CommandInterpreter from "./CommandInterpreter";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
+import { SUPPORTED_VISIBILITY } from "../public/Utils/SupportedKeyWords";
+import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
 
 
 /**
@@ -33,6 +35,46 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                 const contentParentId = content.parent;
                     
                 switch(true) {
+                    // Checks if content parent is not the diagram
+                    case contentParentId !== "1":
+                        // Gets parent classifier
+                        const parentClassifier = diagramImportInstructions.classifiers.find((classifier) => classifier.id === contentParentId);
+                        const parentRelationship = diagramImportInstructions.relationships.find((relationship) => relationship.id === contentParentId);
+                        
+                        // Checks if content is an attribute, method or associative attribute
+                        switch(true) {
+                            case parentRelationship !== undefined:
+                                if(parentRelationship !== undefined) {
+                                    // Gets sourceClaasifier for type
+                                    const sourceClassifier = diagramImportInstructions.classifiers.find((classifier) => classifier.id === parentRelationship.sourceClassifierId);
+
+                                    if(sourceClassifier !== undefined) {
+                                        parentRelationship.attribute = this.handleAttributes(content.value + " " + sourceClassifier.name);
+                                    }
+                                }
+                                break;
+
+                            case!content.value.includes("(") &&
+                                content.style.includes("text"):
+                                if(parentClassifier !== undefined) {
+                                    parentClassifier.attributes = content.value.split("<br>").map((attribute: string) => {
+                                        return this.handleAttributes(attribute.replace(":", ""));
+                                    });
+                                }
+                                break;
+
+                            case parentClassifier !== undefined &&
+                                content.value.includes("(") &&
+                                content.style.includes("text"):
+                                if(parentClassifier !== undefined) {
+                                    parentClassifier.methods = content.value.split("<br>").map((method: string) => {
+                                        return this.handleMethods(method);
+                                    });
+                                }
+                                break;
+                        }
+                        break;
+
                     // Relationships have a source and target
                     case content.source !== undefined && content.target !== undefined:
                         diagramImportInstructions.relationships.push({
@@ -77,5 +119,42 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
         }
     
         return ["class", classifierValue];
+    }
+
+    private static handleAttributes(attribute: string): ICreateAttributeDTO {
+        const attributeData = attribute.replace(":", "").split(" ");
+        const validVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol === attributeData[0]);
+    
+        return {
+            visibility: validVisibility?.name,
+            name: attributeData[1],
+            type: attributeData[2],
+        };
+    }
+
+    private static handleMethods(method: string): ICreateMethodDTO {
+        const methodData = method.split("(");
+        const [methodVisibility, methodName] = methodData[0].split(" ");
+        const [methodParameters, methodType] = methodData[1].split(")");
+        const handledParameters = methodParameters.split(", ").map((parameter: string) => {
+            return this.handleParameter(parameter);
+        });
+        const validVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol === methodVisibility);
+    
+        return {
+            visibility: validVisibility?.name,
+            name: methodName,
+            type: methodType ? methodType.replace(": ", "") : "constructor",
+            parameters: handledParameters,
+        };
+    }
+    
+    private static handleParameter(parameter: string): ICreateParameterDTO {
+        const parameterData = parameter.split(": ");
+    
+        return {
+            name: parameterData[0],
+            type: parameterData[1],
+        };
     }
 }
