@@ -16,6 +16,7 @@ export default class Relationship extends DiagramEntity {
     private targetClassifierId: string;
     private relatioshipType: string;
     private attribute?: Attribute;
+    private multiplicity?: string;
 
     /**
      * Creates a relationship between classifiers following DTO instrucitons.
@@ -46,6 +47,7 @@ export default class Relationship extends DiagramEntity {
         
         // Creates attribute if argument is present.
         if(creationInstructions.attribute !== undefined) {
+            this.multiplicity = creationInstructions.attribute.multiplicity;
             this.attribute = new Attribute(creationInstructions.attribute);
         }
     }

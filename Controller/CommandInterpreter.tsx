@@ -2,6 +2,7 @@ import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
+import ICreateAssociativeAttributeDTO from "../public/DTO/ICreateAssociativeAttributeDTO";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
 import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
@@ -197,5 +198,28 @@ export default abstract class CommandInterpreter {
         errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_method_arguments.part_2"));
 
         throw new AppError(errorFeedback)
+    }
+
+    protected static handleCreateAssociativeAttribute(argument: string): ICreateAssociativeAttributeDTO {
+        const splitArgument = argument.split(":");
+        switch(splitArgument.length) {
+            case 2:
+                return {
+                    visibility: splitArgument[0],
+                    name: splitArgument[1],
+                };
+            case 1:
+                return {
+                    name: splitArgument[0]
+                };
+            
+            default:
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.  invalid_attribute_arguments.part_1.too_many"));
+                errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.attribute.error.  invalid_attribute_arguments.part_2"));
+
+                throw new AppError(errorFeedback);
+        }
     }
 }
