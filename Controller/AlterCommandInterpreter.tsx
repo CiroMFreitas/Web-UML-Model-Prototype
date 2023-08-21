@@ -2,6 +2,7 @@ import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
+import IAlterAssociativeAttributeDTO from "../public/DTO/IAlterAssociativeAttributeDTO";
 import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
 import IAlterClassifierDTO from "../public/DTO/IAlterClassifierDTO";
 import IAlterMethodDTO from "../public/DTO/IAlterMethodDTO";
@@ -85,7 +86,8 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             const newTargetClassifierName = this.getCommandArgumentContent(commandLine, "-tc");
 
             const attributeArgument = this.getCommandArgumentContent(commandLine, "-a");
-            const attributeAlterInstructions = this.handleAttributeChanges(attributeArgument);
+            const multiplicityArgument = this.getCommandArgumentContent(commandLine, "-m");
+            const attributeAlterInstructions = this.handlAssociativeAttributeChanges(attributeArgument[0], multiplicityArgument[0]);
     
             return {
                 relationshipName: relationshipName,
@@ -185,6 +187,18 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             create: create,
             remove: remove,
             alter: alter
+        };
+    }
+
+    private static handlAssociativeAttributeChanges(attributeArgument: string, multiplicityArgument?: string): IAlterAssociativeAttributeDTO {
+        const splitArgument = attributeArgument.split(":");
+
+        return {
+            alterationCommand: splitArgument[0],
+            newVisibility: splitArgument[1] !== undefined ? splitArgument[1] : "-",
+            newName: splitArgument[2] !== undefined ? splitArgument[2] : "-",
+            newType: "-",
+            newMultiplicity: multiplicityArgument
         };
     }
 

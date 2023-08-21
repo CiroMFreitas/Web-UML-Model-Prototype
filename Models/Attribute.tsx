@@ -1,7 +1,6 @@
 
 import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
-import AppError from "./AppError";
 import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
 import StringSnippet from "./StringSnippet";

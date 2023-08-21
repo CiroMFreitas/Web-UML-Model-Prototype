@@ -207,10 +207,12 @@ export default abstract class CommandInterpreter {
                 return {
                     visibility: splitArgument[0],
                     name: splitArgument[1],
+                    type: ""
                 };
             case 1:
                 return {
-                    name: splitArgument[0]
+                    name: splitArgument[0],
+                    type: ""
                 };
             
             default:

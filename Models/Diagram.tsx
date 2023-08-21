@@ -339,6 +339,7 @@ export default class Diagram {
         let newTargetClassifier;
         if(alterInstructions.newTargetClassifierName !== undefined) {
             newTargetClassifier = this.getClassifierByName(alterInstructions.newTargetClassifierName);
+            alterInstructions.attributeAlterInstructions.newType = alterInstructions.newTargetClassifierName;
         }
 
         const alterFeedback = toAlterRelationship.alter(alterInstructions,
