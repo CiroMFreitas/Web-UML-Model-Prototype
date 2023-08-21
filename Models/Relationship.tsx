@@ -158,14 +158,18 @@ export default class Relationship extends DiagramEntity {
     public toText(): Feedback {
         const toTextFeedback = new Feedback()
         toTextFeedback.addSnippet(new StringSnippet(this.getName()));
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.of_type"));
+        toTextFeedback.addSnippet(new StringSnippet(this.relatioshipType));
 
         if(this.attribute !== undefined) {
             toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.attribute_is_present"));
             toTextFeedback.mergeFeedback(this.attribute.toText());
-        }
 
-        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.of_tyoe"));
-        toTextFeedback.addSnippet(new StringSnippet(this.relatioshipType));
+            if(this.multiplicity !== undefined) {
+                toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.multiplicity_is_present"));
+                toTextFeedback.addSnippet(new StringSnippet(this.multiplicity));
+            }
+        }
 
         return toTextFeedback;
     }

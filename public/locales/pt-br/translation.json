@@ -172,8 +172,9 @@
             },
             "relationship": {
                 "start": "Há o relacionamento ",
-                "attribute_is_present": ", com o atributo ",
                 "of_type": ", do tipo ",
+                "attribute_is_present": ", com o atributo ",
+                "multiplicity_is_present": " com multiplicidade ",
                 "classifiers": {
                     "part_1": ", entre os classficadores ",
                     "part_2": " e ",

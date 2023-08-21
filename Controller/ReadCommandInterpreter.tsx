@@ -3,9 +3,9 @@ import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
-import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipByBetweenDTO";
-import IReadRelationshipByNamedDTO from "../public/DTO/IReadRelationshipByNamedDTO";
+import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipDTO";
 import CommandInterpreter from "./CommandInterpreter";
+import IReadRelationshipDTO from "../public/DTO/IReadRelationshipDTO";
 
 /**
  * Class responsible for handling user's read commands into DTOs.
@@ -44,7 +44,7 @@ export default class ReadCommandInterpreter extends CommandInterpreter {
      * @param commandLine To be interpreted
      * @returns A DTO depending on whenever the 'named' or 'between' arguments were used.
      */
-    public static interpretReadRelationship(commandLine: string[]): IReadRelationshipByNamedDTO | IReadRelationshipByBetweenDTO {
+    public static interpretReadRelationship(commandLine: string[]): IReadRelationshipDTO | IReadRelationshipByBetweenDTO {
         const readForm = commandLine.shift();
 
         // Checks if read form is present.

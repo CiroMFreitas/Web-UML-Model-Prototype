@@ -172,8 +172,9 @@
             },
             "relationship": {
                 "start": "There's the relationship ",
+                "of_type": " of type",
                 "attribute_is_present": ", with attribute ",
-                "of_type": " of type ",
+                "multiplicity_is_present": " with multiplicity ",
                 "classifiers": {
                     "part_1": ", between classifiers ",
                     "part_2": " and ",
