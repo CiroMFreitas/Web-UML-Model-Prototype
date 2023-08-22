@@ -369,7 +369,7 @@ export default class Diagram {
 
         readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.start"));
         if(this.classifiers.length > 0) {
-            if(this.classifiers.length > 0) {
+            if(this.classifiers.length === 1) {
                 readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.singular"));
                 readDiagramFeedback.addSnippet(new StringSnippet(this.classifiers[0].getName()));
             } else {
