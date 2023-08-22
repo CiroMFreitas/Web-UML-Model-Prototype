@@ -132,10 +132,10 @@
         },
         "read": {
             "diagram": {
-                "start": "O diagrama",
+                "start": "O diagrama ",
                 "classifiers_present": {
-                    "singular": "possui o classificador",
-                    "plural": "possui os classificadores"
+                    "singular": "possui o classificador ",
+                    "plural": "possui os classificadores "
                 },
                 "no_classifiers_present": "não possui classificadores"
             },
@@ -356,6 +356,9 @@
                     "part_2": " não pode ser alterado pela aplicação."
                 }
             }
+        },
+        "import": {
+            "success": "Diagrama foi importado com sucesso."
         },
         "error": {
             "unrecognized_command": {

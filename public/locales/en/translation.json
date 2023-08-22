@@ -134,8 +134,8 @@
             "diagram": {
                 "start": "The diagram ",
                 "classifiers_present": {
-                    "singular": "have the classifier",
-                    "plural": "have the classifiers"
+                    "singular": "have the classifier ",
+                    "plural": "have the classifiers "
                 },
                 "no_classifiers_present": "does not have any classifiers"
             },
@@ -356,6 +356,9 @@
                     "part_2": " type cannot be removed by application."
                 }
             }
+        },
+        "import": {
+            "success": "Diagram was successfully imported."
         },
         "error": {
             "unrecognized_command": {

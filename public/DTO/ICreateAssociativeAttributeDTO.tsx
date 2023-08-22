@@ -6,5 +6,4 @@ export default interface ICreateAssociativeAttributeDTO {
     visibility?: string;
     name: string;
     type: string;
-    multiplicity?: string;
 }

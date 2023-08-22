@@ -9,4 +9,5 @@ export default interface IDiagramCreateRelationshipDTO {
     targetClassifierName: string;
     relatioshipType?: string;
     attribute?: ICreateAssociativeAttributeDTO;
+    multiplicity?: string;
 }

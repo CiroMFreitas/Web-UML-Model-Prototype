@@ -50,7 +50,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
 
                                     if(sourceClassifier !== undefined) {
                                         parentRelationship.attribute = this.handleAttributes(content.value + " " + sourceClassifier.name);
-                                        parentRelationship.attribute.multiplicity = content;
+                                        parentRelationship.multiplicity = content;
                                     }
                                 }
                                 break;
@@ -58,9 +58,13 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                             case!content.value.includes("(") &&
                                 content.style.includes("text"):
                                 if(parentClassifier !== undefined) {
-                                    parentClassifier.attributes = content.value.split("<br>").map((attribute: string) => {
-                                        return this.handleAttributes(attribute.replace(":", ""));
+                                    const classifierAttributes = content.value.split("<br>").map((attribute: string) => {
+                                        if((attribute !== undefined) || (attribute !== "")) {
+                                            return this.handleAttributes(attribute.replace(":", ""));
+                                        }
                                     });
+
+                                    parentClassifier.attributes = classifierAttributes !== undefined ? classifierAttributes as ICreateAttributeDTO[] : [] as ICreateAttributeDTO[];
                                 }
                                 break;
 
@@ -68,9 +72,12 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                                 content.value.includes("(") &&
                                 content.style.includes("text"):
                                 if(parentClassifier !== undefined) {
-                                    parentClassifier.methods = content.value.split("<br>").map((method: string) => {
-                                        return this.handleMethods(method);
+                                    const classifierMethods = content.value.split("<br>").map((method: string) => {
+                                        if((method !== undefined) || (method !== "")) {
+                                            return this.handleMethods(method);
+                                        }
                                     });
+                                    parentClassifier.methods = classifierMethods !== undefined ? classifierMethods as ICreateMethodDTO[] : [] as ICreateMethodDTO[];
                                 }
                                 break;
                         }
@@ -83,11 +90,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                             sourceClassifierId: content.source,
                             targetClassifierId: content.target,
                             relationshipName: "",
-                            attribute: {
-                                name: "",
-                                type: "",
-                                 multiplicity: content.value
-                            }
+                            multiplicity: content.value
                         });
                         break;
 
@@ -142,8 +145,11 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
         const methodData = method.split("(");
         const [methodVisibility, methodName] = methodData[0].split(" ");
         const [methodParameters, methodType] = methodData[1].split(")");
+        
         const handledParameters = methodParameters.split(", ").map((parameter: string) => {
-            return this.handleParameter(parameter);
+            if((parameter !== undefined) && (parameter !== "")) {
+                return this.handleParameter(parameter);
+            }
         });
         const validVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol === methodVisibility);
     
@@ -151,7 +157,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
             visibility: validVisibility?.name,
             name: methodName,
             type: methodType ? methodType.replace(": ", "") : "constructor",
-            parameters: handledParameters,
+            parameters: handledParameters.length > 1 ? handledParameters as ICreateParameterDTO[] : [] as ICreateParameterDTO[]
         };
     }
     

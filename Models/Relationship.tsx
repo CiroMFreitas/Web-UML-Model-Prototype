@@ -47,7 +47,7 @@ export default class Relationship extends DiagramEntity {
         
         // Creates attribute if argument is present.
         if(creationInstructions.attribute !== undefined) {
-            this.multiplicity = creationInstructions.attribute.multiplicity;
+            this.multiplicity = creationInstructions.multiplicity;
             this.attribute = new Attribute(creationInstructions.attribute);
         }
     }

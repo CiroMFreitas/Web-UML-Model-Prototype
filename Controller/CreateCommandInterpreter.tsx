@@ -76,10 +76,11 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
 
             // Gets associative attribute and multiplicity
             const attributeArgument = this.getCommandArgumentContent(commandLine, "-a");
-            const associativeAttribute = attributeArgument.length !== 0 ? this.handleCreateAssociativeAttribute(attributeArgument[0]) : undefined
+            const associativeAttribute = attributeArgument.length !== 0 ? this.handleCreateAssociativeAttribute(attributeArgument[0]) : undefined;
+            let multiplicity;
             const multiplicityArgument = this.getCommandArgumentContent(commandLine, "-m");
             if((multiplicityArgument.length > 0) && (associativeAttribute !== undefined)) {
-                associativeAttribute.multiplicity = multiplicityArgument[0];
+                multiplicity = multiplicityArgument[0];
             }
 
             return {
@@ -87,7 +88,8 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
                 sourceClassifierName: desiredSourceClassifierName,
                 targetClassifierName: desiredTargetClassifierName,
                 relatioshipType: relatioshipType.length !== 0 ? relatioshipType[0] : undefined,
-                attribute: associativeAttribute
+                attribute: associativeAttribute,
+                multiplicity: multiplicity
             }
         }
     }

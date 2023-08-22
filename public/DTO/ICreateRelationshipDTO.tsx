@@ -10,4 +10,5 @@ export default interface ICreateRelationshipDTO {
     targetClassifierId: string;
     relatioshipType?: string;
     attribute?: ICreateAssociativeAttributeDTO;
+    multiplicity?: string;
 }
