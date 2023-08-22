@@ -2,7 +2,7 @@
  * Instructions for classifier reading.
  */
 export default interface IReadClassifierDTO {
-    classifierName: string;
+    name: string;
     readAttributes: boolean;
     readMethods: boolean;
 }

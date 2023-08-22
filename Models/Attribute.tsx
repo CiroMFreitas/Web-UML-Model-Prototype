@@ -1,7 +1,6 @@
 
 import IAlterAttributeDTO from "../public/DTO/IAlterAttributeDTO";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
-import AppError from "./AppError";
 import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
 import StringSnippet from "./StringSnippet";
@@ -18,7 +17,7 @@ export default class Attribute extends VisibleEntity {
      * @param creationInstructions DTO if instructions for attribute creation.
      */
     constructor(creationInstructions: ICreateAttributeDTO) {
-        super(creationInstructions.name, creationInstructions.type, creationInstructions.visibility);
+        super(creationInstructions.name, creationInstructions.type, creationInstructions.visibility, creationInstructions.id);
     }
 
     /**

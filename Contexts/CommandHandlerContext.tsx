@@ -12,10 +12,11 @@ import ReadCommandInterpreter from "../Controller/ReadCommandInterpreter";
 import AlterCommandInterpreter from "../Controller/AlterCommandInterpreter";
 import CreateCommandInterpreter from "../Controller/CreateCommandInterpreter";
 import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
+import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
-    getFeedBack: (commandLine: string) => string;
+    getFeedBack: (commandLine: string[]) => string;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
@@ -37,35 +38,35 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     const [diagram, setDiagram] = useState(new Diagram());
     
     // Sends feedback to user.
-    const getFeedBack = (commandLine: string) => {
+    const getFeedBack = (commandLine: string[]) => {
         try {
-            // Breaks command line into an array.
-            const commandLineArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
-
             // Gets command type, command type will only be undefined if a blank string is sent here.
-            const commandType = commandLineArray?.shift()?.toLowerCase();
+            const commandArgument = commandLine?.shift()?.toLowerCase();
 
-            // Gets entity type
-            const entityType = commandLineArray?.shift()?.toLowerCase();
+            // Gets he following argument
+            const followingArgument = commandLine?.shift()?.toLowerCase();
 
             switch(true) {
-                case SUPPORTED_COMMANDS.create === commandType:
-                    return createEntityHandler(commandLineArray, entityType);
+                case SUPPORTED_COMMANDS.create === commandArgument:
+                    return createEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.read === commandType:
-                    return readEntityHandler(commandLineArray, entityType);
+                case SUPPORTED_COMMANDS.read === commandArgument:
+                    return readEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.remove === commandType:
-                    return removeEntityHandler(commandLineArray, entityType);
+                case SUPPORTED_COMMANDS.remove === commandArgument:
+                    return removeEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.alter === commandType:
-                    return alterEntityHandler(commandLineArray, entityType);
+                case SUPPORTED_COMMANDS.alter === commandArgument:
+                    return alterEntityHandler(commandLine, followingArgument);
+    
+                    case SUPPORTED_COMMANDS.import === commandArgument:
+                        return importDiagramHandler(followingArgument ? followingArgument : "");
     
                 // If command is not found
                 default:
                     const errorFeedback = new Feedback();
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_1"));
-                    errorFeedback.addSnippet(new StringSnippet(commandType ? commandType : ""));
+                    errorFeedback.addSnippet(new StringSnippet(commandArgument ? commandArgument : ""));
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.unrecognized_command.part_2"));
 
                     throw new AppError(errorFeedback);
@@ -209,6 +210,15 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     throw new AppError(errorFeedback);
             }
         }
+    }
+
+    function importDiagramHandler(xmlImport: string) {
+        const diagramImportInstructions = ImportCommandInterpreter.interpretImportXML(xmlImport);
+        const newDiagram = new Diagram();
+        const importFeedback = newDiagram.importDiagram(diagramImportInstructions);
+        setDiagram(newDiagram);
+
+        return importFeedback.toString();
     }
 
     return (

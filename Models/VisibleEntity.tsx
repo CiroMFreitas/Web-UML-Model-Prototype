@@ -19,9 +19,10 @@ export default abstract class VisibleEntity extends TypedEntity {
      * @param name Entity's name.
      * @param type Entity's type.
      * @param visibility Entity's visibility.
+     * @param id Entity's id.
      */
-    constructor(name: string, type: string, visibility?: string) {
-        super(name, type);
+    constructor(name: string, type: string, visibility?: string, id?: string) {
+        super(name, type, id);
         
         if((visibility === undefined) || (visibility === "")) {
             this.visibilityName = SUPPORTED_VISIBILITY[0].name;

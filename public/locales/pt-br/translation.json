@@ -132,9 +132,9 @@
         },
         "read": {
             "diagram": {
-                "start": "O diagrama",
+                "start": "O diagrama ",
                 "classifiers_present": {
-                    "singular": "possui o classificador",
+                    "singular": "possui o classificador ",
                     "plural": "possui os classificadores"
                 },
                 "no_classifiers_present": "não possui classificadores"
@@ -172,8 +172,9 @@
             },
             "relationship": {
                 "start": "Há o relacionamento ",
-                "attribute_is_present": ", com o atributo ",
                 "of_type": ", do tipo ",
+                "attribute_is_present": ", com o atributo ",
+                "multiplicity_is_present": " com multiplicidade ",
                 "classifiers": {
                     "part_1": ", entre os classficadores ",
                     "part_2": " e ",
@@ -355,6 +356,9 @@
                     "part_2": " não pode ser alterado pela aplicação."
                 }
             }
+        },
+        "import": {
+            "success": "Diagrama foi importado com sucesso."
         },
         "error": {
             "unrecognized_command": {

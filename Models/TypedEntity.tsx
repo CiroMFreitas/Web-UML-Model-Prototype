@@ -15,9 +15,10 @@ export default abstract class TypedEntity extends DiagramEntity {
      * 
      * @param name Entoty's name.
      * @param type Entity's type.
+     * @param id Entity's id.
      */
-    constructor(name: string, type: string) {
-        super(name);
+    constructor(name: string, type: string, id?: string) {
+        super(name, id);
         this.validadeNamingString(type);
 
         this.type = type;

@@ -134,7 +134,7 @@
             "diagram": {
                 "start": "The diagram ",
                 "classifiers_present": {
-                    "singular": "have the classifier",
+                    "singular": "have the classifier ",
                     "plural": "have the classifiers"
                 },
                 "no_classifiers_present": "does not have any classifiers"
@@ -172,8 +172,9 @@
             },
             "relationship": {
                 "start": "There's the relationship ",
+                "of_type": " of type",
                 "attribute_is_present": ", with attribute ",
-                "of_type": " of type ",
+                "multiplicity_is_present": " with multiplicity ",
                 "classifiers": {
                     "part_1": ", between classifiers ",
                     "part_2": " and ",
@@ -355,6 +356,9 @@
                     "part_2": " type cannot be removed by application."
                 }
             }
+        },
+        "import": {
+            "success": "Diagram was successfully imported."
         },
         "error": {
             "unrecognized_command": {

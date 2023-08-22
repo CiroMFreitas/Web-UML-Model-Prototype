@@ -2,7 +2,8 @@ export const SUPPORTED_COMMANDS = {
     create: "create",
     read: "read",
     remove: "remove",
-    alter: "alter"
+    alter: "alter",
+    import: "import"
 }
 
 export const SUPPORTED_ENTITY_TYPES = {

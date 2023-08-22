@@ -8,9 +8,15 @@ export default abstract class DomainObject {
 
     /**
      * Generates object with id using uuid.
+     * 
+     * @param id Object's id.
      */
-    constructor() {
-        this.id = uuidv4();
+    constructor(id?: string) {
+        if(id !== undefined) {
+            this.id = id;
+        } else {
+            this.id = uuidv4();
+        }
     }
 
     /**

@@ -1,11 +1,11 @@
 import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
-import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import IDiagramCreateRelationshipDTO from "../public/DTO/IDiagramCreateRelationshipDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
 import CommandInterpreter from "./CommandInterpreter";
+import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 
 /**
  * Class responsible for handling user's create commands into DTOs.
@@ -18,8 +18,8 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
      * @returns Handled coomand line into a DTO to be executed.
      */
     public static interpretCreateClassifier(commandLine: string[], entityType: string): ICreateClassifierDTO {
-        const classifierName = commandLine.shift();
-        if((classifierName === undefined) || (classifierName === "")) {
+        const name = commandLine.shift();
+        if((name === undefined) || (name === "")) {
             const errorFeedback = new Feedback();
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.missing_name_argument.part_1"));
             errorFeedback.addSnippet(new LocalizationSnippet("feedback.common.entity_type."+entityType));
@@ -42,7 +42,7 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
 
             return {
                 classifierType: entityType,
-                classifierName: classifierName,
+                name: name,
                 attributes: attributes,
                 methods: methods,
             };
@@ -73,14 +73,23 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
             // Checks if name was given, if not generates a name.
             const relationshipName = this.getCommandArgumentContent(commandLine, "-n");
             const relatioshipType = this.getCommandArgumentContent(commandLine, "-t");
+
+            // Gets associative attribute and multiplicity
             const attributeArgument = this.getCommandArgumentContent(commandLine, "-a");
+            const associativeAttribute = attributeArgument.length !== 0 ? this.handleCreateAssociativeAttribute(attributeArgument[0]) : undefined;
+            let multiplicity;
+            const multiplicityArgument = this.getCommandArgumentContent(commandLine, "-m");
+            if((multiplicityArgument.length > 0) && (associativeAttribute !== undefined)) {
+                multiplicity = multiplicityArgument[0];
+            }
 
             return {
                 relationshipName: relationshipName.length !== 0 ? relationshipName[0] : undefined,
                 sourceClassifierName: desiredSourceClassifierName,
                 targetClassifierName: desiredTargetClassifierName,
                 relatioshipType: relatioshipType.length !== 0 ? relatioshipType[0] : undefined,
-                attribute: attributeArgument.length !== 0 ? this.handleCreateAttributeArgument(attributeArgument[0]) : undefined
+                attribute: associativeAttribute,
+                multiplicity: multiplicity
             }
         }
     }
