@@ -50,6 +50,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
 
                                     if(sourceClassifier !== undefined) {
                                         parentRelationship.attribute = this.handleAttributes(content.value + " " + sourceClassifier.name);
+                                        parentRelationship.attribute.multiplicity = content;
                                     }
                                 }
                                 break;
@@ -81,7 +82,12 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                             id: content.id,
                             sourceClassifierId: content.source,
                             targetClassifierId: content.target,
-                            relationshipName: undefined
+                            relationshipName: "",
+                            attribute: {
+                                name: "",
+                                type: "",
+                                 multiplicity: content.value
+                            }
                         });
                         break;
 
