@@ -376,41 +376,6 @@ export default class Diagram {
     }
 
     /**
-     * Gets given argument's content from command line, removing said range, if no start is found, undefined
-     * will be returned, if no end is found, an error will be thrown.
-     * 
-     * @param commandLineArray Comand line to be searched.
-     * @param startArgument Start argument to be searched.
-     * @returns Array argument content or undefined.
-     */
-    private getCommandArgumentContent(commandLineArray: string[], startArgument: string): string[] | undefined {
-        // Checks if given argument is present.
-        const startIndex = commandLineArray.findIndex((commandLine) => commandLine === startArgument)+1;
-        if(startIndex === 0) {
-            return undefined;
-        }
-
-        // Checks if end for an argument is present.
-        const endIndex = commandLineArray.findIndex((commandLine) => commandLine.includes(";"))+1;
-        if(endIndex === 0) {
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.no_end_given_for_argument.part_1"));
-            errorFeedback.addSnippet(new StringSnippet(startArgument));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.no_end_given_for_argument.part_2"));
-
-            throw new AppError(errorFeedback);
-        }
-
-        // Gets argument while cleaning it.
-        const argumentContents = commandLineArray.slice(startIndex, endIndex).map((content) => {
-            return content.replace(",", "").replace(";", "")
-        });
-        commandLineArray.splice(startIndex, endIndex-startIndex);
-
-        return argumentContents;
-    }
-
-    /**
      * Checks if given name is already in use by a classifier, if true an error will be thrown.
      * 
      * @param name Name to be checked.
