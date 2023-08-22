@@ -135,7 +135,7 @@
                 "start": "O diagrama ",
                 "classifiers_present": {
                     "singular": "possui o classificador ",
-                    "plural": "possui os classificadores "
+                    "plural": "possui os classificadores"
                 },
                 "no_classifiers_present": "não possui classificadores"
             },

@@ -135,7 +135,7 @@
                 "start": "The diagram ",
                 "classifiers_present": {
                     "singular": "have the classifier ",
-                    "plural": "have the classifiers "
+                    "plural": "have the classifiers"
                 },
                 "no_classifiers_present": "does not have any classifiers"
             },
