@@ -4,6 +4,7 @@ export const SUPPORTED_COMMANDS = {
     remove: "remove",
     alter: "alter",
     import: "import",
+    load: "load",
     save: "save"
 }
 
