@@ -235,9 +235,14 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     function importDiagramHandler(xmlImport: string) {
         const diagramImportInstructions = ImportCommandInterpreter.interpretImportXML(xmlImport);
         const newDiagram = new Diagram();
-        const importFeedback = newDiagram.generateDiagramFromData(diagramImportInstructions);
+        newDiagram.generateDiagramFromData(diagramImportInstructions);
         setDiagram(newDiagram);
 
+        const importFeedback = new Feedback();
+        importFeedback.addSnippet(new LocalizationSnippet("feedback.import.success"));
+
+        return importFeedback.toString();
+    }
         return importFeedback.toString();
     }
 
