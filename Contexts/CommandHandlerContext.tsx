@@ -14,6 +14,7 @@ import CreateCommandInterpreter from "../Controller/CreateCommandInterpreter";
 import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
+import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
@@ -69,6 +70,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     
                 case SUPPORTED_COMMANDS.import:
                     return importDiagramHandler(followingArgument ? followingArgument : "");
+    
+                case SUPPORTED_COMMANDS.load:
+                    return loadDiagramHandler(followingArgument ? followingArgument : "");
     
                 // If command is not found
                 default:
@@ -243,7 +247,17 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
         return importFeedback.toString();
     }
-        return importFeedback.toString();
+
+    function loadDiagramHandler(jsonLoad: string) {
+        const diagramLoadData = LoadFileInterpreter.interpretImportXML(JSON.parse(jsonLoad));
+        const newDiagram = new Diagram();
+        newDiagram.generateDiagramFromData(diagramLoadData);
+        setDiagram(newDiagram);
+
+        const loadFeedback = new Feedback();
+        loadFeedback.addSnippet(new LocalizationSnippet("feedback.load.success"));
+
+        return loadFeedback.toString();
     }
 
     return (

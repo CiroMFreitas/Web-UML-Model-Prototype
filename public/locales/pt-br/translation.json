@@ -360,6 +360,9 @@
         "import": {
             "success": "Diagrama foi importado com sucesso."
         },
+        "load": {
+            "success": "Diagrama foi carregado com sucesso."
+        },
         "save": {
             "success": "Diagrama foi salvo com sucesso."
         },
