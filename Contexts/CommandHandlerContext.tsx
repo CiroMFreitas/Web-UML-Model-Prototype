@@ -54,20 +54,20 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
             // Gets he following argument
             const followingArgument = commandLine?.shift()?.toLowerCase();
 
-            switch(true) {
-                case SUPPORTED_COMMANDS.create === commandArgument:
+            switch(commandArgument) {
+                case SUPPORTED_COMMANDS.create:
                     return createEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.read === commandArgument:
+                case SUPPORTED_COMMANDS.read:
                     return readEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.remove === commandArgument:
+                case SUPPORTED_COMMANDS.remove:
                     return removeEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.alter === commandArgument:
+                case SUPPORTED_COMMANDS.alter:
                     return alterEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.import === commandArgument:
+                case SUPPORTED_COMMANDS.import:
                     return importDiagramHandler(followingArgument ? followingArgument : "");
     
                 // If command is not found
@@ -92,10 +92,11 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     // Saves diagram into a JSON blob and sends feedback to user.
     const saveDiagram = () => {
         const saveFeedback = new Feedback();
+        saveFeedback.addSnippet(new LocalizationSnippet("feedback.save.success"));
 
         return {
             saveFeedback: saveFeedback.toString(),
-            diagramJSONFile: new Blob()
+            diagramJSONFile: new Blob([JSON.stringify(diagram)], { type: "text/plain;charset=utf-8" })
         };
     }
 
