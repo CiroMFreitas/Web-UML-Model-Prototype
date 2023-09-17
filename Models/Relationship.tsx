@@ -37,9 +37,9 @@ export default class Relationship extends DiagramEntity {
                 this.relationshipType = supportedRelationshipType.name;
             } else {
                 const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_1."));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_1"));
                 errorFeedback.addSnippet(new StringSnippet(creationInstructions.relationshipType));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_2."));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_2"));
 
                 throw new AppError(errorFeedback);
             }

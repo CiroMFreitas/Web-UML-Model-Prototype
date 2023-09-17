@@ -113,7 +113,7 @@
                         "part_2": " para relacionamento já está em uso."
                     },
                     "invalid_relationship_code": {
-                        "part_'": "O código de relacionamento ",
+                        "part_1": "O código de relacionamento ",
                         "part_2": " não é suportado pela aplicação."
                     }
                 }

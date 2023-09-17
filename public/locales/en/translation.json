@@ -113,7 +113,7 @@
                         "part_2": " for relationship is already in use."
                     },
                     "invalid_relationship_code": {
-                        "part_'": "The relationship type code ",
+                        "part_1": "The relationship type code ",
                         "part_2": " is not supported by the applicatiob."
                     }
                 }
