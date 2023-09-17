@@ -50,7 +50,6 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
 
                                     if(sourceClassifier !== undefined) {
                                         parentRelationship.attribute = this.handleAttributes(content.value + " " + sourceClassifier.name);
-                                        parentRelationship.multiplicity = content;
                                     }
                                 }
                                 break;
