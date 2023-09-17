@@ -32,7 +32,7 @@ export default class Diagram {
      * @param importInstructions A data to be imported to the diagram.
      * @returns Sucess feedback.
      */
-    public importDiagram(importInstructions: INewDiagramDTO): Feedback {
+    public generateDiagramFromData(importInstructions: INewDiagramDTO): Feedback {
         importInstructions.classifiersData.forEach((newClassifiersInstructions) => {
             this.createClassifier(newClassifiersInstructions);
         });
