@@ -13,7 +13,7 @@ export default function CommandPanel() {
     const [commandHistoryPosition, setCommandHistoryPosition] = useState(0);
 
     const commandLineRef = useRef<HTMLInputElement>(null);
-    const fileRef = useRef<HTMLInputElement>(null);
+    const importRef = useRef<HTMLInputElement>(null);
     const commandHandler = useContext(CommandHandlerContext);
 
     /** Checks which key was pressed in order to excute written comands or check command history
@@ -38,7 +38,21 @@ export default function CommandPanel() {
                         // Breaks command line into an array.
                         const commandLineArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
                         if(commandLineArray[0] === SUPPORTED_COMMANDS.import) {
-                            fileRef.current?.click();
+                            importRef.current?.click();
+                        } else if(commandLineArray[0] === SUPPORTED_COMMANDS.save) {
+                            const saveDiagramReturn = commandHandler.saveDiagram();
+
+                            //Convert JSON string to BLOB.
+                            //json = [json];
+                            const url = URL.createObjectURL(saveDiagramReturn.diagramJSONFile)
+                            const downloadJSONFile = document.createElement('a')
+                          
+                            downloadJSONFile.href = url
+                            downloadJSONFile.download = "diagram.json"
+                            downloadJSONFile.click()
+                            URL.revokeObjectURL(url)
+
+                            setFeedback(saveDiagramReturn.saveFeedback)
                         } else {
                             setFeedback(commandHandler.getFeedBack(commandLineArray));
                         }
@@ -69,7 +83,7 @@ export default function CommandPanel() {
      * Sends xml content of a file to be handled by contex and sets feedback after import handling.
      */
     function importHandler(): void {
-        const files = fileRef.current?.files;
+        const files = importRef.current?.files;
         if((files !== null) && (files !== undefined)) {
             files[0].text().then((xmlContent) => {
                 const commandLineArray = ["import", xmlContent]
@@ -89,7 +103,7 @@ export default function CommandPanel() {
       
             <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label={ translate("label.command_console") } autoComplete="off" autoFocus />
 
-            <input id="UploadXML" ref={ fileRef } type="file" onChange={ () => importHandler() } accept="text/xml" aria-hidden="true" hidden />
+            <input id="UploadXML" ref={ importRef } type="file" onChange={ () => importHandler() } accept="text/xml" aria-hidden="true" hidden />
         </div>
     );
 }
