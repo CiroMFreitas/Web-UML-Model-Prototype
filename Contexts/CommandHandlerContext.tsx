@@ -13,14 +13,22 @@ import AlterCommandInterpreter from "../Controller/AlterCommandInterpreter";
 import CreateCommandInterpreter from "../Controller/CreateCommandInterpreter";
 import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
+import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
 
 // Setting context up.
 type commandHandlerType = {
     getFeedBack: (commandLine: string[]) => string;
+    saveDiagram: () => ISaveDiagramReturnDTO;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
-    getFeedBack: () => { return ""; }
+    getFeedBack: () => { return ""; },
+    saveDiagram: () => {
+        return {
+            saveFeedback: "",
+            diagramJSONFile: new Blob()
+        };
+    }
 }
 
 const CommandHandlerContext = createContext<commandHandlerType>(commandHandlerDefaultValues);
@@ -59,8 +67,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 case SUPPORTED_COMMANDS.alter === commandArgument:
                     return alterEntityHandler(commandLine, followingArgument);
     
-                    case SUPPORTED_COMMANDS.import === commandArgument:
-                        return importDiagramHandler(followingArgument ? followingArgument : "");
+                case SUPPORTED_COMMANDS.import === commandArgument:
+                    return importDiagramHandler(followingArgument ? followingArgument : "");
     
                 // If command is not found
                 default:
@@ -81,8 +89,19 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
+    // Saves diagram into a JSON blob and sends feedback to user.
+    const saveDiagram = () => {
+        const saveFeedback = new Feedback();
+
+        return {
+            saveFeedback: saveFeedback.toString(),
+            diagramJSONFile: new Blob()
+        };
+    }
+
     const value = {
         getFeedBack,
+        saveDiagram
     }
 
     function createEntityHandler(commandLine: string[], entityType: string | undefined) {
