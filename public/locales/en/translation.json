@@ -360,6 +360,9 @@
         "import": {
             "success": "Diagram was successfully imported."
         },
+        "save": {
+            "success": "Diagram was successfully saved."
+        },
         "error": {
             "unrecognized_command": {
                 "part_1": "Command ",

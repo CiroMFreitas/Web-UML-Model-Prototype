@@ -37,24 +37,34 @@ export default function CommandPanel() {
 
                         // Breaks command line into an array.
                         const commandLineArray = commandLine.replace("\n", "").replaceAll(",", "").split(" ");
-                        if(commandLineArray[0] === SUPPORTED_COMMANDS.import) {
-                            importRef.current?.click();
-                        } else if(commandLineArray[0] === SUPPORTED_COMMANDS.save) {
-                            const saveDiagramReturn = commandHandler.saveDiagram();
+                        switch(commandLineArray[0]) {
+                            case SUPPORTED_COMMANDS.import:
+                                importRef.current?.click();
+                                break;
 
-                            //Convert JSON string to BLOB.
-                            //json = [json];
-                            const url = URL.createObjectURL(saveDiagramReturn.diagramJSONFile)
-                            const downloadJSONFile = document.createElement('a')
-                          
-                            downloadJSONFile.href = url
-                            downloadJSONFile.download = "diagram.json"
-                            downloadJSONFile.click()
-                            URL.revokeObjectURL(url)
+                            case SUPPORTED_COMMANDS.save:
+                                const saveDiagramReturn = commandHandler.saveDiagram();
 
-                            setFeedback(saveDiagramReturn.saveFeedback)
-                        } else {
-                            setFeedback(commandHandler.getFeedBack(commandLineArray));
+                                // Sets element for download
+                                const url = URL.createObjectURL(saveDiagramReturn.diagramJSONFile)
+                                const downloadJSONFile = document.createElement('a');
+                                downloadJSONFile.href = url;
+
+                                // Sets file name if present
+                                if((commandLineArray[1] !== undefined) && (commandLineArray[1] !== "")) {
+                                    downloadJSONFile.download = commandLineArray[1] + ".json";
+                                } else {
+                                    downloadJSONFile.download = "diagram.json";
+                                }
+
+                                // Downloads file
+                                downloadJSONFile.click()
+
+                                setFeedback(saveDiagramReturn.saveFeedback)
+                                break;
+
+                            default:
+                                setFeedback(commandHandler.getFeedBack(commandLineArray));
                         }
                     }
                     break;
