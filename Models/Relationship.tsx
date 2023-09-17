@@ -32,9 +32,12 @@ export default class Relationship extends DiagramEntity {
         if(creationInstructions.relationshipType === undefined) {
             this.relationshipType = SUPPORTED_RELATIONSHIP_TYPES[0].name;
         } else {
-            const supportedRelationshipType = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.code === creationInstructions.relationshipType);
-            if (supportedRelationshipType !== undefined) {
-                this.relationshipType = supportedRelationshipType.name;
+            const supportedRelationshipTypeByCode = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.code === creationInstructions.relationshipType);
+            const supportedRelationshipTypeByName = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.name === creationInstructions.relationshipType);
+            if (supportedRelationshipTypeByCode !== undefined) {
+                this.relationshipType = supportedRelationshipTypeByCode.name;
+            } else if(supportedRelationshipTypeByName !== undefined) {
+                this.relationshipType = supportedRelationshipTypeByName.name;
             } else {
                 const errorFeedback = new Feedback();
                 errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_1"));
