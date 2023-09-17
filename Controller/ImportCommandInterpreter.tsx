@@ -1,7 +1,7 @@
 import { parseString } from "xml2js";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import ICreateRelationshipDTO from "../public/DTO/ICreateRelationshipDTO";
-import IImportDiagramDTO from "../public/DTO/IImportDiagramDTO";
+import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
 import CommandInterpreter from "./CommandInterpreter";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
@@ -19,7 +19,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
      * @param xmlImport String of a xml file.
      * @returns All classifiers and relationship imported from a xml file.
      */
-    public static interpretImportXML(xmlImport: string): IImportDiagramDTO {
+    public static interpretImportXML(xmlImport: string): INewDiagramDTO {
         const diagramImportInstructions = {
             classifiers: [] as ICreateClassifierDTO[],
             relationships: [] as ICreateRelationshipDTO[]
@@ -109,8 +109,8 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
         });
 
         return {
-            classifiersInstructions: diagramImportInstructions.classifiers,
-            relationshipssInstructions: diagramImportInstructions.relationships
+            classifiersData: diagramImportInstructions.classifiers,
+            relationshipsData: diagramImportInstructions.relationships
         };
     }
 

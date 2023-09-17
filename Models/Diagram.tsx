@@ -3,7 +3,6 @@ import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import IDiagramCreateRelationshipDTO from "../public/DTO/IDiagramCreateRelationshipDTO";
 import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
-import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipDTO";
 import IRemoveClassifierDTO from "../public/DTO/IRemoveClassifierDTO";
 import IRemoveRelationshipDTO from "../public/DTO/IRemoveRelationshipDTO";
 import AppError from "./AppError";
@@ -13,7 +12,7 @@ import LocalizationSnippet from "./LocalizationSnippet";
 import Relationship from "./Relationship";
 import StringSnippet from "./StringSnippet";
 import IReadRelationshipDTO from "../public/DTO/IReadRelationshipDTO";
-import IImportDiagramDTO from "../public/DTO/IImportDiagramDTO";
+import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
 
 /**
  * Object responsible for holding and managing all diagram entities.
@@ -33,12 +32,12 @@ export default class Diagram {
      * @param importInstructions A data to be imported to the diagram.
      * @returns Sucess feedback.
      */
-    public importDiagram(importInstructions: IImportDiagramDTO): Feedback {
-        importInstructions.classifiersInstructions.forEach((newClassifiersInstructions) => {
+    public importDiagram(importInstructions: INewDiagramDTO): Feedback {
+        importInstructions.classifiersData.forEach((newClassifiersInstructions) => {
             this.createClassifier(newClassifiersInstructions);
         });
 
-        importInstructions.relationshipssInstructions.forEach((newRelationshipInstructions) => {
+        importInstructions.relationshipsData.forEach((newRelationshipInstructions) => {
             const desiredSourceClassifier = this.getClassifierById(newRelationshipInstructions.sourceClassifierId);
             const desiredTargetClassifier = this.getClassifierById(newRelationshipInstructions.targetClassifierId);
             newRelationshipInstructions.relationshipName = this.getRelationshipName(newRelationshipInstructions.relationshipName, desiredSourceClassifier, desiredTargetClassifier)
