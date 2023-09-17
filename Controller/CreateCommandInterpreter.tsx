@@ -72,7 +72,7 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
         } else {
             // Checks if name was given, if not generates a name.
             const relationshipName = this.getCommandArgumentContent(commandLine, "-n");
-            const relatioshipType = this.getCommandArgumentContent(commandLine, "-t");
+            const relationshipType = this.getCommandArgumentContent(commandLine, "-t");
 
             // Gets associative attribute and multiplicity
             const attributeArgument = this.getCommandArgumentContent(commandLine, "-a");
@@ -87,7 +87,7 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
                 relationshipName: relationshipName.length !== 0 ? relationshipName[0] : undefined,
                 sourceClassifierName: desiredSourceClassifierName,
                 targetClassifierName: desiredTargetClassifierName,
-                relatioshipType: relatioshipType.length !== 0 ? relatioshipType[0] : undefined,
+                relationshipType: relationshipType.length !== 0 ? relationshipType[0] : undefined,
                 attribute: associativeAttribute,
                 multiplicity: multiplicity
             }

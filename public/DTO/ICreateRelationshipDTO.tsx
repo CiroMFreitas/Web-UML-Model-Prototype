@@ -8,7 +8,7 @@ export default interface ICreateRelationshipDTO {
     relationshipName: string,
     sourceClassifierId: string;
     targetClassifierId: string;
-    relatioshipType?: string;
+    relationshipType?: string;
     attribute?: ICreateAssociativeAttributeDTO;
     multiplicity?: string;
 }

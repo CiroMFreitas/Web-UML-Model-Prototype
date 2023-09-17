@@ -13,14 +13,23 @@ import AlterCommandInterpreter from "../Controller/AlterCommandInterpreter";
 import CreateCommandInterpreter from "../Controller/CreateCommandInterpreter";
 import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
+import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
+import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
 
 // Setting context up.
 type commandHandlerType = {
     getFeedBack: (commandLine: string[]) => string;
+    saveDiagram: () => ISaveDiagramReturnDTO;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
-    getFeedBack: () => { return ""; }
+    getFeedBack: () => { return ""; },
+    saveDiagram: () => {
+        return {
+            saveFeedback: "",
+            diagramJSONFile: new Blob()
+        };
+    }
 }
 
 const CommandHandlerContext = createContext<commandHandlerType>(commandHandlerDefaultValues);
@@ -46,21 +55,24 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
             // Gets he following argument
             const followingArgument = commandLine?.shift()?.toLowerCase();
 
-            switch(true) {
-                case SUPPORTED_COMMANDS.create === commandArgument:
+            switch(commandArgument) {
+                case SUPPORTED_COMMANDS.create:
                     return createEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.read === commandArgument:
+                case SUPPORTED_COMMANDS.read:
                     return readEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.remove === commandArgument:
+                case SUPPORTED_COMMANDS.remove:
                     return removeEntityHandler(commandLine, followingArgument);
     
-                case SUPPORTED_COMMANDS.alter === commandArgument:
+                case SUPPORTED_COMMANDS.alter:
                     return alterEntityHandler(commandLine, followingArgument);
     
-                    case SUPPORTED_COMMANDS.import === commandArgument:
-                        return importDiagramHandler(followingArgument ? followingArgument : "");
+                case SUPPORTED_COMMANDS.import:
+                    return importDiagramHandler(followingArgument ? followingArgument : "");
+    
+                case SUPPORTED_COMMANDS.load:
+                    return loadDiagramHandler(followingArgument ? followingArgument : "");
     
                 // If command is not found
                 default:
@@ -81,8 +93,20 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
+    // Saves diagram into a JSON blob and sends feedback to user.
+    const saveDiagram = () => {
+        const saveFeedback = new Feedback();
+        saveFeedback.addSnippet(new LocalizationSnippet("feedback.save.success"));
+
+        return {
+            saveFeedback: saveFeedback.toString(),
+            diagramJSONFile: new Blob([JSON.stringify(diagram)], { type: "text/plain;charset=utf-8" })
+        };
+    }
+
     const value = {
         getFeedBack,
+        saveDiagram
     }
 
     function createEntityHandler(commandLine: string[], entityType: string | undefined) {
@@ -213,12 +237,27 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     }
 
     function importDiagramHandler(xmlImport: string) {
-        const diagramImportInstructions = ImportCommandInterpreter.interpretImportXML(xmlImport);
+        const diagramImportData = ImportCommandInterpreter.interpretImportXML(xmlImport);
         const newDiagram = new Diagram();
-        const importFeedback = newDiagram.importDiagram(diagramImportInstructions);
+        newDiagram.generateDiagramFromData(diagramImportData);
         setDiagram(newDiagram);
 
+        const importFeedback = new Feedback();
+        importFeedback.addSnippet(new LocalizationSnippet("feedback.import.success"));
+
         return importFeedback.toString();
+    }
+
+    function loadDiagramHandler(jsonLoad: string) {
+        const diagramLoadData = LoadFileInterpreter.interpretImportXML(JSON.parse(jsonLoad));
+        const newDiagram = new Diagram();
+        newDiagram.generateDiagramFromData(diagramLoadData);
+        setDiagram(newDiagram);
+
+        const loadFeedback = new Feedback();
+        loadFeedback.addSnippet(new LocalizationSnippet("feedback.load.success"));
+
+        return loadFeedback.toString();
     }
 
     return (

@@ -14,7 +14,7 @@ import StringSnippet from "./StringSnippet";
 export default class Relationship extends DiagramEntity {
     private sourceClassifierId: string;
     private targetClassifierId: string;
-    private relatioshipType: string;
+    private relationshipType: string;
     private attribute?: Attribute;
     private multiplicity?: string;
 
@@ -29,17 +29,20 @@ export default class Relationship extends DiagramEntity {
         this.targetClassifierId = creationInstructions.targetClassifierId;
 
         // Checks and possibly defaults realtionship type.
-        if(creationInstructions.relatioshipType === undefined) {
-            this.relatioshipType = SUPPORTED_RELATIONSHIP_TYPES[0].name;
+        if(creationInstructions.relationshipType === undefined) {
+            this.relationshipType = SUPPORTED_RELATIONSHIP_TYPES[0].name;
         } else {
-            const supportedRelationshipType = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.code === creationInstructions.relatioshipType);
-            if (supportedRelationshipType !== undefined) {
-                this.relatioshipType = supportedRelationshipType.name;
+            const supportedRelationshipTypeByCode = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.code === creationInstructions.relationshipType);
+            const supportedRelationshipTypeByName = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.name === creationInstructions.relationshipType);
+            if (supportedRelationshipTypeByCode !== undefined) {
+                this.relationshipType = supportedRelationshipTypeByCode.name;
+            } else if(supportedRelationshipTypeByName !== undefined) {
+                this.relationshipType = supportedRelationshipTypeByName.name;
             } else {
                 const errorFeedback = new Feedback();
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_1."));
-                errorFeedback.addSnippet(new StringSnippet(creationInstructions.relatioshipType));
-                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_2."));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_1"));
+                errorFeedback.addSnippet(new StringSnippet(creationInstructions.relationshipType));
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.invalid_relationship_code.part_2"));
 
                 throw new AppError(errorFeedback);
             }
@@ -144,7 +147,7 @@ export default class Relationship extends DiagramEntity {
      * @returns Target classifier's type.
      */
     public getRelationshipType(): string {
-        return this.relatioshipType;
+        return this.relationshipType;
     }
 
     /**
@@ -157,7 +160,7 @@ export default class Relationship extends DiagramEntity {
         const toTextFeedback = new Feedback()
         toTextFeedback.addSnippet(new StringSnippet(this.getName()));
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.of_type"));
-        toTextFeedback.addSnippet(new StringSnippet(this.relatioshipType));
+        toTextFeedback.addSnippet(new StringSnippet(this.relationshipType));
 
         if(this.attribute !== undefined) {
             toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.attribute_is_present"));

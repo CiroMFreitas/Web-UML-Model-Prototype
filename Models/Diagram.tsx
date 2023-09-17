@@ -3,7 +3,6 @@ import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
 import IDiagramCreateRelationshipDTO from "../public/DTO/IDiagramCreateRelationshipDTO";
 import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
-import IReadRelationshipByBetweenDTO from "../public/DTO/IReadRelationshipDTO";
 import IRemoveClassifierDTO from "../public/DTO/IRemoveClassifierDTO";
 import IRemoveRelationshipDTO from "../public/DTO/IRemoveRelationshipDTO";
 import AppError from "./AppError";
@@ -13,7 +12,7 @@ import LocalizationSnippet from "./LocalizationSnippet";
 import Relationship from "./Relationship";
 import StringSnippet from "./StringSnippet";
 import IReadRelationshipDTO from "../public/DTO/IReadRelationshipDTO";
-import IImportDiagramDTO from "../public/DTO/IImportDiagramDTO";
+import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
 
 /**
  * Object responsible for holding and managing all diagram entities.
@@ -28,17 +27,16 @@ export default class Diagram {
     constructor() { }
     
     /**
-     * Handles the creation of all imported data.
+     * Handles the creation of all data given in a DTO.
      * 
-     * @param importInstructions A data to be imported to the diagram.
-     * @returns Sucess feedback.
+     * @param diagramData Data to be generated into the diagram.
      */
-    public importDiagram(importInstructions: IImportDiagramDTO): Feedback {
-        importInstructions.classifiersInstructions.forEach((newClassifiersInstructions) => {
+    public generateDiagramFromData(diagramData: INewDiagramDTO): void {
+        diagramData.classifiersData.forEach((newClassifiersInstructions) => {
             this.createClassifier(newClassifiersInstructions);
         });
 
-        importInstructions.relationshipssInstructions.forEach((newRelationshipInstructions) => {
+        diagramData.relationshipsData.forEach((newRelationshipInstructions) => {
             const desiredSourceClassifier = this.getClassifierById(newRelationshipInstructions.sourceClassifierId);
             const desiredTargetClassifier = this.getClassifierById(newRelationshipInstructions.targetClassifierId);
             newRelationshipInstructions.relationshipName = this.getRelationshipName(newRelationshipInstructions.relationshipName, desiredSourceClassifier, desiredTargetClassifier)
@@ -46,11 +44,6 @@ export default class Diagram {
             const newRelationship = new Relationship(newRelationshipInstructions);
             this.relationships.push(newRelationship);
         });
-
-        const feedback = new Feedback();
-        feedback.addSnippet(new LocalizationSnippet("feedback.import.success"));
-
-        return feedback;
     }
 
     /**
@@ -172,7 +165,7 @@ export default class Diagram {
             relationshipName: relationshipName,
             sourceClassifierId: desiredSourceClassifier.getId(),
             targetClassifierId: desiredTargetClassifier.getId(),
-            relatioshipType: relationshipCreationInstructions.relatioshipType,
+            relationshipType: relationshipCreationInstructions.relationshipType,
             attribute: relationshipCreationInstructions.attribute,
             multiplicity: relationshipCreationInstructions.multiplicity
         });

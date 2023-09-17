@@ -3,7 +3,9 @@ export const SUPPORTED_COMMANDS = {
     read: "read",
     remove: "remove",
     alter: "alter",
-    import: "import"
+    import: "import",
+    load: "load",
+    save: "save"
 }
 
 export const SUPPORTED_ENTITY_TYPES = {

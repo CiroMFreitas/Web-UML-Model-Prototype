@@ -4,7 +4,7 @@ import ICreateRelationshipDTO from "./ICreateRelationshipDTO";
 /**
  * Expects multiple classifiers and relationships create intrusctions.
  */
-export default interface IImportDiagramDTO {
-    classifiersInstructions: ICreateClassifierDTO[];
-    relationshipssInstructions: ICreateRelationshipDTO[];
+export default interface INewDiagramDTO {
+    classifiersData: ICreateClassifierDTO[];
+    relationshipsData: ICreateRelationshipDTO[];
 }
