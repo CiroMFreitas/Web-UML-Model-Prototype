@@ -172,7 +172,7 @@ export default class Diagram {
             relationshipName: relationshipName,
             sourceClassifierId: desiredSourceClassifier.getId(),
             targetClassifierId: desiredTargetClassifier.getId(),
-            relatioshipType: relationshipCreationInstructions.relatioshipType,
+            relationshipType: relationshipCreationInstructions.relationshipType,
             attribute: relationshipCreationInstructions.attribute,
             multiplicity: relationshipCreationInstructions.multiplicity
         });
