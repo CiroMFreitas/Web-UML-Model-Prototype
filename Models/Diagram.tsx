@@ -27,17 +27,16 @@ export default class Diagram {
     constructor() { }
     
     /**
-     * Handles the creation of all imported data.
+     * Handles the creation of all data given in a DTO.
      * 
-     * @param importInstructions A data to be imported to the diagram.
-     * @returns Sucess feedback.
+     * @param diagramData Data to be generated into the diagram.
      */
-    public generateDiagramFromData(importInstructions: INewDiagramDTO): Feedback {
-        importInstructions.classifiersData.forEach((newClassifiersInstructions) => {
+    public generateDiagramFromData(diagramData: INewDiagramDTO): void {
+        diagramData.classifiersData.forEach((newClassifiersInstructions) => {
             this.createClassifier(newClassifiersInstructions);
         });
 
-        importInstructions.relationshipsData.forEach((newRelationshipInstructions) => {
+        diagramData.relationshipsData.forEach((newRelationshipInstructions) => {
             const desiredSourceClassifier = this.getClassifierById(newRelationshipInstructions.sourceClassifierId);
             const desiredTargetClassifier = this.getClassifierById(newRelationshipInstructions.targetClassifierId);
             newRelationshipInstructions.relationshipName = this.getRelationshipName(newRelationshipInstructions.relationshipName, desiredSourceClassifier, desiredTargetClassifier)
@@ -45,11 +44,6 @@ export default class Diagram {
             const newRelationship = new Relationship(newRelationshipInstructions);
             this.relationships.push(newRelationship);
         });
-
-        const feedback = new Feedback();
-        feedback.addSnippet(new LocalizationSnippet("feedback.import.success"));
-
-        return feedback;
     }
 
     /**
