@@ -95,11 +95,11 @@ export default class Method extends VisibleEntity {
 
         if(parameterIndex === -1) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_1"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.method.error.parameter_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_2"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.method.error.parameter_not_found.part_2"));
             errorFeedback.addSnippet(new StringSnippet(this.getName()));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_3"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.method.error.parameter_not_found.part_3"));
 
             throw new AppError(errorFeedback);
         }
@@ -118,11 +118,11 @@ export default class Method extends VisibleEntity {
 
         if(searchedParameter === undefined) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_1"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.method.error.parameter_not_found.part_1"));
             errorFeedback.addSnippet(new StringSnippet(name));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_2"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.method.error.parameter_not_found.part_2"));
             errorFeedback.addSnippet(new StringSnippet(this.getName()));
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.methods.error.parameter_not_found.part_3"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.method.error.parameter_not_found.part_3"));
 
             throw new AppError(errorFeedback);
         }
