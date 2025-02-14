@@ -178,7 +178,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         const errorFeedback = new Feedback();
 
         if((entityType === undefined) || (entityType === "")) {
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.entity_type_missing_on_remove"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.remove.error.entity_type_missing_on_remove"));
             
             throw new AppError(errorFeedback);
         } else {
@@ -209,7 +209,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         const errorFeedback = new Feedback();
 
         if((entityType === undefined) || (entityType === "")) {
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.entity_type_missing_on_alteration"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.error.entity_type_missing_on_alteration"));
             
             throw new AppError(errorFeedback);
         } else {

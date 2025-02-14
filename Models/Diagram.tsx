@@ -134,10 +134,10 @@ export default class Diagram {
         toAlterClassifier.alterMethods(alterClassifierInstructions.methodAlterations);
     
         const alterClassifierFeedback = new Feedback();
-        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_1"));
+        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_1"));
         alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
         alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
-        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.part_2"));
+        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_2"));
         return alterClassifierFeedback;
     }
 
