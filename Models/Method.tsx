@@ -76,9 +76,9 @@ export default class Method extends VisibleEntity {
 
         if(methodExists) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.methods.error.parameter_name_already_in_use.part_1"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.parameter_name_already_in_use.part_1"));
             errorFeedback.addSnippet(new StringSnippet(parameterName))
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.methods.error.parameter_name_already_in_use.part_2"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.method.error.parameter_name_already_in_use.part_2"));
 
             throw new AppError(errorFeedback);
         }

@@ -91,12 +91,12 @@ export default abstract class CommandInterpreter {
      */
     protected static handleMethodArguments(methodArguments: string[]): string[][] {
         // Breaks method arguments into arrays for method creation
-        const handledMethodArguments = [[]] as string[][];
-        let endparameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
-        while(endparameter !== 0) {
-            handledMethodArguments.push(methodArguments.splice(0, endparameter))
+        const handledMethodArguments = [] as string[][];
+        let endParameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
+        while(endParameter !== 0) {
+            handledMethodArguments.push(methodArguments.splice(0, endParameter));
             
-            endparameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
+            endParameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
         }
 
         // Checks if there were left overs, meaning the methods were not properly declared.
@@ -131,7 +131,7 @@ export default abstract class CommandInterpreter {
 
         // Sets parameters with present.
         const parameters = [] as ICreateParameterDTO[];
-        if((argumentStart !== undefined) && (argumentStart[1] !== "")) {
+        if((argumentStart !== undefined) && (argumentStart[1].replace(")", "") !== "")) {
             const firstParameter = this.handleCreateParameterArgument(argumentStart[1].replace(")", "").replace(",", ""));
             parameters.push(firstParameter)
 
@@ -184,10 +184,10 @@ export default abstract class CommandInterpreter {
         const splitArgument = argument.split(":");
         const errorFeedback = new Feedback();
         if(splitArgument.length > 2) {
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_method_arguments.part_1.too_many"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_parameter_arguments.part_1.too_many"));
             errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
         } else if(splitArgument.length < 2) {
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_method_arguments.part_1.too_few"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_parameter_arguments.part_1.too_few"));
             errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
         } else {
             return {
@@ -195,7 +195,7 @@ export default abstract class CommandInterpreter {
                 type: argument[1]
             };
         }
-        errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_method_arguments.part_2"));
+        errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_parameter_arguments.part_2"));
 
         throw new AppError(errorFeedback)
     }
