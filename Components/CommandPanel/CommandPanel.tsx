@@ -22,7 +22,7 @@ export default function CommandPanel() {
      * @param event Event which triggered funciton.
      */
     function commandLineHandler(event: KeyboardEvent): void {
-        if(commandLineRef.current !== null) {
+        if(commandLineRef.current !== null && commandHandler !== null) {
             switch(true) {
                 // Clears command line, addd command to history and sends it to be handled by context
                 case event.key === "Enter":
@@ -99,7 +99,7 @@ export default function CommandPanel() {
      */
     function importHandler(): void {
         const files = importRef.current?.files;
-        if((files !== null) && (files !== undefined)) {
+        if((files !== null) && (files !== undefined) && commandHandler !== null) {
             files[0].text().then((xmlContent) => {
                 const commandLineArray = ["import", xmlContent]
                 setFeedback(commandHandler.getFeedBack(commandLineArray));

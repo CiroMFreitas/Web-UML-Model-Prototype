@@ -83,8 +83,8 @@ export default class Diagram {
      */
     public readClassifier(readClassifierInstructions: IReadClassifierDTO): Feedback {
         const toReadClassifier = this.getClassifierByName(readClassifierInstructions.name);
-        const readFeedback = toReadClassifier.toText(readClassifierInstructions);
-        return readFeedback;
+        const feedback = toReadClassifier.toText(readClassifierInstructions);
+        return feedback;
     }
     
     /**
@@ -109,12 +109,12 @@ export default class Diagram {
         const toRemoveClassifierIndex = this.getClassifierIndexByName(removeClassifierInstructions.name);
         this.classifiers.splice(toRemoveClassifierIndex, 1);
 
-        const removeFeedback = new Feedback();
-        removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
-        removeFeedback.addSnippet(new StringSnippet(removeClassifierInstructions.name));
-        removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
+        const feedback = new Feedback();
+        feedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
+        feedback.addSnippet(new StringSnippet(removeClassifierInstructions.name));
+        feedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
         
-        return removeFeedback;
+        return feedback;
     }
 
     /**
@@ -140,12 +140,12 @@ export default class Diagram {
         toAlterClassifier.alterAttributes(alterClassifierInstructions.attributeAlterations);
         toAlterClassifier.alterMethods(alterClassifierInstructions.methodAlterations);
     
-        const alterClassifierFeedback = new Feedback();
-        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_1"));
-        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
-        alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
-        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_2"));
-        return alterClassifierFeedback;
+        const feedback = new Feedback();
+        feedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_1"));
+        feedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
+        feedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_2"));
+        return feedback;
     }
 
     /**
@@ -155,7 +155,7 @@ export default class Diagram {
      * creation.
      * @returns Feedback containing a success message.
      */
-    public createRelationship(relationshipCreationInstructions: IDiagramCreateRelationshipDTO): Feedback {
+    public createRelationship(relationshipCreationInstructions: IDiagramCreateRelationshipDTO): IDiagramFeedbackDTO {
         // Checks if classifiers's names were given.
         const desiredSourceClassifier = this.getClassifierByName(relationshipCreationInstructions.sourceClassifierName);
         const desiredTargetClassifier = this.getClassifierByName(relationshipCreationInstructions.targetClassifierName);
@@ -178,18 +178,24 @@ export default class Diagram {
         });
         this.relationships.push(newRelationship);
 
-        const relationshipCreationFeedback = new Feedback();
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_1"));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.common.relationship_type."+newRelationship.getRelationshipType()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_2"));
-        relationshipCreationFeedback.addSnippet(new StringSnippet(desiredSourceClassifier.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_3"));
-        relationshipCreationFeedback.addSnippet(new StringSnippet(desiredTargetClassifier.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_4"));
-        relationshipCreationFeedback.addSnippet(new StringSnippet(newRelationship.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_5"));
+        const feedback = new Feedback();
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_1"));
+        feedback.addSnippet(new LocalizationSnippet("feedback.common.relationship_type."+newRelationship.getRelationshipType()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_2"));
+        feedback.addSnippet(new StringSnippet(desiredSourceClassifier.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_3"));
+        feedback.addSnippet(new StringSnippet(desiredTargetClassifier.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_4"));
+        feedback.addSnippet(new StringSnippet(newRelationship.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_5"));
 
-        return relationshipCreationFeedback;
+        return {
+            entityData: {
+                entityType: "relationship",
+                entityId: newRelationship.getId()
+            },
+            feedback: feedback
+        };
     }
     
     /**
@@ -198,7 +204,7 @@ export default class Diagram {
      * @param commandLineArray An array containing the instruvtions for relationship removal.
      * @returns Feedback if the removal was successful..
      */
-    public removeRelatioship(removerRelationshipInstructions: IRemoveRelationshipDTO): Feedback {
+    public removeRelationship(removerRelationshipInstructions: IRemoveRelationshipDTO): Feedback {
         switch(removerRelationshipInstructions.direction) {
             // Removal by relationship name.
             case "named":
@@ -269,8 +275,8 @@ export default class Diagram {
                 throw new AppError(errorFeedback);
         }
         
-        const removeFeedback = new Feedback();
-        return removeFeedback;
+        const feedback = new Feedback();
+        return feedback;
     }
     
     /**
@@ -280,20 +286,20 @@ export default class Diagram {
      * @returns Feedback containg relationship(s) information.
      */
     public readRelationship(readInstrunctions: IReadRelationshipDTO): Feedback {
-        const readFeedback = new Feedback();
+        const feedback = new Feedback();
 
         if(readInstrunctions.relationshipName !== undefined) {
             const toReadRelationship = this.getRelationshipByName(readInstrunctions.relationshipName);
             const sourceClassifierByNamed = this.getClassifierById(toReadRelationship.getSourceClassifierId());
             const targetClassifierByNamed = this.getClassifierById(toReadRelationship.getTargetClassifierId());
             
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.start"));
-            readFeedback.mergeFeedback(toReadRelationship.toText());
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_1"));
-            readFeedback.addSnippet(new StringSnippet(sourceClassifierByNamed.getName()));
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
-            readFeedback.addSnippet(new StringSnippet(targetClassifierByNamed.getName()));
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.start"));
+            feedback.mergeFeedback(toReadRelationship.toText());
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_1"));
+            feedback.addSnippet(new StringSnippet(sourceClassifierByNamed.getName()));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
+            feedback.addSnippet(new StringSnippet(targetClassifierByNamed.getName()));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
         } else if((readInstrunctions.sourceClassifierName !== undefined) &&
                 (readInstrunctions.targetClassifierName !== undefined)) {
             const sourceClassifierByBetween = this.getClassifierByName(readInstrunctions.sourceClassifierName);
@@ -302,35 +308,35 @@ export default class Diagram {
             const classifiersRelationships = this.getClassifiersRelationships(sourceClassifierByBetween.getId(), targetClassifierByBetween.getId())
 
             if(classifiersRelationships.length === 0) {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.not_found"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.not_found"));
             } else if(classifiersRelationships.length === 1) {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.start"));
-                readFeedback.mergeFeedback(classifiersRelationships[0].toText())
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.end"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.start"));
+                feedback.mergeFeedback(classifiersRelationships[0].toText())
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.end"));
             } else {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.start"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.start"));
 
                 classifiersRelationships.forEach((classifiersRelationship, index) => {
                     if(classifiersRelationships.length !== index+1) {
-                        readFeedback.addSnippet(new StringSnippet(", "))
-                        readFeedback.mergeFeedback(classifiersRelationship.toText())
+                        feedback.addSnippet(new StringSnippet(", "))
+                        feedback.mergeFeedback(classifiersRelationship.toText())
                     } else {
-                        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.and"))
-                        readFeedback.mergeFeedback(classifiersRelationship.toText())
+                        feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.and"))
+                        feedback.mergeFeedback(classifiersRelationship.toText())
                     }
                 });
 
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.end"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.end"));
             }
-            readFeedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_2"));
-            readFeedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_3"));
+            feedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_2"));
+            feedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_3"));
         } else {
             throw "In Diagram.tsx, readRelationship method an invalid read instruction was given.";
         }
 
-        return readFeedback;
+        return feedback;
     }
 
     /**
@@ -353,10 +359,10 @@ export default class Diagram {
             alterInstructions.attributeAlterInstructions.newType = alterInstructions.newTargetClassifierName;
         }
 
-        const alterFeedback = toAlterRelationship.alter(alterInstructions,
+        const feedback = toAlterRelationship.alter(alterInstructions,
             newSourceClassifier ? newSourceClassifier.getId() : undefined,
             newTargetClassifier ? newTargetClassifier.getId() : undefined);
-        return alterFeedback;
+        return feedback;
     }
 
     /**
@@ -365,25 +371,25 @@ export default class Diagram {
      * @returns Classfiers's names if present.
      */
     public readDiagram(): Feedback {
-        const readDiagramFeedback = new Feedback()
+        const feedback = new Feedback()
 
-        readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.start"));
+        feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.start"));
         if(this.classifiers.length > 0) {
             if(this.classifiers.length === 1) {
-                readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.singular"));
-                readDiagramFeedback.addSnippet(new StringSnippet(this.classifiers[0].getName()));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.singular"));
+                feedback.addSnippet(new StringSnippet(this.classifiers[0].getName()));
             } else {
-                readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.plural"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.plural"));
                 this.classifiers.forEach((classifier) => {
-                    readDiagramFeedback.addSnippet(new StringSnippet(", " + classifier.getName()));
+                    feedback.addSnippet(new StringSnippet(", " + classifier.getName()));
                 });
             }
         } else {
-            readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.no_classifiers_present"));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.no_classifiers_present"));
         }
-        readDiagramFeedback.addSnippet(new StringSnippet("."));
+        feedback.addSnippet(new StringSnippet("."));
 
-        return readDiagramFeedback;
+        return feedback;
     }
 
     /**

@@ -16,12 +16,17 @@ import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
 import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
 import IToRenderEntityDTO from "../public/DTO/IToRenderEntityDTO";
+import IGetAttributeDTO from "../public/DTO/IGetAttributeDTO";
+import IGetMethodDTO from "../public/DTO/IGetMethodDTO";
+import IGetClassifierRelationshipDTO from "../public/DTO/IGetClassifierRelationshipDTO";
+import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
 
 // Setting context up.
 type commandHandlerType = {
     getFeedBack: (commandLine: string[]) => string;
     saveDiagram: () => ISaveDiagramReturnDTO;
     getToRenderEntityData: () => IToRenderEntityDTO;
+    getToRenderClassifier: (classifierId: string) => string;//IGetClassifierDTO;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
@@ -32,10 +37,21 @@ const commandHandlerDefaultValues: commandHandlerType = {
             diagramJSONFile: new Blob()
         };
     },
-    getToRenderEntityData: () => { return {
-        entityType: "",
-        entityId: ""
-    }; }
+    getToRenderEntityData: () => {
+        return {
+            entityType: "",
+            entityId: ""
+        };
+    },
+   getToRenderClassifier: () => {
+       return ""; /*{
+           classifierType: "",
+           name: "",
+           attributes: [] as IGetAttributeDTO[],
+           methods: [] as IGetMethodDTO[],
+           relationships: [] as IGetClassifierRelationshipDTO[],
+       };*/
+   }
 }
 
 const CommandHandlerContext = createContext<commandHandlerType>(commandHandlerDefaultValues);
@@ -118,10 +134,15 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         return toRenderEntityData;
     }
 
+    function getToRenderClassifier(classifierId: string) {
+        return classifierId;
+    }
+
     const value = {
         getFeedBack,
         saveDiagram,
-        getToRenderEntityData
+        getToRenderEntityData,
+        getToRenderClassifier
     }
 
     function createEntityHandler(commandLine: string[], entityType: string | undefined) {
@@ -144,7 +165,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const createRelationshipInstructions = CreateCommandInterpreter.interpretCreateRelationship(commandLine);
                     const relationshipCreationFeedback = diagram.createRelationship(createRelationshipInstructions);
                     setDiagram(diagram);
-                    return relationshipCreationFeedback.toString();
+                    setToRenderEntityData(relationshipCreationFeedback.entityData);
+                    return relationshipCreationFeedback.feedback.toString();
         
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part_1"));
@@ -206,7 +228,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const removerRelationshipInstructions = RemoveCommandInterpreter.interpretRemoveRelationship(commandLine);
-                    const removeRelationshipFeedback = diagram.removeRelatioship(removerRelationshipInstructions);
+                    const removeRelationshipFeedback = diagram.removeRelationship(removerRelationshipInstructions);
                     setDiagram(diagram);
                     return removeRelationshipFeedback.toString();
                     

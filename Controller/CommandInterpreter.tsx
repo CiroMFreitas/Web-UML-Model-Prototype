@@ -2,7 +2,7 @@ import AppError from "../Models/AppError";
 import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
-import ICreateAssociativeAttributeDTO from "../public/DTO/ICreateAssociativeAttributeDTO";
+import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
 import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
@@ -200,7 +200,7 @@ export default abstract class CommandInterpreter {
         throw new AppError(errorFeedback)
     }
 
-    protected static handleCreateAssociativeAttribute(argument: string): ICreateAssociativeAttributeDTO {
+    protected static handleCreateAssociativeAttribute(argument: string): ICreateAttributeDTO {
         const splitArgument = argument.split(":");
         switch(splitArgument.length) {
             case 2:
