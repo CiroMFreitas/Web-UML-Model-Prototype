@@ -27,8 +27,8 @@ export default class ReadCommandInterpreter extends CommandInterpreter {
 
             throw new AppError(errorFeedback);
         } else {
-            const readAttributes = commandLine.find((snippet) => snippet === "=a");
-            const readMethods = commandLine.find((snippet) => snippet === "=m");
+            const readAttributes = commandLine.find((snippet) => snippet === "-a");
+            const readMethods = commandLine.find((snippet) => snippet === "-m");
 
             return {
                 name: name,

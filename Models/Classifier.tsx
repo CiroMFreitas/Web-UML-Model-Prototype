@@ -66,7 +66,10 @@ export default class Classifier extends DiagramEntity {
         alterationInstructions.alter.forEach((alterAttribute) => {
             const toAlterAttribute = this.getAttributeByName(alterAttribute.attributeName);
             toAlterAttribute.alter(alterAttribute);
-            this.isAttributeNameInUse(toAlterAttribute.getName());
+            if(alterAttribute.newName !== "" && alterAttribute.newName !== alterAttribute.attributeName) {
+                this.isAttributeNameInUse(toAlterAttribute.getName());
+            }
+
         });
     }
 
