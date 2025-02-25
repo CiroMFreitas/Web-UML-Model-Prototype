@@ -15,11 +15,13 @@ import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
 import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
+import IToRenderEntityDTO from "../public/DTO/IToRenderEntityDTO";
 
 // Setting context up.
 type commandHandlerType = {
     getFeedBack: (commandLine: string[]) => string;
     saveDiagram: () => ISaveDiagramReturnDTO;
+    getToRenderEntityData: () => IToRenderEntityDTO;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
@@ -29,7 +31,11 @@ const commandHandlerDefaultValues: commandHandlerType = {
             saveFeedback: "",
             diagramJSONFile: new Blob()
         };
-    }
+    },
+    getToRenderEntityData: () => { return {
+        entityType: "",
+        entityId: ""
+    }; }
 }
 
 const CommandHandlerContext = createContext<commandHandlerType>(commandHandlerDefaultValues);
@@ -45,9 +51,13 @@ interface IProps {
 export const CommandHandlerProvider = ({ children }: IProps ) => {
     // Will hold diagram data for both feedback propouses and canvas drawing.
     const [diagram, setDiagram] = useState(new Diagram());
+    const [toRenderEntityData, setToRenderEntityData] = useState({
+        entityType: "",
+        entityId: ""
+    });
     
     // Sends feedback to user.
-    const getFeedBack = (commandLine: string[]) => {
+    function getFeedBack(commandLine: string[]){
         try {
             // Gets command type, command type will only be undefined if a blank string is sent here.
             const commandArgument = commandLine?.shift()?.toLowerCase();
@@ -94,7 +104,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     }
 
     // Saves diagram into a JSON blob and sends feedback to user.
-    const saveDiagram = () => {
+    function saveDiagram() {
         const saveFeedback = new Feedback();
         saveFeedback.addSnippet(new LocalizationSnippet("feedback.save.success"));
 
@@ -104,9 +114,14 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         };
     }
 
+    function getToRenderEntityData() {
+        return toRenderEntityData;
+    }
+
     const value = {
         getFeedBack,
-        saveDiagram
+        saveDiagram,
+        getToRenderEntityData
     }
 
     function createEntityHandler(commandLine: string[], entityType: string | undefined) {
@@ -122,7 +137,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const createClassifierInstructions = CreateCommandInterpreter.interpretCreateClassifier(commandLine, entityType);
                     const classifierCreationFeedback = diagram.createClassifier(createClassifierInstructions);
                     setDiagram(diagram);
-                    return classifierCreationFeedback.toString();
+                    setToRenderEntityData(classifierCreationFeedback.entityData);
+                    return classifierCreationFeedback.feedback.toString();
     
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const createRelationshipInstructions = CreateCommandInterpreter.interpretCreateRelationship(commandLine);
@@ -137,7 +153,6 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     
                     throw new AppError(errorFeedback);
             }
-
         }
     }
 
@@ -156,8 +171,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const readClassifierInstructions = ReadCommandInterpreter.interpretReadClassifier(commandLine);
-                    const classifierReadfeedback = diagram.readClassifier(readClassifierInstructions);
-                    return classifierReadfeedback.toString();
+                    const classifierReadFeedback = diagram.readClassifier(readClassifierInstructions);
+                    return classifierReadFeedback.toString();
                 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const readInstructions = ReadCommandInterpreter.interpretReadRelationship(commandLine);

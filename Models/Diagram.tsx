@@ -13,6 +13,7 @@ import Relationship from "./Relationship";
 import StringSnippet from "./StringSnippet";
 import IReadRelationshipDTO from "../public/DTO/IReadRelationshipDTO";
 import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
+import IDiagramFeedbackDTO from "../public/DTO/IDiagramFeedbackDTO";
 
 /**
  * Object responsible for holding and managing all diagram entities.
@@ -52,7 +53,7 @@ export default class Diagram {
      * @param classifierCreationInstructions Instructions to be handled and executed for classifier creation.
      * @returns Feedback containing a success message.
      */
-    public createClassifier(classifierCreationInstructions: ICreateClassifierDTO): Feedback {
+    public createClassifier(classifierCreationInstructions: ICreateClassifierDTO): IDiagramFeedbackDTO {
         // Checks if given name is already in use.
         const newClassifier = new Classifier(classifierCreationInstructions);
         this.isClassifierNameInUse(newClassifier.getName());
@@ -65,7 +66,13 @@ export default class Diagram {
         feedback.addSnippet(new StringSnippet(" "+newClassifier.getName()));
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
 
-        return feedback;
+        return {
+            entityData: {
+                entityType: "classifier",
+                entityId: newClassifier.getId()
+            },
+            feedback: feedback
+        };
     }
 
     /**

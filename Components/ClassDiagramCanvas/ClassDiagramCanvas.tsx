@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import "./ClassDiagramCanvas.css";
+import CommandHandlerContext from '../../Contexts/CommandHandlerContext';
 
 export default function ClassDiagramCanvas() {
+  const commandHandlerContext = useContext(CommandHandlerContext);
+  const toRenderEntityData = commandHandlerContext.getToRenderEntityData();
 
   // Component
-  return (
-    <div id="ClassDiagramCanvas">
-    </div>
-  );
+  switch(toRenderEntityData.entityType) {
+    case "classifier":
+      return (
+        <div id="ClassDiagramCanvas">
+          Classifier
+        </div>
+      )
+
+    default:
+      return (
+        <div id="ClassDiagramCanvas">
+        </div>
+      );
+  }
 }
