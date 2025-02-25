@@ -61,12 +61,12 @@ export default class CreateCommandInterpreter extends CommandInterpreter {
         const desiredTargetClassifierName = commandLine.shift();
         if((desiredSourceClassifierName === undefined) || (desiredSourceClassifierName === "")) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.error.source_classifier_missing"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.source_classifier_missing"));
 
             throw new AppError(errorFeedback);
         } else if((desiredTargetClassifierName === undefined) || (desiredTargetClassifierName === "")) {
             const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.error.target_classifier_missing"));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.error.target_classifier_missing"));
 
             throw new AppError(errorFeedback);
         } else {
