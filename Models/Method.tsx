@@ -1,5 +1,6 @@
 import IAlterMethodDTO from "../public/DTO/IAlterMethodDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
+import IGetParameterDTO from "../public/DTO/IGetParameterDTO";
 import AppError from "./AppError";
 import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
@@ -164,6 +165,20 @@ export default class Method extends VisibleEntity {
         }
 
         return readFeedback;
+    }
+
+    /**
+     * Get all parameter data for use in diagram canvas.
+     * 
+     * @returns Parameter data for diagram canvas.
+     */
+    public getParameterData(): IGetParameterDTO[] {
+        return this.parameters.map((parameter) => {
+            return {
+                name: parameter.getName(),
+                type: parameter.getType()
+            }
+        });
     }
 
     /**

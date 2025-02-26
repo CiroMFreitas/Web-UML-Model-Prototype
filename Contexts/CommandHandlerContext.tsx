@@ -16,9 +16,6 @@ import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
 import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
 import IToRenderEntityDTO from "../public/DTO/IToRenderEntityDTO";
-import IGetAttributeDTO from "../public/DTO/IGetAttributeDTO";
-import IGetMethodDTO from "../public/DTO/IGetMethodDTO";
-import IGetClassifierRelationshipDTO from "../public/DTO/IGetClassifierRelationshipDTO";
 import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
 
 // Setting context up.
@@ -26,7 +23,7 @@ type commandHandlerType = {
     getFeedBack: (commandLine: string[]) => string;
     saveDiagram: () => ISaveDiagramReturnDTO;
     getToRenderEntityData: () => IToRenderEntityDTO;
-    getToRenderClassifier: (classifierId: string) => string;//IGetClassifierDTO;
+    getToRenderClassifier: (classifierId: string) => IGetClassifierDTO;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
@@ -44,13 +41,13 @@ const commandHandlerDefaultValues: commandHandlerType = {
         };
     },
    getToRenderClassifier: () => {
-       return ""; /*{
+       return {
            classifierType: "",
            name: "",
-           attributes: [] as IGetAttributeDTO[],
-           methods: [] as IGetMethodDTO[],
-           relationships: [] as IGetClassifierRelationshipDTO[],
-       };*/
+           attributes: [],
+           methods: [],
+           relationships: []
+       };
    }
 }
 
@@ -135,7 +132,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     }
 
     function getToRenderClassifier(classifierId: string) {
-        return classifierId;
+        return diagram.getClassifierData(classifierId);
     }
 
     const value = {

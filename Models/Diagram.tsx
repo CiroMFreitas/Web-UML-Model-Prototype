@@ -14,6 +14,7 @@ import StringSnippet from "./StringSnippet";
 import IReadRelationshipDTO from "../public/DTO/IReadRelationshipDTO";
 import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
 import IDiagramFeedbackDTO from "../public/DTO/IDiagramFeedbackDTO";
+import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
 
 /**
  * Object responsible for holding and managing all diagram entities.
@@ -149,6 +150,34 @@ export default class Diagram {
     }
 
     /**
+     * Returns data for diagram canvas.
+     * 
+     * @param classifierId Classifier's ID.
+     * @returns Classifier's data to be used on diagram canvas.
+     */
+    public getClassifierData(classifierId: string): IGetClassifierDTO {
+        const classifier = this.getClassifierById(classifierId);
+        const relationships = this.getClassifiersRelationships(classifierId);
+
+        return {
+            classifierType: classifier.getClassifierType(),
+            name: classifier.getName(),
+            attributes: classifier.getAttributeData(),
+            methods: classifier.getMethodData(),
+            relationships: relationships.map((relationship) => {
+                return {
+                    relationshipName: relationship.getName(),
+                    sourceClassifierId: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
+                    targetClassifierId: this.getClassifierById(relationship.getTargetClassifierId()).getName(),
+                    relationshipType: relationship.getRelationshipType(),
+                    attribute: relationship.getAttributeData(),
+                    multiplicity: relationship.getMultiplicity()
+                };
+            })
+        };
+    }
+
+    /**
      * Creates a relationship in diagram following DTO instructions.
      * 
      * @param relationshipCreationInstructions Instructions to be handled and executed for relationship
@@ -201,7 +230,7 @@ export default class Diagram {
     /**
      * Removes a relationship by command line instructions.
      * 
-     * @param commandLineArray An array containing the instruvtions for relationship removal.
+     * @param commandLineArray An array containing the instructions for relationship removal.
      * @returns Feedback if the removal was successful..
      */
     public removeRelationship(removerRelationshipInstructions: IRemoveRelationshipDTO): Feedback {
@@ -282,14 +311,14 @@ export default class Diagram {
     /**
      * Reads one or more relationships in diagram following given instructions.
      * 
-     * @param readInstrunctions Handled instrunctions.
-     * @returns Feedback containg relationship(s) information.
+     * @param readInstructions Handled instructions.
+     * @returns Feedback contains relationship(s) information.
      */
-    public readRelationship(readInstrunctions: IReadRelationshipDTO): Feedback {
+    public readRelationship(readInstructions: IReadRelationshipDTO): Feedback {
         const feedback = new Feedback();
 
-        if(readInstrunctions.relationshipName !== undefined) {
-            const toReadRelationship = this.getRelationshipByName(readInstrunctions.relationshipName);
+        if(readInstructions.relationshipName !== undefined) {
+            const toReadRelationship = this.getRelationshipByName(readInstructions.relationshipName);
             const sourceClassifierByNamed = this.getClassifierById(toReadRelationship.getSourceClassifierId());
             const targetClassifierByNamed = this.getClassifierById(toReadRelationship.getTargetClassifierId());
             
@@ -300,10 +329,10 @@ export default class Diagram {
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
             feedback.addSnippet(new StringSnippet(targetClassifierByNamed.getName()));
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
-        } else if((readInstrunctions.sourceClassifierName !== undefined) &&
-                (readInstrunctions.targetClassifierName !== undefined)) {
-            const sourceClassifierByBetween = this.getClassifierByName(readInstrunctions.sourceClassifierName);
-            const targetClassifierByBetween = this.getClassifierByName(readInstrunctions.targetClassifierName);
+        } else if((readInstructions.sourceClassifierName !== undefined) &&
+                (readInstructions.targetClassifierName !== undefined)) {
+            const sourceClassifierByBetween = this.getClassifierByName(readInstructions.sourceClassifierName);
+            const targetClassifierByBetween = this.getClassifierByName(readInstructions.targetClassifierName);
 
             const classifiersRelationships = this.getClassifiersRelationships(sourceClassifierByBetween.getId(), targetClassifierByBetween.getId())
 
@@ -368,7 +397,7 @@ export default class Diagram {
     /**
      * Returns a feedback containing the names of all classifiers in the diagram, if any.
      * 
-     * @returns Classfiers's names if present.
+     * @returns Classifiers's names if present.
      */
     public readDiagram(): Feedback {
         const feedback = new Feedback()
@@ -427,7 +456,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs for a classifier using it's name, if not found an error will be thrown.
+     * Searches for a classifier using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the classifier to be searched.
      * @returns Desired classifier.
@@ -449,7 +478,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs for a classifier's index using it's name, if not found an error will be thrown.
+     * Searches for a classifier's index using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the classifier to be searched.
      * @returns Desired classifier's index.
@@ -471,7 +500,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs for a classifier using it's id, if not found an error will be thrown.
+     * Searches for a classifier using it's id, if not found an error will be thrown.
      * 
      * @param id Id of the classifier to be searched.
      * @returns Desired classifier.
@@ -493,22 +522,31 @@ export default class Diagram {
     }
 
     /**
-     * Gets all realtionships between both source and target classifier, using their ids, will return an empty 
+     * Gets all relationships of a classifier or between two classifiers, using their ids, will return an empty
      * array if no relationships are found.
      * 
-     * @param sourceId Source classifier's id.
-     * @param targetId Target classifier's id.
+     * @param firstClassifierId Classifier's id.
+     * @param secondClassifierId Classifier's id.
      * @returns Found relationships.
      */
-    private getClassifiersRelationships(sourceId: string, targetId: string): Relationship[] {
-        return this.relationships.filter((relationship) => 
-            relationship.getSourceClassifierId() === sourceId &&
-            relationship.getTargetClassifierId() === targetId 
-        );
+    private getClassifiersRelationships(firstClassifierId: string, secondClassifierId?: string): Relationship[] {
+        if(secondClassifierId === null) {
+            return this.relationships.filter((relationship) => 
+                relationship.getSourceClassifierId() === firstClassifierId ||
+                relationship.getTargetClassifierId() === firstClassifierId 
+            );
+        } else {
+            return this.relationships.filter((relationship) => 
+                (relationship.getSourceClassifierId() === firstClassifierId &&
+                relationship.getTargetClassifierId() === secondClassifierId) ||
+                (relationship.getSourceClassifierId() === secondClassifierId &&
+                relationship.getTargetClassifierId() === firstClassifierId)
+            );
+        }
     }
 
     /**
-     * Searchs for a realationship using it's name, if not found an error will be thrown.
+     * Searches for a relationship using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the relationship to be searched.
      * @returns Desired relationship.
@@ -530,7 +568,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs for a relationship's index using it's name, if not found an error will be thrown.
+     * Searches for a relationship's index using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the relationship to be searched.
      * @returns Desired relationship's index.
@@ -556,7 +594,7 @@ export default class Diagram {
      * Checks if relationship name is in use or set.
      * 
      * @param relationshipName DTO's relationship name
-     * @param desiredSourceClassifier Relationship's soutce classifier
+     * @param desiredSourceClassifier Relationship's source classifier
      * @param desiredTargetClassifier Relationship's target classifier
      * @returns The relationship name or a generated name if none is set
      */

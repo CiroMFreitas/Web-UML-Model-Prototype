@@ -1,5 +1,6 @@
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import ICreateRelationshipDTO from "../public/DTO/ICreateRelationshipDTO";
+import IGetAttributeDTO from "../public/DTO/IGetAttributeDTO";
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../public/Utils/SupportedKeyWords";
 import AppError from "./AppError";
 import Attribute from "./Attribute";
@@ -144,10 +145,36 @@ export default class Relationship extends DiagramEntity {
     /**
      * Gets relationship's type.
      * 
-     * @returns Target classifier's type.
+     * @returns Relationship's type.
      */
     public getRelationshipType(): string {
         return this.relationshipType;
+    }
+
+    /**
+     * Gets multiplicity's attribute multiplicity.
+     * 
+     * @returns Relationship's attribute multiplicity.
+     */
+    public getMultiplicity(): string {
+        return this.multiplicity ? this.multiplicity : "";
+    }
+
+    /**
+     * Gets relationship's attribute data for diagram data.
+     * 
+     * @returns Relationship's attribute data.
+     */
+    public getAttributeData(): IGetAttributeDTO | null {
+        if(this.attribute) {
+            return {
+                visibility: this.attribute.getVisibilitySymbol(),
+                name: this.attribute.getName(),
+                type: this.attribute.getType()
+            };
+        }
+
+        return null;
     }
 
     /**
