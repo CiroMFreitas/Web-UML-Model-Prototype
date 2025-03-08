@@ -172,15 +172,15 @@ export default class Diagram {
         this.relationships.push(newRelationship);
 
         const relationshipCreationFeedback = new Feedback();
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_1"));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_1"));
         relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.common.relationship_type."+newRelationship.getRelationshipType()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_2"));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_2"));
         relationshipCreationFeedback.addSnippet(new StringSnippet(desiredSourceClassifier.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_3"));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_3"));
         relationshipCreationFeedback.addSnippet(new StringSnippet(desiredTargetClassifier.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_4"));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_4"));
         relationshipCreationFeedback.addSnippet(new StringSnippet(newRelationship.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.ralationship.success.part_5"));
+        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_5"));
 
         return relationshipCreationFeedback;
     }

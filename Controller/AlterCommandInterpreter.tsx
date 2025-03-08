@@ -40,8 +40,8 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             throw new AppError(errorFeedback);
         } else {
             // Checks for classifier's name and type change.
-            const newClassifeirName = this.getCommandArgumentContent(commandLine, "-n");
-            const newClassifeirType = this.getCommandArgumentContent(commandLine, "-t");
+            const newClassifierName = this.getCommandArgumentContent(commandLine, "-n");
+            const newClassifierType = this.getCommandArgumentContent(commandLine, "-t");
 
             // Checks and changes classifier's attributes if desired.
             const attributesChangeArgument = this.getCommandArgumentContent(commandLine, "-a");
@@ -51,7 +51,7 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             }
 
             // Checks and changes classifier's attributes if desired.
-            const methodsChangeArgument = this.getCommandArgumentContent(commandLine, "-a");
+            const methodsChangeArgument = this.getCommandArgumentContent(commandLine, "-m");
             let methodAlterations = {} as IMethodChangesDTO;
             if(attributesChangeArgument !== undefined) {
                 methodAlterations = this.handleMethodChanges(methodsChangeArgument);
@@ -59,8 +59,8 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
 
             return {
                 name: name,
-                newClassifierName: newClassifeirName.length !== 0 ? newClassifeirName[0] : undefined,
-                newClassifierType: newClassifeirType.length !== 0 ? newClassifeirType[0] : undefined,
+                newClassifierName: newClassifierName.length !== 0 ? newClassifierName[0] : undefined,
+                newClassifierType: newClassifierType.length !== 0 ? newClassifierType[0] : undefined,
                 attributeAlterations: attributeAlterations,
                 methodAlterations: methodAlterations
             };
