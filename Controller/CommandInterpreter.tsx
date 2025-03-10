@@ -3,7 +3,6 @@ import Feedback from "../Models/Feedback";
 import LocalizationSnippet from "../Models/LocalizationSnippet";
 import StringSnippet from "../Models/StringSnippet";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
-import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
 import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
 
