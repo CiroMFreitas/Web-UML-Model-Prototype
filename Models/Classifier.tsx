@@ -295,13 +295,13 @@ export default class Classifier extends DiagramEntity {
         if(readInstructions.readMethods) {
             if(this.methods.length > 0) {
                 if(this.methods.length === 1) {
-                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.singular"));
+                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.method.singular"));
                     toTextFeedback.mergeFeedback(this.methods[0].toText());
                 } else {
-                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.plural"));
+                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.method.plural"));
                     this.methods.forEach((method, index) => {
                         if(index+1 === this.methods.length) {
-                            toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.and"));
+                            toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.method.and"));
                         } else {
                             toTextFeedback.addSnippet(new StringSnippet(", "));
                         }

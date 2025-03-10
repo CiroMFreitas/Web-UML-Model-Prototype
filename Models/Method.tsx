@@ -147,13 +147,13 @@ export default class Method extends VisibleEntity {
         // Get parametrs feedback,
         if(this.parameters.length > 0) {
             if(this.parameters.length === 1) {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameters.singular"));
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameter.singular"));
                 readFeedback.mergeFeedback(this.parameters[0].toText());
             } else {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameters.plural"));
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameter.plural"));
                 this.parameters.forEach((parameter, index) => {
                     if(index+1 === this.parameters.length) {
-                        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameters.and"));
+                        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameter.and"));
                     } else {
                         readFeedback.addSnippet(new StringSnippet(", "));
                     }
@@ -161,7 +161,7 @@ export default class Method extends VisibleEntity {
                 });
             }
         } else {
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameters.no_parameters"));
+            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameter.no_parameters"));
         }
 
         return readFeedback;
