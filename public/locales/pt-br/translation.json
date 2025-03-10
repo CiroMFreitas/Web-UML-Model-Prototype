@@ -2,6 +2,19 @@
     "label": {
         "command_console": "Console de comandos selecionado."
     },
+    "ASCIIDiagram": {
+        "classifier": {
+            "class": "Classe",
+            "abstract": "Classe Abstrata",
+            "interface": "Interface"
+        },
+        "attribute": {
+            "title": "Atributos:"
+        },
+        "method": {
+            "title": "Métodos:"
+        }
+    },
     "feedback": {
         "common": {
             "entity_type": {
