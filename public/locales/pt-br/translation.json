@@ -28,7 +28,7 @@
                 "abstract": "classe abstrata",
                 "interface": "interface"
             },
-            "realtionship_type": {
+            "relationship_type": {
                 "associative": "associativo",
                 "directed_association": "associativo direcionado",
                 "reflexive_association": "associativo reflexivo",
