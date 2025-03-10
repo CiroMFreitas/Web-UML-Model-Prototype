@@ -21,6 +21,10 @@ export const SUPPORTED_ENTITY_TYPES = {
 
 export const SUPPORTED_VISIBILITY = [
     {
+        name: "private",
+        symbol: "-"
+    },
+    {
         name: "public",
         symbol: "+"
     },
@@ -28,10 +32,6 @@ export const SUPPORTED_VISIBILITY = [
         name: "protected",
         symbol: "#"
     },
-    {
-        name: "private",
-        symbol: "-"
-    }
 ];
 
 export const SUPPORTED_RELATIONSHIP_TYPES = [
