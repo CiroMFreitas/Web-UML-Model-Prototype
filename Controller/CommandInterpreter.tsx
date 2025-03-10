@@ -190,8 +190,8 @@ export default abstract class CommandInterpreter {
             errorFeedback.addSnippet(new StringSnippet(splitArgument.toString().replaceAll(",", ":")))
         } else {
             return {
-                name: argument[0],
-                type: argument[1]
+                name: splitArgument[0],
+                type: splitArgument[1]
             };
         }
         errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.parameter.error.invalid_parameter_arguments.part_2"));
