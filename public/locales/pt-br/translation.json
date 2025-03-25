@@ -239,10 +239,6 @@
                     "part_2": " foi removido com sucesso."
                 },
                 "error": {
-                    "unrecognized_entity_type": {
-                        "part_1": "O tipo ",
-                        "part_2": " não pode ser removido pela aplicação."
-                    },
                     "missing_name_for_removal": "Nenhum nome for fornecido para remoção do classificador."
                 }
             },
@@ -267,7 +263,11 @@
                 }
             },
             "error": {
-                "entity_type_missing_on_remove": "Não foi especificado um tipo para ser removido."
+                "entity_type_missing_on_remove": "Não foi especificado um tipo para ser removido.",
+                "unrecognized_entity_type": {
+                    "part_1": "O tipo ",
+                    "part_2": " não pode ser removido pela aplicação."
+                }
             }
         },
         "alter": {
