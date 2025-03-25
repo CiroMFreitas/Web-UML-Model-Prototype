@@ -18,17 +18,17 @@ export default function CanvasClassifier({ classifierData }: Props) {
             {/* Atributes */}
             <div>
                 <div>
-                { translate("ASCIIDiagram.attribute.title") }
+                    { translate("ASCIIDiagram.attribute.title") }
                 </div>
       
                 <div>
-                {
-                    classifierData.attributes.length < 1 ?
-                    translate("ASCIIDiagram.attribute.no_attributes") : 
-                    classifierData.attributes.map((attribute) => {
-                        return <CanvasClassifierAttribute attributeData={ attribute } key={ attribute.name } />
-                    })
-                }
+                    {
+                        classifierData.attributes.length < 1 ?
+                        translate("ASCIIDiagram.attribute.no_attributes") : 
+                        classifierData.attributes.map((attribute) => {
+                            return <CanvasClassifierAttribute attributeData={ attribute } key={ attribute.name } />
+                        })
+                     }
                 </div>
 
                 -----------
@@ -40,18 +40,18 @@ export default function CanvasClassifier({ classifierData }: Props) {
                 { translate("ASCIIDiagram.method.title") }
                 </div>
       
-            <div>
-                {
-                    classifierData.methods.length < 1 ?
-                    translate("ASCIIDiagram.method.no_methods") : 
-                    classifierData.methods.map((method) => {
-                        return <CanvasClassifierMethod methodData={ method } key={ method.name } />
-                    })
-                }
-            </div>
+                <div>
+                    {
+                        classifierData.methods.length < 1 ?
+                        translate("ASCIIDiagram.method.no_methods") : 
+                        classifierData.methods.map((method) => {
+                            return <CanvasClassifierMethod methodData={ method } key={ method.name } />
+                        })
+                    }
+                </div>
             
-            -----------
-          </div>
+                -----------
+            </div>
         </div>
     )
 }
