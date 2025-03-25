@@ -239,7 +239,7 @@
                     "part_2": " foi removido com sucesso."
                 },
                 "error": {
-                    "missing_name_for_removal": "Nenhum nome for fornecido para remoção do classificador."
+                    "missing_name_for_removal": "Nenhum nome foi fornecido para remoção do classificador."
                 }
             },
             "relationship": {
