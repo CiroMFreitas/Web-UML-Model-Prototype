@@ -253,7 +253,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const alterClassifierInstructions = AlterCommandInterpreter.interpretAlterClassifier(commandLine);
                     const alterClassifierFeedback = diagram.alterClassifier(alterClassifierInstructions);
                     setDiagram(diagram);
-                    return alterClassifierFeedback.toString();
+                    setToRenderEntityData(alterClassifierFeedback.entityData);
+                    return alterClassifierFeedback.feedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
                     const alterRelationshipInstructions = AlterCommandInterpreter.interpretAlterRelationship(commandLine);

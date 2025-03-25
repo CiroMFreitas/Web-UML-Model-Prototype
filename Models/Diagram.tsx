@@ -130,7 +130,7 @@ export default class Diagram {
      * @param alterClassifierInstructions DTO containing instructions to be executed.
      * @returns Feedback should alteration succeed.
      */
-    public alterClassifier(alterClassifierInstructions: IAlterClassifierDTO): Feedback {
+    public alterClassifier(alterClassifierInstructions: IAlterClassifierDTO): IDiagramFeedbackDTO {
         const toAlterClassifier = this.getClassifierByName(alterClassifierInstructions.name);
 
         // Checks and changes classifier's name if desired.
@@ -152,7 +152,14 @@ export default class Diagram {
         feedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
         feedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
         feedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_2"));
-        return feedback;
+        
+        return {
+            entityData: {
+                entityType: "classifier",
+                entityId: toAlterClassifier.getId()
+            },
+            feedback: feedback,
+        };
     }
 
     /**
