@@ -191,7 +191,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const readClassifierInstructions = ReadCommandInterpreter.interpretReadClassifier(commandLine);
                     const classifierReadFeedback = diagram.readClassifier(readClassifierInstructions);
-                    return classifierReadFeedback.toString();
+                    setToRenderEntityData(classifierReadFeedback.entityData);
+                    return classifierReadFeedback.feedback.toString();
                 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const readInstructions = ReadCommandInterpreter.interpretReadRelationship(commandLine);

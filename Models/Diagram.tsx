@@ -82,10 +82,16 @@ export default class Diagram {
      * @param readClassifierInstructions Instructions to be executed for classifier reading.
      * @returns Feedback containing the desired classifier indormation.
      */
-    public readClassifier(readClassifierInstructions: IReadClassifierDTO): Feedback {
+    public readClassifier(readClassifierInstructions: IReadClassifierDTO): IDiagramFeedbackDTO {
         const toReadClassifier = this.getClassifierByName(readClassifierInstructions.name);
-        const feedback = toReadClassifier.toText(readClassifierInstructions);
-        return feedback;
+        
+        return {
+            entityData: {
+                entityType: "classifier",
+                entityId: toReadClassifier.getId()
+            },
+            feedback: toReadClassifier.toText(readClassifierInstructions),
+        };
     }
     
     /**
