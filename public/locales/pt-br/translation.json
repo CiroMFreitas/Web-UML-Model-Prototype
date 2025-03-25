@@ -9,10 +9,12 @@
             "interface": "Interface"
         },
         "attribute": {
-            "title": "Atributos:"
+            "title": "Atributos:",
+            "no_attributes": "Não possui atributos."
         },
         "method": {
-            "title": "Métodos:"
+            "title": "Métodos:",
+            "no_methods": "Não possui métodos."
         }
     },
     "feedback": {
