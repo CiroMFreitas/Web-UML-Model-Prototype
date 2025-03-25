@@ -15,7 +15,6 @@ export default function ClassDiagramCanvas() {
   switch(toRenderEntityData.entityType) {
     case "classifier":
       const classifierData = commandHandlerContext.getToRenderClassifier(toRenderEntityData.entityId);
-      console.log(classifierData)
       return (
         <div id="ClassDiagramCanvas">
           {/* Classifier type and name */}
