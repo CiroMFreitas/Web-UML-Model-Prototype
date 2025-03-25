@@ -5,15 +5,15 @@ type Props = { methodData: IGetMethodDTO };
 
 export default function CanvasClassifierMethod({ methodData }: Props) {
     return (
-      <div>
-        {
-            methodData.visibility + " " +
-            methodData.name + "(" +
-            methodData.parameters.map((parameter) => {
-                return parameter.name + ": " + parameter.type
-            }).toString().replaceAll(",", ", ") + "): " +
-            methodData.type
-        }
-      </div>
+        <div>
+            {
+                methodData.visibility + " " +
+                methodData.name + "(" +
+                methodData.parameters.map((parameter) => {
+                    return parameter.name + ": " + parameter.type
+                }).toString().replaceAll(",", ", ") + "): " +
+                methodData.type
+            }
+        </div>
     )
 }

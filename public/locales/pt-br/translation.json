@@ -15,6 +15,10 @@
         "method": {
             "title": "Métodos:",
             "no_methods": "Não possui métodos."
+        },
+        "relationship": {
+            "title": "Relacionamentos:",
+            "no_relationships": "Não possui relacionamentos."
         }
     },
     "feedback": {

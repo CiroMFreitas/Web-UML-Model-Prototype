@@ -3,12 +3,12 @@ import "./CanvasClassifier.css";
 import IGetClassifierDTO from "../../public/DTO/IGetClassifierDTO";
 import CanvasClassifierAttribute from "../CanvasClassifierAttribute/CanvasClassifierAttribute";
 import CanvasClassifierMethod from "../CanvasClassifierMethod/CanvasClassifierMethod";
+import CanvasClassifierRelationship from "../CanvasClassifierRelationship/CanvasClassifierRelationship";
 
 type Props = { classifierData: IGetClassifierDTO };
 
-export default function CanvasClassifier({ classifierData }: Props) {
-  
-  return (
+export default function CanvasClassifier({ classifierData }: Props) {  
+    return (
         <div id="ClassDiagramCanvas">
             {/* Classifier type and name */}
             <div>
@@ -51,6 +51,23 @@ export default function CanvasClassifier({ classifierData }: Props) {
                 </div>
             
                 -----------
+            </div>
+
+            {/* Relationships */}
+            <div>
+                <div>
+                    { translate("ASCIIDiagram.relationship.title") }
+                </div>
+      
+                <div>
+                    {
+                        classifierData.relationships.length < 1 ?
+                        translate("ASCIIDiagram.relationship.no_relationships") : 
+                        classifierData.relationships.map((relationship) => {
+                            return <CanvasClassifierRelationship relationshipData={ relationship } key={ relationship.relationshipName } />
+                        })
+                    }
+                </div>
             </div>
         </div>
     )

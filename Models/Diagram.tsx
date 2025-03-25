@@ -180,8 +180,8 @@ export default class Diagram {
             relationships: relationships.map((relationship) => {
                 return {
                     relationshipName: relationship.getName(),
-                    sourceClassifierId: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
-                    targetClassifierId: this.getClassifierById(relationship.getTargetClassifierId()).getName(),
+                    sourceClassifierName: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
+                    targetClassifierName: this.getClassifierById(relationship.getTargetClassifierId()).getName(),
                     relationshipType: relationship.getRelationshipType(),
                     attribute: relationship.getAttributeData(),
                     multiplicity: relationship.getMultiplicity()
@@ -543,12 +543,14 @@ export default class Diagram {
      * @returns Found relationships.
      */
     private getClassifiersRelationships(firstClassifierId: string, secondClassifierId?: string): Relationship[] {
-        if(secondClassifierId === null) {
+        if(secondClassifierId === undefined) {
+            console.log(this.relationships)
             return this.relationships.filter((relationship) => 
                 relationship.getSourceClassifierId() === firstClassifierId ||
                 relationship.getTargetClassifierId() === firstClassifierId 
             );
         } else {
+            console.log(secondClassifierId)
             return this.relationships.filter((relationship) => 
                 (relationship.getSourceClassifierId() === firstClassifierId &&
                 relationship.getTargetClassifierId() === secondClassifierId) ||

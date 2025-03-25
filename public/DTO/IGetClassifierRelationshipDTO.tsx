@@ -5,8 +5,8 @@ import IGetAttributeDTO from "./IGetAttributeDTO";
  */
 export default interface IGetClassifierRelationshipDTO {
     relationshipName: string;
-    sourceClassifierId: string;
-    targetClassifierId: string;
+    sourceClassifierName: string;
+    targetClassifierName: string;
     relationshipType: string;
     attribute: IGetAttributeDTO | null;
     multiplicity: string;
