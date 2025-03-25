@@ -72,7 +72,7 @@ export default function ClassDiagramCanvas() {
             </div>
           </div>
         </div>
-      )
+      );
 
     default:
       return (
