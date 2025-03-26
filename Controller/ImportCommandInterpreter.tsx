@@ -84,13 +84,29 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
 
                     // Relationships have a source and target
                     case content.source !== undefined && content.target !== undefined:
+                        // Get relationship type
+                        let relationship_type = "as"
+                        if(content.style.includes("endarrow=block;endfill=1;html=1;edgestyle=orthogonaledgestyle")) {
+                            relationship_type = "da"
+                        } else if(content.style.includes("endarrow=open;html=1;endsize=12;startarrow=diamondthin;startsize=14;startfill=0;edgestyle=orthogonaledgestyle")) {
+                            relationship_type = "ag"
+                        } else if(content.style.includes("endarrow=open;html=1;endsize=12;startarrow=diamondthin;startsize=14;startfill=1;edgestyle=orthogonaledgestyle")) {
+                            relationship_type = "co"
+                        } else if(content.style.includes("endarrow=block;dashed=1;endfill=0;endsize=12")) {
+                            relationship_type = "in"
+                        } else if(content.style.includes("endarrow=block;endsize=16;endfill=0")) {
+                            relationship_type = "re"
+                        }
+
                         diagramImportInstructions.relationships.push({
                             id: content.id,
                             sourceClassifierId: content.source,
                             targetClassifierId: content.target,
                             relationshipName: "",
+                            relationshipType: relationship_type,
                             multiplicity: content.value
                         });
+                        console.log(diagramImportInstructions.relationships[diagramImportInstructions.relationships.length - 1])
                         break;
 
                     // Classifiers have parent id 1 nad have no source or target
