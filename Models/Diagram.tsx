@@ -544,7 +544,6 @@ export default class Diagram {
      */
     private getClassifiersRelationships(firstClassifierId: string, secondClassifierId?: string): Relationship[] {
         if(secondClassifierId === undefined) {
-            console.log(this.relationships)
             return this.relationships.filter((relationship) => 
                 relationship.getSourceClassifierId() === firstClassifierId ||
                 relationship.getTargetClassifierId() === firstClassifierId 
