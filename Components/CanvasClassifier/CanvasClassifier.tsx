@@ -7,7 +7,7 @@ import CanvasClassifierRelationship from "../CanvasClassifierRelationship/Canvas
 
 type Props = { classifierData: IGetClassifierDTO };
 
-export default function CanvasClassifier({ classifierData }: Props) {  
+export default function CanvasClassifier({ classifierData }: Props) {
     return (
         <div id="ClassDiagramCanvas">
             {/* Classifier type and name */}
