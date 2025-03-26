@@ -106,7 +106,6 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                             relationshipType: relationship_type,
                             multiplicity: content.value
                         });
-                        console.log(diagramImportInstructions.relationships[diagramImportInstructions.relationships.length - 1])
                         break;
 
                     // Classifiers have parent id 1 nad have no source or target
