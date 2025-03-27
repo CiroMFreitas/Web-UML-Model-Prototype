@@ -24,8 +24,8 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
             classifiers: [] as ICreateClassifierDTO[],
             relationships: [] as ICreateRelationshipDTO[]
         };
-
-        parseString(xmlImport, (err, result) => {
+        
+        parseString(xmlImport, { normalizeTags: true }, (err, result) => {
             // Get diagram content
             const diagramContent = result.mxfile.diagram[0].mxgraphmodel[0].root[0].mxcell.slice(2);
 
@@ -84,11 +84,28 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
 
                     // Relationships have a source and target
                     case content.source !== undefined && content.target !== undefined:
+                        // Get relationship type
+                        let relationship_type = "as"
+                        if(["endArrow=block", "endFill=1", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "da"
+                        } else if(content.source === content.target) {
+                            relationship_type = "ra"
+                        } else if(["endArrow=open", "endSize=12", "startArrow=diamondThin", "startSize=14", "startFill=0", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "ag"
+                        } else if(["endArrow=open", "endSize=12", "startArrow=diamondThin", "startSize=14", "startFill=1", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "co"
+                        } else if(["endArrow=block", "endSize=16", "endFill=0"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "in"
+                        } else if(["endArrow=block", "dashed=1", "endFill=0", "endSize=12"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "re"
+                        }
+
                         diagramImportInstructions.relationships.push({
                             id: content.id,
                             sourceClassifierId: content.source,
                             targetClassifierId: content.target,
                             relationshipName: "",
+                            relationshipType: relationship_type,
                             multiplicity: content.value
                         });
                         break;
