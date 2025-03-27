@@ -86,17 +86,17 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                     case content.source !== undefined && content.target !== undefined:
                         // Get relationship type
                         let relationship_type = "as"
-                        if(content.style.includes("endarrow=block;endfill=1;html=1;edgestyle=orthogonaledgestyle")) {
+                        if(["endArrow=block", "endFill=1", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
                             relationship_type = "da"
                         } else if(content.source === content.target) {
                             relationship_type = "ra"
-                        } else if(content.style.includes("endarrow=open;html=1;endsize=12;startarrow=diamondthin;startsize=14;startfill=0;edgestyle=orthogonaledgestyle")) {
+                        } else if(["endArrow=open", "endSize=12", "startArrow=diamondThin", "startSize=14", "startFill=0", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
                             relationship_type = "ag"
-                        } else if(content.style.includes("endarrow=open;html=1;endsize=12;startarrow=diamondthin;startsize=14;startfill=1;edgestyle=orthogonaledgestyle")) {
+                        } else if(["endArrow=open", "endSize=12", "startArrow=diamondThin", "startSize=14", "startFill=1", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
                             relationship_type = "co"
-                        } else if(content.style.includes("endarrow=block;dashed=1;endfill=0;endsize=12")) {
+                        } else if(["endArrow=block", "endSize=16", "endFill=0"].every((argument) => content.style.includes(argument))) {
                             relationship_type = "in"
-                        } else if(content.style.includes("endarrow=block;endsize=16;endfill=0")) {
+                        } else if(["endArrow=block", "dashed=1", "endFill=0", "endSize=12"].every((argument) => content.style.includes(argument))) {
                             relationship_type = "re"
                         }
 
