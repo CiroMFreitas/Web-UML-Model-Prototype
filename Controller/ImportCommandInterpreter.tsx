@@ -24,8 +24,8 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
             classifiers: [] as ICreateClassifierDTO[],
             relationships: [] as ICreateRelationshipDTO[]
         };
-
-        parseString(xmlImport, (err, result) => {
+        
+        parseString(xmlImport, { normalizeTags: true }, (err, result) => {
             // Get diagram content
             const diagramContent = result.mxfile.diagram[0].mxgraphmodel[0].root[0].mxcell.slice(2);
 

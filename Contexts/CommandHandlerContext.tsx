@@ -53,20 +53,20 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
             const commandArgument = commandLine?.shift()?.toLowerCase();
 
             // Gets he following argument
-            const followingArgument = commandLine?.shift()?.toLowerCase();
+            const followingArgument = commandLine?.shift()
 
             switch(commandArgument) {
                 case SUPPORTED_COMMANDS.create:
-                    return createEntityHandler(commandLine, followingArgument);
+                    return createEntityHandler(commandLine, followingArgument?.toLowerCase());
     
                 case SUPPORTED_COMMANDS.read:
-                    return readEntityHandler(commandLine, followingArgument);
+                    return readEntityHandler(commandLine, followingArgument?.toLowerCase());
     
                 case SUPPORTED_COMMANDS.remove:
-                    return removeEntityHandler(commandLine, followingArgument);
+                    return removeEntityHandler(commandLine, followingArgument?.toLowerCase());
     
                 case SUPPORTED_COMMANDS.alter:
-                    return alterEntityHandler(commandLine, followingArgument);
+                    return alterEntityHandler(commandLine, followingArgument?.toLowerCase());
     
                 case SUPPORTED_COMMANDS.import:
                     return importDiagramHandler(followingArgument ? followingArgument : "");
