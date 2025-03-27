@@ -88,6 +88,8 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                         let relationship_type = "as"
                         if(content.style.includes("endarrow=block;endfill=1;html=1;edgestyle=orthogonaledgestyle")) {
                             relationship_type = "da"
+                        } else if(content.source === content.target) {
+                            relationship_type = "ra"
                         } else if(content.style.includes("endarrow=open;html=1;endsize=12;startarrow=diamondthin;startsize=14;startfill=0;edgestyle=orthogonaledgestyle")) {
                             relationship_type = "ag"
                         } else if(content.style.includes("endarrow=open;html=1;endsize=12;startarrow=diamondthin;startsize=14;startfill=1;edgestyle=orthogonaledgestyle")) {
