@@ -17,6 +17,7 @@ import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
 import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
 import IToRenderEntityDTO from "../public/DTO/IToRenderEntityDTO";
 import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
+import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
 
 // Setting context up.
 type commandHandlerType = {
@@ -24,6 +25,7 @@ type commandHandlerType = {
     saveDiagram: () => ISaveDiagramReturnDTO;
     getToRenderEntityData: () => IToRenderEntityDTO;
     getToRenderClassifier: (classifierId: string) => IGetClassifierDTO;
+    getToRenderRelationship: (relationship: string) => IGetRelationshipDTO;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
@@ -47,6 +49,16 @@ const commandHandlerDefaultValues: commandHandlerType = {
            attributes: [],
            methods: [],
            relationships: []
+       };
+   },
+   getToRenderRelationship: () => {
+       return {
+           relationshipName: "",
+           sourceClassifierName: "",
+           targetClassifierName: "",
+           attribute: null,
+           relationshipType: "",
+           multiplicity: "",
        };
    }
 }
@@ -135,11 +147,16 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         return diagram.getClassifierData(classifierId);
     }
 
+    function getToRenderRelationship(relationshipId: string) {
+        return diagram.getRelationshipData(relationshipId);
+    }
+
     const value = {
         getFeedBack,
         saveDiagram,
         getToRenderEntityData,
-        getToRenderClassifier
+        getToRenderClassifier,
+        getToRenderRelationship
     }
 
     function createEntityHandler(commandLine: string[], entityType: string | undefined) {
