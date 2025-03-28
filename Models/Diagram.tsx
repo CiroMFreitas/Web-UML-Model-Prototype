@@ -347,7 +347,7 @@ export default class Diagram {
      * @param readInstructions Handled instructions.
      * @returns Feedback contains relationship(s) information.
      */
-    public readRelationship(readInstructions: IReadRelationshipDTO): Feedback {
+    public readRelationship(readInstructions: IReadRelationshipDTO): IDiagramFeedbackDTO {
         const feedback = new Feedback();
 
         if(readInstructions.relationshipName !== undefined) {
@@ -362,6 +362,14 @@ export default class Diagram {
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
             feedback.addSnippet(new StringSnippet(targetClassifierByNamed.getName()));
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
+
+            return {
+                entityData: {
+                    entityType: "relationship",
+                    entityId: toReadRelationship.getId()
+                },
+                feedback: feedback
+            };
         } else if((readInstructions.sourceClassifierName !== undefined) &&
                 (readInstructions.targetClassifierName !== undefined)) {
             const sourceClassifierByBetween = this.getClassifierByName(readInstructions.sourceClassifierName);
@@ -398,7 +406,13 @@ export default class Diagram {
             throw "In Diagram.tsx, readRelationship method an invalid read instruction was given.";
         }
 
-        return feedback;
+        return {
+            entityData: {
+                entityType: "",
+                entityId: ""
+            },
+            feedback: feedback
+        };
     }
 
     /**
@@ -407,7 +421,7 @@ export default class Diagram {
      * @param commandLineArray DTO containing instructions to be executed.
      * @returns Feedback should alteration succeed.
      */
-    public alterRelationship(alterInstructions: IAlterRelationshipDTO): Feedback {
+    public alterRelationship(alterInstructions: IAlterRelationshipDTO): IDiagramFeedbackDTO {
         const toAlterRelationship = this.getRelationshipByName(alterInstructions.relationshipName);
 
         let newSourceClassifier;
@@ -424,7 +438,14 @@ export default class Diagram {
         const feedback = toAlterRelationship.alter(alterInstructions,
             newSourceClassifier ? newSourceClassifier.getId() : undefined,
             newTargetClassifier ? newTargetClassifier.getId() : undefined);
-        return feedback;
+
+        return {
+            entityData: {
+                entityType: "relationship",
+                entityId: toAlterRelationship.getId()
+            },
+            feedback: feedback
+        };
     }
 
     /**

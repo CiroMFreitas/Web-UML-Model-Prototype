@@ -212,9 +212,10 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     return classifierReadFeedback.feedback.toString();
                 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                    const readInstructions = ReadCommandInterpreter.interpretReadRelationship(commandLine);
-                    const readFeedback = diagram.readRelationship(readInstructions);
-                    return readFeedback.toString();
+                    const readRelationshipInstructions = ReadCommandInterpreter.interpretReadRelationship(commandLine);
+                    const relationshipReadFeedback = diagram.readRelationship(readRelationshipInstructions);
+                    setToRenderEntityData(relationshipReadFeedback.entityData);
+                    return relationshipReadFeedback.feedback.toString();
                 
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_1"));
@@ -277,7 +278,8 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const alterRelationshipInstructions = AlterCommandInterpreter.interpretAlterRelationship(commandLine);
                     const alterRelationshipFeedback = diagram.alterRelationship(alterRelationshipInstructions);
                     setDiagram(diagram);
-                    return alterRelationshipFeedback.toString();
+                    setToRenderEntityData(alterRelationshipFeedback.entityData);
+                    return alterRelationshipFeedback.feedback.toString();
 
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.error.unrecognized_entity_type.part_1"));
