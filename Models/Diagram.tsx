@@ -163,7 +163,7 @@ export default class Diagram {
     }
 
     /**
-     * Returns data for diagram canvas.
+     * Returns classifier's data for diagram canvas.
      * 
      * @param classifierId Classifier's ID.
      * @returns Classifier's data to be used on diagram canvas.
