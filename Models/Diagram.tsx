@@ -15,6 +15,7 @@ import IReadRelationshipDTO from "../public/DTO/IReadRelationshipDTO";
 import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
 import IDiagramFeedbackDTO from "../public/DTO/IDiagramFeedbackDTO";
 import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
+import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
 
 /**
  * Object responsible for holding and managing all diagram entities.
@@ -187,6 +188,25 @@ export default class Diagram {
                     multiplicity: relationship.getMultiplicity()
                 };
             })
+        };
+    }
+
+    /**
+     * Returns relationship's data for diagram canvas.
+     * 
+     * @param relationshipId Relationship's ID.
+     * @returns Relationship's data to be used on diagram canvas.
+     */
+    public getRelationshipData(relationshipId: string): IGetRelationshipDTO {
+        const relationship = this.getRelationshipById(relationshipId);
+
+        return {
+            relationshipName: relationship.getName(),
+            sourceClassifierName: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
+            targetClassifierName: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
+            attribute: relationship.getAttributeData(),
+            relationshipType: relationship.getRelationshipType(),
+            multiplicity: relationship.getMultiplicity(),
         };
     }
 
