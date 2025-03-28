@@ -1,5 +1,5 @@
 import IGetAttributeDTO from "./IGetAttributeDTO";
-import IGetClassifierRelationshipDTO from "./IGetClassifierRelationshipDTO";
+import IGetRelationshipDTO from "./IGetRelationshipDTO";
 import IGetMethodDTO from "./IGetMethodDTO";
 
 /**
@@ -10,5 +10,5 @@ export default interface IGetClassifierDTO {
     name: string;
     attributes: IGetAttributeDTO[];
     methods: IGetMethodDTO[];
-    relationships: IGetClassifierRelationshipDTO[];
+    relationships: IGetRelationshipDTO[];
 }

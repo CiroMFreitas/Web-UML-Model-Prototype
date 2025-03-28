@@ -3,7 +3,7 @@ import IGetAttributeDTO from "./IGetAttributeDTO";
 /**
  * Instructions for relationship creation.
  */
-export default interface IGetClassifierRelationshipDTO {
+export default interface IGetRelationshipDTO {
     relationshipName: string;
     sourceClassifierName: string;
     targetClassifierName: string;
