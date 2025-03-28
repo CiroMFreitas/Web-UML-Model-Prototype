@@ -603,6 +603,28 @@ export default class Diagram {
         }
     }
 
+    /**
+     * Searches for a relationship using it's id, if not found an error will be thrown.
+     * 
+     * @param id Id of the Relationship to be searched.
+     * @returns Desired Relationship.
+     */
+    private getRelationshipById(id: string): Relationship {
+        const searchedRelationship = this.relationships.find((relationship) => relationship.getId() === id)
+            
+        // Checks if classfier is present in diagram.
+        if(searchedRelationship === undefined) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.relationship_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(id));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.relationship_not_found.part_2"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return searchedRelationship;
+        }
+    }
+
 
     /**
      * Checks if relationship name is in use or set.
