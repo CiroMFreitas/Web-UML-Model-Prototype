@@ -570,4 +570,20 @@ export default class Diagram {
             return relationshipName;
         }
     }
+
+    /**Returns all of diagram classifires. 
+     * 
+     * @returns Classifiers array.
+     */
+    public getClassifiers(): Classifier[] {
+        return this.classifiers;
+    }
+
+    /**Returns all of diagram relationships. 
+     * 
+     * @returns Relationships array.
+     */
+    public getRelationships(): Relationship[] {
+        return this.relationships;
+    }
 }
