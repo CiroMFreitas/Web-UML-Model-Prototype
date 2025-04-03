@@ -18,7 +18,10 @@
         },
         "relationship": {
             "title": "Relacionamentos:",
-            "no_relationships": "Não possui relacionamentos."
+            "title_single": "Relacão ",
+            "no_relationships": "Não possui relacionamentos.",
+            "between": " entre ",
+            "and": " e "
         }
     },
     "feedback": {
@@ -35,12 +38,13 @@
                 "interface": "interface"
             },
             "relationship_type": {
-                "associative": "associativo",
-                "directed_association": "associativo direcionado",
-                "reflexive_association": "associativo reflexivo",
-                "aggregation": "agregado",
-                "composition": "composto",
-                "inheritance": "de herança"
+                "associative": "Associativo",
+                "directed_association": "Associativo Direcionado",
+                "reflexive_association": "Associativo Reflexivo",
+                "aggregation": "Agregado",
+                "composition": "Composto",
+                "inheritance": "de Herança",
+                "realization": "Realização"
             },
             "visibility": {
                 "public": "pública",
