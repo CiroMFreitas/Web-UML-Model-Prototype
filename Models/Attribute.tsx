@@ -56,6 +56,15 @@ export default class Attribute extends VisibleEntity {
     }
 
     /**
+     * Generates an array in PlantUML's format.
+     * 
+     * @returns Array formated for PlantUML.
+     */
+    public exportToPlantUML(): string {
+        return this.getVisibilitySymbol() + " " + this.getType() + " " + this.getName();
+    }
+
+    /**
      * Stub.
      * 
      * @returns Stub.
