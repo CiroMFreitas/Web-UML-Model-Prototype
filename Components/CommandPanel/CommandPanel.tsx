@@ -42,6 +42,21 @@ export default function CommandPanel() {
                             case SUPPORTED_COMMANDS.import:
                                 importRef.current?.click();
                                 break;
+    
+                            case SUPPORTED_COMMANDS.export:
+                                const exportedDiagramReturn = commandHandler.exportDiagram(commandLineArray[1].toLowerCase());
+
+                                // Sets element for download
+                                const exportFile = URL.createObjectURL(exportedDiagramReturn.fileContent)
+                                const downloadFile = document.createElement('a');
+                                downloadFile.href = exportFile;
+                                downloadFile.download = "plantuml" + exportedDiagramReturn.fileExtension;
+
+                                // Downloads file
+                                downloadFile.click()
+
+                                setFeedback(exportedDiagramReturn.feedback)
+                                break;
 
                             case SUPPORTED_COMMANDS.load:
                                 loadRef.current?.click();
