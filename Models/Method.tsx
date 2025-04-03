@@ -167,6 +167,23 @@ export default class Method extends VisibleEntity {
     }
 
     /**
+     * Generates an array in PlantUML's format.
+     * 
+     * @returns Array formated for PlantUML.
+     */
+    public exportToPlantUML(): string {
+        const exportContent = [this.getVisibilitySymbol() + " " + this.getType() + " " + this.getName() + "("];
+
+        const exportParameters = this.parameters.map((parameter) => {
+            return parameter.getType() + " " + parameter.getName();
+        });
+        exportContent.push(exportParameters.toString().replaceAll(",", " "));
+        exportContent.push(")")
+
+        return exportContent.toString().replaceAll(",", "");
+    }
+
+    /**
      * Stub.
      * 
      * @returns Stub.
