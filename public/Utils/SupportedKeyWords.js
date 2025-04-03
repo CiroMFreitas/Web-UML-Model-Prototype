@@ -3,6 +3,7 @@ export const SUPPORTED_COMMANDS = {
     read: "read",
     remove: "remove",
     alter: "alter",
+    export: "export",
     import: "import",
     load: "load",
     save: "save"
