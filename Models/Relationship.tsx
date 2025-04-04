@@ -151,6 +151,24 @@ export default class Relationship extends DiagramEntity {
     }
 
     /**
+     * Gets relationship's multiplicity.
+     * 
+     * @returns Relationship's multiplicity.
+     */
+    public getMultiplicity(): string | undefined {
+        return this.multiplicity;
+    }
+
+    /**
+     * Gets relationship's attribute's name.
+     * 
+     * @returns Relationship's attribute's name.
+     */
+    public getAttributeName(): string | undefined {
+        return this.attribute?.getName();
+    }
+
+    /**
      * Creates a feedback with classifier's information for a screen reader.
      * 
      * @param commandLineArray Details to be read from classifier.

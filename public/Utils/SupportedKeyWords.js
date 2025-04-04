@@ -3,6 +3,7 @@ export const SUPPORTED_COMMANDS = {
     read: "read",
     remove: "remove",
     alter: "alter",
+    export: "export",
     import: "import",
     load: "load",
     save: "save"
@@ -37,33 +38,40 @@ export const SUPPORTED_VISIBILITY = [
 export const SUPPORTED_RELATIONSHIP_TYPES = [
     {
         name: "associative",
-        code: "as"
+        code: "as",
+        ascii: "----"
     },
     {
         name: "directed_association",
-        code: "da"
+        code: "da",
+        ascii: "--->"
     },
     {
         name: "reflexive_association",
-        code: "ra"
+        code: "ra",
+        ascii: "<-->"
     },
     {
         name: "aggregation",
-        code: "ag"
+        code: "ag",
+        ascii: "o-->"
     },
     {
         name: "composition",
-        code: "co"
+        code: "co",
+        ascii: "*-->"
     },
     {
         name: "inheritance",
-        code: "in"
+        code: "in",
+        ascii: "---|>"
     },
     {
         name: "realization",
-        code: "re"
+        code: "re",
+        ascii: "...|>"
     }
-]
+]   
 /*
 export const SUPPORTED_ALTER_ARGUMENTS = {
     add: "add",
