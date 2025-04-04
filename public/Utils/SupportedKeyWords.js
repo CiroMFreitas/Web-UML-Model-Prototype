@@ -54,12 +54,12 @@ export const SUPPORTED_RELATIONSHIP_TYPES = [
     {
         name: "aggregation",
         code: "ag",
-        ascii: "o---"
+        ascii: "o-->"
     },
     {
         name: "composition",
         code: "co",
-        ascii: "*---"
+        ascii: "*-->"
     },
     {
         name: "inheritance",
