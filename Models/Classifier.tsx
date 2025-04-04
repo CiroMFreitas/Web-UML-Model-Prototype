@@ -352,6 +352,25 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
+     * Generates an array in PlantUML's format.
+     * 
+     * @returns Array formated for PlantUML.
+     */
+    public exportToPlantUML(): string[] {
+        const exportContent = [this.classifierType + " " + this.getName() + "\n"];
+
+        this.attributes.forEach((attribute) => {
+            exportContent.push(this.getName() + " : " + attribute.exportToPlantUML() + "\n")
+        })
+
+        this.methods.forEach((method) => {
+            exportContent.push(this.getName() + " : " + method.exportToPlantUML() + "\n")
+        })
+
+        return exportContent;
+    }
+
+    /**
      * Stub.
      * 
      * @returns Stub.

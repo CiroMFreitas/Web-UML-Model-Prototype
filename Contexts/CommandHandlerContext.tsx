@@ -18,6 +18,8 @@ import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
 import IToRenderEntityDTO from "../public/DTO/IToRenderEntityDTO";
 import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
 import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
+import IExportDiagramDTO from "../public/DTO/IExportDiagramDTO";
+import Exporter from "../Controller/Exporter";
 
 // Setting context up.
 type commandHandlerType = {
@@ -26,6 +28,7 @@ type commandHandlerType = {
     getToRenderEntityData: () => IToRenderEntityDTO;
     getToRenderClassifier: (classifierId: string) => IGetClassifierDTO;
     getToRenderRelationship: (relationship: string) => IGetRelationshipDTO;
+    exportDiagram: (exportOption: String) => IExportDiagramDTO;
 }
 
 const commandHandlerDefaultValues: commandHandlerType = {
@@ -60,7 +63,14 @@ const commandHandlerDefaultValues: commandHandlerType = {
            relationshipType: "",
            multiplicity: "",
        };
-   }
+   },
+    exportDiagram: () => { 
+        return {
+            feedback: "",
+            fileContent: new Blob(),
+            fileExtension: ""
+        };
+    }
 }
 
 const CommandHandlerContext = createContext<commandHandlerType>(commandHandlerDefaultValues);
@@ -151,12 +161,41 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         return diagram.getRelationshipData(relationshipId);
     }
 
+    // Saves diagram into a JSON blob and sends feedback to user.
+    const exportDiagram = (exportOption: String) => {
+        const exporter = new Exporter(diagram);
+        const exportFeedback = new Feedback();
+        let fileContent = [];
+        let fileExtension = "";
+
+        switch(exportOption) {
+            case "plantuml":
+                fileExtension = ".txt";
+                fileContent = exporter.exportToPlantUML();
+                break;
+
+            default:
+                const errorFeedback = new Feedback();
+                errorFeedback.addSnippet(new LocalizationSnippet("feedback.export.error.unrecognized_option"));
+                    
+                throw new AppError(errorFeedback);
+        }
+
+        exportFeedback.addSnippet(new LocalizationSnippet("feedback.export.success"));
+        return {
+            feedback: exportFeedback.toString(),
+            fileContent: new Blob(fileContent, { type: "text/plain;charset=utf-8" }),
+            fileExtension: fileExtension
+        };
+    }
+
     const value = {
         getFeedBack,
         saveDiagram,
         getToRenderEntityData,
         getToRenderClassifier,
-        getToRenderRelationship
+        getToRenderRelationship,
+        exportDiagram
     }
 
     function createEntityHandler(commandLine: string[], entityType: string | undefined) {

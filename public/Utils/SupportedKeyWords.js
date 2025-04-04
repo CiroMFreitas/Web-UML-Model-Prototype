@@ -3,6 +3,7 @@ export const SUPPORTED_COMMANDS = {
     read: "read",
     remove: "remove",
     alter: "alter",
+    export: "export",
     import: "import",
     load: "load",
     save: "save"
@@ -21,10 +22,6 @@ export const SUPPORTED_ENTITY_TYPES = {
 
 export const SUPPORTED_VISIBILITY = [
     {
-        name: "private",
-        symbol: "-"
-    },
-    {
         name: "public",
         symbol: "+"
     },
@@ -32,33 +29,37 @@ export const SUPPORTED_VISIBILITY = [
         name: "protected",
         symbol: "#"
     },
+    {
+        name: "private",
+        symbol: "-"
+    }
 ];
 
 export const SUPPORTED_RELATIONSHIP_TYPES = [
     {
         name: "associative",
         code: "as",
-        ascii: "-----"
+        ascii: "----"
     },
     {
         name: "directed_association",
         code: "da",
-        ascii: "---->"
+        ascii: "--->"
     },
     {
         name: "reflexive_association",
         code: "ra",
-        ascii: "<--->"
+        ascii: "<-->"
     },
     {
         name: "aggregation",
         code: "ag",
-        ascii: "o--->"
+        ascii: "o-->"
     },
     {
         name: "composition",
         code: "co",
-        ascii: "●--->"
+        ascii: "*-->"
     },
     {
         name: "inheritance",
@@ -70,7 +71,7 @@ export const SUPPORTED_RELATIONSHIP_TYPES = [
         code: "re",
         ascii: "...|>"
     }
-]
+]   
 /*
 export const SUPPORTED_ALTER_ARGUMENTS = {
     add: "add",

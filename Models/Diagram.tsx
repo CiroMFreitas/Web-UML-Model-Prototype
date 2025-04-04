@@ -515,7 +515,7 @@ export default class Diagram {
      * @param name Name of the classifier to be searched.
      * @returns Desired classifier.
      */
-    private getClassifierByName(name: string): Classifier {
+    public getClassifierByName(name: string): Classifier {
         const searchedClassifier = this.classifiers.find((classifier) => classifier.getName() === name)
             
         // Checks if classfier is present in diagram.
@@ -559,7 +559,7 @@ export default class Diagram {
      * @param id Id of the classifier to be searched.
      * @returns Desired classifier.
      */
-    private getClassifierById(id: string): Classifier {
+    public getClassifierById(id: string): Classifier {
         const searchedClassifier = this.classifiers.find((classifier) => classifier.getId() === id)
             
         // Checks if classfier is present in diagram.
@@ -697,5 +697,21 @@ export default class Diagram {
 
             return relationshipName;
         }
+    }
+
+    /**Returns all of diagram classifires. 
+     * 
+     * @returns Classifiers array.
+     */
+    public getClassifiers(): Classifier[] {
+        return this.classifiers;
+    }
+
+    /**Returns all of diagram relationships. 
+     * 
+     * @returns Relationships array.
+     */
+    public getRelationships(): Relationship[] {
+        return this.relationships;
     }
 }

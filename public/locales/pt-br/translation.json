@@ -386,6 +386,12 @@
         "import": {
             "success": "Diagrama foi importado com sucesso."
         },
+        "export": {
+            "success": "Exportação para Plant UML gerado com sucesso.",
+            "error": {
+                "unrecognized_option": "Opção não reconhecida para exportação."
+            }
+        },
         "load": {
             "success": "Diagrama foi carregado com sucesso."
         },
