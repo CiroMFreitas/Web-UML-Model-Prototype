@@ -1,4 +1,5 @@
 import Diagram from "../Models/Diagram";
+import { SUPPORTED_RELATIONSHIP_TYPES } from "../public/Utils/SupportedKeyWords";
 /**
  * Class is capable of exporting class diagram to other
  */
@@ -18,12 +19,21 @@ export default class Exporter {
         const exportContent = ["@startuml\n"];
 
         this.diagram.getClassifiers().forEach((classifier) => {
-            console.log(classifier.exportToPlantUML())
             classifier.exportToPlantUML().forEach((exportedClassifierContent) => {
-                //console.log(exportedClassifierContent)
                 exportContent.push(exportedClassifierContent)
             })
             exportContent.push("\n");
+        });
+
+        this.diagram.getRelationships().forEach((relationship) => {
+            const sourceClassifier = this.diagram.getClassifierById(relationship.getSourceClassifierId()).getName();
+            const targetClassifier = this.diagram.getClassifierById(relationship.getTargetClassifierId()).getName();
+
+            exportContent.push(sourceClassifier + " " +
+                (relationship.getMultiplicity() !== undefined ? "\"" + relationship.getMultiplicity() + "\" " : "") +
+                SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.name === relationship.getRelationshipType())?.ascii + " " +
+                targetClassifier +
+                (relationship.getAttributeName() !== undefined ? " : " + relationship.getName() : "") + "\n");
         });
         
         exportContent.push("@enduml");
