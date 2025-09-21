@@ -15,16 +15,19 @@ import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
 import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
+import IGetDiagramDTO from "../public/DTO/IGetDiagramDTO";
 import IGetEntityDTO from "../public/DTO/IGetEntityDTO";
 import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
 import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
 import IExportDiagramDTO from "../public/DTO/IExportDiagramDTO";
 import Exporter from "../Controller/Exporter";
+import Relationship from "../Models/Relationship";
 
 // Setting context up.
 type commandHandlerType = {
     getFeedBack: (commandLine: string[]) => string;
     saveDiagram: () => ISaveDiagramReturnDTO;
+    getDiagramData: () => IGetDiagramDTO;
     getEntityData: () => IGetEntityDTO;
     getClassifierData: (classifierId: string) => IGetClassifierDTO;
     getRelationshipData: (relationship: string) => IGetRelationshipDTO;
@@ -39,6 +42,12 @@ const commandHandlerDefaultValues: commandHandlerType = {
             diagramJSONFile: new Blob()
         };
     },
+   getDiagramData: () => {
+       return {
+           classifiers: [],
+           relationships: []
+       };
+   },
     getEntityData: () => {
         return {
             entityType: "",
@@ -149,6 +158,13 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         };
     }
 
+    function getDiagramData() {
+        return {
+            classifiers: diagram.getClassifiersData(),
+            relationships: diagram.getRelationshipsData()
+        }
+    }
+
     function getEntityData() {
         return entityData;
     }
@@ -192,6 +208,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     const value = {
         getFeedBack,
         saveDiagram,
+        getDiagramData,
         getEntityData,
         getClassifierData,
         getRelationshipData,
@@ -241,8 +258,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.diagram === entityType:
-                    const diagramFeedback = diagram.readDiagram();
-                    return diagramFeedback.toString();
+                    const readDiagramFeedback = diagram.readDiagram();
+                    setEntityData(readDiagramFeedback.entityData);
+                    return readDiagramFeedback.feedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const readClassifierInstructions = ReadCommandInterpreter.interpretReadClassifier(commandLine);

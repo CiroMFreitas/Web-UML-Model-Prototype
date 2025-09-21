@@ -3,6 +3,12 @@
         "command_console": "Console de comandos selecionado."
     },
     "ASCIIDiagram": {
+        "diagram": {
+            "classifier_header": "O diagrama possui os classificadores:",
+            "relationship_header": "O diagrama possui os relacionamentos:",
+            "no_classifiers": "O diagrama não possui classificadores.",
+            "no_relationships": "O diagrama não possui relacionamentos."
+        },
         "classifier": {
             "class": "Classe",
             "abstract": "Classe Abstrata",

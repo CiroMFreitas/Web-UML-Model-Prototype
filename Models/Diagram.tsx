@@ -453,7 +453,7 @@ export default class Diagram {
      * 
      * @returns Classifiers's names if present.
      */
-    public readDiagram(): Feedback {
+    public readDiagram(): IDiagramFeedbackDTO {
         const feedback = new Feedback()
 
         feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.start"));
@@ -472,7 +472,13 @@ export default class Diagram {
         }
         feedback.addSnippet(new StringSnippet("."));
 
-        return feedback;
+        return {
+            entityData: {
+                entityType: "diagram",
+                entityId: ""
+            },
+            feedback: feedback
+        };
     }
 
     /**
@@ -697,6 +703,22 @@ export default class Diagram {
 
             return relationshipName;
         }
+    }
+
+    /**Returns all of diagram classifires DTOs. 
+     * 
+     * @returns Classifiers array.
+     */
+    public getClassifiersData(): IGetClassifierDTO[] {
+        return this.classifiers.map(classifier => this.getClassifierData(classifier.getId()));
+    }
+
+    /**Returns all of diagram relationships DTOs. 
+     * 
+     * @returns Relationships array.
+     */
+    public getRelationshipsData(): IGetRelationshipDTO[] {
+        return this.relationships.map(relationship => this.getRelationshipData(relationship.getId()));
     }
 
     /**Returns all of diagram classifires. 
