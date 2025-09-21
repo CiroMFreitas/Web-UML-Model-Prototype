@@ -6,18 +6,18 @@ import CanvasRelationship from '../CanvasRelationship/CanvasRelationship';
 
 export default function ClassDiagramCanvas() {
   const commandHandlerContext = useContext(CommandHandlerContext);
-  const toRenderEntityData = commandHandlerContext.getToRenderEntityData();
+  const entityData = commandHandlerContext.getEntityData();
 
   // Component
-  switch(toRenderEntityData.entityType) {
+  switch(entityData.entityType) {
     case "classifier":
-      const classifierData = commandHandlerContext.getToRenderClassifier(toRenderEntityData.entityId);
+      const classifierData = commandHandlerContext.getClassifierData(entityData.entityId);
       return (
         <CanvasClassifier classifierData={ classifierData } />
       );
 
     case "relationship":
-      const relationshipData = commandHandlerContext.getToRenderRelationship(toRenderEntityData.entityId);
+      const relationshipData = commandHandlerContext.getRelationshipData(entityData.entityId);
       return (
         <CanvasRelationship relationshipData={ relationshipData } />
       );

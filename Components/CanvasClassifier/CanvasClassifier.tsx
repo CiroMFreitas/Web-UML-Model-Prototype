@@ -1,11 +1,11 @@
 import translate from "../../Controller/Translate";
 import "./CanvasClassifier.css";
-import IGetClassifierDTO from "../../public/DTO/IGetClassifierDTO";
+import IGetClassifierDataDTO from "../../public/DTO/IGetClassifierDataDTO";
 import CanvasClassifierAttribute from "../CanvasClassifierAttribute/CanvasClassifierAttribute";
 import CanvasClassifierMethod from "../CanvasClassifierMethod/CanvasClassifierMethod";
 import CanvasClassifierRelationship from "../CanvasClassifierRelationship/CanvasClassifierRelationship";
 
-type Props = { classifierData: IGetClassifierDTO };
+type Props = { classifierData: IGetClassifierDataDTO };
 
 export default function CanvasClassifier({ classifierData }: Props) {
     return (

@@ -9,5 +9,5 @@ export default interface IGetRelationshipDTO {
     targetClassifierName: string;
     relationshipType: string;
     attribute: IGetAttributeDTO | null;
-    multiplicity: string;
+    multiplicity?: string;
 }

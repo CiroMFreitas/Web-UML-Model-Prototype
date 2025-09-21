@@ -15,7 +15,7 @@ import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
 import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
-import IToRenderEntityDTO from "../public/DTO/IToRenderEntityDTO";
+import IGetEntityDTO from "../public/DTO/IGetEntityDTO";
 import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
 import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
 import IExportDiagramDTO from "../public/DTO/IExportDiagramDTO";
@@ -25,9 +25,9 @@ import Exporter from "../Controller/Exporter";
 type commandHandlerType = {
     getFeedBack: (commandLine: string[]) => string;
     saveDiagram: () => ISaveDiagramReturnDTO;
-    getToRenderEntityData: () => IToRenderEntityDTO;
-    getToRenderClassifier: (classifierId: string) => IGetClassifierDTO;
-    getToRenderRelationship: (relationship: string) => IGetRelationshipDTO;
+    getEntityData: () => IGetEntityDTO;
+    getClassifierData: (classifierId: string) => IGetClassifierDTO;
+    getRelationshipData: (relationship: string) => IGetRelationshipDTO;
     exportDiagram: (exportOption: String) => IExportDiagramDTO;
 }
 
@@ -39,13 +39,13 @@ const commandHandlerDefaultValues: commandHandlerType = {
             diagramJSONFile: new Blob()
         };
     },
-    getToRenderEntityData: () => {
+    getEntityData: () => {
         return {
             entityType: "",
             entityId: ""
         };
     },
-   getToRenderClassifier: () => {
+   getClassifierData: () => {
        return {
            classifierType: "",
            name: "",
@@ -54,7 +54,7 @@ const commandHandlerDefaultValues: commandHandlerType = {
            relationships: []
        };
    },
-   getToRenderRelationship: () => {
+   getRelationshipData: () => {
        return {
            relationshipName: "",
            sourceClassifierName: "",
@@ -86,7 +86,7 @@ interface IProps {
 export const CommandHandlerProvider = ({ children }: IProps ) => {
     // Will hold diagram data for both feedback propouses and canvas drawing.
     const [diagram, setDiagram] = useState(new Diagram());
-    const [toRenderEntityData, setToRenderEntityData] = useState({
+    const [entityData, setentityData] = useState({
         entityType: "",
         entityId: ""
     });
@@ -149,15 +149,15 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         };
     }
 
-    function getToRenderEntityData() {
-        return toRenderEntityData;
+    function getEntityData() {
+        return entityData;
     }
 
-    function getToRenderClassifier(classifierId: string) {
+    function getClassifierData(classifierId: string) {
         return diagram.getClassifierData(classifierId);
     }
 
-    function getToRenderRelationship(relationshipId: string) {
+    function getRelationshipData(relationshipId: string) {
         return diagram.getRelationshipData(relationshipId);
     }
 
@@ -192,9 +192,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     const value = {
         getFeedBack,
         saveDiagram,
-        getToRenderEntityData,
-        getToRenderClassifier,
-        getToRenderRelationship,
+        getEntityData,
+        getClassifierData,
+        getRelationshipData,
         exportDiagram
     }
 
@@ -211,14 +211,14 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const createClassifierInstructions = CreateCommandInterpreter.interpretCreateClassifier(commandLine, entityType);
                     const classifierCreationFeedback = diagram.createClassifier(createClassifierInstructions);
                     setDiagram(diagram);
-                    setToRenderEntityData(classifierCreationFeedback.entityData);
+                    setentityData(classifierCreationFeedback.entityData);
                     return classifierCreationFeedback.feedback.toString();
     
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const createRelationshipInstructions = CreateCommandInterpreter.interpretCreateRelationship(commandLine);
                     const relationshipCreationFeedback = diagram.createRelationship(createRelationshipInstructions);
                     setDiagram(diagram);
-                    setToRenderEntityData(relationshipCreationFeedback.entityData);
+                    setentityData(relationshipCreationFeedback.entityData);
                     return relationshipCreationFeedback.feedback.toString();
         
                 default:
@@ -247,13 +247,13 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const readClassifierInstructions = ReadCommandInterpreter.interpretReadClassifier(commandLine);
                     const classifierReadFeedback = diagram.readClassifier(readClassifierInstructions);
-                    setToRenderEntityData(classifierReadFeedback.entityData);
+                    setentityData(classifierReadFeedback.entityData);
                     return classifierReadFeedback.feedback.toString();
                 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const readRelationshipInstructions = ReadCommandInterpreter.interpretReadRelationship(commandLine);
                     const relationshipReadFeedback = diagram.readRelationship(readRelationshipInstructions);
-                    setToRenderEntityData(relationshipReadFeedback.entityData);
+                    setentityData(relationshipReadFeedback.entityData);
                     return relationshipReadFeedback.feedback.toString();
                 
                 default:
@@ -310,14 +310,14 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const alterClassifierInstructions = AlterCommandInterpreter.interpretAlterClassifier(commandLine);
                     const alterClassifierFeedback = diagram.alterClassifier(alterClassifierInstructions);
                     setDiagram(diagram);
-                    setToRenderEntityData(alterClassifierFeedback.entityData);
+                    setentityData(alterClassifierFeedback.entityData);
                     return alterClassifierFeedback.feedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
                     const alterRelationshipInstructions = AlterCommandInterpreter.interpretAlterRelationship(commandLine);
                     const alterRelationshipFeedback = diagram.alterRelationship(alterRelationshipInstructions);
                     setDiagram(diagram);
-                    setToRenderEntityData(alterRelationshipFeedback.entityData);
+                    setentityData(alterRelationshipFeedback.entityData);
                     return alterRelationshipFeedback.feedback.toString();
 
                 default:
