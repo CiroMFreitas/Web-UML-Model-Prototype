@@ -8,7 +8,7 @@ export default function CanvasDiagramRelationships({ relationshipsData }: Props)
     return (
         <div>
             <div>
-                { translate("ASCIIDiagram.diagram.relationshiṕ_header") }
+                { translate("ASCIIDiagram.diagram.relationship_header") }
             </div>
 
             <div>
