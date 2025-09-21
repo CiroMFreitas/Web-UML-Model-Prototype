@@ -296,8 +296,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const removeClassifierInstructions = RemoveCommandInterpreter.interpretRemoveClassifier(commandLine);
                     const removeClassifierFeedback = diagram.removeClassifier(removeClassifierInstructions);
+                    setEntityData(removeClassifierFeedback.entityData);
                     setDiagram(diagram);
-                    return removeClassifierFeedback.toString();
+                    return removeClassifierFeedback.feedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const removerRelationshipInstructions = RemoveCommandInterpreter.interpretRemoveRelationship(commandLine);

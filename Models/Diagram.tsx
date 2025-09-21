@@ -102,7 +102,7 @@ export default class Diagram {
      * @param commandLineArray An array containing the classifier name in first position.
      * @returns Feedback if the removal was successful..
      */
-    public removeClassifier(removeClassifierInstructions: IRemoveClassifierDTO): Feedback {
+    public removeClassifier(removeClassifierInstructions: IRemoveClassifierDTO): IDiagramFeedbackDTO {
         // Get to be removed Classifier's relationships.
         const toRemoveClassifier = this.getClassifierByName(removeClassifierInstructions.name);
         const toRemoveRelationships = this.relationships.filter((relationship) =>
@@ -122,7 +122,13 @@ export default class Diagram {
         feedback.addSnippet(new StringSnippet(removeClassifierInstructions.name));
         feedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
         
-        return feedback;
+        return {
+            entityData: {
+                entityType: "diagram",
+                entityId: ""
+            },
+            feedback: feedback,
+        };
     }
 
     /**
