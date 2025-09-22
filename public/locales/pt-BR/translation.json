@@ -24,11 +24,12 @@
         },
         "relationship": {
             "title": "Relacionamentos:",
-            "title_single": "Relacão ",
+            "title_single": "Relacionamento ",
             "no_relationships": "Não possui relacionamentos.",
             "between": " entre ",
             "and": " e ",
-            "named": "Nomeada: "
+            "named": "Nomeada: ",
+            "attribute": "Atributo: "
         }
     },
     "feedback": {
