@@ -151,6 +151,10 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     function saveDiagram() {
         const saveFeedback = new Feedback();
         saveFeedback.addSnippet(new LocalizationSnippet("feedback.save.success"));
+        setEntityData({
+        entityType: "diagram",
+        entityId: ""
+    });
 
         return {
             saveFeedback: saveFeedback.toString(),
