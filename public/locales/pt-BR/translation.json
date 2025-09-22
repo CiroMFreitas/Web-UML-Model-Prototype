@@ -27,7 +27,8 @@
             "title_single": "Relacão ",
             "no_relationships": "Não possui relacionamentos.",
             "between": " entre ",
-            "and": " e "
+            "and": " e ",
+            "named": "Nomeada: "
         }
     },
     "feedback": {

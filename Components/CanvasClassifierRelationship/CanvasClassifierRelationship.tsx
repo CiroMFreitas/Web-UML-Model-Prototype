@@ -1,3 +1,4 @@
+import translate from "../../Controller/Translate";
 import IGetAttributeDTO from "../../public/DTO/IGetAttributeDTO";
 import IGetRelationshipDTO from "../../public/DTO/IGetRelationshipDTO";
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../../public/Utils/SupportedKeyWords";
@@ -26,7 +27,8 @@ export default function CanvasClassifierRelationship({ relationshipData }: Props
                 relationshipData.targetClassifierName + " :  " +
                 relationshipAttribute(relationshipData.attribute) +
                 (relationshipData.multiplicity ? relationshipData.multiplicity +  " " : "") +
-                " Named: " + relationshipData.relationshipName
+                translate("ASCIIDiagram.relationship.named") + 
+                relationshipData.relationshipName
             }
       </div>
     )
