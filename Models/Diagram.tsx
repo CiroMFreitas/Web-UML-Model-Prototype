@@ -358,15 +358,15 @@ export default class Diagram {
 
         if(readInstructions.relationshipName !== undefined) {
             const toReadRelationship = this.getRelationshipByName(readInstructions.relationshipName);
-            const sourceClassifierByNamed = this.getClassifierById(toReadRelationship.getSourceClassifierId());
-            const targetClassifierByNamed = this.getClassifierById(toReadRelationship.getTargetClassifierId());
+            const sourceClassifierByName = this.getClassifierById(toReadRelationship.getSourceClassifierId());
+            const targetClassifierByName = this.getClassifierById(toReadRelationship.getTargetClassifierId());
             
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.start"));
             feedback.mergeFeedback(toReadRelationship.toText());
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_1"));
-            feedback.addSnippet(new StringSnippet(sourceClassifierByNamed.getName()));
+            feedback.addSnippet(new StringSnippet(sourceClassifierByName.getName()));
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
-            feedback.addSnippet(new StringSnippet(targetClassifierByNamed.getName()));
+            feedback.addSnippet(new StringSnippet(targetClassifierByName.getName()));
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
 
             return {
