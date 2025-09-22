@@ -6,6 +6,7 @@ import CanvasRelationship from '../CanvasRelationship/CanvasRelationship';
 import translate from '../../Controller/Translate';
 import CanvasDiagramClassifiers from '../CanvasDiagramClassifiers/CanvasDiagramClassifiers';
 import CanvasDiagramRelationships from '../CanvasDiagramRelationships/CanvasDiagramRelationships';
+import CanvasRelationshipClassifier from '../CanvasRelationshipClassifier/CanvasRelationshipClassifier';
 
 export default function ClassDiagramCanvas() {
   const commandHandlerContext = useContext(CommandHandlerContext);
@@ -23,6 +24,12 @@ export default function ClassDiagramCanvas() {
       const relationshipData = commandHandlerContext.getRelationshipData(entityData.entityId);
       return (
         <CanvasRelationship relationshipData={ relationshipData } />
+      );
+
+    case "between":
+      const classifierRelationshipsData = commandHandlerContext.getRelationshipsData(entityData.entityId, entityData.secondEntityId);
+      return (
+        <CanvasRelationshipClassifier sourceClassifierData={ classifierRelationshipsData.classifiers[0] } targetClassifierData={ classifierRelationshipsData.classifiers[1] } relationshipsData={ classifierRelationshipsData.relationships }/>
       );
     
     default:

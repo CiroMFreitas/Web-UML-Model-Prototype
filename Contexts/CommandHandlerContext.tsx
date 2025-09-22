@@ -21,7 +21,6 @@ import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
 import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
 import IExportDiagramDTO from "../public/DTO/IExportDiagramDTO";
 import Exporter from "../Controller/Exporter";
-import Relationship from "../Models/Relationship";
 
 // Setting context up.
 type commandHandlerType = {
@@ -31,6 +30,7 @@ type commandHandlerType = {
     getEntityData: () => IGetEntityDTO;
     getClassifierData: (classifierId: string) => IGetClassifierDTO;
     getRelationshipData: (relationship: string) => IGetRelationshipDTO;
+    getRelationshipsData: (sourceClassifierId: string, targetClassifierId?: string) => IGetDiagramDTO;
     exportDiagram: (exportOption: String) => IExportDiagramDTO;
 }
 
@@ -71,6 +71,12 @@ const commandHandlerDefaultValues: commandHandlerType = {
            attribute: null,
            relationshipType: "",
            multiplicity: "",
+       };
+   },
+   getRelationshipsData: () => {
+       return {
+           classifiers: [],
+           relationships: []
        };
    },
     exportDiagram: () => { 
@@ -181,6 +187,21 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         return diagram.getRelationshipData(relationshipId);
     }
 
+    function getRelationshipsData(sourceClassifierId: string, targetClassifierId?: string) {
+        if(targetClassifierId !== undefined) {
+            return {
+                classifiers: [diagram.getClassifierData(sourceClassifierId), diagram.getClassifierData(targetClassifierId)],
+                relationships: diagram.getClassifeiersRelationshipsData(sourceClassifierId, targetClassifierId)
+            }
+        } else {
+            console.log("Unknown error in CommandHandlerContext.tsx, getRelationshipsData function.")
+            return {
+                classifiers: [],
+                relationships: []
+            }
+        }
+    }
+
     // Saves diagram into a JSON blob and sends feedback to user.
     const exportDiagram = (exportOption: String) => {
         const exporter = new Exporter(diagram);
@@ -216,6 +237,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         getEntityData,
         getClassifierData,
         getRelationshipData,
+        getRelationshipsData,
         exportDiagram
     }
 

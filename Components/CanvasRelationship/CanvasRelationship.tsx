@@ -10,7 +10,7 @@ export default function CanvasRelationship({ relationshipData }: Props) {
     const relationshipType = SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.name === relationshipData.relationshipType);
 
     return (
-        <div id="ClassDiagramCanvas">
+        <div>
             {/* Classifier type and name */}
             <div>
                 {

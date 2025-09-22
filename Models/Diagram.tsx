@@ -408,6 +408,15 @@ export default class Diagram {
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_2"));
             feedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
             feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_3"));
+
+            return {
+                entityData: {
+                    entityType: "between",
+                    entityId: sourceClassifierByBetween.getId(),
+                    secondEntityId: targetClassifierByBetween.getId()
+                },
+                feedback: feedback
+            };
         } else {
             throw "In Diagram.tsx, readRelationship method an invalid read instruction was given.";
         }
@@ -725,6 +734,17 @@ export default class Diagram {
      */
     public getRelationshipsData(): IGetRelationshipDTO[] {
         return this.relationships.map(relationship => this.getRelationshipData(relationship.getId()));
+    }
+
+    /**Returns all relationships DTOs between two given classifiers. 
+     * 
+     * @param sourceClassifierId Source classifier's id
+     * @param targetClassifierId Target classifier's id
+     * @returns Relationships array.
+     */
+    public getClassifeiersRelationshipsData(sourceClassifierId: string, targetClassifierId: string): IGetRelationshipDTO[] {
+        const relationships = this.getClassifiersRelationships(sourceClassifierId, targetClassifierId);
+        return relationships.map(relationship => this.getRelationshipData(relationship.getId()));
     }
 
     /**Returns all of diagram classifires. 
