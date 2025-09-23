@@ -30,6 +30,13 @@
             "and": " e ",
             "named": "Nomeada: ",
             "attribute": "Atributo: "
+        },
+        "multiple_relationships": {
+            "header": {
+                "part_1": "Relacionamentos entre ",
+                "part_2": " e ",
+                "part_3": ":"
+            }
         }
     },
     "feedback": {
