@@ -405,9 +405,9 @@ export default class Diagram {
                 feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.end"));
             }
             feedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
-            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_2"));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_2"));
             feedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
-            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_3"));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_3"));
 
             return {
                 entityData: {
@@ -611,12 +611,11 @@ export default class Diagram {
                 relationship.getTargetClassifierId() === firstClassifierId 
             );
         } else {
-            console.log(secondClassifierId)
             return this.relationships.filter((relationship) => 
-                (relationship.getSourceClassifierId() === firstClassifierId &&
-                relationship.getTargetClassifierId() === secondClassifierId) ||
-                (relationship.getSourceClassifierId() === secondClassifierId &&
-                relationship.getTargetClassifierId() === firstClassifierId)
+                (relationship.getSourceClassifierId() === relationship.getSourceClassifierId() &&
+                relationship.getTargetClassifierId() === relationship.getTargetClassifierId()) ||
+                (relationship.getSourceClassifierId() === relationship.getTargetClassifierId() &&
+                relationship.getTargetClassifierId() === relationship.getSourceClassifierId())
             );
         }
     }
