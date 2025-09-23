@@ -214,7 +214,7 @@
                 },
                 "classifiers_relationships": {
                     "part_1": {
-                        "not_foun": "Não foram encontrados relacionamentos entre os classificadores ",
+                        "not_found": "Não foram encontrados relacionamentos entre os classificadores ",
                         "found": {
                             "singular": {
                                 "start": "O seguinte relacionamento ",
