@@ -209,7 +209,7 @@ export default class Diagram {
         return {
             relationshipName: relationship.getName(),
             sourceClassifierName: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
-            targetClassifierName: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
+            targetClassifierName: this.getClassifierById(relationship.getTargetClassifierId()).getName(),
             attribute: relationship.getAttributeData(),
             relationshipType: relationship.getRelationshipType(),
             multiplicity: relationship.getMultiplicity(),
@@ -612,10 +612,10 @@ export default class Diagram {
             );
         } else {
             return this.relationships.filter((relationship) => 
-                (relationship.getSourceClassifierId() === relationship.getSourceClassifierId() &&
-                relationship.getTargetClassifierId() === relationship.getTargetClassifierId()) ||
-                (relationship.getSourceClassifierId() === relationship.getTargetClassifierId() &&
-                relationship.getTargetClassifierId() === relationship.getSourceClassifierId())
+                (firstClassifierId === relationship.getSourceClassifierId() &&
+                secondClassifierId === relationship.getTargetClassifierId()) ||
+                (firstClassifierId === relationship.getTargetClassifierId() &&
+                secondClassifierId === relationship.getSourceClassifierId())
             );
         }
     }
