@@ -393,7 +393,6 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
     function loadDiagramHandler(jsonLoad: string) {
         const diagramLoadData = LoadFileInterpreter.interpretImportXML(JSON.parse(jsonLoad));
-        console.log(diagramLoadData)
         const newDiagram = new Diagram();
         newDiagram.generateDiagramFromData(diagramLoadData);
         setDiagram(newDiagram);
