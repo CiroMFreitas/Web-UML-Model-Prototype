@@ -380,6 +380,10 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         const newDiagram = new Diagram();
         newDiagram.generateDiagramFromData(diagramImportData);
         setDiagram(newDiagram);
+        setEntityData({
+            entityType: "diagram",
+            entityId: ""
+        });
 
         const importFeedback = new Feedback();
         importFeedback.addSnippet(new LocalizationSnippet("feedback.import.success"));
