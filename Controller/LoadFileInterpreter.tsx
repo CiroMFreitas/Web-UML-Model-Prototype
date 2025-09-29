@@ -47,12 +47,13 @@ export default class LoadFileInterpreter extends CommandInterpreter {
 
         // Turn all JSON relationships into relationship creation DTOs
         const interpretedRelationships = jsonLoad.relationships.map((loadedRelationship) => {
+            console.log(loadedRelationship)
             return {
                 id: loadedRelationship.id,
                 relationshipName: loadedRelationship.name,
-                sourceClassifierId: loadedRelationship.sourceclassifierid,
-                targetClassifierId: loadedRelationship.targetclassifierid,
-                relationshipType: loadedRelationship.relatioshiptype,
+                sourceClassifierId: loadedRelationship.sourceClassifierId,
+                targetClassifierId: loadedRelationship.targetClassifierId,
+                relationshipType: loadedRelationship.relatioshipType,
                 multiplicity: loadedRelationship.multiplicity,
                 attribute: loadedRelationship.attribute ? {
                     id: loadedRelationship.attribute.id,

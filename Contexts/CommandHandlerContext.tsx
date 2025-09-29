@@ -158,9 +158,9 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         const saveFeedback = new Feedback();
         saveFeedback.addSnippet(new LocalizationSnippet("feedback.save.success"));
         setEntityData({
-        entityType: "diagram",
-        entityId: ""
-    });
+            entityType: "diagram",
+            entityId: ""
+        });
 
         return {
             saveFeedback: saveFeedback.toString(),
@@ -389,9 +389,14 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
 
     function loadDiagramHandler(jsonLoad: string) {
         const diagramLoadData = LoadFileInterpreter.interpretImportXML(JSON.parse(jsonLoad));
+        console.log(diagramLoadData)
         const newDiagram = new Diagram();
         newDiagram.generateDiagramFromData(diagramLoadData);
         setDiagram(newDiagram);
+        setEntityData({
+            entityType: "diagram",
+            entityId: ""
+        });
 
         const loadFeedback = new Feedback();
         loadFeedback.addSnippet(new LocalizationSnippet("feedback.load.success"));
