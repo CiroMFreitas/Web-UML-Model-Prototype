@@ -146,9 +146,9 @@ export default function CommandPanel() {
       
             <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label={ translate("label.command_console") } autoComplete="off" autoFocus />
 
-            <input id="importXML" ref={ importRef } type="file" onChange={ () => importHandler() } accept="text/xml" aria-hidden="true" hidden />
+            <input id="import" ref={ importRef } type="file" onChange={ () => importHandler() } accept="text/xml" aria-hidden="true" hidden />
 
-            <input id="LoadJSON" ref={ loadRef } type="file" onChange={ () => loadHandler() } accept=".json" aria-hidden="true" hidden />
+            <input id="load" ref={ loadRef } type="file" onChange={ () => loadHandler() } accept=".json" aria-hidden="true" hidden />
         </div>
     );
 }
