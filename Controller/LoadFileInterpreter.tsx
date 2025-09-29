@@ -47,7 +47,6 @@ export default class LoadFileInterpreter extends CommandInterpreter {
 
         // Turn all JSON relationships into relationship creation DTOs
         const interpretedRelationships = jsonLoad.relationships.map((loadedRelationship) => {
-            console.log(loadedRelationship)
             return {
                 id: loadedRelationship.id,
                 relationshipName: loadedRelationship.name,
