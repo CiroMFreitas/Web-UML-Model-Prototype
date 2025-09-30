@@ -232,13 +232,13 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                     let relationshipAttribute;
                     if(SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == relationshipAttributeArguments[0]) !== undefined) {
                         relationshipAttribute = {
-                            visibility: relationshipAttributeArguments[0],
+                            visibility: SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == relationshipAttributeArguments[0])?.name,
                             name: relationshipAttributeArguments[1],
                             type: relationshipArguments[0]
                         };
                     } else if(relationshipAttributeArguments[0] !== "") {
                         relationshipAttribute = {
-                            visibility: "+",
+                            visibility: "public",
                             name: relationshipAttributeArguments[0],
                             type: relationshipArguments[0]
                         };
@@ -257,7 +257,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                 case lineArguments[lineArguments.length - 1].includes(")"):
                     const methodHasVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2]) !== undefined ? 1 : 0
                     const method = {
-                        visibility: methodHasVisibility !== 0 ? lineArguments[2] : "+",
+                        visibility: methodHasVisibility !== 0 ? SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2])?.name : "public",
                         type: lineArguments[2 + methodHasVisibility],
                         name: lineArguments[3 + methodHasVisibility].replace("()", "").split("(")[0],
                         parameters: [] as ICreateParameterDTO[]
@@ -285,7 +285,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                     attributes.push({
                         classifier: lineArguments[0],
                         attribute: {
-                            visibility: attributeHasVisibility !== 0 ? lineArguments[2] : "+",
+                            visibility: attributeHasVisibility !== 0 ? SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2])?.name : "public",
                             type: lineArguments[2 + attributeHasVisibility],
                             name: lineArguments[3 + attributeHasVisibility]
                         }
