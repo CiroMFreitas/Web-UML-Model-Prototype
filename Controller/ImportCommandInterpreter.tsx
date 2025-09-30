@@ -250,9 +250,12 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                 
                 case "" === "":
                     break;
+                
+                default:
+                    console.log("Following line was not identified: " + line);
+                    break;
             }
         })
-        console.log(relationships)
         return {
             classifiersData: classifiers,
             relationshipsData: relationships
