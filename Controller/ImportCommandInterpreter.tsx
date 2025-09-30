@@ -5,27 +5,32 @@ import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
 import CommandInterpreter from "./CommandInterpreter";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
-import { SUPPORTED_VISIBILITY } from "../public/Utils/SupportedKeyWords";
+import { SUPPORTED_RELATIONSHIP_TYPES, SUPPORTED_VISIBILITY } from "../public/Utils/SupportedKeyWords";
 import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
+import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
+import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
+import IGetAttributeDTO from "../public/DTO/IGetAttributeDTO";
+import IGetMethodDTO from "../public/DTO/IGetMethodDTO";
+import IGetDiagramDTO from "../public/DTO/IGetDiagramDTO";
 
 
 /**
- * Class responsible for handling user's import commands into DTOs.
+ * Class responsible for handling user's importContent commands into DTOs.
  */
 export default class ImportCommandInterpreter extends CommandInterpreter {
     /**
      * Turns a imported xml file string into a DTO.
      * 
-     * @param xmlImport String of a xml file.
+     * @param importContent String of a xml file.
      * @returns All classifiers and relationship imported from a xml file.
      */
-    public static interpretImportXML(xmlImport: string): INewDiagramDTO {
+    public static interpretImportXML(importContent: string): INewDiagramDTO {
         const diagramImportInstructions = {
             classifiers: [] as ICreateClassifierDTO[],
             relationships: [] as ICreateRelationshipDTO[]
         };
-
-        parseString(xmlImport, (err, result) => {
+        
+        parseString(importContent, { normalizeTags: true }, (err, result) => {
             // Get diagram content
             const diagramContent = result.mxfile.diagram[0].mxgraphmodel[0].root[0].mxcell.slice(2);
 
@@ -84,11 +89,28 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
 
                     // Relationships have a source and target
                     case content.source !== undefined && content.target !== undefined:
+                        // Get relationship type
+                        let relationship_type = "as"
+                        if(["endArrow=block", "endFill=1", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "da"
+                        } else if(content.source === content.target) {
+                            relationship_type = "ra"
+                        } else if(["endArrow=open", "endSize=12", "startArrow=diamondThin", "startSize=14", "startFill=0", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "ag"
+                        } else if(["endArrow=open", "endSize=12", "startArrow=diamondThin", "startSize=14", "startFill=1", "edgeStyle=orthogonalEdgeStyle"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "co"
+                        } else if(["endArrow=block", "endSize=16", "endFill=0"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "in"
+                        } else if(["endArrow=block", "dashed=1", "endFill=0", "endSize=12"].every((argument) => content.style.includes(argument))) {
+                            relationship_type = "re"
+                        }
+
                         diagramImportInstructions.relationships.push({
                             id: content.id,
                             sourceClassifierId: content.source,
                             targetClassifierId: content.target,
                             relationshipName: "",
+                            relationshipType: relationship_type,
                             multiplicity: content.value
                         });
                         break;
@@ -166,6 +188,128 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
         return {
             name: parameterData[0],
             type: parameterData[1],
+        };
+    }
+
+    /**
+     * Turns a imported txt file string into a DTO.
+     * 
+     * @param importContent String of a txt file.
+     * @returns All classifiers and relationship imported from a txt file.
+     */
+    public static interpretImportTxt(importContent: string): INewDiagramDTO {
+        const classifiers = [] as ICreateClassifierDTO[];
+        const relationships = [] as ICreateRelationshipDTO[];
+        const attributes = [] as {
+            classifier: string,
+            attribute: ICreateAttributeDTO
+        }[];
+        const methods = [] as {
+            classifier: string,
+            method: ICreateMethodDTO
+        }[];
+
+        const contentLines = importContent.split("\n").filter((content) => content !== "");
+        contentLines.forEach((line) => {
+            const lineArguments = line.split(" ");
+            switch(true) {
+                // Detects classifiers
+                case lineArguments[0] === "class" || lineArguments[0] === "abstract" || lineArguments[0] === "interface":
+                    classifiers.push({
+                        name: lineArguments[1],
+                        classifierType: lineArguments[0],
+                        attributes: [],
+                        methods: []
+                    });
+                    break;
+
+                // Detects Relationships
+                case SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.ascii === lineArguments[1]) !== undefined ||
+                SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.ascii === lineArguments[2]) !== undefined:
+                    const relationshipArguments = lineArguments.indexOf(":") === -1 ? lineArguments : lineArguments.slice(0, lineArguments.indexOf(":"));
+                    const relationshipAttributeArguments = lineArguments.indexOf(":") === -1 ? [""] : lineArguments.slice(lineArguments.indexOf(":") + 1);
+
+                    let relationshipAttribute;
+                    if(SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == relationshipAttributeArguments[0]) !== undefined) {
+                        relationshipAttribute = {
+                            visibility: SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == relationshipAttributeArguments[0])?.name,
+                            name: relationshipAttributeArguments[1],
+                            type: relationshipArguments[0]
+                        };
+                    } else if(relationshipAttributeArguments[0] !== "") {
+                        relationshipAttribute = {
+                            visibility: "public",
+                            name: relationshipAttributeArguments[0],
+                            type: relationshipArguments[0]
+                        };
+                    }
+
+                    relationships.push({
+                        relationshipName: "",
+                        relationshipType: SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.ascii === (relationshipArguments.length === 3 ? relationshipArguments[1] : relationshipArguments[2]))?.code ?? "",
+                        sourceClassifierId: relationshipArguments[0],
+                        targetClassifierId: relationshipArguments.length === 3 ? relationshipArguments[2] : relationshipArguments[3],
+                        attribute: relationshipAttribute,
+                        multiplicity: relationshipArguments.length === 4 ? relationshipArguments[1] : undefined
+                    });
+                    break;
+                
+                case lineArguments[lineArguments.length - 1].includes(")"):
+                    const methodHasVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2]) !== undefined ? 1 : 0
+                    const method = {
+                        visibility: methodHasVisibility !== 0 ? SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2])?.name : "public",
+                        type: lineArguments[2 + methodHasVisibility],
+                        name: lineArguments[3 + methodHasVisibility].replace("()", "").split("(")[0],
+                        parameters: [] as ICreateParameterDTO[]
+                    } as ICreateMethodDTO
+
+                    const parameterIndex = lineArguments.findIndex((argument) => argument.includes("("));
+                    if(!lineArguments[parameterIndex].includes("()")) {
+                        const parameterArguments = [lineArguments[parameterIndex].split("(")[1]].concat(lineArguments.splice(parameterIndex + 1));
+                        for(let i = 0; i < parameterArguments.length; i += 2) { 
+                            method.parameters.push({
+                                type: parameterArguments[i],
+                                name: parameterArguments[i+1].replace(")", "")
+                            });
+                        }
+                    }
+
+                    methods.push({
+                        classifier: lineArguments[0],
+                        method: method
+                    });
+                    break;
+                
+                case lineArguments[1] === ":":
+                    const attributeHasVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2]) !== undefined ? 1 : 0;
+                    attributes.push({
+                        classifier: lineArguments[0],
+                        attribute: {
+                            visibility: attributeHasVisibility !== 0 ? SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2])?.name : "public",
+                            type: lineArguments[2 + attributeHasVisibility],
+                            name: lineArguments[3 + attributeHasVisibility]
+                        }
+                    })
+                    break;
+                
+                default:
+                    console.log("Following line was not identified: " + line);
+                    break;
+            }
+        })
+
+        attributes.forEach((attribute) => {
+            classifiers.find((classifier) => classifier.name === attribute.classifier)?.attributes.push(attribute.attribute);
+        });
+
+        methods.forEach((method) => {
+            classifiers.find((classifier) => classifier.name === method.classifier)?.methods.push(method.method);
+        });
+
+        console.log(classifiers)
+        return {
+            classifiersData: classifiers,
+            relationshipsData: relationships
         };
     }
 }

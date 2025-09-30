@@ -1,5 +1,7 @@
 #ClassDiagramCanvas {
-    width: 60%;
-    height: 500px;
-    border: 1px solid black;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid black;
+    overflow: auto;
 }

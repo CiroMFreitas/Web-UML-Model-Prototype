@@ -147,7 +147,7 @@
                     "plural": ", has the attributes",
                     "and": " and "
                 },
-                "methods": {
+                "method": {
                     "singular": ", has the method ",
                     "plural": ", has the methods",
                     "and": " and "
@@ -161,10 +161,11 @@
             "method": {
                 "with_type": " with type ",
                 "with_visibility": " visibility ",
-                "parameters": {
+                "parameter": {
                     "singular": " and parameter ",
                     "plural": " and parameters",
-                    "no_parameter": " and  does not have parameters"
+                    "no_parameters": " and  does not have parameters",
+                    "and": " and "
                 }
             },
             "parameter": {
@@ -269,7 +270,7 @@
                         }
                     }
                 },
-                "methods": {
+                "method": {
                     "error": {
                         "method_not_found": {
                             "part_1": "The ",

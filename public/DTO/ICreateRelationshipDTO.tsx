@@ -1,14 +1,14 @@
-import ICreateAssociativeAttributeDTO from "./ICreateAssociativeAttributeDTO";
+import ICreateAttributeDTO from "./ICreateAttributeDTO";
 
 /**
  * Instructions for relationship creation.
  */
 export default interface ICreateRelationshipDTO {
     id?: string;
-    relationshipName: string,
+    relationshipName: string;
     sourceClassifierId: string;
     targetClassifierId: string;
     relationshipType?: string;
-    attribute?: ICreateAssociativeAttributeDTO;
+    attribute?: ICreateAttributeDTO;
     multiplicity?: string;
 }

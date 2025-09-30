@@ -1,11 +1,11 @@
 #CommandFeedback {
     width: 100%;
     height: 120px;
-    border: 1px solid black;
+    border: 3px solid black;
 }
 
 #CommandConsole {
     width: 100%;
     height: 25px;
-    border: 1px solid black;
+    border: 3px solid black;
 }

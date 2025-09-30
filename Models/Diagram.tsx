@@ -13,6 +13,9 @@ import Relationship from "./Relationship";
 import StringSnippet from "./StringSnippet";
 import IReadRelationshipDTO from "../public/DTO/IReadRelationshipDTO";
 import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
+import IDiagramFeedbackDTO from "../public/DTO/IDiagramFeedbackDTO";
+import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
+import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
 
 /**
  * Object responsible for holding and managing all diagram entities.
@@ -37,9 +40,18 @@ export default class Diagram {
         });
 
         diagramData.relationshipsData.forEach((newRelationshipInstructions) => {
-            const desiredSourceClassifier = this.getClassifierById(newRelationshipInstructions.sourceClassifierId);
-            const desiredTargetClassifier = this.getClassifierById(newRelationshipInstructions.targetClassifierId);
+            let desiredSourceClassifier;
+            let desiredTargetClassifier;
+            try{
+                desiredSourceClassifier = this.getClassifierById(newRelationshipInstructions.sourceClassifierId);
+                desiredTargetClassifier = this.getClassifierById(newRelationshipInstructions.targetClassifierId);
+            } catch(e) {
+                desiredSourceClassifier = this.getClassifierByName(newRelationshipInstructions.sourceClassifierId);
+                desiredTargetClassifier = this.getClassifierByName(newRelationshipInstructions.targetClassifierId);
+            }
             newRelationshipInstructions.relationshipName = this.getRelationshipName(newRelationshipInstructions.relationshipName, desiredSourceClassifier, desiredTargetClassifier)
+            newRelationshipInstructions.sourceClassifierId = desiredSourceClassifier.getId();
+            newRelationshipInstructions.targetClassifierId = desiredTargetClassifier.getId();
 
             const newRelationship = new Relationship(newRelationshipInstructions);
             this.relationships.push(newRelationship);
@@ -52,7 +64,7 @@ export default class Diagram {
      * @param classifierCreationInstructions Instructions to be handled and executed for classifier creation.
      * @returns Feedback containing a success message.
      */
-    public createClassifier(classifierCreationInstructions: ICreateClassifierDTO): Feedback {
+    public createClassifier(classifierCreationInstructions: ICreateClassifierDTO): IDiagramFeedbackDTO {
         // Checks if given name is already in use.
         const newClassifier = new Classifier(classifierCreationInstructions);
         this.isClassifierNameInUse(newClassifier.getName());
@@ -65,7 +77,13 @@ export default class Diagram {
         feedback.addSnippet(new StringSnippet(" "+newClassifier.getName()));
         feedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.part_2"));
 
-        return feedback;
+        return {
+            entityData: {
+                entityType: "classifier",
+                entityId: newClassifier.getId()
+            },
+            feedback: feedback
+        };
     }
 
     /**
@@ -74,10 +92,16 @@ export default class Diagram {
      * @param readClassifierInstructions Instructions to be executed for classifier reading.
      * @returns Feedback containing the desired classifier indormation.
      */
-    public readClassifier(readClassifierInstructions: IReadClassifierDTO): Feedback {
+    public readClassifier(readClassifierInstructions: IReadClassifierDTO): IDiagramFeedbackDTO {
         const toReadClassifier = this.getClassifierByName(readClassifierInstructions.name);
-        const readFeedback = toReadClassifier.toText(readClassifierInstructions);
-        return readFeedback;
+        
+        return {
+            entityData: {
+                entityType: "classifier",
+                entityId: toReadClassifier.getId()
+            },
+            feedback: toReadClassifier.toText(readClassifierInstructions),
+        };
     }
     
     /**
@@ -87,7 +111,7 @@ export default class Diagram {
      * @param commandLineArray An array containing the classifier name in first position.
      * @returns Feedback if the removal was successful..
      */
-    public removeClassifier(removeClassifierInstructions: IRemoveClassifierDTO): Feedback {
+    public removeClassifier(removeClassifierInstructions: IRemoveClassifierDTO): IDiagramFeedbackDTO {
         // Get to be removed Classifier's relationships.
         const toRemoveClassifier = this.getClassifierByName(removeClassifierInstructions.name);
         const toRemoveRelationships = this.relationships.filter((relationship) =>
@@ -102,12 +126,18 @@ export default class Diagram {
         const toRemoveClassifierIndex = this.getClassifierIndexByName(removeClassifierInstructions.name);
         this.classifiers.splice(toRemoveClassifierIndex, 1);
 
-        const removeFeedback = new Feedback();
-        removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
-        removeFeedback.addSnippet(new StringSnippet(removeClassifierInstructions.name));
-        removeFeedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
+        const feedback = new Feedback();
+        feedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_1"));
+        feedback.addSnippet(new StringSnippet(removeClassifierInstructions.name));
+        feedback.addSnippet(new LocalizationSnippet("feedback.remove.classifier.success.part_2"));
         
-        return removeFeedback;
+        return {
+            entityData: {
+                entityType: "diagram",
+                entityId: ""
+            },
+            feedback: feedback,
+        };
     }
 
     /**
@@ -116,7 +146,7 @@ export default class Diagram {
      * @param alterClassifierInstructions DTO containing instructions to be executed.
      * @returns Feedback should alteration succeed.
      */
-    public alterClassifier(alterClassifierInstructions: IAlterClassifierDTO): Feedback {
+    public alterClassifier(alterClassifierInstructions: IAlterClassifierDTO): IDiagramFeedbackDTO {
         const toAlterClassifier = this.getClassifierByName(alterClassifierInstructions.name);
 
         // Checks and changes classifier's name if desired.
@@ -133,12 +163,67 @@ export default class Diagram {
         toAlterClassifier.alterAttributes(alterClassifierInstructions.attributeAlterations);
         toAlterClassifier.alterMethods(alterClassifierInstructions.methodAlterations);
     
-        const alterClassifierFeedback = new Feedback();
-        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_1"));
-        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
-        alterClassifierFeedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
-        alterClassifierFeedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_2"));
-        return alterClassifierFeedback;
+        const feedback = new Feedback();
+        feedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_1"));
+        feedback.addSnippet(new LocalizationSnippet("feedback.common.classifier_type."+toAlterClassifier.getClassifierType()));
+        feedback.addSnippet(new StringSnippet(" "+toAlterClassifier.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.alter.classifier.success.part_2"));
+        
+        return {
+            entityData: {
+                entityType: "classifier",
+                entityId: toAlterClassifier.getId()
+            },
+            feedback: feedback,
+        };
+    }
+
+    /**
+     * Returns classifier's data for diagram canvas.
+     * 
+     * @param classifierId Classifier's ID.
+     * @returns Classifier's data to be used on diagram canvas.
+     */
+    public getClassifierData(classifierId: string): IGetClassifierDTO {
+        const classifier = this.getClassifierById(classifierId);
+        const relationships = this.getClassifiersRelationships(classifierId);
+
+        return {
+            classifierType: classifier.getClassifierType(),
+            name: classifier.getName(),
+            attributes: classifier.getAttributeData(),
+            methods: classifier.getMethodData(),
+            relationships: relationships.map((relationship) => {
+                return {
+                    relationshipName: relationship.getName(),
+                    sourceClassifierName: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
+                    targetClassifierName: this.getClassifierById(relationship.getTargetClassifierId()).getName(),
+                    relationshipType: relationship.getRelationshipType(),
+                    attribute: relationship.getAttributeData(),
+                    multiplicity: relationship.getMultiplicity()
+                };
+            })
+        };
+    }
+
+    /**
+     * Returns relationship's data for diagram canvas.
+     * 
+     * @param relationshipId Relationship's ID.
+     * @returns Relationship's data to be used on diagram canvas.
+     */
+    public getRelationshipData(relationshipId: string): IGetRelationshipDTO {
+        const relationship = this.getRelationshipById(relationshipId);
+        console.log(relationship)
+
+        return {
+            relationshipName: relationship.getName(),
+            sourceClassifierName: this.getClassifierById(relationship.getSourceClassifierId()).getName(),
+            targetClassifierName: this.getClassifierById(relationship.getTargetClassifierId()).getName(),
+            attribute: relationship.getAttributeData(),
+            relationshipType: relationship.getRelationshipType(),
+            multiplicity: relationship.getMultiplicity(),
+        };
     }
 
     /**
@@ -148,7 +233,7 @@ export default class Diagram {
      * creation.
      * @returns Feedback containing a success message.
      */
-    public createRelationship(relationshipCreationInstructions: IDiagramCreateRelationshipDTO): Feedback {
+    public createRelationship(relationshipCreationInstructions: IDiagramCreateRelationshipDTO): IDiagramFeedbackDTO {
         // Checks if classifiers's names were given.
         const desiredSourceClassifier = this.getClassifierByName(relationshipCreationInstructions.sourceClassifierName);
         const desiredTargetClassifier = this.getClassifierByName(relationshipCreationInstructions.targetClassifierName);
@@ -171,27 +256,33 @@ export default class Diagram {
         });
         this.relationships.push(newRelationship);
 
-        const relationshipCreationFeedback = new Feedback();
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_1"));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.common.relationship_type."+newRelationship.getRelationshipType()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_2"));
-        relationshipCreationFeedback.addSnippet(new StringSnippet(desiredSourceClassifier.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_3"));
-        relationshipCreationFeedback.addSnippet(new StringSnippet(desiredTargetClassifier.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_4"));
-        relationshipCreationFeedback.addSnippet(new StringSnippet(newRelationship.getName()));
-        relationshipCreationFeedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_5"));
+        const feedback = new Feedback();
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_1"));
+        feedback.addSnippet(new LocalizationSnippet("feedback.common.relationship_type."+newRelationship.getRelationshipType()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_2"));
+        feedback.addSnippet(new StringSnippet(desiredSourceClassifier.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_3"));
+        feedback.addSnippet(new StringSnippet(desiredTargetClassifier.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_4"));
+        feedback.addSnippet(new StringSnippet(newRelationship.getName()));
+        feedback.addSnippet(new LocalizationSnippet("feedback.create.relationship.success.part_5"));
 
-        return relationshipCreationFeedback;
+        return {
+            entityData: {
+                entityType: "relationship",
+                entityId: newRelationship.getId()
+            },
+            feedback: feedback
+        };
     }
     
     /**
      * Removes a relationship by command line instructions.
      * 
-     * @param commandLineArray An array containing the instruvtions for relationship removal.
+     * @param commandLineArray An array containing the instructions for relationship removal.
      * @returns Feedback if the removal was successful..
      */
-    public removeRelatioship(removerRelationshipInstructions: IRemoveRelationshipDTO): Feedback {
+    public removeRelationship(removerRelationshipInstructions: IRemoveRelationshipDTO): Feedback {
         switch(removerRelationshipInstructions.direction) {
             // Removal by relationship name.
             case "named":
@@ -262,68 +353,83 @@ export default class Diagram {
                 throw new AppError(errorFeedback);
         }
         
-        const removeFeedback = new Feedback();
-        return removeFeedback;
+        const feedback = new Feedback();
+        return feedback;
     }
     
     /**
      * Reads one or more relationships in diagram following given instructions.
      * 
-     * @param readInstrunctions Handled instrunctions.
-     * @returns Feedback containg relationship(s) information.
+     * @param readInstructions Handled instructions.
+     * @returns Feedback contains relationship(s) information.
      */
-    public readRelationship(readInstrunctions: IReadRelationshipDTO): Feedback {
-        const readFeedback = new Feedback();
+    public readRelationship(readInstructions: IReadRelationshipDTO): IDiagramFeedbackDTO {
+        const feedback = new Feedback();
 
-        if(readInstrunctions.relationshipName !== undefined) {
-            const toReadRelationship = this.getRelationshipByName(readInstrunctions.relationshipName);
-            const sourceClassifierByNamed = this.getClassifierById(toReadRelationship.getSourceClassifierId());
-            const targetClassifierByNamed = this.getClassifierById(toReadRelationship.getTargetClassifierId());
+        if(readInstructions.relationshipName !== undefined) {
+            const toReadRelationship = this.getRelationshipByName(readInstructions.relationshipName);
+            const sourceClassifierByName = this.getClassifierById(toReadRelationship.getSourceClassifierId());
+            const targetClassifierByName = this.getClassifierById(toReadRelationship.getTargetClassifierId());
             
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.start"));
-            readFeedback.mergeFeedback(toReadRelationship.toText());
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_1"));
-            readFeedback.addSnippet(new StringSnippet(sourceClassifierByNamed.getName()));
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
-            readFeedback.addSnippet(new StringSnippet(targetClassifierByNamed.getName()));
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
-        } else if((readInstrunctions.sourceClassifierName !== undefined) &&
-                (readInstrunctions.targetClassifierName !== undefined)) {
-            const sourceClassifierByBetween = this.getClassifierByName(readInstrunctions.sourceClassifierName);
-            const targetClassifierByBetween = this.getClassifierByName(readInstrunctions.targetClassifierName);
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.start"));
+            feedback.mergeFeedback(toReadRelationship.toText());
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_1"));
+            feedback.addSnippet(new StringSnippet(sourceClassifierByName.getName()));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_2"));
+            feedback.addSnippet(new StringSnippet(targetClassifierByName.getName()));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers.part_3"));
+
+            return {
+                entityData: {
+                    entityType: "relationship",
+                    entityId: toReadRelationship.getId()
+                },
+                feedback: feedback
+            };
+        } else if((readInstructions.sourceClassifierName !== undefined) &&
+                (readInstructions.targetClassifierName !== undefined)) {
+            const sourceClassifierByBetween = this.getClassifierByName(readInstructions.sourceClassifierName);
+            const targetClassifierByBetween = this.getClassifierByName(readInstructions.targetClassifierName);
 
             const classifiersRelationships = this.getClassifiersRelationships(sourceClassifierByBetween.getId(), targetClassifierByBetween.getId())
 
             if(classifiersRelationships.length === 0) {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.not_found"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.not_found"));
             } else if(classifiersRelationships.length === 1) {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.start"));
-                readFeedback.mergeFeedback(classifiersRelationships[0].toText())
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.end"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.start"));
+                feedback.mergeFeedback(classifiersRelationships[0].toText())
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.singular.end"));
             } else {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.start"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.start"));
 
                 classifiersRelationships.forEach((classifiersRelationship, index) => {
                     if(classifiersRelationships.length !== index+1) {
-                        readFeedback.addSnippet(new StringSnippet(", "))
-                        readFeedback.mergeFeedback(classifiersRelationship.toText())
+                        feedback.addSnippet(new StringSnippet(", "))
+                        feedback.mergeFeedback(classifiersRelationship.toText())
                     } else {
-                        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.and"))
-                        readFeedback.mergeFeedback(classifiersRelationship.toText())
+                        feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.and"))
+                        feedback.mergeFeedback(classifiersRelationship.toText())
                     }
                 });
 
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.end"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_1.found.plural.end"));
             }
-            readFeedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_2"));
-            readFeedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.found.part_3"));
+            feedback.addSnippet(new StringSnippet(sourceClassifierByBetween.getName()));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_2"));
+            feedback.addSnippet(new StringSnippet(targetClassifierByBetween.getName()));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.classifiers_relationships.part_3"));
+
+            return {
+                entityData: {
+                    entityType: "between",
+                    entityId: sourceClassifierByBetween.getId(),
+                    secondEntityId: targetClassifierByBetween.getId()
+                },
+                feedback: feedback
+            };
         } else {
             throw "In Diagram.tsx, readRelationship method an invalid read instruction was given.";
         }
-
-        return readFeedback;
     }
 
     /**
@@ -332,7 +438,7 @@ export default class Diagram {
      * @param commandLineArray DTO containing instructions to be executed.
      * @returns Feedback should alteration succeed.
      */
-    public alterRelationship(alterInstructions: IAlterRelationshipDTO): Feedback {
+    public alterRelationship(alterInstructions: IAlterRelationshipDTO): IDiagramFeedbackDTO {
         const toAlterRelationship = this.getRelationshipByName(alterInstructions.relationshipName);
 
         let newSourceClassifier;
@@ -346,37 +452,50 @@ export default class Diagram {
             alterInstructions.attributeAlterInstructions.newType = alterInstructions.newTargetClassifierName;
         }
 
-        const alterFeedback = toAlterRelationship.alter(alterInstructions,
+        const feedback = toAlterRelationship.alter(alterInstructions,
             newSourceClassifier ? newSourceClassifier.getId() : undefined,
             newTargetClassifier ? newTargetClassifier.getId() : undefined);
-        return alterFeedback;
+
+        return {
+            entityData: {
+                entityType: "relationship",
+                entityId: toAlterRelationship.getId()
+            },
+            feedback: feedback
+        };
     }
 
     /**
      * Returns a feedback containing the names of all classifiers in the diagram, if any.
      * 
-     * @returns Classfiers's names if present.
+     * @returns Classifiers's names if present.
      */
-    public readDiagram(): Feedback {
-        const readDiagramFeedback = new Feedback()
+    public readDiagram(): IDiagramFeedbackDTO {
+        const feedback = new Feedback()
 
-        readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.start"));
+        feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.start"));
         if(this.classifiers.length > 0) {
             if(this.classifiers.length === 1) {
-                readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.singular"));
-                readDiagramFeedback.addSnippet(new StringSnippet(this.classifiers[0].getName()));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.singular"));
+                feedback.addSnippet(new StringSnippet(this.classifiers[0].getName()));
             } else {
-                readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.plural"));
+                feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.classifiers_present.plural"));
                 this.classifiers.forEach((classifier) => {
-                    readDiagramFeedback.addSnippet(new StringSnippet(", " + classifier.getName()));
+                    feedback.addSnippet(new StringSnippet(", " + classifier.getName()));
                 });
             }
         } else {
-            readDiagramFeedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.no_classifiers_present"));
+            feedback.addSnippet(new LocalizationSnippet("feedback.read.diagram.no_classifiers_present"));
         }
-        readDiagramFeedback.addSnippet(new StringSnippet("."));
+        feedback.addSnippet(new StringSnippet("."));
 
-        return readDiagramFeedback;
+        return {
+            entityData: {
+                entityType: "diagram",
+                entityId: ""
+            },
+            feedback: feedback
+        };
     }
 
     /**
@@ -414,12 +533,12 @@ export default class Diagram {
     }
 
     /**
-     * Searchs for a classifier using it's name, if not found an error will be thrown.
+     * Searches for a classifier using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the classifier to be searched.
      * @returns Desired classifier.
      */
-    private getClassifierByName(name: string): Classifier {
+    public getClassifierByName(name: string): Classifier {
         const searchedClassifier = this.classifiers.find((classifier) => classifier.getName() === name)
             
         // Checks if classfier is present in diagram.
@@ -436,7 +555,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs for a classifier's index using it's name, if not found an error will be thrown.
+     * Searches for a classifier's index using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the classifier to be searched.
      * @returns Desired classifier's index.
@@ -458,12 +577,12 @@ export default class Diagram {
     }
 
     /**
-     * Searchs for a classifier using it's id, if not found an error will be thrown.
+     * Searches for a classifier using it's id, if not found an error will be thrown.
      * 
      * @param id Id of the classifier to be searched.
      * @returns Desired classifier.
      */
-    private getClassifierById(id: string): Classifier {
+    public getClassifierById(id: string): Classifier {
         const searchedClassifier = this.classifiers.find((classifier) => classifier.getId() === id)
             
         // Checks if classfier is present in diagram.
@@ -480,22 +599,31 @@ export default class Diagram {
     }
 
     /**
-     * Gets all realtionships between both source and target classifier, using their ids, will return an empty 
+     * Gets all relationships of a classifier or between two classifiers, using their ids, will return an empty
      * array if no relationships are found.
      * 
-     * @param sourceId Source classifier's id.
-     * @param targetId Target classifier's id.
+     * @param firstClassifierId Classifier's id.
+     * @param secondClassifierId Classifier's id.
      * @returns Found relationships.
      */
-    private getClassifiersRelationships(sourceId: string, targetId: string): Relationship[] {
-        return this.relationships.filter((relationship) => 
-            relationship.getSourceClassifierId() === sourceId &&
-            relationship.getTargetClassifierId() === targetId 
-        );
+    private getClassifiersRelationships(firstClassifierId: string, secondClassifierId?: string): Relationship[] {
+        if(secondClassifierId === undefined) {
+            return this.relationships.filter((relationship) => 
+                relationship.getSourceClassifierId() === firstClassifierId ||
+                relationship.getTargetClassifierId() === firstClassifierId 
+            );
+        } else {
+            return this.relationships.filter((relationship) => 
+                (firstClassifierId === relationship.getSourceClassifierId() &&
+                secondClassifierId === relationship.getTargetClassifierId()) ||
+                (firstClassifierId === relationship.getTargetClassifierId() &&
+                secondClassifierId === relationship.getSourceClassifierId())
+            );
+        }
     }
 
     /**
-     * Searchs for a realationship using it's name, if not found an error will be thrown.
+     * Searches for a relationship using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the relationship to be searched.
      * @returns Desired relationship.
@@ -517,7 +645,7 @@ export default class Diagram {
     }
 
     /**
-     * Searchs for a relationship's index using it's name, if not found an error will be thrown.
+     * Searches for a relationship's index using it's name, if not found an error will be thrown.
      * 
      * @param name Name of the relationship to be searched.
      * @returns Desired relationship's index.
@@ -538,12 +666,34 @@ export default class Diagram {
         }
     }
 
+    /**
+     * Searches for a relationship using it's id, if not found an error will be thrown.
+     * 
+     * @param id Id of the Relationship to be searched.
+     * @returns Desired Relationship.
+     */
+    private getRelationshipById(id: string): Relationship {
+        const searchedRelationship = this.relationships.find((relationship) => relationship.getId() === id)
+            
+        // Checks if classfier is present in diagram.
+        if(searchedRelationship === undefined) {
+            const errorFeedback = new Feedback();
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.relationship_not_found.part_1"));
+            errorFeedback.addSnippet(new StringSnippet(id));
+            errorFeedback.addSnippet(new LocalizationSnippet("feedback.error.relationship_not_found.part_2"));
+
+            throw new AppError(errorFeedback);
+        } else {
+            return searchedRelationship;
+        }
+    }
+
 
     /**
      * Checks if relationship name is in use or set.
      * 
      * @param relationshipName DTO's relationship name
-     * @param desiredSourceClassifier Relationship's soutce classifier
+     * @param desiredSourceClassifier Relationship's source classifier
      * @param desiredTargetClassifier Relationship's target classifier
      * @returns The relationship name or a generated name if none is set
      */
@@ -569,5 +719,48 @@ export default class Diagram {
 
             return relationshipName;
         }
+    }
+
+    /**Returns all of diagram classifires DTOs. 
+     * 
+     * @returns Classifiers array.
+     */
+    public getClassifiersData(): IGetClassifierDTO[] {
+        return this.classifiers.map(classifier => this.getClassifierData(classifier.getId()));
+    }
+
+    /**Returns all of diagram relationships DTOs. 
+     * 
+     * @returns Relationships array.
+     */
+    public getRelationshipsData(): IGetRelationshipDTO[] {
+        return this.relationships.map(relationship => this.getRelationshipData(relationship.getId()));
+    }
+
+    /**Returns all relationships DTOs between two given classifiers. 
+     * 
+     * @param sourceClassifierId Source classifier's id
+     * @param targetClassifierId Target classifier's id
+     * @returns Relationships array.
+     */
+    public getClassifeiersRelationshipsData(sourceClassifierId: string, targetClassifierId: string): IGetRelationshipDTO[] {
+        const relationships = this.getClassifiersRelationships(sourceClassifierId, targetClassifierId);
+        return relationships.map(relationship => this.getRelationshipData(relationship.getId()));
+    }
+
+    /**Returns all of diagram classifires. 
+     * 
+     * @returns Classifiers array.
+     */
+    public getClassifiers(): Classifier[] {
+        return this.classifiers;
+    }
+
+    /**Returns all of diagram relationships. 
+     * 
+     * @returns Relationships array.
+     */
+    public getRelationships(): Relationship[] {
+        return this.relationships;
     }
 }

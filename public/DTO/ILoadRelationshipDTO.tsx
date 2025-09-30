@@ -5,10 +5,10 @@ import ILoadAttributeDTO from "./ILoadAttributeDTO";
  */
 export default interface ILoadRelationshipDTO {
     id: string;
-    relatioshiptype: string;
+    relatioshipType: string;
     name: string;
-    sourceclassifierid: string;
-    targetclassifierid: string;
+    sourceClassifierId: string;
+    targetClassifierId: string;
     attribute?: ILoadAttributeDTO;
     multiplicity?: string;
 }

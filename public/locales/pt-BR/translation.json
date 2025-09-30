@@ -2,6 +2,43 @@
     "label": {
         "command_console": "Console de comandos selecionado."
     },
+    "ASCIIDiagram": {
+        "diagram": {
+            "classifier_header": "O diagrama possui os classificadores:",
+            "relationship_header": "O diagrama possui os relacionamentos:",
+            "no_classifiers": "O diagrama não possui classificadores.",
+            "no_relationships": "O diagrama não possui relacionamentos."
+        },
+        "classifier": {
+            "class": "Classe",
+            "abstract": "Classe Abstrata",
+            "interface": "Interface"
+        },
+        "attribute": {
+            "title": "Atributos:",
+            "no_attributes": "Não possui atributos."
+        },
+        "method": {
+            "title": "Métodos:",
+            "no_methods": "Não possui métodos."
+        },
+        "relationship": {
+            "title": "Relacionamentos:",
+            "title_single": "Relacionamento ",
+            "no_relationships": "Não possui relacionamentos.",
+            "between": " entre ",
+            "and": " e ",
+            "named": "Nomeada: ",
+            "attribute": "Atributo: "
+        },
+        "multiple_relationships": {
+            "header": {
+                "part_1": "Relacionamentos entre ",
+                "part_2": " e ",
+                "part_3": ":"
+            }
+        }
+    },
     "feedback": {
         "common": {
             "entity_type": {
@@ -15,13 +52,14 @@
                 "abstract": "classe abstrata",
                 "interface": "interface"
             },
-            "realtionship_type": {
-                "associative": "associativo",
-                "directed_association": "associativo direcionado",
-                "reflexive_association": "associativo reflexivo",
-                "aggregation": "agregado",
-                "composition": "composto",
-                "inheritance": "de herança"
+            "relationship_type": {
+                "associative": "Associativo",
+                "directed_association": "Associativo Direcionado",
+                "reflexive_association": "Associativo Reflexivo",
+                "aggregation": "Agregado",
+                "composition": "Composto",
+                "inheritance": "de Herança",
+                "realization": "Realização"
             },
             "visibility": {
                 "public": "pública",
@@ -148,7 +186,7 @@
                     "plural": ", possui os atributos",
                     "and": " e "
                 },
-                "methods": {
+                "method": {
                     "singular": ", possui o método ",
                     "plural": ", possui os métodos",
                     "and": " e "
@@ -161,10 +199,11 @@
             "method": {
                 "with_type": " com tipo ",
                 "with_visibility": " visibilidade ",
-                "parameters": {
+                "parameter": {
                     "singular": " e parâmetro ",
                     "plural": " e parâmetros",
-                    "no_parameter": " e não possui parâmetros"
+                    "no_parameters": " e não possui parâmetros",
+                    "and": " e "
                 }
             },
             "parameter": {
@@ -182,7 +221,7 @@
                 },
                 "classifiers_relationships": {
                     "part_1": {
-                        "not_foun": "Não foram encontrados relacionamentos entre os classificadores ",
+                        "not_found": "Não foram encontrados relacionamentos entre os classificadores ",
                         "found": {
                             "singular": {
                                 "start": "O seguinte relacionamento ",
@@ -225,12 +264,7 @@
                     "part_2": " foi removido com sucesso."
                 },
                 "error": {
-                    "entity_type_missing_on_remove": "Não foi especificado um tipo para ser removido.",
-                    "unrecognized_entity_type": {
-                        "part_1": "O tipo ",
-                        "part_2": " não pode ser removido pela aplicação."
-                    },
-                    "missing_name_for_removal": "Nenhum nome for fornecido para remoção do classificador."
+                    "missing_name_for_removal": "Nenhum nome foi fornecido para remoção do classificador."
                 }
             },
             "relationship": {
@@ -252,6 +286,13 @@
                         "part_4": ", use o argumento 'named' seguido do nome do relacionamento desejado para remoção."
                     }
                 }
+            },
+            "error": {
+                "entity_type_missing_on_remove": "Não foi especificado um tipo para ser removido.",
+                "unrecognized_entity_type": {
+                    "part_1": "O tipo ",
+                    "part_2": " não pode ser removido pela aplicação."
+                }
             }
         },
         "alter": {
@@ -269,7 +310,7 @@
                         }
                     }
                 },
-                "methods": {
+                "method": {
                     "error": {
                         "method_not_found": {
                             "part_1": "O ",
@@ -359,6 +400,12 @@
         },
         "import": {
             "success": "Diagrama foi importado com sucesso."
+        },
+        "export": {
+            "success": "Exportação para Plant UML gerado com sucesso.",
+            "error": {
+                "unrecognized_option": "Opção não reconhecida para exportação."
+            }
         },
         "load": {
             "success": "Diagrama foi carregado com sucesso."

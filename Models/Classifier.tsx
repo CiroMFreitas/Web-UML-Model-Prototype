@@ -1,5 +1,7 @@
 import IAttributeChangesDTO from "../public/DTO/IAttributeChangesDTO";
 import ICreateClassifierDTO from "../public/DTO/ICreateClassifierDTO";
+import IGetAttributeDTO from "../public/DTO/IGetAttributeDTO";
+import IGetMethodDTO from "../public/DTO/IGetMethodDTO";
 import IMethodChangesDTO from "../public/DTO/IMethodChangesDTO";
 import IReadClassifierDTO from "../public/DTO/IReadClassifierDTO";
 import { SUPPORTED_ENTITY_TYPES } from "../public/Utils/SupportedKeyWords";
@@ -143,42 +145,6 @@ export default class Classifier extends DiagramEntity {
     }
 
     /**
-     * Handles arguments for methods creation.
-     * 
-     * @param methodArguments Arguments to be handled.
-     * @returns Handled arguments.
-     */
-    private handleMethodArguments(methodArguments: string[]): string[][] {
-        // Breaks method arguments into arrays for method creation
-        const handledMethodArguments = [[]] as string[][];
-        let endparameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
-        while(endparameter !== 0) {
-            handledMethodArguments.push(methodArguments.splice(0, endparameter))
-            
-            endparameter = methodArguments.findIndex((methodArgument) => methodArgument.includes(")"))+1;
-        }
-
-        // Checks if there were left overs, meaning the methods were not properly declared.
-        if(methodArguments.length > 0) {
-            // rebuilds method for error feedback.
-            const errorMethod = "";
-            handledMethodArguments.forEach((handledMethod) => {
-                errorMethod.concat(handledMethod.toString().replaceAll(",", " "));
-            });
-            errorMethod.concat(methodArguments.toString().replaceAll(",", " "));
-
-            const errorFeedback = new Feedback();
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.syntax_error_in_method_argument.part_1"));
-            errorFeedback.addSnippet(new StringSnippet(errorMethod))
-            errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.classifier.error.syntax_error_in_method_argument.part_2"));
-
-            throw new AppError(errorFeedback);
-        }
-
-        return handledMethodArguments;
-    }
-
-    /**
      * Checks if given name is already in use by a method, if true an error will be thrown.
      * 
      * @param methodName Name to be checked.
@@ -295,8 +261,8 @@ export default class Classifier extends DiagramEntity {
     /**
      * Creates a feedback with classifier's information for a screen reader.
      * 
-     * @param readInstructions Instructions for readaing classifier.
-     * @returns Classifier data in feedback format..
+     * @param readInstructions Instructions for reading classifier.
+     * @returns Classifier data in feedback format.
      */
     public toText(readInstructions: IReadClassifierDTO): Feedback {
         const toTextFeedback = new Feedback()
@@ -329,13 +295,13 @@ export default class Classifier extends DiagramEntity {
         if(readInstructions.readMethods) {
             if(this.methods.length > 0) {
                 if(this.methods.length === 1) {
-                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.singular"));
+                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.method.singular"));
                     toTextFeedback.mergeFeedback(this.methods[0].toText());
                 } else {
-                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.plural"));
+                    toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.method.plural"));
                     this.methods.forEach((method, index) => {
                         if(index+1 === this.methods.length) {
-                            toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.methods.and"));
+                            toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.classifier.method.and"));
                         } else {
                             toTextFeedback.addSnippet(new StringSnippet(", "));
                         }
@@ -352,6 +318,56 @@ export default class Classifier extends DiagramEntity {
         }
 
         return toTextFeedback;
+    }
+
+    /**
+     * Get all attribute data for use in diagram canvas.
+     * 
+     * @returns Attribute data for diagram canvas.
+     */
+    public getAttributeData(): IGetAttributeDTO[] {
+        return this.attributes.map((attribute) => {
+            return {
+                visibility: attribute.getVisibilitySymbol(),
+                name: attribute.getName(),
+                type: attribute.getType()
+            }
+        });
+    }
+
+    /**
+     * Get all method data for use in diagram canvas.
+     * 
+     * @returns Method data for diagram canvas.
+     */
+    public getMethodData(): IGetMethodDTO[] {
+        return this.methods.map((method) => {
+            return {
+                visibility: method.getVisibilitySymbol(),
+                name: method.getName(),
+                type: method.getType(),
+                parameters: method.getParameterData()
+            }
+        });
+    }
+
+    /**
+     * Generates an array in PlantUML's format.
+     * 
+     * @returns Array formated for PlantUML.
+     */
+    public exportToPlantUML(): string[] {
+        const exportContent = [this.classifierType + " " + this.getName() + "\n"];
+
+        this.attributes.forEach((attribute) => {
+            exportContent.push(this.getName() + " : " + attribute.exportToPlantUML() + "\n")
+        })
+
+        this.methods.forEach((method) => {
+            exportContent.push(this.getName() + " : " + method.exportToPlantUML() + "\n")
+        })
+
+        return exportContent;
     }
 
     /**

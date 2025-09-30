@@ -1,5 +1,6 @@
 import IAlterMethodDTO from "../public/DTO/IAlterMethodDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
+import IGetParameterDTO from "../public/DTO/IGetParameterDTO";
 import AppError from "./AppError";
 import Feedback from "./Feedback";
 import LocalizationSnippet from "./LocalizationSnippet";
@@ -146,13 +147,13 @@ export default class Method extends VisibleEntity {
         // Get parametrs feedback,
         if(this.parameters.length > 0) {
             if(this.parameters.length === 1) {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameters.singular"));
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameter.singular"));
                 readFeedback.mergeFeedback(this.parameters[0].toText());
             } else {
-                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameters.plural"));
+                readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameter.plural"));
                 this.parameters.forEach((parameter, index) => {
                     if(index+1 === this.parameters.length) {
-                        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameters.and"));
+                        readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameter.and"));
                     } else {
                         readFeedback.addSnippet(new StringSnippet(", "));
                     }
@@ -160,10 +161,41 @@ export default class Method extends VisibleEntity {
                 });
             }
         } else {
-            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameters.no_parameters"));
+            readFeedback.addSnippet(new LocalizationSnippet("feedback.read.method.parameter.no_parameters"));
         }
 
         return readFeedback;
+    }
+
+    /**
+     * Get all parameter data for use in diagram canvas.
+     * 
+     * @returns Parameter data for diagram canvas.
+     */
+    public getParameterData(): IGetParameterDTO[] {
+        return this.parameters.map((parameter) => {
+            return {
+                name: parameter.getName(),
+                type: parameter.getType()
+            }
+        });
+    }
+
+    /**
+     * Generates an array in PlantUML's format.
+     * 
+     * @returns Array formated for PlantUML.
+     */
+    public exportToPlantUML(): string {
+        const exportContent = [this.getVisibilitySymbol() + " " + this.getType() + " " + this.getName() + "("];
+
+        const exportParameters = this.parameters.map((parameter) => {
+            return parameter.getType() + " " + parameter.getName();
+        });
+        exportContent.push(exportParameters.toString().replaceAll(",", " "));
+        exportContent.push(")")
+
+        return exportContent.toString().replaceAll(",", "");
     }
 
     /**
