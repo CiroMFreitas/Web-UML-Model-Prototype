@@ -199,8 +199,8 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
      */
     public static interpretImportTxt(importContent: string): INewDiagramDTO {
         const classifiers = [] as ICreateClassifierDTO[];
-        const atributes = [] as ICreateAttributeDTO[];
-        const methods = [] as ICreateMethodDTO[];
+        const atributes = [];
+        const methods = [];
         const relationships = [] as ICreateRelationshipDTO[];
 
         const contentLines = importContent.split("\n").filter((content) => content !== "");
@@ -232,7 +232,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                         };
                     } else if(relationshipAttributeArguments[0] !== "") {
                         relationshipAttribute = {
-                            visibility: "-",
+                            visibility: "+",
                             name: relationshipAttributeArguments[0],
                             type: relationshipArguments[0]
                         };
@@ -248,11 +248,26 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                     });
                     break;
                 
-                case "" === "":
+                case lineArguments[lineArguments.length - 1].includes(")"):
+                    console.log(lineArguments)
+                    const hasVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2]) !== undefined ? 1 : 0
+                    const method = {
+                        visibility: hasVisibility !== 0 ? lineArguments[2] : "+",
+                        type: lineArguments[2 + hasVisibility],
+                        name: lineArguments[3 + hasVisibility].replace("()", "").split("(")[0],
+                        parameters: [] as ICreateParameterDTO[]
+                    } as ICreateMethodDTO
+
+                    const parameterIndex = lineArguments.findIndex((argument) => argument.includes("("));
+                    console.log(parameterIndex)
+                    if(!lineArguments[parameterIndex].includes("()")) {
+                        console.log(true)
+                    }
+                    console.log(method)
                     break;
                 
                 default:
-                    console.log("Following line was not identified: " + line);
+                    //console.log("Following line was not identified: " + line);
                     break;
             }
         })
