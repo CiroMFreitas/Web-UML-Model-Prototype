@@ -387,7 +387,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
             case "text/plain":
                 const diagramImportTxtData = ImportCommandInterpreter.interpretImportTxt(content);
                 const newTxtDiagram = new Diagram();
-                //newTxtDiagram.generateDiagramFromData(diagramImportTxtData);
+                newTxtDiagram.generateDiagramFromData(diagramImportTxtData);
                 setDiagram(newTxtDiagram);
                 break;
 
