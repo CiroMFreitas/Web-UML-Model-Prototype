@@ -5,27 +5,32 @@ import INewDiagramDTO from "../public/DTO/INewDiagramDTO";
 import CommandInterpreter from "./CommandInterpreter";
 import ICreateAttributeDTO from "../public/DTO/ICreateAttributeDTO";
 import ICreateMethodDTO from "../public/DTO/ICreateMethodDTO";
-import { SUPPORTED_VISIBILITY } from "../public/Utils/SupportedKeyWords";
+import { SUPPORTED_RELATIONSHIP_TYPES, SUPPORTED_VISIBILITY } from "../public/Utils/SupportedKeyWords";
 import ICreateParameterDTO from "../public/DTO/ICreateParameterDTO";
+import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
+import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
+import IGetAttributeDTO from "../public/DTO/IGetAttributeDTO";
+import IGetMethodDTO from "../public/DTO/IGetMethodDTO";
+import IGetDiagramDTO from "../public/DTO/IGetDiagramDTO";
 
 
 /**
- * Class responsible for handling user's import commands into DTOs.
+ * Class responsible for handling user's importContent commands into DTOs.
  */
 export default class ImportCommandInterpreter extends CommandInterpreter {
     /**
      * Turns a imported xml file string into a DTO.
      * 
-     * @param xmlImport String of a xml file.
+     * @param importContent String of a xml file.
      * @returns All classifiers and relationship imported from a xml file.
      */
-    public static interpretImportXML(xmlImport: string): INewDiagramDTO {
+    public static interpretImportXML(importContent: string): INewDiagramDTO {
         const diagramImportInstructions = {
             classifiers: [] as ICreateClassifierDTO[],
             relationships: [] as ICreateRelationshipDTO[]
         };
         
-        parseString(xmlImport, { normalizeTags: true }, (err, result) => {
+        parseString(importContent, { normalizeTags: true }, (err, result) => {
             // Get diagram content
             const diagramContent = result.mxfile.diagram[0].mxgraphmodel[0].root[0].mxcell.slice(2);
 
@@ -183,6 +188,77 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
         return {
             name: parameterData[0],
             type: parameterData[1],
+        };
+    }
+
+    /**
+     * Turns a imported txt file string into a DTO.
+     * 
+     * @param importContent String of a txt file.
+     * @returns All classifiers and relationship imported from a txt file.
+     */
+    public static interpretImportTxt(importContent: string): IGetDiagramDTO {
+        const classifiers = [] as IGetClassifierDTO[];
+        const atributes = [] as IGetAttributeDTO[];
+        const methods = [] as IGetMethodDTO[];
+        const relationships = [] as IGetRelationshipDTO[];
+
+        const contentLines = importContent.split("\n").filter((content) => content !== "");
+        contentLines.forEach((line) => {
+            const lineArguments = line.split(" ");
+            switch(true) {
+                // Detects classifiers
+                case lineArguments[0] === "class" || lineArguments[0] === "abstract" || lineArguments[0] === "interface":
+                    classifiers.push({
+                        name: lineArguments[1],
+                        classifierType: lineArguments[0],
+                        attributes: [],
+                        methods: [],
+                        relationships: []
+                    });
+                    break;
+
+                // Detects Relationships
+                case SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.ascii === lineArguments[1]) !== undefined ||
+                SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.ascii === lineArguments[2]) !== undefined:
+                    const relationshipArguments = lineArguments.indexOf(":") === -1 ? lineArguments : lineArguments.slice(0, lineArguments.indexOf(":"));
+                    const relationshipAttributeArguments = lineArguments.indexOf(":") === -1 ? [""] : lineArguments.slice(lineArguments.indexOf(":") + 1);
+
+                    let relationshipAttribute;
+                    if(SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == relationshipAttributeArguments[0]) !== undefined) {
+                        relationshipAttribute = {
+                            visibility: relationshipAttributeArguments[0],
+                            name: relationshipAttributeArguments[1],
+                            type: relationshipArguments[0]
+                        };
+                    } else if(relationshipAttributeArguments[0] !== "") {
+                        relationshipAttribute = {
+                            visibility: "-",
+                            name: relationshipAttributeArguments[0],
+                            type: relationshipArguments[0]
+                        };
+                    } else {
+                        relationshipAttribute = null;
+                    }
+
+                    relationships.push({
+                        relationshipName: "",
+                        relationshipType: SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.ascii === (relationshipArguments.length === 3 ? relationshipArguments[1] : relationshipArguments[2]))?.code ?? "",
+                        sourceClassifierName: relationshipArguments[0],
+                        targetClassifierName: relationshipArguments.length === 3 ? relationshipArguments[2] : relationshipArguments[3],
+                        attribute: relationshipAttribute,
+                        multiplicity: relationshipArguments.length === 4 ? relationshipArguments[1] : undefined
+                    });
+                    break;
+                
+                case "" === "":
+                    break;
+            }
+        })
+        console.log(relationships)
+        return {
+            classifiers: classifiers,
+            relationships: relationships
         };
     }
 }

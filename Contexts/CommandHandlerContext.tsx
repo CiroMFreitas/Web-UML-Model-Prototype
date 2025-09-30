@@ -129,7 +129,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     return alterEntityHandler(commandLine, followingArgument?.toLowerCase());
     
                 case SUPPORTED_COMMANDS.import:
-                    return importDiagramHandler(followingArgument ? followingArgument : "");
+                    return importDiagramHandler(followingArgument ? followingArgument : "", commandLine[0]);
     
                 case SUPPORTED_COMMANDS.load:
                     return loadDiagramHandler(followingArgument ? followingArgument : "");
@@ -375,11 +375,25 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
-    function importDiagramHandler(xmlImport: string) {
-        const diagramImportData = ImportCommandInterpreter.interpretImportXML(xmlImport);
-        const newDiagram = new Diagram();
-        newDiagram.generateDiagramFromData(diagramImportData);
-        setDiagram(newDiagram);
+    function importDiagramHandler(fileType: string, content: string) {
+        switch(fileType) {
+            case "text/xml":
+                const diagramImportXMLData = ImportCommandInterpreter.interpretImportXML(content);
+                const newXMLDiagram = new Diagram();
+                newXMLDiagram.generateDiagramFromData(diagramImportXMLData);
+                setDiagram(newXMLDiagram);
+                break;
+            
+            case "text/plain":
+                const diagramImportTxtData = ImportCommandInterpreter.interpretImportTxt(content);
+                const newTxtDiagram = new Diagram();
+                //newTxtDiagram.generateDiagramFromData(diagramImportTxtData);
+                setDiagram(newTxtDiagram);
+                break;
+
+            default:
+                return "";
+        }
         setEntityData({
             entityType: "diagram",
             entityId: ""

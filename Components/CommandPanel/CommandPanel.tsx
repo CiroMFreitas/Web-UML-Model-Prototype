@@ -115,8 +115,8 @@ export default function CommandPanel() {
     function importHandler(): void {
         const files = importRef.current?.files;
         if((files !== null) && (files !== undefined) && commandHandler !== null) {
-            files[0].text().then((xmlContent) => {
-                const commandLineArray = ["import", xmlContent]
+            files[0].text().then((content) => {
+                const commandLineArray = ["import", files[0].type, content]
                 setFeedback(commandHandler.getFeedBack(commandLineArray));
             });
         }
@@ -146,7 +146,7 @@ export default function CommandPanel() {
       
             <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label={ translate("label.command_console") } autoComplete="off" autoFocus />
 
-            <input id="import" ref={ importRef } type="file" onChange={ () => importHandler() } accept="text/xml" aria-hidden="true" hidden />
+            <input id="import" ref={ importRef } type="file" onChange={ () => importHandler() } accept=".txt, .xml" aria-hidden="true" hidden />
 
             <input id="load" ref={ loadRef } type="file" onChange={ () => loadHandler() } accept=".json" aria-hidden="true" hidden />
         </div>
