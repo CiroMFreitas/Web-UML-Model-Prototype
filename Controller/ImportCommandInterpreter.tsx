@@ -197,11 +197,11 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
      * @param importContent String of a txt file.
      * @returns All classifiers and relationship imported from a txt file.
      */
-    public static interpretImportTxt(importContent: string): IGetDiagramDTO {
-        const classifiers = [] as IGetClassifierDTO[];
-        const atributes = [] as IGetAttributeDTO[];
-        const methods = [] as IGetMethodDTO[];
-        const relationships = [] as IGetRelationshipDTO[];
+    public static interpretImportTxt(importContent: string): INewDiagramDTO {
+        const classifiers = [] as ICreateClassifierDTO[];
+        const atributes = [] as ICreateAttributeDTO[];
+        const methods = [] as ICreateMethodDTO[];
+        const relationships = [] as ICreateRelationshipDTO[];
 
         const contentLines = importContent.split("\n").filter((content) => content !== "");
         contentLines.forEach((line) => {
@@ -213,8 +213,7 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                         name: lineArguments[1],
                         classifierType: lineArguments[0],
                         attributes: [],
-                        methods: [],
-                        relationships: []
+                        methods: []
                     });
                     break;
 
@@ -237,15 +236,13 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                             name: relationshipAttributeArguments[0],
                             type: relationshipArguments[0]
                         };
-                    } else {
-                        relationshipAttribute = null;
                     }
 
                     relationships.push({
                         relationshipName: "",
                         relationshipType: SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.ascii === (relationshipArguments.length === 3 ? relationshipArguments[1] : relationshipArguments[2]))?.code ?? "",
-                        sourceClassifierName: relationshipArguments[0],
-                        targetClassifierName: relationshipArguments.length === 3 ? relationshipArguments[2] : relationshipArguments[3],
+                        sourceClassifierId: relationshipArguments[0],
+                        targetClassifierId: relationshipArguments.length === 3 ? relationshipArguments[2] : relationshipArguments[3],
                         attribute: relationshipAttribute,
                         multiplicity: relationshipArguments.length === 4 ? relationshipArguments[1] : undefined
                     });
@@ -257,8 +254,8 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
         })
         console.log(relationships)
         return {
-            classifiers: classifiers,
-            relationships: relationships
+            classifiersData: classifiers,
+            relationshipsData: relationships
         };
     }
 }
