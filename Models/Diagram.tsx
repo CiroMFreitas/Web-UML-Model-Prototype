@@ -40,9 +40,18 @@ export default class Diagram {
         });
 
         diagramData.relationshipsData.forEach((newRelationshipInstructions) => {
-            const desiredSourceClassifier = this.getClassifierById(newRelationshipInstructions.sourceClassifierId);
-            const desiredTargetClassifier = this.getClassifierById(newRelationshipInstructions.targetClassifierId);
+            let desiredSourceClassifier;
+            let desiredTargetClassifier;
+            try{
+                desiredSourceClassifier = this.getClassifierById(newRelationshipInstructions.sourceClassifierId);
+                desiredTargetClassifier = this.getClassifierById(newRelationshipInstructions.targetClassifierId);
+            } catch(e) {
+                desiredSourceClassifier = this.getClassifierByName(newRelationshipInstructions.sourceClassifierId);
+                desiredTargetClassifier = this.getClassifierByName(newRelationshipInstructions.targetClassifierId);
+            }
             newRelationshipInstructions.relationshipName = this.getRelationshipName(newRelationshipInstructions.relationshipName, desiredSourceClassifier, desiredTargetClassifier)
+            newRelationshipInstructions.sourceClassifierId = desiredSourceClassifier.getId();
+            newRelationshipInstructions.targetClassifierId = desiredTargetClassifier.getId();
 
             const newRelationship = new Relationship(newRelationshipInstructions);
             this.relationships.push(newRelationship);
@@ -205,6 +214,7 @@ export default class Diagram {
      */
     public getRelationshipData(relationshipId: string): IGetRelationshipDTO {
         const relationship = this.getRelationshipById(relationshipId);
+        console.log(relationship)
 
         return {
             relationshipName: relationship.getName(),
@@ -420,14 +430,6 @@ export default class Diagram {
         } else {
             throw "In Diagram.tsx, readRelationship method an invalid read instruction was given.";
         }
-
-        return {
-            entityData: {
-                entityType: "",
-                entityId: ""
-            },
-            feedback: feedback
-        };
     }
 
     /**
