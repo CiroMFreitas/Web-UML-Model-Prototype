@@ -199,9 +199,15 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
      */
     public static interpretImportTxt(importContent: string): INewDiagramDTO {
         const classifiers = [] as ICreateClassifierDTO[];
-        const atributes = [];
-        const methods = [];
         const relationships = [] as ICreateRelationshipDTO[];
+        const attributes = [] as {
+            classifier: string,
+            attribute: ICreateAttributeDTO
+        }[];
+        const methods = [] as {
+            classifier: string,
+            method: ICreateMethodDTO
+        }[];
 
         const contentLines = importContent.split("\n").filter((content) => content !== "");
         contentLines.forEach((line) => {
@@ -249,28 +255,58 @@ export default class ImportCommandInterpreter extends CommandInterpreter {
                     break;
                 
                 case lineArguments[lineArguments.length - 1].includes(")"):
-                    console.log(lineArguments)
-                    const hasVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2]) !== undefined ? 1 : 0
+                    const methodHasVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2]) !== undefined ? 1 : 0
                     const method = {
-                        visibility: hasVisibility !== 0 ? lineArguments[2] : "+",
-                        type: lineArguments[2 + hasVisibility],
-                        name: lineArguments[3 + hasVisibility].replace("()", "").split("(")[0],
+                        visibility: methodHasVisibility !== 0 ? lineArguments[2] : "+",
+                        type: lineArguments[2 + methodHasVisibility],
+                        name: lineArguments[3 + methodHasVisibility].replace("()", "").split("(")[0],
                         parameters: [] as ICreateParameterDTO[]
                     } as ICreateMethodDTO
 
                     const parameterIndex = lineArguments.findIndex((argument) => argument.includes("("));
-                    console.log(parameterIndex)
                     if(!lineArguments[parameterIndex].includes("()")) {
-                        console.log(true)
+                        const parameterArguments = [lineArguments[parameterIndex].split("(")[1]].concat(lineArguments.splice(parameterIndex + 1));
+                        for(let i = 0; i < parameterArguments.length; i += 2) { 
+                            method.parameters.push({
+                                type: parameterArguments[i],
+                                name: parameterArguments[i+1].replace(")", "")
+                            });
+                        }
                     }
-                    console.log(method)
+
+                    methods.push({
+                        classifier: lineArguments[0],
+                        method: method
+                    });
+                    break;
+                
+                case lineArguments[1] === ":":
+                    const attributeHasVisibility = SUPPORTED_VISIBILITY.find((visibility) => visibility.symbol == lineArguments[2]) !== undefined ? 1 : 0;
+                    attributes.push({
+                        classifier: lineArguments[0],
+                        attribute: {
+                            visibility: attributeHasVisibility !== 0 ? lineArguments[2] : "+",
+                            type: lineArguments[2 + attributeHasVisibility],
+                            name: lineArguments[3 + attributeHasVisibility]
+                        }
+                    })
                     break;
                 
                 default:
-                    //console.log("Following line was not identified: " + line);
+                    console.log("Following line was not identified: " + line);
                     break;
             }
         })
+
+        attributes.forEach((attribute) => {
+            classifiers.find((classifier) => classifier.name === attribute.classifier)?.attributes.push(attribute.attribute);
+        });
+
+        methods.forEach((method) => {
+            classifiers.find((classifier) => classifier.name === method.classifier)?.methods.push(method.method);
+        });
+
+        console.log(classifiers)
         return {
             classifiersData: classifiers,
             relationshipsData: relationships
