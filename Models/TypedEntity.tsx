@@ -1,8 +1,4 @@
-import AppError from "./AppError";
 import DiagramEntity from "./DiagramEntity"
-import Feedback from "./Feedback";
-import LocalizationSnippet from "./LocalizationSnippet";
-import StringSnippet from "./StringSnippet";
 
 /**
  * All entities with types must inehrit this class

@@ -15,6 +15,10 @@ import RemoveCommandInterpreter from "../Controller/RemoveCommandInterpreter";
 import ImportCommandInterpreter from "../Controller/ImportCommandInterpreter";
 import ISaveDiagramReturnDTO from "../public/DTO/ISaveDiagramReturnDTO";
 import LoadFileInterpreter from "../Controller/LoadFileInterpreter";
+import IGetDiagramDTO from "../public/DTO/IGetDiagramDTO";
+import IGetEntityDTO from "../public/DTO/IGetEntityDTO";
+import IGetClassifierDTO from "../public/DTO/IGetClassifierDTO";
+import IGetRelationshipDTO from "../public/DTO/IGetRelationshipDTO";
 import IExportDiagramDTO from "../public/DTO/IExportDiagramDTO";
 import Exporter from "../Controller/Exporter";
 
@@ -22,6 +26,11 @@ import Exporter from "../Controller/Exporter";
 type commandHandlerType = {
     getFeedBack: (commandLine: string[]) => string;
     saveDiagram: () => ISaveDiagramReturnDTO;
+    getDiagramData: () => IGetDiagramDTO;
+    getEntityData: () => IGetEntityDTO;
+    getClassifierData: (classifierId: string) => IGetClassifierDTO;
+    getRelationshipData: (relationship: string) => IGetRelationshipDTO;
+    getRelationshipsData: (sourceClassifierId: string, targetClassifierId?: string) => IGetDiagramDTO;
     exportDiagram: (exportOption: String) => IExportDiagramDTO;
 }
 
@@ -33,6 +42,43 @@ const commandHandlerDefaultValues: commandHandlerType = {
             diagramJSONFile: new Blob()
         };
     },
+   getDiagramData: () => {
+       return {
+           classifiers: [],
+           relationships: []
+       };
+   },
+    getEntityData: () => {
+        return {
+            entityType: "",
+            entityId: ""
+        };
+    },
+   getClassifierData: () => {
+       return {
+           classifierType: "",
+           name: "",
+           attributes: [],
+           methods: [],
+           relationships: []
+       };
+   },
+   getRelationshipData: () => {
+       return {
+           relationshipName: "",
+           sourceClassifierName: "",
+           targetClassifierName: "",
+           attribute: null,
+           relationshipType: "",
+           multiplicity: "",
+       };
+   },
+   getRelationshipsData: () => {
+       return {
+           classifiers: [],
+           relationships: []
+       };
+   },
     exportDiagram: () => { 
         return {
             feedback: "",
@@ -55,9 +101,13 @@ interface IProps {
 export const CommandHandlerProvider = ({ children }: IProps ) => {
     // Will hold diagram data for both feedback propouses and canvas drawing.
     const [diagram, setDiagram] = useState(new Diagram());
+    const [entityData, setEntityData] = useState({
+        entityType: "",
+        entityId: ""
+    });
     
     // Sends feedback to user.
-    const getFeedBack = (commandLine: string[]) => {
+    function getFeedBack(commandLine: string[]){
         try {
             // Gets command type, command type will only be undefined if a blank string is sent here.
             const commandArgument = commandLine?.shift()?.toLowerCase();
@@ -79,7 +129,7 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     return alterEntityHandler(commandLine, followingArgument?.toLowerCase());
     
                 case SUPPORTED_COMMANDS.import:
-                    return importDiagramHandler(followingArgument ? followingArgument : "");
+                    return importDiagramHandler(followingArgument ? followingArgument : "", commandLine[0]);
     
                 case SUPPORTED_COMMANDS.load:
                     return loadDiagramHandler(followingArgument ? followingArgument : "");
@@ -104,14 +154,52 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     }
 
     // Saves diagram into a JSON blob and sends feedback to user.
-    const saveDiagram = () => {
+    function saveDiagram() {
         const saveFeedback = new Feedback();
         saveFeedback.addSnippet(new LocalizationSnippet("feedback.save.success"));
+        setEntityData({
+            entityType: "diagram",
+            entityId: ""
+        });
 
         return {
             saveFeedback: saveFeedback.toString(),
             diagramJSONFile: new Blob([JSON.stringify(diagram)], { type: "text/plain;charset=utf-8" })
         };
+    }
+
+    function getDiagramData() {
+        return {
+            classifiers: diagram.getClassifiersData(),
+            relationships: diagram.getRelationshipsData()
+        }
+    }
+
+    function getEntityData() {
+        return entityData;
+    }
+
+    function getClassifierData(classifierId: string) {
+        return diagram.getClassifierData(classifierId);
+    }
+
+    function getRelationshipData(relationshipId: string) {
+        return diagram.getRelationshipData(relationshipId);
+    }
+
+    function getRelationshipsData(sourceClassifierId: string, targetClassifierId?: string) {
+        if(targetClassifierId !== undefined) {
+            return {
+                classifiers: [diagram.getClassifierData(sourceClassifierId), diagram.getClassifierData(targetClassifierId)],
+                relationships: diagram.getClassifeiersRelationshipsData(sourceClassifierId, targetClassifierId)
+            }
+        } else {
+            console.log("Unknown error in CommandHandlerContext.tsx, getRelationshipsData function.")
+            return {
+                classifiers: [],
+                relationships: []
+            }
+        }
     }
 
     // Saves diagram into a JSON blob and sends feedback to user.
@@ -145,6 +233,11 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
     const value = {
         getFeedBack,
         saveDiagram,
+        getDiagramData,
+        getEntityData,
+        getClassifierData,
+        getRelationshipData,
+        getRelationshipsData,
         exportDiagram
     }
 
@@ -161,13 +254,15 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const createClassifierInstructions = CreateCommandInterpreter.interpretCreateClassifier(commandLine, entityType);
                     const classifierCreationFeedback = diagram.createClassifier(createClassifierInstructions);
                     setDiagram(diagram);
-                    return classifierCreationFeedback.toString();
+                    setEntityData(classifierCreationFeedback.entityData);
+                    return classifierCreationFeedback.feedback.toString();
     
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const createRelationshipInstructions = CreateCommandInterpreter.interpretCreateRelationship(commandLine);
                     const relationshipCreationFeedback = diagram.createRelationship(createRelationshipInstructions);
                     setDiagram(diagram);
-                    return relationshipCreationFeedback.toString();
+                    setEntityData(relationshipCreationFeedback.entityData);
+                    return relationshipCreationFeedback.feedback.toString();
         
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.create.error.unrecognized_entity_type.part_1"));
@@ -176,7 +271,6 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     
                     throw new AppError(errorFeedback);
             }
-
         }
     }
 
@@ -190,18 +284,21 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         } else {
             switch(true) {
                 case SUPPORTED_ENTITY_TYPES.diagram === entityType:
-                    const diagramFeedback = diagram.readDiagram();
-                    return diagramFeedback.toString();
+                    const readDiagramFeedback = diagram.readDiagram();
+                    setEntityData(readDiagramFeedback.entityData);
+                    return readDiagramFeedback.feedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const readClassifierInstructions = ReadCommandInterpreter.interpretReadClassifier(commandLine);
-                    const classifierReadfeedback = diagram.readClassifier(readClassifierInstructions);
-                    return classifierReadfeedback.toString();
+                    const classifierReadFeedback = diagram.readClassifier(readClassifierInstructions);
+                    setEntityData(classifierReadFeedback.entityData);
+                    return classifierReadFeedback.feedback.toString();
                 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
-                    const readInstructions = ReadCommandInterpreter.interpretReadRelationship(commandLine);
-                    const readFeedback = diagram.readRelationship(readInstructions);
-                    return readFeedback.toString();
+                    const readRelationshipInstructions = ReadCommandInterpreter.interpretReadRelationship(commandLine);
+                    const relationshipReadFeedback = diagram.readRelationship(readRelationshipInstructions);
+                    setEntityData(relationshipReadFeedback.entityData);
+                    return relationshipReadFeedback.feedback.toString();
                 
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.read.error.unrecognized_entity_type.part_1"));
@@ -225,12 +322,13 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                 case SUPPORTED_ENTITY_TYPES.classifier.includes(entityType):
                     const removeClassifierInstructions = RemoveCommandInterpreter.interpretRemoveClassifier(commandLine);
                     const removeClassifierFeedback = diagram.removeClassifier(removeClassifierInstructions);
+                    setEntityData(removeClassifierFeedback.entityData);
                     setDiagram(diagram);
-                    return removeClassifierFeedback.toString();
+                    return removeClassifierFeedback.feedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.relationship === entityType:
                     const removerRelationshipInstructions = RemoveCommandInterpreter.interpretRemoveRelationship(commandLine);
-                    const removeRelationshipFeedback = diagram.removeRelatioship(removerRelationshipInstructions);
+                    const removeRelationshipFeedback = diagram.removeRelationship(removerRelationshipInstructions);
                     setDiagram(diagram);
                     return removeRelationshipFeedback.toString();
                     
@@ -257,13 +355,15 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
                     const alterClassifierInstructions = AlterCommandInterpreter.interpretAlterClassifier(commandLine);
                     const alterClassifierFeedback = diagram.alterClassifier(alterClassifierInstructions);
                     setDiagram(diagram);
-                    return alterClassifierFeedback.toString();
+                    setEntityData(alterClassifierFeedback.entityData);
+                    return alterClassifierFeedback.feedback.toString();
 
                 case SUPPORTED_ENTITY_TYPES.relationship.includes(entityType):
                     const alterRelationshipInstructions = AlterCommandInterpreter.interpretAlterRelationship(commandLine);
                     const alterRelationshipFeedback = diagram.alterRelationship(alterRelationshipInstructions);
                     setDiagram(diagram);
-                    return alterRelationshipFeedback.toString();
+                    setEntityData(alterRelationshipFeedback.entityData);
+                    return alterRelationshipFeedback.feedback.toString();
 
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.error.unrecognized_entity_type.part_1"));
@@ -275,11 +375,29 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         }
     }
 
-    function importDiagramHandler(xmlImport: string) {
-        const diagramImportData = ImportCommandInterpreter.interpretImportXML(xmlImport);
-        const newDiagram = new Diagram();
-        newDiagram.generateDiagramFromData(diagramImportData);
-        setDiagram(newDiagram);
+    function importDiagramHandler(fileType: string, content: string) {
+        switch(fileType) {
+            case "text/xml":
+                const diagramImportXMLData = ImportCommandInterpreter.interpretImportXML(content);
+                const newXMLDiagram = new Diagram();
+                newXMLDiagram.generateDiagramFromData(diagramImportXMLData);
+                setDiagram(newXMLDiagram);
+                break;
+            
+            case "text/plain":
+                const diagramImportTxtData = ImportCommandInterpreter.interpretImportTxt(content);
+                const newTxtDiagram = new Diagram();
+                newTxtDiagram.generateDiagramFromData(diagramImportTxtData);
+                setDiagram(newTxtDiagram);
+                break;
+
+            default:
+                return "";
+        }
+        setEntityData({
+            entityType: "diagram",
+            entityId: ""
+        });
 
         const importFeedback = new Feedback();
         importFeedback.addSnippet(new LocalizationSnippet("feedback.import.success"));
@@ -292,6 +410,10 @@ export const CommandHandlerProvider = ({ children }: IProps ) => {
         const newDiagram = new Diagram();
         newDiagram.generateDiagramFromData(diagramLoadData);
         setDiagram(newDiagram);
+        setEntityData({
+            entityType: "diagram",
+            entityId: ""
+        });
 
         const loadFeedback = new Feedback();
         loadFeedback.addSnippet(new LocalizationSnippet("feedback.load.success"));

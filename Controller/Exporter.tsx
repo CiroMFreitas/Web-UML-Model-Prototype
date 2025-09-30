@@ -33,7 +33,7 @@ export default class Exporter {
                 (relationship.getMultiplicity() !== undefined ? "\"" + relationship.getMultiplicity() + "\" " : "") +
                 SUPPORTED_RELATIONSHIP_TYPES.find((relationshipType) => relationshipType.name === relationship.getRelationshipType())?.ascii + " " +
                 targetClassifier +
-                (relationship.getAttributeName() !== undefined ? " : " + relationship.getName() : "") + "\n");
+                (relationship.getAttributeName() !== undefined ? " : " + relationship.getAttributeName() : "") + "\n");
         });
         
         exportContent.push("@enduml");

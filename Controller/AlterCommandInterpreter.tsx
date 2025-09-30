@@ -114,7 +114,7 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
             const splitArgument = attributeArgument.split(":");
             const errorFeedback = new Feedback();
 
-            switch(splitArgument[0]) {
+            switch(splitArgument.shift()) {
                 case "add":
                     create.push(this.handleCreateAttributeArgument(splitArgument.toString().replace(",", ":")));
                     break;

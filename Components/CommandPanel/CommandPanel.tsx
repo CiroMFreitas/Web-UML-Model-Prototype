@@ -22,7 +22,7 @@ export default function CommandPanel() {
      * @param event Event which triggered funciton.
      */
     function commandLineHandler(event: KeyboardEvent): void {
-        if(commandLineRef.current !== null) {
+        if(commandLineRef.current !== null && commandHandler !== null) {
             switch(true) {
                 // Clears command line, addd command to history and sends it to be handled by context
                 case event.key === "Enter":
@@ -114,9 +114,9 @@ export default function CommandPanel() {
      */
     function importHandler(): void {
         const files = importRef.current?.files;
-        if((files !== null) && (files !== undefined)) {
-            files[0].text().then((xmlContent) => {
-                const commandLineArray = ["import", xmlContent]
+        if((files !== null) && (files !== undefined) && commandHandler !== null) {
+            files[0].text().then((content) => {
+                const commandLineArray = ["import", files[0].type, content]
                 setFeedback(commandHandler.getFeedBack(commandLineArray));
             });
         }
@@ -146,9 +146,9 @@ export default function CommandPanel() {
       
             <input id="CommandConsole" ref={ commandLineRef } onKeyUpCapture={ commandLineHandler } aria-label={ translate("label.command_console") } autoComplete="off" autoFocus />
 
-            <input id="importXML" ref={ importRef } type="file" onChange={ () => importHandler() } accept="text/xml" aria-hidden="true" hidden />
+            <input id="import" ref={ importRef } type="file" onChange={ () => importHandler() } accept=".txt, .xml" aria-hidden="true" hidden />
 
-            <input id="LoadJSON" ref={ loadRef } type="file" onChange={ () => loadHandler() } accept=".json" aria-hidden="true" hidden />
+            <input id="load" ref={ loadRef } type="file" onChange={ () => loadHandler() } accept=".json" aria-hidden="true" hidden />
         </div>
     );
 }

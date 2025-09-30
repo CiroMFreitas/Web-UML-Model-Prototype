@@ -1,5 +1,6 @@
 import IAlterRelationshipDTO from "../public/DTO/IAlterRelationshipDTO";
 import ICreateRelationshipDTO from "../public/DTO/ICreateRelationshipDTO";
+import IGetAttributeDTO from "../public/DTO/IGetAttributeDTO";
 import { SUPPORTED_RELATIONSHIP_TYPES } from "../public/Utils/SupportedKeyWords";
 import AppError from "./AppError";
 import Attribute from "./Attribute";
@@ -144,7 +145,7 @@ export default class Relationship extends DiagramEntity {
     /**
      * Gets relationship's type.
      * 
-     * @returns Target classifier's type.
+     * @returns Relationship's type.
      */
     public getRelationshipType(): string {
         return this.relationshipType;
@@ -169,6 +170,23 @@ export default class Relationship extends DiagramEntity {
     }
 
     /**
+     * Gets relationship's attribute data for diagram data.
+     * 
+     * @returns Relationship's attribute data.
+     */
+    public getAttributeData(): IGetAttributeDTO | null {
+        if(this.attribute) {
+            return {
+                visibility: this.attribute.getVisibilitySymbol(),
+                name: this.attribute.getName(),
+                type: this.attribute.getType()
+            };
+        }
+
+        return null;
+    }
+
+    /**
      * Creates a feedback with classifier's information for a screen reader.
      * 
      * @param commandLineArray Details to be read from classifier.
@@ -178,7 +196,7 @@ export default class Relationship extends DiagramEntity {
         const toTextFeedback = new Feedback()
         toTextFeedback.addSnippet(new StringSnippet(this.getName()));
         toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.of_type"));
-        toTextFeedback.addSnippet(new StringSnippet(this.relationshipType));
+        toTextFeedback.addSnippet(new LocalizationSnippet("feedback.common.relationship_type."+this.relationshipType));
 
         if(this.attribute !== undefined) {
             toTextFeedback.addSnippet(new LocalizationSnippet("feedback.read.relationship.attribute_is_present"));
