@@ -111,22 +111,22 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
         const alter = [] as IAlterAttributeDTO[];
 
         attributeArguments.forEach((attributeArgument) => {
-            const splitArgument = attributeArgument.split(":");
+            const splitArguments = attributeArgument.split(":");
             const errorFeedback = new Feedback();
 
-            switch(splitArgument.shift()) {
+            switch(splitArguments.shift()) {
                 case "add":
-                    create.push(this.handleCreateAttributeArgument(splitArgument.toString().replace(",", ":")));
+                    create.push(this.handleCreateAttributeArgument(splitArguments.toString().replaceAll(",", ":")));
                     break;
 
                 case "remove":
                     // Remove attribute from a classifier have 2 arguments.
-                    if(splitArgument.length === 2) {
+                    if(splitArguments.length === 2) {
                         remove.push({
-                            attributeName: splitArgument[1]
+                            attributeName: splitArguments[1]
                         });
                     // Remove attribute from a relationship have 1 arguments.
-                    } else if(splitArgument.length === 1) {
+                    } else if(splitArguments.length === 1) {
                         remove.push({
                             attributeName: ""
                         });
@@ -139,22 +139,22 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
 
                 case "alter":
                     // Alter attribute from a classifier have 5 arguments.
-                    if(splitArgument.length === 5) {
+                    if(splitArguments.length === 5) {
                         alter.push({
-                            attributeName: splitArgument[1],
-                            newVisibility: splitArgument[2],
-                            newName: splitArgument[3],
-                            newType: splitArgument[4],
+                            attributeName: splitArguments[1],
+                            newVisibility: splitArguments[2],
+                            newName: splitArguments[3],
+                            newType: splitArguments[4],
                         });
                     // Alter attribute from a relationship have 4 arguments.
-                    } else if(splitArgument.length === 4) {
+                    } else if(splitArguments.length === 4) {
                         alter.push({
                             attributeName: "",
-                            newVisibility: splitArgument[1],
-                            newName: splitArgument[2],
-                            newType: splitArgument[3],
+                            newVisibility: splitArguments[1],
+                            newName: splitArguments[2],
+                            newType: splitArguments[3],
                         });
-                    } else if(splitArgument.length < 4) {
+                    } else if(splitArguments.length < 4) {
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alter_attribute_arguments.part_1.too_few"));
                         errorFeedback.addSnippet(new StringSnippet(attributeArgument))
                         errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alter_attribute_arguments.part_2"));
@@ -174,7 +174,7 @@ export default class AlterCommandInterpreter extends CommandInterpreter {
 
                 default:
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_1"));
-                    errorFeedback.addSnippet(new StringSnippet(splitArgument[0]));
+                    errorFeedback.addSnippet(new StringSnippet(splitArguments[0]));
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_2"));
                     errorFeedback.addSnippet(new StringSnippet(attributeArgument));
                     errorFeedback.addSnippet(new LocalizationSnippet("feedback.alter.attribute.error.invalid_alteration_argument.part_3"));
